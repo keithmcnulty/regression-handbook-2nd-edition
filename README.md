@@ -1,4 +1,4 @@
-# peopleanalytics-regression-book
+# regression-handbook-2nd-edition
 
 Handbook of Regression Modeling in People Analytics. 2nd edition
 
