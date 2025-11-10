@@ -4,6 +4,7 @@
 .Ruserdata
 .Rprofile
 _book/
+_book_html/
 _book_r/
 _book_pdf/
 _bookdown_files/
@@ -23,6 +24,7 @@ misc/
 other/
 proofed_submission/
 conf/
+renv/
 
 /env/
 /.quarto/
