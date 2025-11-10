@@ -1,0 +1,61 @@
+# Welcome {.unnumbered}
+
+```{r}
+#| echo: false
+source("_common.R")
+```
+
+Welcome to the website for the book *Handbook of Regression Modeling in People Analytics (2nd Edition)* by [Keith McNulty](https://www.linkedin.com/in/keith-mcnulty/).  
+
+This new edition is to be published by Chapman & Hall/CRC Press in 2026.   The online version of this book is free to read here (thanks to Chapman & Hall/CRC Press), and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). If you have any feedback, please feel free to [file an issue on GitHub](https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues). Thank you!
+
+
+## Notes on data used in this book {.unnumbered}
+
+Each of the data sets used in this book can be downloaded individually by following the code in each chapter.  Alternatively, packages containing all the data sets used in this book are now available in R and Python.  For R users, install and load the `peopleanalyticsdata` R package.  
+
+```{r}
+#| eval: false
+
+# install peopleanalyticsdata package
+install.packages("peopleanalyticsdata")
+library(peopleanalyticsdata)
+
+# see a list of data sets
+data(package = "peopleanalyticsdata")
+
+# find out more about a specific data set ('managers' example)
+help(managers)
+```
+
+For Python users , use `pip install peopleanalyticsdata` to install the package into your environment. Then, to use the package:
+
+```{python}
+#| eval: false
+
+# import peopleanalyticsdata package
+import peopleanalyticsdata as pad
+import pandas as pd
+
+# see a list of data sets
+pad.list_sets()
+
+# load data into a dataframe
+df = pad.managers()
+
+# find out more about a specific data set ('managers' example)
+pad.managers().info()
+
+```
+
+Happy modeling!
+
+*Last update:  `r format(Sys.Date(), "%d %B %Y")`*
+
+
+
+
+
+
+
+

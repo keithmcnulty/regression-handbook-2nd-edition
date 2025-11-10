@@ -1,0 +1,39 @@
+project:
+  type: book
+  output-dir: _book_html
+
+book:
+  title: "Handbook of Regression Modeling in People Analytics (2nd edition)"
+  subtitle: "With Examples in R and Python"
+  reader-mode: true
+
+  page-footer:
+    left: |
+      Handbook of Regression Modeling in People Analytics (2nd ed.) was written by Keith McNulty.
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  cover-image: www/cover/coverpage.png
+  favicon: coverpage-og.png
+  site-url: https://peopleanalytics-regression-book-2nd-edition.org/
+  repo-url: https://github.com/keithmcnulty/regression-handbook-2nd-edition
+  repo-branch: main
+  repo-actions: [edit, issue]
+  chapters:
+    - index.qmd
+    - quarto/foreword.qmd
+    - quarto/introduction.qmd
+    - quarto/01-intro.qmd
+    - quarto/02-basic_r.qmd
+    - quarto/03-primer_stats.qmd
+
+format:
+  html:
+    theme:
+      - materia
+    code-link: true
+
+    author-meta: "Keith McNulty"
+    callout-appearance: simple
+    bibliography: quarto/book.bib
+
+editor: source

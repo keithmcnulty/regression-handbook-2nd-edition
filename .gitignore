@@ -23,3 +23,6 @@ misc/
 other/
 proofed_submission/
 conf/
+
+/env/
+/.quarto/
