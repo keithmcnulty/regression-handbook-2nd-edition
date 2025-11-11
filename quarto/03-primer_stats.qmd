@@ -1,4 +1,4 @@
-# Statistics Foundations {#found-stats}
+# Statistics Foundations {#sec-found-stats}
 
 To properly understand multivariable models, an analyst needs to have a decent grasp of foundational statistics.  Many of the assumptions and results of multivariable models require an understanding of these foundations in order to be properly interpreted.  There are three topics that are particularly important for those proceeding further in this book:
 
@@ -39,7 +39,7 @@ It looks like:
 `r if (knitr::is_latex_output()) '\\index{descriptive statistics|(}'`
 Any collection of numerical data on one or more variables can be described using a number of common statistical concepts.  Let $x = x_1, x_2, \dots, x_n$ be a sample of $n$ observations of a variable drawn from a population.
 
-### Mean, variance and standard deviation {#mean-var-sd}
+### Mean, variance and standard deviation {#sec-mean-var-sd}
 
 `r if (knitr::is_latex_output()) '\\index{mean (statistics)}'`The **mean** is the average value of the observations and is defined by adding up all the values and dividing by the number of observations.  The mean $\bar{x}$ of our sample $x$ is defined as:
 
@@ -190,7 +190,7 @@ cor(salespeople$sales, salespeople$performance,
 ## Distribution of random variables
 
 `r if (knitr::is_latex_output()) '\\index{random variables|(}'`
-As we outlined in Section \@ref(theory-modeling), when we build a model we are using a set of sample data to infer a general relationship on a larger population.  A major underlying assumption in our inference is that we believe the real-life variables we are dealing with are random in nature.  For example, we might be trying to model the drivers of the voting choice of millions of people in a national election, but we may only have sample data on a few thousand people.  When we infer nationwide voting intentions from our sample, we assume that the characteristics of the voting population are random variables. 
+As we outlined in @sec-theory-modeling, when we build a model we are using a set of sample data to infer a general relationship on a larger population.  A major underlying assumption in our inference is that we believe the real-life variables we are dealing with are random in nature.  For example, we might be trying to model the drivers of the voting choice of millions of people in a national election, but we may only have sample data on a few thousand people.  When we infer nationwide voting intentions from our sample, we assume that the characteristics of the voting population are random variables. 
 
 ### Sampling of random variables
 
@@ -316,7 +316,7 @@ cat(paste0('[', lower_bound, ', ', upper_bound, ']'))
 ```
 `r if (knitr::is_latex_output()) '\\index{random variables|)}'`
 
-## Hypothesis testing {#hyp-tests}
+## Hypothesis testing {#sec-hyp-tests}
 
 `r if (knitr::is_latex_output()) '\\index{hypothesis testing|(}'`
 
@@ -334,7 +334,7 @@ Three of the most common types of hypothesis tests are^[We go through these thre
 
 We will go through an example of each of these.  In each case, you will see a three-step process.  First, we calculate a test statistic.  Second, we determine an expected distribution for that test statistic.  Finally, we determine where our calculated statistic falls in that distribution in order to assess the likelihood of our sample occurring if the null hypothesis is true.  During these examples, we will go through all the logic and calculation steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R.  Readers don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
 
-### Testing for a difference in means (Welch's $t$-test) {#means-sig}
+### Testing for a difference in means (Welch's $t$-test) {#sec-means-sig}
 
 `r if (knitr::is_latex_output()) '\\index{Welch\'s t-test}'`Imagine that we are asked if, in general, the sales of low-performing salespeople are different from the sales of high-performing salespeople.  This question refers to all salespeople, but we only have data for the sample in our `salespeople` data set.  Let's take two subsets of our data for those with a performance rating of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
 
@@ -439,9 +439,9 @@ Because our p-value is less than our alpha of 0.05, we reject the null hypothesi
 
 In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty.  While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example, some medical fields).  Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with 'indications' from the data.  In many statistical software packages, including those that we will see in this book, tests that meet an $\alpha = 0.1$ standard are usually marked with period(`.`), those that meet $\alpha = 0.05$ with an asterisk(`*`), $\alpha = 0.01$ a double asterisk(`**`) and $\alpha = 0.001$ a triple asterisk(`***`).
 
-`r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-hacking}'`Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards---a process known as 'p-hacking'---has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-hacking}'`Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards---a process known as 'p-hacking'---has been of increasing concern recently.  See @sec-power-tests for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
 
-### Testing for a non-zero correlation between two variables ($t$-test for correlation) {#t-test-cor}
+### Testing for a non-zero correlation between two variables ($t$-test for correlation) {#sec-t-test-cor}
 
 `r if (knitr::is_latex_output()) '\\index{hypothesis testing!test of non-zero correlation}'`Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population.  We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value.  The t-statistic associated with a correlation $r$ between two samples of length $n$ is often notated $t^*$ and is defined as 
 

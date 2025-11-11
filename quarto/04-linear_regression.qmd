@@ -1,11 +1,11 @@
-# Linear Regression for Continuous Outcomes {#linear-reg-ols}
+# Linear Regression for Continuous Outcomes {#sec-linear-reg-ols}
 
 `r if (knitr::is_latex_output()) '\\index{linear regression|(}'`
 In this chapter, we will introduce and explore linear regression, one of the first learning methods to be developed by statisticians and one of the easiest to interpret.  Despite its simplicity---indeed *because* of its simplicity---it can be a very powerful tool in many situations.  Linear regression will often be the first methodology to be trialed on a given problem, and will give an immediate benchmark with which to judge the efficacy of other, more complex, modeling techniques.  Given the ease of interpretation, many analysts will select a linear regression model over more complex approaches even if those approaches produce a slightly better fit.  This chapter will also introduce many critical concepts that will apply to other modeling approaches as we proceed through this book.  Therefore for inexperienced modelers this should be considered a foundational chapter which should not be skipped.
 
-## When to use it {#when-ols}
+## When to use it {#sec-when-ols}
 
-### Origins and intuition of linear regression {#origins-ols}
+### Origins and intuition of linear regression {#sec-origins-ols}
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -15,14 +15,18 @@ library(latex2exp)
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!origins}'`Linear regression, also known as `r if (knitr::is_latex_output()) '\\index{linear regression!ordinary least squares}'`*Ordinary Least Squares linear regression* or *OLS regression* for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as 'regression'&zwj;.  This term became more popular following the work of Francis Galton---a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1000 children and the average height of their parents (mid-parent height).  He was surprised to discover that there was not a perfect relationship between the height of a child and the average height of its parents, and that in general children's heights were more likely to be in a range that was closer to the mean for the total population.  He described this statistical phenomenon as a 'regression towards mediocrity' ('regression' comes from a Latin term approximately meaning 'go back').  
 
-Figure \@ref(fig:galton-fig) is a scatter plot of Galton's data with the black solid line showing what a perfect relationship would look like, the black dot-dashed line indicating the mean child height and the red dashed line showing the actual relationship determined by Galton^[This chart includes a random 'jitter' to better illustrate observations that are identical and was first used to illustrate Galton's data in @senn.].  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line).  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between the black dot-dashed line (no relationship) and the black solid line (a perfect relationship). Linear regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
+@fig-galton-fig is a scatter plot of Galton's data with the black solid line showing what a perfect relationship would look like, the black dot-dashed line indicating the mean child height and the red dashed line showing the actual relationship determined by Galton^[This chart includes a random 'jitter' to better illustrate observations that are identical and was first used to illustrate Galton's data in @senn.].  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line).  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between the black dot-dashed line (no relationship) and the black solid line (a perfect relationship). Linear regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
 
-```{r galton-fig, fig.cap="Galton's study of the height of children introduced the term 'regression'", out.width=if (knitr::is_latex_output()) '80%', fig.align='center', echo = FALSE}
+::: {#fig-galton-fig}
+```{r}
+#| fig.align: 'center'
+#| echo: false
+
 library(dplyr)
 library(ggplot2)
-data <- read.delim("data/Galton.txt")
+data <- read.delim("../data/Galton.txt")
 
-data <- data %>% 
+data <- data |> 
   dplyr::mutate(midHeight = (Father + Mother)/2)
 
 ggplot(data, aes(x = midHeight, y = Height)) +
@@ -36,7 +40,10 @@ ggplot(data, aes(x = midHeight, y = Height)) +
   theme_minimal()
 ```
 
-### Use cases for linear regression {#use-cases-ols}
+Galton's study of the height of children introduced the term 'regression'
+:::
+
+### Use cases for linear regression {#sec-use-cases-ols}
 
 `r if (knitr::is_latex_output()) '\\index{outcome variable!continuous}'`Linear regression is particularly suited to a problem where the outcome of interest is on some sort of continuous scale (for example, quantity, money, height, weight).  For outcomes of this type, it can be a first port of call before trying more complex modeling approaches.  It is simple and easy to explain, and analysts will often accept a somewhat poorer fit using linear regression in order to avoid having to interpret a more complex model. 
 
@@ -48,7 +55,7 @@ Here are some illustratory examples of questions that could be tackled with a li
 
 * Given a set of GPA data, SAT data and data on the percentile score on an aptitude test for a set of job applicants, to what extent can the GPA and SAT data explain the aptitude test score?
 
-### Walkthrough example {#walkthrough-ols}
+### Walkthrough example {#sec-walkthrough-ols}
 
 You are working as an analyst for the biology department of a large academic institution which offers a four-year undergraduate degree program.  The academic leaders of the department are interested in understanding how student performance in the final-year examination of the degree program relates to performance in the prior three years. 
 
@@ -62,14 +69,7 @@ url <- "http://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests <- read.csv(url)
 ```
 
-```{r, eval = FALSE}
-# look at the first few rows of data
-head(ugtests)
-```
-
-`r if (knitr::is_latex_output()) '\\newpage'`
-
-```{r, echo = FALSE}
+```{r}
 # look at the first few rows of data
 head(ugtests)
 ```
@@ -87,26 +87,30 @@ summary(ugtests)
 
 We can see that the results do seem to have different scales in the different years as we have been informed, and judging by the means, students seem to have found Year 2 exams more challenging.  We can also be assured that there is no missing data, as these would have been displayed as `NA` counts in our summary if they existed.
 
-We can also plot our four years of test scores pairwise to see any initial relationships of interest, as displayed in Figure \@ref(fig:pairplot-ugtests).
+We can also plot our four years of test scores pairwise to see any initial relationships of interest, as displayed in @fig-pairplot-ugtests.
 
-```{r pairplot-ugtests, fig.cap = if (knitr::is_latex_output()) {"Pairplot of the \\texttt{ugtests} data set"} else {"Pairplot of the `ugtests` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-pairplot-ugtests}
+```{r}
+#| fig.align: "center"
 library(GGally)
 
 # display a pairplot of all four columns of data
 GGally::ggpairs(ugtests)
 
 ```
+Pairplot of the `ugtests` data set
+:::
 
 In the diagonal, we can see the distributions of the data in each column.  We observe relatively normal-looking distributions in each year.  We can see scatter plots and pairwise correlation statistics off the diagonal.  For example, we see a particularly strong correlation between `Yr3` and `Final` test scores, a moderate correlation between `Yr2` and `Final` and relative independence elsewhere.
 
 
-## Simple linear regression {#simple-ols}
+## Simple linear regression {#sec-simple-ols}
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!simple linear regression}'`In order to visualize our approach and improve our intuition, we will start with *simple* linear regression, which is the case where there is only a single input variable and outcome variable.
 
-### Linear relationship between a single input and an outcome {#linear-single}
+### Linear relationship between a single input and an outcome {#sec-linear-single}
 
-Let our input variable be $x$ and our outcome variable be $y$.  In Chapter \@ref(inf-model), we introduced the concept of parametric modeling as an assumption that our outcome variable $y$ is expected to be related to the input variable $x$ by means of some mathematically definable function.  In other words, we assume:
+Let our input variable be $x$ and our outcome variable be $y$.  In @sec-inf-model, we introduced the concept of parametric modeling as an assumption that our outcome variable $y$ is expected to be related to the input variable $x$ by means of some mathematically definable function.  In other words, we assume:
 
 $$
 y = f(x) + \epsilon
@@ -125,30 +129,46 @@ Now let's assume that we have a sample of 10 observations with which to estimate
 (d <- head(ugtests[ , c("Yr3", "Final")], 10))
 ```
 
-We can do a simple plot of these observations as in Figure \@ref(fig:sample-plot). Intuitively, we can imagine a line passing through these points that 'fits' the general pattern.  For example, taking $m = 1.2$ and $c = 5$, the resulting line $y = 1.2x + 5$ could fit between the points we are given, as displayed in Figure \@ref(fig:sample-plot-fit).
+We can do a simple plot of these observations as in @fig-sample-plot. Intuitively, we can imagine a line passing through these points that 'fits' the general pattern.  For example, taking $m = 1.2$ and $c = 5$, the resulting line $y = 1.2x + 5$ could fit between the points we are given, as displayed in @fig-sample-plot-fit.
 
-```{r sample-plot, fig.cap = "Basic scatter plot of 10 observations", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+
+::: {#fig-sample-plot}
+```{r} 
+#| fig.align: "center"
+#| echo: false
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
-  ggplot2::geom_point()
+  ggplot2::geom_point() +
+  theme_minimal()
 ```
+Basic scatter plot of 10 observations
+:::
 
 
-``` {r sample-plot-fit, fig.cap = "Fitting $y=1.2x + 5$ to our 10 observations", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-sample-plot-fit}
+``` {r} 
+#| fig.align: "center"
+#| echo: false
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) + 
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) {1.2*x + 5}, colour = "red", linetype = "dashed") +
-  ggplot2::annotate("text", x = 140, y = 160, label = "y = 1.2x + 5", colour = "red")
+  ggplot2::annotate("text", x = 140, y = 160, label = "y = 1.2x + 5", colour = "red") +
+  theme_minimal()
 
 ```
+Fitting $y=1.2x + 5$ to our 10 observations
+:::
 
 This looks like an approximation of the relationship, but how do we know that it is the best approximation?  
 
-### Minimising the error {#minimising-error-ols}
+### Minimising the error {#sec-minimising-error-ols}
 
-Remember that our assumed relationship $y = mx + c$ represents the expected mean value of $y$ over many observations of $x$.   For a specific single observation of $x$, we do not expect $y$ to be precisely on our expected line, because each individual observation will have an error term $\epsilon$ either above or below the expected line.   We can determine this error term $\epsilon$ in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r 1.2*52 + 5`, but the real value is 93, producing an error $\epsilon$ of `r 93 - 1.2*52 - 5`.  `r if (knitr::is_latex_output()) '\\index{linear regression!residuals}'`These errors $\epsilon$ are known as the *residuals* of our model. The residuals for the 10 points in our data set are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
+Remember that our assumed relationship $y = mx + c$ represents the expected mean value of $y$ over many observations of $x$.   For a specific single observation of $x$, we do not expect $y$ to be precisely on our expected line, because each individual observation will have an error term $\epsilon$ either above or below the expected line.   We can determine this error term $\epsilon$ in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r 1.2*52 + 5`, but the real value is 93, producing an error $\epsilon$ of `r 93 - 1.2*52 - 5`.  `r if (knitr::is_latex_output()) '\\index{linear regression!residuals}'`These errors $\epsilon$ are known as the *residuals* of our model. The residuals for the 10 points in our data set are illustrated by the solid red line segments in @fig-sample-plot-residuals.  It looks like at least one of our residuals is pretty large.
 
 
-``` {r sample-plot-residuals, fig.cap = "Residuals of $y=1.2x + 5$ for our 10 observations", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-sample-plot-residuals}
+``` {r} 
+#| fig.align: "center"
+#| echo: false
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) + 
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) {1.2*x + 5}, colour = "red", linetype = "dashed") +
@@ -162,8 +182,12 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_segment(aes(x = Yr3[7], y = 1.2*Yr3[7] + 5, xend = Yr3[7], yend = Final[7]), color = "red") +
   ggplot2::geom_segment(aes(x = Yr3[8], y = 1.2*Yr3[8] + 5, xend = Yr3[8], yend = Final[8]), color = "red") +
   ggplot2::geom_segment(aes(x = Yr3[9], y = 1.2*Yr3[9] + 5, xend = Yr3[9], yend = Final[9]), color = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[10], y = 1.2*Yr3[10] + 5, xend = Yr3[10], yend = Final[10]), color = "red")
+  ggplot2::geom_segment(aes(x = Yr3[10], y = 1.2*Yr3[10] + 5, xend = Yr3[10], yend = Final[10]), color = "red") +
+  theme_minimal()
 ```
+
+Residuals of $y=1.2x + 5$ for our 10 observations
+:::
 
 The error of our model---which we want to minimize---could be defined in a number of ways:
 
@@ -173,7 +197,7 @@ The error of our model---which we want to minimize---could be defined in a numbe
 
 For a number of reasons (not least the fact that at the time this method was developed it was one of the easiest to derive), the most common approach is number 3, which is why we call our regression model *Ordinary Least Squares* regression.  Some algebra and calculus can help us determine the equation of the line that generates the least-squared residual error.  For more of the theory behind this, consult @linear, but let's look at how this works in practice.  
 
-### Determining the best fit {#best-fit-simple-ols}
+### Determining the best fit {#sec-best-fit-simple-ols}
 
 We can run a fairly simple function in R to calculate the best fit linear model for our data.  Once we have run that function, the model and all the details will be saved in our session for further investigation or use.
 
@@ -185,13 +209,8 @@ model <- lm(formula = Final ~ Yr3, data = d)
 ```
 The `model` object that we have created is a list of a number of different pieces of information, which we can see by looking at the names of the objects in the list.
 
-```{r, eval = knitr::is_latex_output(), echo = knitr::is_latex_output()}
-# view the names of the objects in the model in a column
-model_objects <- names(model) 
-as.data.frame(model_objects)
-```
 
-```{r, eval = knitr::is_html_output(), echo = knitr::is_html_output()}
+```{r}
 # view the names of the objects in the model
 names(model) 
 ```
@@ -206,9 +225,14 @@ model$coefficients
 
 We have calculated a model which minimizes the average squared residual error for the sample of data that we have, but we don't really have a sense of how 'good' the model is.  How do we tell how well our model uses the input data to explain the outcome?   This is an important question to answer because you would not want to propose a model that does not do a good job of explaining your outcome, and you also may need to compare your model to other alternatives, which will require some sort of benchmark metric.
 
-One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values, which can be considered a random variable with a mean and a variance.  In the case of our 10 observations, we have 10 values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model'&zwj;, and we can calculate the residuals around the mean.  This can be seen in Figure \@ref(fig:model-mean).
+One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values, which can be considered a random variable with a mean and a variance.  In the case of our 10 observations, we have 10 values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model'&zwj;, and we can calculate the residuals around the mean.  This can be seen in @fig-model-mean.
 
-```{r model-mean, fig.cap = "Residuals of our 10 observations around their mean value", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-model-mean}
+
+```{r} 
+#| fig.align: "center"
+#| echo: false
+
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) mean(d$Final), color = "blue", linetype = "dashed") +
@@ -222,13 +246,21 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_segment(aes(x = Yr3[7], y = round(mean(Final), 2), xend = Yr3[7], yend = Final[7]), color = "blue") +
   ggplot2::geom_segment(aes(x = Yr3[8], y = round(mean(Final), 2), xend = Yr3[8], yend = Final[8]), color = "blue") +
   ggplot2::geom_segment(aes(x = Yr3[9], y = round(mean(Final), 2), xend = Yr3[9], yend = Final[9]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[10], y = round(mean(Final), 2), xend = Yr3[10], yend = Final[10]), color = "blue")
+  ggplot2::geom_segment(aes(x = Yr3[10], y = round(mean(Final), 2), xend = Yr3[10], yend = Final[10]), color = "blue") +
+  theme_minimal()
 
 ```
 
-Recall from Section \@ref(mean-var-sd) the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the average squared residual error of a random model.  This calculates in this case to `r round((9/10)*var(d$Final), 2)`.  Let's overlay our fitted model onto this random model in Figure \@ref(fig:model-overlay).
+Residuals of our 10 observations around their mean value
+:::
 
-```{r model-overlay, fig.cap = "Comparison of residuals of fitted model (red) against random variable (blue)", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+Recall from  @sec-mean-var-sd the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the average squared residual error of a random model.  This calculates in this case to `r round((9/10)*var(d$Final), 2)`.  Let's overlay our fitted model onto this random model in @fig-model-overlay.
+
+::: {#fig-model-overlay}
+```{r} 
+#| fig.align: "center"
+#| echo: false
+
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) mean(d$Final), color = "blue", linetype = "dashed") +
@@ -255,9 +287,13 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_segment(aes(x = Yr3[7], y = model$fitted.values[7], xend = Yr3[7], yend = Final[7]), color = "red") +
   ggplot2::geom_segment(aes(x = Yr3[8], y = model$fitted.values[8], xend = Yr3[8], yend = Final[8]), color = "red") +
   ggplot2::geom_segment(aes(x = Yr3[9], y = model$fitted.values[9], xend = Yr3[9], yend = Final[9]), color = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[10], y = model$fitted.values[10], xend = Yr3[10], yend = Final[10]), color = "red")
+  ggplot2::geom_segment(aes(x = Yr3[10], y = model$fitted.values[10], xend = Yr3[10], yend = Final[10]), color = "red") +
+  theme_minimal()
 
 ```
+
+Comparison of residuals of fitted model (red) against random variable (blue)
+:::
 
 So for most of our observations (though not all) we seem to have reduced the 'distance' from the random model by fitting our new model.  If we average the square of our residuals for the fitted model, we obtain the average squared residual error of our fitted model, which calculates to `r round(sum(model$residuals^2)/10, 2)`.
 
@@ -266,11 +302,11 @@ Therefore, before we fit our model, we have an error of `r round((9/10)*var(d$Fi
 `r if (knitr::is_latex_output()) '\\index{linear regression!R-squared}'`This metric is known as the $R^2$ of our model and is the primary metric used in measuring the fit of a linear regression model^[As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity $R^2 = r^2$, where $r$ is the correlation between the input and outcome (for our small set of 10 observations here, the correlation is `r round(cor(d$Yr3, d$Final), 3)`).]. 
 
 
-## Multiple linear regression {#multiple-linear-regression}
+## Multiple linear regression {#sec-multiple-linear-regression}
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!multiple linear regression}'`In reality, regression problems rarely involve one single input variable, but rather multiple variables. The methodology for multiple linear regression is similar in nature to simple linear regression, but obviously more difficult to visualize because of its increased dimensionality.
 
-In this case, our inputs are a set of $p$ variables $x_1, x_2, \dots, x_p$.  Extending the linear equation in Section \@ref(linear-single), we seek to develop an equation of the form:
+In this case, our inputs are a set of $p$ variables $x_1, x_2, \dots, x_p$.  Extending the linear equation in  @sec-linear-single, we seek to develop an equation of the form:
 
 $$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p$$
 so that our average squared residual error is minimized.  
@@ -286,7 +322,7 @@ model$coefficients
 ```
 
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`Referring to our formula in Section \@ref(multiple-linear-regression), let's understand what each coefficient $\beta_0, \beta_1, \dots, \beta_p$ means.  $\beta_0$, the *intercept* of the model, represents the value of $y$ assuming that all the inputs were zero.  You can imagine that your output can be expected to have a base value even without any inputs---a student who completely flunked the first three years can still redeem themselves to some extent in the Final year.
+`r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`Referring to our formula in @sec-multiple-linear-regression, let's understand what each coefficient $\beta_0, \beta_1, \dots, \beta_p$ means.  $\beta_0$, the *intercept* of the model, represents the value of $y$ assuming that all the inputs were zero.  You can imagine that your output can be expected to have a base value even without any inputs---a student who completely flunked the first three years can still redeem themselves to some extent in the Final year.
 
 Now looking at the other coefficients, let's consider what happens if our first input $x_1$ increased by a single unit, assuming nothing else changed.  We would then expect our value of y to increase by $\beta_1$.  Similarly for any input $x_k$, a unit increase would result in an increase in $y$ of $\beta_k$, assuming no other changes in the inputs. 
 
@@ -323,33 +359,51 @@ newmodel <- lm(data = ugtests, formula = Final ~ Yr3 + Yr2)
 
 ```
 
-Given that our new model only has three dimensions, we have the luxury of visualizing it.  `r if (knitr::is_latex_output()) '<!--'` Interactive `r if (knitr::is_latex_output()) '-->'` Figure \@ref(fig:lin-reg-3d) shows the data and the fitted plane of our model.  
+Given that our new model only has three dimensions, we have the luxury of visualizing it.  `r if (knitr::is_latex_output()) '<!--'` Interactive `r if (knitr::is_latex_output()) '-->'` @fig-lin-reg-3d shows the data and the fitted plane of our model.  
 
-```{r lin-reg-3d, fig.cap = if (knitr::is_latex_output()) {"3D visualization of the fitted \\texttt{newmodel} against the \\texttt{ugtests} data"} else {"3D visualization of the fitted `newmodel` against the `ugtests` data"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-lin-reg-3d .content-visible when-format="html"}
 
-if (knitr::is_html_output()) {
-  library(plotly)
-  library(magrittr)
-  
-  plot_ly(data = ugtests) %>%
-    add_trace(x = ~Yr3, y = ~Yr2, z = ~Final, mode = "markers", type = "scatter3d",
-              marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
-    add_trace(z = newmodel$fitted.values, x = ~Yr3, y = ~Yr2, type = "mesh3d", 
-              name = "Fitted values") %>%
-    layout(scene = list(xaxis = list(title = 'Yr3'), yaxis = list(title = 'Yr2'),
-                        camera = list(eye = list(x = -1.5, y = 1.75, z = 0)),
-                        zaxis = list(title = 'Final'), aspectmode='cube')) 
-} else {
-  knitr::include_graphics("./www/04/newmodel.png")
-}
+```{r} 
+
+#| fig.align: "center"
+#| echo: false
+
+library(plotly)
+library(magrittr)
+
+plot_ly(data = ugtests) |>
+  add_trace(x = ~Yr3, y = ~Yr2, z = ~Final, mode = "markers", type = "scatter3d",
+            marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") |> 
+  add_trace(z = newmodel$fitted.values, x = ~Yr3, y = ~Yr2, type = "mesh3d", 
+            name = "Fitted values") |>
+  layout(scene = list(xaxis = list(title = 'Yr3'), yaxis = list(title = 'Yr2'),
+                      camera = list(eye = list(x = -1.5, y = 1.75, z = 0)),
+                      zaxis = list(title = 'Final'), aspectmode='cube')) 
+
 ```
 
+3D visualization of the fitted `newmodel` against the `ugtests` data
+:::
 
-### Model 'goodness-of-fit' {#lin-good-fit}
+
+::: {#fig-lin-reg-3d .content-visible when-format="pdf"}
+
+```{r} 
+
+#| fig.align: "center"
+#| echo: false
+knitr::include_graphics("../www/04/newmodel.png")
+```
+
+3D visualization of the fitted `newmodel` against the `ugtests` data
+:::
+
+
+### Model 'goodness-of-fit' {#sec-lin-good-fit}
 
 At this point we can further explore the overall summary of our model.  As you saw in the previous section, our model summary contains numerous objects of interest, including statistics on the coefficients of our model.  We can see what is inside our summary by looking at the names of its contents, and we can then dive in and explore specific objects of interest. 
 
-```{r, eval = knitr::is_html_output(), echo = knitr::is_html_output()}
+```{r}
 # get summary of model
 newmodel_summary <- summary(newmodel)
 
@@ -357,15 +411,7 @@ newmodel_summary <- summary(newmodel)
 names(newmodel_summary)
 ```
 
-```{r, eval = knitr::is_latex_output(), echo = knitr::is_latex_output()}
-# get summary of new model
-newmodel_summary <- summary(newmodel)
 
-
-# see summary contents
-summary_objects <- names(newmodel_summary)
-as.data.frame(summary_objects)
-```
 
 ```{r}
 # view r-squared
@@ -412,7 +458,7 @@ predict(newmodel, new_students, interval = "confidence")
 
 As an example, another way of interpreting the confidence interval is to say that, if you have many students who scored precisely `r new_students$Yr2[1]` and `r new_students$Yr3[1]` in the Year 2 and Year 3 examinations respectively, we expect the mean Final score of these students to be somewhere between `r round(predict(newmodel, new_students, interval = "confidence")[1, 2])` and `r round(predict(newmodel, new_students, interval = "confidence")[1, 3])`.
 
-You may also recall from Section \@ref(linear-single) that any prediction of an individual observation is subject to an error term $\epsilon$.  Therefore, to generate a more reliable prediction range for an individual observation, you should calculate a 'prediction interval'&zwj;.
+You may also recall from @sec-linear-single that any prediction of an individual observation is subject to an error term $\epsilon$.  Therefore, to generate a more reliable prediction range for an individual observation, you should calculate a 'prediction interval'&zwj;.
 
 ```{r}
 # get a prediction interval 
@@ -420,7 +466,7 @@ predict(newmodel, new_students, interval = "prediction")
 ```
 
 
-As discussed in Chapter \@ref(inf-model), the process of developing a model to *predict* an outcome can be quite different from developing a model to *explain* an outcome.  For a start, it is unlikely that you would use your entire sample to fit a predictive model, as you would want to reserve a portion of your data to test for its fit on new data.  Since the focus of this book is inferential modeling, much of this topic will be out of our scope.
+As discussed in @sec-inf-model, the process of developing a model to *predict* an outcome can be quite different from developing a model to *explain* an outcome.  For a start, it is unlikely that you would use your entire sample to fit a predictive model, as you would want to reserve a portion of your data to test for its fit on new data.  Since the focus of this book is inferential modeling, much of this topic will be out of our scope.
 
 ## Managing inputs in linear regression
 
@@ -476,13 +522,13 @@ library(makedummies)
 ```
 
 
-It is worth a moment to consider how to interpret coefficients of dummy variables in a linear regression model.  Note that all observations will have one of the dummy variable values (all cars must have a make).  Therefore the model will assume a 'reference value' for the categorical variable---often this is the first value in alphabetical or numerical order.  In this case, `Audi` would be the reference dummy variable.  The model then calculates the effect on the outcome variable of a 'switch' from `Audi` to one of the other dummies^[For more on how to control which categorical value is used as a reference, see Section \@ref(def-ref).].  If we were to try to use the data in our `vehicle_data_dummies` data set to explain the retail price of a vehicle, we would interpret coefficients like this:
+It is worth a moment to consider how to interpret coefficients of dummy variables in a linear regression model.  Note that all observations will have one of the dummy variable values (all cars must have a make).  Therefore the model will assume a 'reference value' for the categorical variable---often this is the first value in alphabetical or numerical order.  In this case, `Audi` would be the reference dummy variable.  The model then calculates the effect on the outcome variable of a 'switch' from `Audi` to one of the other dummies^[For more on how to control which categorical value is used as a reference, see @sec-def-ref.].  If we were to try to use the data in our `vehicle_data_dummies` data set to explain the retail price of a vehicle, we would interpret coefficients like this:
 
 * Comparing two cars of the same make, we would expect each *extra dollar* spent on manufacturing to change the retail price by ...
 * Comparing a Ford with an Audi *of the same manufacturing cost*, we would expect a difference in retail price of ...
 * Comparing a Toyota with an Audi *of the same manufacturing cost*, we would expect a difference in retail price of ...
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units.  It will be common to see much larger coefficients for dummy variables in regression models because they represent a binary 'all' or 'nothing' variable in the model.  The coefficient for manufacturing cost would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend.  Care should be taken not to 'rank' coefficients by their value.  Higher coefficients in and of themselves do not imply greater importance^[Rescaling numerical input variables onto common scales can help with understanding the ranked importance of these variables.  In some techniques, for example structural modeling which we will review in Section \@ref(struc-eq-model), scaled regression coefficients help determine the ranked importance of constructs to the outcome.].
+`r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units.  It will be common to see much larger coefficients for dummy variables in regression models because they represent a binary 'all' or 'nothing' variable in the model.  The coefficient for manufacturing cost would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend.  Care should be taken not to 'rank' coefficients by their value.  Higher coefficients in and of themselves do not imply greater importance^[Rescaling numerical input variables onto common scales can help with understanding the ranked importance of these variables.  In some techniques, for example structural modeling which we will review in @sec-struc-eq-model, scaled regression coefficients help determine the ranked importance of constructs to the outcome.].
 
 ## Testing your model assumptions
 
@@ -492,9 +538,12 @@ All modeling techniques have underlying assumptions about the data that they mod
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!linearity and additivity assumption}'`Linear regression assumes that the relationship we are trying to model is linear and additive in nature.  Therefore you can expect problems if you are using this approach to model a pattern that is not linear or additive.  
 
-You can check whether your linearity assumption was reasonable in a couple of ways.  You can plot the true versus the predicted (fitted) values to see if they look correlated.  You can see such a plot on our student examination model in Figure \@ref(fig:predplot).
+You can check whether your linearity assumption was reasonable in a couple of ways.  You can plot the true versus the predicted (fitted) values to see if they look correlated.  You can see such a plot on our student examination model in @fig-predplot.
 
-```{r predplot, fig.cap = "Plot of true versus fitted/predicted student scores", fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-predplot}
+
+```{r} 
+#| fig.align: "center"
 predicted_values <- newmodel$fitted.values
 true_values <- ugtests$Final
 
@@ -503,92 +552,101 @@ plot(predicted_values, true_values)
 
 ```
 
-Alternatively, you can plot the residuals of your model against the predicted values and look for the pattern of a random distribution (that is, no major discernible pattern) such as in Figure \@ref(fig:resplot).
+Plot of true versus fitted/predicted student scores
+:::
 
-```{r resplot, fig.cap = "Plot of residuals against fitted/predicted scores", fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+Alternatively, you can plot the residuals of your model against the predicted values and look for the pattern of a random distribution (that is, no major discernible pattern) such as in @fig-resplot.
+
+::: {#fig-resplot}
+
+```{r} 
+#| fig.align: "center"
 residuals <- newmodel$residuals
 
 # plot residuals against predicted values
 plot(predicted_values, residuals)
 ```
 
+Plot of residuals against fitted/predicted scores
+:::
+
 You can also plot the residuals against each input variable as an extra check of independent randomness, looking for a reasonably random distribution in all cases.  If you find that your residuals are following a clear pattern and are not random in nature, this is an indication that a linear model is not a good choice for your data.
 
-### Assumption of constant error variance {#lin-reg-const-var}
+### Assumption of constant error variance {#sec-lin-reg-const-var}
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!homoscedacity of residuals}'`It is assumed in a linear model that the errors or residuals are *homoscedastic*---this means that their variance is constant across the values of the input variables.  If the errors of your model are *heteroscedastic*---that is, if they increase or decrease according to the value of the model inputs---this can lead to poor estimations and inaccurate inferences.
 
-While a simple plot of residuals against predicted values (such as in Figure \@ref(fig:resplot)) can give a quick indication on homoscedacity, to be thorough the residuals should be plotted against each input variable, and it should be verified that the range of the residuals remains broadly stable.  In our student examination model, we can first plot the residuals against the values of `Yr2` in Figure \@ref(fig:resyr2).
+While a simple plot of residuals against predicted values (such as in @fig-resplot) can give a quick indication on homoscedacity, to be thorough the residuals should be plotted against each input variable, and it should be verified that the range of the residuals remains broadly stable.  In our student examination model, we can first plot the residuals against the values of `Yr2` in @fig-resyr2.
 
-
-```{r resyr2, fig.cap = if (knitr::is_latex_output()) {"Plot of residuals against \\texttt{Yr2} values"} else {"Plot of residuals against `Yr2` values"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-resyr2}
+```{r} 
+#| fig.align: "center"
 Yr2 <- ugtests$Yr2
 
 # plot residuals against Yr2 values
 plot(Yr2, residuals)
 ```
 
-We see a pretty consistent range of values for the residuals in \@ref(fig:resyr2).  Similarly we can plot the residuals against the values of `Yr3`, as in Figure \@ref(fig:resyr3). 
+Plot of residuals against `Yr2` values
+:::
 
-```{r resyr3, fig.cap = if (knitr::is_latex_output()) {"Plot of residuals against \\texttt{Yr3} values"} else {"Plot of residuals against `Yr3` values"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+We see a pretty consistent range of values for the residuals in @fig-resyr2.  Similarly we can plot the residuals against the values of `Yr3`, as in @fig-resyr3.
+
+::: {#fig-resyr3}
+
+```{r} 
+#| fig.align: "center"
 Yr3 <- ugtests$Yr3
 
 # plot residuals against Yr3 values
 plot(Yr3, residuals)
 ```
 
-Figure \@ref(fig:resyr3) also shows a consistent range of values for the residuals, which reassures us that we have homoscedacity.
+Plot of residuals against `Yr3` values
+:::
 
-### Assumption of normally distributed errors {#norm-dist-assum}
+@fig-resyr3 also shows a consistent range of values for the residuals, which reassures us that we have homoscedacity.
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!normal distribution of residuals}'`Recall from Section \@ref(linear-single) that one of the assumptions when we run a linear regression model is that the residuals of the model are normally distributed around a mean of zero.  Therefore it is useful to check your data to see how well it fits these assumptions.  If your data shows that the residuals have a substantially non-normal distribution, this may tell you something about your model and how well you can rely on it for accurate inferences or predictions.
+### Assumption of normally distributed errors {#sec-norm-dist-assum}
+
+`r if (knitr::is_latex_output()) '\\index{linear regression!normal distribution of residuals}'`Recall from @sec-linear-single that one of the assumptions when we run a linear regression model is that the residuals of the model are normally distributed around a mean of zero.  Therefore it is useful to check your data to see how well it fits these assumptions.  If your data shows that the residuals have a substantially non-normal distribution, this may tell you something about your model and how well you can rely on it for accurate inferences or predictions.
 
 When residuals violate this assumption, it means that the ingoing mathematical premise of your model does not fully describe your data.  Whether or not this is a big problem depends on the existing properties of your sample and on other model diagnostics.   In models built on smaller samples, where hypothesis test criteria are only narrowly met, residual non-normality could present a significant challenge to the reliability of inferences and predictions. On models where hypothesis test criteria are very comfortably met, residual non-normality is less likely to be a problem (@lumley).   In any case, it is good practice to examine the distribution of your residuals so that you can refine or improve your model.  
 
-The quickest way to determine if residuals in your sample are consistent with a normal distribution is to run a quantile-quantile plot (or Q-Q plot) on the residuals.  This will plot the observed quantiles of your sample against the theoretical quantiles of a normal distribution.  The closer this plot looks like a perfect correlation, the more certain you can be that this normality assumption holds.  An example for our student examination model is in Figure \@ref(fig:qqplottests).
+The quickest way to determine if residuals in your sample are consistent with a normal distribution is to run a quantile-quantile plot (or Q-Q plot) on the residuals.  This will plot the observed quantiles of your sample against the theoretical quantiles of a normal distribution.  The closer this plot looks like a perfect correlation, the more certain you can be that this normality assumption holds.  An example for our student examination model is in @fig-qqplottests.
 
-```{r qqplottests, fig.cap = "Quantile-quantile plot of residuals", fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-qqplottests}
+```{r} 
+#| fig.align: "center"
 # normal distribution qqplot of residuals
 qqnorm(newmodel$residuals)
 ```
 
-### Avoiding high collinearity and multicollinearity between input variables {#collinearity}
+Quantile-quantile plot of residuals
+:::
 
-`r if (knitr::is_latex_output()) '\\index{collinearity}'`In multiple linear regression, the various input variables used can be considered 'dimensions' of the problem or model.  In theory, we ideally expect dimensions to be independent and uncorrelated.  Practically speaking, however, it's very challenging in large data sets to ensure that every input variable is completely uncorrelated from another.  For example, even in our limited `ugtests` data set we saw in Figure \@ref(fig:pairplot-ugtests) that `Yr2` and `Yr3` examination scores are correlated to some degree.
+### Avoiding high collinearity and multicollinearity between input variables {#sec-collinearity}
+
+`r if (knitr::is_latex_output()) '\\index{collinearity}'`In multiple linear regression, the various input variables used can be considered 'dimensions' of the problem or model.  In theory, we ideally expect dimensions to be independent and uncorrelated.  Practically speaking, however, it's very challenging in large data sets to ensure that every input variable is completely uncorrelated from another.  For example, even in our limited `ugtests` data set we saw in @fig-pairplot-ugtests that `Yr2` and `Yr3` examination scores are correlated to some degree.
 
 While some correlation between input variables can be expected and tolerated in linear regression models, high levels of correlation can result in significant inflation of coefficients and inaccurate estimates of p-values of coefficients.  
 
-*Collinearity* means that two input variables are highly correlated.  The definition of 'high correlation' is a matter of judgment, but as a rule of thumb correlations greater than 0.5 might be considered high and greater than 0.7 might be considered extreme.  Creating a simple correlation matrix or a pairplot (such as Figure \@ref(fig:pairplot-ugtests)) can immediately surface high or extreme collinearity.
+*Collinearity* means that two input variables are highly correlated.  The definition of 'high correlation' is a matter of judgment, but as a rule of thumb correlations greater than 0.5 might be considered high and greater than 0.7 might be considered extreme.  Creating a simple correlation matrix or a pairplot (such as @fig-pairplot-ugtests) can immediately surface high or extreme collinearity.
 
 `r if (knitr::is_latex_output()) '\\index{multicollinearity}'`*Multicollinearity* means that there is a linear relationship between more than two of the input variables.  `r if (knitr::is_latex_output()) '\\index{VIF (variance inflation factor)}'`This may not always present itself in the form of high correlations between pairs of input variables, but may be seen by identifying 'clusters' of moderately correlated variables, or by calculating a Variance Inflation Factor (VIF) for each input variable---where VIFs greater than 5 indicate high multicollinearity.  Easy-to-use tests also exist in statistical software for identifying multicollinearity (for example the `mctest` package in R).  `r if (knitr::is_latex_output()) '\\index{R!packages!mctest@\\texttt{mctest}}'`Here is how we would test for multicollinearity in our student examination model. `r if (knitr::is_latex_output()) '\\index{variance inflation factor|see {VIF}}'`
 
-```{r, eval = FALSE}
+```{r}
 library(mctest)
 
 # diagnose possible overall presence of multicollinearity
 mctest::omcdiag(newmodel)
 ```
 
-`r if (knitr::is_latex_output()) '\\newpage \\small'`
-```{r, echo = FALSE}
-library(mctest)
 
-# diagnose possible overall presence of multicollinearity
-mctest::omcdiag(newmodel)
-```
-`r if (knitr::is_latex_output()) '\\normalsize'`
-
-```{r, eval = FALSE}
+```{r}
 # if necessary, diagnose specific multicollinear variables using VIF 
 mctest::imcdiag(newmodel, method = "VIF")
 ```
-
-`r if (knitr::is_latex_output()) '\\small'`
-```{r, echo = FALSE}
-# if necessary, diagnose specific multicollinear variables using VIF 
-mctest::imcdiag(newmodel, method = "VIF")
-```
-`r if (knitr::is_latex_output()) '\\normalsize'`
 
 
 Note that collinearity and multicollinearity only affect the coefficients of the variables impacted, and do not affect other variables or the overall statistics and fit of a model.  Therefore, if a model is being developed primarily to make predictions and there is little interest in using the model to explain a phenomenon, there may not be any need to address this issue at all.  However, in inferential modeling the accuracy of the coefficients is very important, and so testing of multicollinearity is essential.   In general, the best way to deal with collinear variables is to remove one of them from the model (usually the one that has the least significance in explaining the outcome). 
@@ -596,7 +654,7 @@ Note that collinearity and multicollinearity only affect the coefficients of the
 
 ## Extending multiple linear regression
 
-We wrap up this chapter by introducing some simple extensions of linear regression, with a particular aim of trying to improve the overall fit of a model by relaxing the linear or additive assumptions.  It is rare for practitioners to extend linear regression models too greatly due to the negative impact this can have on interpretation, but simple extensions such as experimenting with interaction terms or quadratics are not uncommon.  If you have an appetite to explore this topic more fully, I recommend @rao.
+By introducing some extensions of linear regression to relax the linear or additive assumptions, we can try to improve the overall fit of a model.  It is rare for practitioners to extend linear regression models too greatly due to the negative impact this can have on interpretation, but simple extensions such as experimenting with interaction terms or quadratics are not uncommon.  If you have an appetite to explore this topic more fully, I recommend @rao.
 
 ### Interactions between input variables
 
@@ -604,18 +662,12 @@ We wrap up this chapter by introducing some simple extensions of linear regressi
 
 In our student examination data in `ugtests`, we could consider extending our model to not only include the individual year examinations, but also to include the impact of combined changes across multiple years.  For example, we could combine the impact of `Yr2` and `Yr3` examinations by multiplying them together in our model.
 
-```{r, eval = FALSE}
+```{r}
 interaction_model <- lm(data = ugtests, 
                         formula = Final ~ Yr2 + Yr3 + Yr2*Yr3)
 summary(interaction_model)
 ```
 
-`r if (knitr::is_latex_output()) '\\newpage'`
-```{r, echo = FALSE}
-interaction_model <- lm(data = ugtests, 
-                        formula = Final ~ Yr2 + Yr3 + Yr2*Yr3)
-summary(interaction_model)
-```
 
 We see that introducing this interaction term has improved the fit of our model from `r round(newmodel_summary$r.squared, 2)` to `r round(summary(interaction_model)$r.squared, 2)`, and that the interaction term is significant, so we conclude that in addition to a significant effect of the `Yr2` and `Yr3` scores, there is an additional significant effect from their interaction `Yr2*Yr3`. Let's take a moment to understand how to interpret this, since we note that some of the coefficients are now negative.
 
@@ -628,29 +680,43 @@ $$
 &= \beta_0 + \gamma\mathrm{Yr3} + \beta_2\mathrm{Yr2}
 \end{aligned}
 $$
-where $\gamma = \beta_1 + \beta_3\mathrm{Yr2}$.  Therefore our model has coefficients which are not constant but change with the values of the input variables.  We can conclude that the effect of an extra point in the examination in Year 3 will be different depending on how the student performed in Year 2.  Visualizing this, we can see in `r if (knitr::is_latex_output()) '<!--'` Interactive `r if (knitr::is_latex_output()) '-->'`Figure \@ref(fig:non-lin-reg-3d) that this non-constant term introduces a curvature to our fitted surface that aligns it a little more closely with the observations in our data set. 
 
-```{r non-lin-reg-3d, fig.cap = if (knitr::is_latex_output()) {"3D visualization of the fitted \\texttt{interaction\\_model} against the \\texttt{ugtests} data"} else {"3D visualization of the fitted `interaction_model` against the `ugtests` data"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"100%"}}
+where $\gamma = \beta_1 + \beta_3\mathrm{Yr2}$.  Therefore our model has coefficients which are not constant but change with the values of the input variables.  We can conclude that the effect of an extra point in the examination in Year 3 will be different depending on how the student performed in Year 2.  Visualizing this, we can see in `r if (knitr::is_latex_output()) '<!--'` Interactive `r if (knitr::is_latex_output()) '-->'`@fig-non-lin-reg-3d that this non-constant term introduces a curvature to our fitted surface that aligns it a little more closely with the observations in our data set. 
 
-if (knitr::is_html_output()) {
-  library(plotly)
-  library(magrittr)
-  
-  plot_ly(data = ugtests) %>%
-    add_trace(x = ~Yr3, y = ~Yr2, z = ~Final, mode = "markers", type = "scatter3d",
-              marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
-    add_trace(z = interaction_model$fitted.values, x = ~Yr3, y = ~Yr2, type = "mesh3d", 
-              name = "Fitted values") %>%
-    layout(scene = list(xaxis = list(title = 'Yr3'), yaxis = list(title = 'Yr2'),
-                        camera = list(eye = list(x = -0.5, y = 2, z = 0)),
-                        zaxis = list(title = 'Final'), aspectmode='cube')) 
+
+::: {#fig-non-lin-reg-3d .content-visible when-format="html"}
+```{r} 
+#| fig.align: "center"
+#| echo: false
+
+library(plotly)
+library(magrittr)
+
+plot_ly(data = ugtests) |>
+  add_trace(x = ~Yr3, y = ~Yr2, z = ~Final, mode = "markers", type = "scatter3d",
+            marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") |> 
+  add_trace(z = interaction_model$fitted.values, x = ~Yr3, y = ~Yr2, type = "mesh3d", 
+            name = "Fitted values") |>
+  layout(scene = list(xaxis = list(title = 'Yr3'), yaxis = list(title = 'Yr2'),
+                      camera = list(eye = list(x = -0.5, y = 2, z = 0)),
+                      zaxis = list(title = 'Final'), aspectmode='cube')) 
    
-} else {
-  knitr::include_graphics("./www/04/interactionmodel.png")
-}
+```
 
+3D visualization of the fitted `interaction_model` against the `ugtests` data
+:::
+
+::: {#fig-non-lin-reg-3d .content-visible when-format="pdf"}
+```{r} 
+#| fig.align: "center"
+#| echo: false
+
+knitr::include_graphics("../www/04/interactionmodel.png")
 
 ```
+
+3D visualization of the fitted `interaction_model` against the `ugtests` data
+:::
 
 By examining the shape of this curved plane, we can observe that the model considers *trajectories* in the Year 2 and Year 3 examination scores.  Those individuals who have improved from one year to the next will perform better in this model than those who declined.  To demonstrate, let's look at the predicted scores from our `interaction_model` for someone who declined and for someone who improved from Year 2 to Year 3.
 
@@ -685,6 +751,28 @@ summary(quadratic_yr1_model)$r.squared
 
 In this case we find that modeling `Yr1` as a quadratic makes no difference to the fit of the model.
 `r if (knitr::is_latex_output()) '\\index{linear regression|)}'`
+
+## Ordinary Least Squares (OLS) linear regression using Python
+
+The OLS linear regression model reviewed in this chapter can be generated in Python using the `statsmodels` package, which can report a reasonably thorough set of model statistics.  By using the `statsmodels` formula API, model formulas similar to those used in R can be used.  
+
+```{python}
+import pandas as pd
+import statsmodels.formula.api as smf
+
+# get data
+url = "http://peopleanalytics-regression-book.org/data/ugtests.csv"
+ugtests = pd.read_csv(url)
+
+# define model
+model = smf.ols(formula = "Final ~ Yr3 + Yr2 + Yr1", data = ugtests)
+
+# fit model
+ugtests_model = model.fit()
+
+# see results summary
+print(ugtests_model.summary())
+```
 
 ## Learning exercises
 

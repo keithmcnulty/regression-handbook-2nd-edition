@@ -1,9 +1,5 @@
-# Binomial Logistic Regression for Binary Outcomes {#bin-log-reg}
+# Binomial Logistic Regression for Binary Outcomes {#sec-bin-log-reg}
 
-```{r setup, echo = FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-
-```
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression|(}'`
 In the previous chapter we looked at how to explain outcomes that have continuous scale, such as quantity, money, height or weight.  While there are a number of typical outcomes of this type in the people analytics domain, they are not the most common form of outcomes that are typically modeled.  Much more common are situations where the outcome of interest takes the form of a limited set of classes.  Binary (two class) problems are very common.  Hiring, promotion and attrition are often modeled as binary outcomes:  for example 'Promoted' or 'Not promoted'.  Multi-class outcomes like performance ratings on an ordinal scale, or survey responses on a Likert scale are often converted to binary outcomes by dividing the ratings into two groups, for example 'High' and 'Not High'. 
 
@@ -12,27 +8,34 @@ In any situation where our outcome is binary, we are effectively working with li
 
 ## When to use it
 
-### Origins and intuition of binomial logistic regression {#logistic-origins}
+### Origins and intuition of binomial logistic regression {#sec-logistic-origins}
 
-`r if (knitr::is_latex_output()) '\\index{logistic function!origins}'`The *logistic function* was first introduced by the Belgian mathematician Pierre François Verhulst in the mid-1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population.  The formula for Verhulst's function was:
+`r if (knitr::is_latex_output()) '\\index{logistic function!origins}'`The *logistic function* was first introduced by the Belgian mathematician Pierre François Verhulst in the early 1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population.  The formula for Verhulst's function was:
 
 $$
 y = \frac{L}{1 + e^{-k(x - x_0)}}
 $$
 where $e$ is the exponential constant, $x_0$ is the value of $x$ at the midpoint, $L$ is the maximum value of $y$ (known as the 'carrying capacity') and $k$ is the maximum gradient of the curve. 
 
-The logistic function, as shown in Figure \@ref(fig:logistic-function-verhulst), was felt to accurately capture the theorized stages of population growth, with slower growth in the initial stage, moving to exponential growth during the intermediate stage and then to slower growth as the population approaches its carrying capacity.  
+The logistic function, as shown in @fig-logistic-function-verhulst, was felt to accurately capture the theorized stages of population growth, with slower growth in the initial stage, moving to exponential growth during the intermediate stage and then to slower growth as the population approaches its carrying capacity.  
 
-```{r logistic-function-verhulst, fig.align = "center", fig.cap = "Verhulst's logistic function modeled both the exponential nature and the natural limit of population growth", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-logistic-function-verhulst}
+```{r} 
+#| fig.align: "center" 
+#| echo: false
 # creative commons license https://socratic.org/questions/why-is-logistic-growth-more-realistic-than-exponential-growth
-knitr::include_graphics("./www/05/logistic-curve.png")
-
-
+knitr::include_graphics("../www/05/logistic-curve.png")
 ```
 
-In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was observed that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in Figure \@ref(fig:norm-log-curves)^[The logistic function plotted in Figure \@ref(fig:norm-log-curves) takes the simple form $y = \frac{1}{1 + e^{-x}}$.], where the $x$ scale represents standard deviations around a mean.  As we will learn, the logistic function gives rise to a mathematical model where the coefficients are easily interpreted in terms of likelihood of the outcome.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
+Verhulst's logistic function modeled both the exponential nature and the natural limit of population growth
+:::
 
-```{r norm-log-curves, fig.align = "center", fig.cap = "The logistic function (blue dashed line) is very similar to a cumulative normal distribution (red solid line) but easier to interpret", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was observed that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in @fig-norm-log-curves^[The logistic function plotted in @fig-norm-log-curves takes the simple form $y = \frac{1}{1 + e^{-x}}$.], where the $x$ scale represents standard deviations around a mean.  As we will learn, the logistic function gives rise to a mathematical model where the coefficients are easily interpreted in terms of likelihood of the outcome.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
+
+::: {#fig-norm-log-curves}
+```{r} 
+#| fig.align: "center" 
+#| echo: False
 library(ggplot2)
 
 ggplot2::ggplot() +
@@ -40,9 +43,13 @@ ggplot2::ggplot() +
   xlab("x") +
   ylab("P (cumulative)") +
   ggplot2::geom_function(fun = pnorm, color = "red") +
-  ggplot2::geom_function(fun = plogis, color = "blue", linetype = "dashed")
+  ggplot2::geom_function(fun = plogis, color = "blue", linetype = "dashed") +
+  theme_minimal()
 
 ```
+
+The logistic function (blue dashed line) is very similar to a cumulative normal distribution (red solid line) but easier to interpret
+:::
 
 ### Use cases for binomial logistic regression
 
@@ -54,7 +61,7 @@ Here are some example questions that could be approached using binomial logistic
 * Given a set of demographic, income and location data, what influence does each have on the likelihood of an individual voting in an election?
 * Given a set of statistics about the in-game activity of soccer players, what relationship does each statistic have with the likelihood of a player scoring a goal? 
 
-### Walkthrough example {#walkthrough-logit}
+### Walkthrough example {#sec-walkthrough-logit}
 
 You are an analyst for a large company consisting of regional sales teams across the country.  Twice every year, this company promotes some of its salespeople.  Promotion is at the discretion of the head of each regional sales team, taking into consideration financial performance, customer satisfaction ratings, recent performance ratings and personal judgment.  
 
@@ -87,9 +94,12 @@ The data looks as expected.  Let's get a summary of the data.
 summary(salespeople)
 ```
 
-First we see a small number of missing values, and we should remove those observations.  We see that about a third of individuals were promoted, that sales ranged from \$151k to \$945k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these, and then let's do a pairplot to get a quick view on some possible underlying relationships, as in Figure \@ref(fig:log-pairplot).
+First we see a small number of missing values, and we should remove those observations.  We see that about a third of individuals were promoted, that sales ranged from \$151k to \$945k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these, and then let's do a pairplot to get a quick view on some possible underlying relationships, as in @fig-log-pairplot.
 
-```{r log-pairplot, fig.cap = if(knitr::is_latex_output()) {"Pairplot for the \\texttt{salespeople} data set"} else {"Pairplot for the `salespeople` data set"}, fig.align="center", warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-log-pairplot}
+```{r} 
+#| fig.align: "center"
+
 library(GGally)
 
 # remove NAs
@@ -104,41 +114,62 @@ salespeople$promoted <- as.factor(salespeople$promoted)
 GGally::ggpairs(salespeople)
 ```
 
+Pairplot for the `salespeople` data set
+:::
+
 We can see from this pairplot that there are clearly higher sales for those who are promoted versus those who are not.  We also see a moderate relationship between customer rating and sales, which is intuitive (if the customer doesn't think much of you, sales wouldn't likely be very high).
 
 So we can see that some relationships with our outcome may exist here, but it's not clear how to tease them out and quantify them relative to each other.  Let's explore how binomial logistic regression can help us do this.
 
 
-## Modeling probabilistic outcomes using a logistic function {#mod-prob}
+## Modeling probabilistic outcomes using a logistic function {#sec-mod-prob}
 
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression!simple}'`Imagine that you have an outcome event $y$ which either occurs or does not occur.  The probability of $y$ occurring, or $P(y = 1)$, obviously takes a value between 0 and 1.  Now imagine that some input variable $x$ has a positive effect on the probability of the event occurring.  Then you would naturally expect $P(y = 1)$ to increase as $x$ increases.
 
-In our `salespeople` data set, let's plot our `promotion` outcome against the `sales` input.  This can be seen in Figure \@ref(fig:prom-sales-plot).
+In our `salespeople` data set, let's plot our `promotion` outcome against the `sales` input.  This can be seen in @fig-prom-sales-plot.
 
-```{r prom-sales-plot, fig.cap = if (knitr::is_latex_output()) {"Plot of promotion against sales in the  \\texttt{salespeople} data set"} else {"Plot of promotion against sales in the `salespeople` data set"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 
-ggplot2::ggplot(data = salespeople, aes(x = sales, y = promoted)) +
-  ggplot2::geom_point()
+::: {#fig-prom-sales-plot}
+```{r} 
+#| fig.align: "center"
+#| echo: false
+
+ggplot2::ggplot(data = salespeople, aes(x = sales, y = as.numeric(as.character(promoted)))) +
+  ggplot2::geom_point() +
+  ylim(0, 1) +
+  labs(y = "promoted") +
+  theme_minimal()
 
 ```
 
-It's clear that promotion is more likely with higher sales levels.  As we move along the $x$ axis from left to right and gradually include more and more individuals with higher sales, we know that the probability of promotion is gradually increasing overall.  `r if (knitr::is_latex_output()) '\\index{logistic function!as a model for probability}'`We could try to model this probability using our logistic function, which we learned about in Section \@ref(logistic-origins).  For example, let's plot the logistic function 
+Plot of promotion against sales in the `salespeople` data set
+:::
+
+It's clear that promotion is more likely with higher sales levels.  As we move along the $x$ axis from left to right and gradually include more and more individuals with higher sales, we know that the probability of promotion is gradually increasing overall.  `r if (knitr::is_latex_output()) '\\index{logistic function!as a model for probability}'`We could try to model this probability using our logistic function, which we learned about in @sec-logistic-origins.  For example, let's plot the logistic function 
 $$
 P(y = 1) = \frac{1}{1 + e^{-k(x - x_{0})}}
 $$ 
 
-on this data, where we set $x_0$ to the mean of `sales` and $k$ to be some maximum gradient value.   In Figure  \@ref(fig:prom-with-logistic) we can see these logistic functions for different values of $k$.  All of these seem to reflect the pattern we are observing to some extent, but how do we determine the best-fitting logistic function?
+on this data, where we set $x_0$ to the mean of `sales` and $k$ to be some maximum gradient value.   In @fig-prom-with-logistic we can see these logistic functions for different values of $k$.  All of these seem to reflect the pattern we are observing to some extent, but how do we determine the best-fitting logistic function?
 
-```{r prom-with-logistic, fig.cap = "Overlaying logistic functions with various gradients onto previous plot", fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-prom-with-logistic}
+
+```{r} 
+#| fig.align: "center"
+#| echo: false
 
 ggplot2::ggplot(data = salespeople, aes(x = sales, y = as.numeric(as.character(promoted)))) +
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.75*sd(salespeople$sales)), color = "black", linetype = "solid") +
   ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.5*sd(salespeople$sales)), color = "blue", linetype = "dashed") +
   ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.25*sd(salespeople$sales)), color = "red", linetype = "dotdash") +
-  ylab("promoted")
+  ylab("promoted") +
+  theme_minimal()
 
 ```
+
+Overlaying logistic functions with various gradients onto previous plot
+:::
 
 ### Deriving the concept of log odds
 
@@ -185,7 +216,7 @@ The right-hand side should look familiar from the previous chapter on linear reg
 
 `r if (knitr::is_latex_output()) '\\index{odds}'`$P(y = 1)$ is the probability that the event will occur, while $P(y = 0)$ is the probability that the event will not occur.  You may be familiar from sports like horse racing or other gambling situations that the ratio of these two represents the *odds* of an event.  For example, if a given horse has odds of 1:4, this means that there is a 20% probability they will win and an 80% probability they will not^[Often in sports the odds are expressed in the reverse order, but the concept is the same.].
 
-`r if (knitr::is_latex_output()) '\\index{log odds}'`Therefore we can conclude that the natural logarithm of the odds of $y$---usually termed the *log odds* of $y$---is linear in $x$, and therefore we can model the log odds of $y$ using similar linear regression methods to those studied in Chapter \@ref(linear-reg-ols)^[In this case, a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*.].
+`r if (knitr::is_latex_output()) '\\index{log odds}'`Therefore we can conclude that the natural logarithm of the odds of $y$---usually termed the *log odds* of $y$---is linear in $x$, and therefore we can model the log odds of $y$ using similar linear regression methods to those studied in @sec-linear-reg-ols^[In this case, a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*.].
 
 ### Modeling the log odds and interpreting the coefficients
 
@@ -225,9 +256,12 @@ So we can see that the base odds of promotion with zero sales is very close to z
 
 `r if (knitr::is_latex_output()) '\\index{odds}'`It is worth spending a little time understanding the concept of odds and how it relates to probability.  It is extremely common for these two terms to be used synonymously, and this can lead to serious misunderstandings when interpreting a logistic regression model.
 
-If a certain event has a probability of 0.1, then this means that its odds are 1:9, or 0.111.  If the probability is 0.5, then the odds are 1, if the probability is 0.9, then the odds are 9, and if the probability is 0.99, the odds are 99.  As we approach a probability of 1, the odds become exponentially large, as illustrated in Figure \@ref(fig:odds-prob):
+If a certain event has a probability of 0.1, then this means that its odds are 1:9, or 0.111.  If the probability is 0.5, then the odds are 1, if the probability is 0.9, then the odds are 9, and if the probability is 0.99, the odds are 99.  As we approach a probability of 1, the odds become exponentially large, as illustrated in @fig-odds-prob):
 
-```{r odds-prob, fig.cap="Odds plotted against probability", fig.align="center", echo = FALSE, message = FALSE, warning = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-odds-prob}
+```{r} 
+#| fig.align: "center"
+#| echo: false
 
 library(latex2exp)
 
@@ -236,13 +270,21 @@ ggplot2::ggplot() +
   ylim(0, 100) +
   geom_function(fun = function (x) {x/(1-x)}, colour = "black") +
   xlab("Probability") +
-  ylab("Odds")
+  ylab("Odds") +
+  theme_minimal()
 
 ```
 
-The consequence of this is that a given increase in odds can have a different effect on probability depending on what the original probability was in the first place.  If the probability was already quite low, for example 0.1, then a 4% increase in odds translates to odds of `r round((1/9)*1.04, 3)`, which translates to a new probability of `r round((0.1*1.04)/(1 + 0.1*0.04), 6)`, representing an increase in probability of `r round((0.1*1.04)/(1 + 0.1*0.04)*100/0.1, 2) - 100`%, which is very close to the increase in odds.  If the probability was already high, say 0.9, then a 4% increase in odds translates to odds of `r round((9/1)*1.04, 3)`, which translates to a new probability of `r round((0.9*1.04)/(1 + 0.9*0.04), 6)` representing an increase in probability of `r round((0.9*1.04)/(1 + 0.9*0.04)*100/0.9, 2) - 100`%, which is very different from the increase in odds.  Figure \@ref(fig:pcoddsplot) shows the impact of a 4% increase in odds according to the original probability of the event.
+Odds plotted against probability
+:::
 
-```{r pcoddsplot, fig.cap= "Effect of 4\\% increase in odds plotted against original probability", fig.align="center", echo = FALSE, message = FALSE, warning = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+The consequence of this is that a given increase in odds can have a different effect on probability depending on what the original probability was in the first place.  If the probability was already quite low, for example 0.1, then a 4% increase in odds translates to odds of `r round((1/9)*1.04, 3)`, which translates to a new probability of `r round((0.1*1.04)/(1 + 0.1*0.04), 6)`, representing an increase in probability of `r round((0.1*1.04)/(1 + 0.1*0.04)*100/0.1, 2) - 100`%, which is very close to the increase in odds.  If the probability was already high, say 0.9, then a 4% increase in odds translates to odds of `r round((9/1)*1.04, 3)`, which translates to a new probability of `r round((0.9*1.04)/(1 + 0.9*0.04), 6)` representing an increase in probability of `r round((0.9*1.04)/(1 + 0.9*0.04)*100/0.9, 2) - 100`%, which is very different from the increase in odds.  @fig-pcoddsplot shows the impact of a 4% increase in odds according to the original probability of the event.
+
+::: {#fig-pcoddsplot}
+
+```{r} 
+#| fig.align: "center"
+#| echo: false
 
 library(latex2exp)
 
@@ -251,9 +293,13 @@ ggplot2::ggplot() +
   ylim(0, 0.04) +
   ylab("Increase in probability") +
   xlab("Original probability") +
-  geom_function(fun = function (x) {(x * 1.04)/(1 + x * 0.04)/x - 1}, colour = "black") 
+  geom_function(fun = function (x) {(x * 1.04)/(1 + x * 0.04)/x - 1}, colour = "black") +
+  theme_minimal()
 
 ```
+
+Effect of 4% increase in odds plotted against original probability
+:::
 
 
 We can see that the closer the base probability is to zero, the similar the effect of the increase on both odds and on probability.  However, the higher the probability of the event, the less impact the increase in odds has.  In any case, it's useful to remember the formulas for converting odds to probability and vice versa.  If $O$ represents odds and $P$ represents probability then we have:
@@ -265,9 +311,9 @@ P &= \frac{O}{1 + O}
 \end{aligned}
 $$
 
-## Running a multivariate binomial logistic regression model
+## Running a multiple binomial logistic regression model
 
-The derivations in the previous section extend to multivariate data.  Let $y$ be a dichotomous outcome, and let $x_1, x_2, \dots, x_p$ be our input variables.  Then
+The derivations in the previous section extend to multivariable data.  Let $y$ be a dichotomous outcome, and let $x_1, x_2, \dots, x_p$ be our input variables.  Then
 
 $$
 \ln\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p
@@ -293,13 +339,13 @@ Therefore we can conclude that:
 
 Let's put this into practice.
 
-### Running and interpreting a multivariate binomial logistic regression model
+### Running and interpreting a multiple binomial logistic regression model
 
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression!multiple}'`Let's use a binomial logistic regression model to understand how each of the three inputs in our `salespeople` data set influence the likelihood of promotion.
 
 `r if (knitr::is_latex_output()) '\\index{dummy variables!in logistic regression}'``r if (knitr::is_latex_output()) '\\index{input variables!categorical}'`First, as we learned previously, it is good practice to convert the categorical `performance` variable to a dummy variable^[Note that most standard modeling functions have a built-in capability to deal with categorical variables, meaning that it's often not necessary to explicitly construct dummies.  However, it is shown here for completion sake.  You may wish to try running the subsequent code without explicitly constructing dummies, but note that constructing your own dummies gives you greater control over how they are labeled in any modeling output.]. 
 
-```{r, eval = FALSE}
+```{r}
 library(makedummies)
 
 # convert performance to dummy
@@ -309,18 +355,6 @@ salespeople_dummies <- makedummies::makedummies(salespeople)
 head(salespeople_dummies)
 ```
 
-`r if (knitr::is_latex_output()) '\\newpage'`
-`r if (knitr::is_latex_output()) '\\small'`
-```{r, echo = FALSE}
-library(makedummies)
-
-# convert performance to dummy
-salespeople_dummies <- makedummies::makedummies(salespeople)
-
-# check it worked
-head(salespeople_dummies)
-```
-`r if (knitr::is_latex_output()) '\\normalsize'`
 
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression!coefficients}'`Now we can run our model (using the formula `promoted ~ .` to mean regressing `promoted` against everything else) and view our coefficients.
 
@@ -350,7 +384,7 @@ Now we can interpret our model as follows:
 * All else being equal, customer ratings have a significant negative effect on the likelihood of promotion, with one full rating higher associated with 67% lower odds of promotion
 * All else being equal, performance ratings have no significant effect on the likelihood of promotion
 
-The second conclusion may appear counter-intuitive, but remember from our pairplot in Section  \@ref(walkthrough-logit) that there is already moderate correlation between sales and customer ratings, and this model will be controlling for that relationship. Recall that our odds ratios act *assuming all other variables are the same*.  Therefore, if two individuals have the same sales and performance ratings, the one with the lower customer rating is more likely to have been promoted.  Similarly, if two individuals have the same level of sales and the same customer rating, their performance rating will have no significant bearing on the likelihood of promotion.
+The second conclusion may appear counter-intuitive, but remember from our pairplot in @sec-walkthrough-logit that there is already moderate correlation between sales and customer ratings, and this model will be controlling for that relationship. Recall that our odds ratios act *assuming all other variables are the same*.  Therefore, if two individuals have the same sales and performance ratings, the one with the lower customer rating is more likely to have been promoted.  Similarly, if two individuals have the same level of sales and the same customer rating, their performance rating will have no significant bearing on the likelihood of promotion.
 
 Many analysts will feel uncomfortable with stating these conclusions with too much precision, and therefore exponent confidence intervals can be calculated to provide a range for the odds ratios.
 
@@ -362,7 +396,7 @@ Therefore we can say that---all else being equal---every additional unit of sale
 
 Similar to other regression models, the unit scale needs to be taken into consideration during interpretation.  On first sight, a decrease of up to 89% in odds seems a lot more important than an increase of up to 5.7% in odds.  However, the increase of up to 5.7% is for one unit (\$1000) in many thousands of sales units, and over 10 or 100 additional units can have a substantial compound effect on odds of promotion.  The decrease of up to 89% is on a full customer rating point on a scale of only 4 full points.  
 
-### Understanding the fit and goodness-of-fit of a binomial logistic regression model{#logistic-gof}
+### Understanding the fit and goodness-of-fit of a binomial logistic regression model {#sec-logistic-gof}
 
 Understanding the fit of a binomial logistic regression model is not straightforward and is sometimes controversial.   Before we discuss this, let's simplify our model based on our learning that the performance data has no significant effect on the outcome.
 
@@ -373,26 +407,47 @@ simpler_model <- glm(formula = promoted ~ sales + customer_rate,
                      data = salespeople)
 ```
 
-As in the previous chapter, again we have the luxury of a three-dimensional model, so we can visualize it in `r if (knitr::is_latex_output()) '<!--'`Interactive `r if (knitr::is_latex_output()) '-->'`Figure \@ref(fig:log-reg-3d), revealing a 3D sigmoid curve which 'twists' to reflect the relative influence of `sales` and `customer_rate` on the outcome.
+As in the previous chapter, again we have the luxury of a three-dimensional model, so we can visualize it in `r if (knitr::is_latex_output()) '<!--'`Interactive `r if (knitr::is_latex_output()) '-->'`@fig-log-reg-3d, revealing a 3D sigmoid curve which 'twists' to reflect the relative influence of `sales` and `customer_rate` on the outcome.
 
-```{r log-reg-3d, fig.pos = "!h", fig.cap = if (knitr::is_latex_output()) {"3D visualization of the fitted \\texttt{simpler\\_model} against the \\texttt{salespeople} data"} else {"3D visualization of the fitted `simpler_model` against the `salespeople` data"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+::: {#fig-log-reg-3d .content-visible when-format="html"}
 
-if (knitr::is_html_output()) {
-  library(plotly)
-  library(magrittr)
-  
-  plot_ly(data = salespeople) %>%
-    add_trace(x = ~sales, y = ~customer_rate, z = ~promoted, mode = "markers", type = "scatter3d",
-              marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
-    add_trace(z = simpler_model$fitted.values, x = ~sales, y = ~customer_rate, type = "mesh3d", 
-              name = "Fitted values") %>%
-    layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'customer_rate', nticks = 5),
-                        camera = list(eye = list(x = -0.5, y = 2, z = 0)),
-                        zaxis = list(title = 'promoted'), aspectmode='cube')) 
-} else {
-  knitr::include_graphics("./www/05/binomial.png")
-}
+```{r} 
+#| fig.pos: "!h"
+#| fig.align: "center" 
+#| echo: false
+
+
+library(plotly)
+library(magrittr)
+
+plot_ly(data = salespeople) %>%
+  add_trace(x = ~sales, y = ~customer_rate, z = ~promoted, mode = "markers", type = "scatter3d",
+            marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
+  add_trace(z = simpler_model$fitted.values, x = ~sales, y = ~customer_rate, type = "mesh3d", 
+            name = "Fitted values") %>%
+  layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'customer_rate', nticks = 5),
+                      camera = list(eye = list(x = -0.5, y = 2, z = 0)),
+                      zaxis = list(title = 'promoted'), aspectmode='cube')) 
+
 ```
+
+3D visualization of the fitted `simpler_model` against the `salespeople` data
+:::
+
+
+::: {#fig-log-reg-3d .content-visible when-format="pdf"}
+
+```{r} 
+#| fig.pos: "!h"
+#| fig.align: "center" 
+#| echo: false
+
+knitr::include_graphics("../www/05/binomial.png")
+
+```
+
+3D visualization of the fitted `simpler_model` against the `salespeople` data
+:::
 
 `r if (knitr::is_latex_output()) '\\newpage'`
 
@@ -402,7 +457,7 @@ Now let's look at the summary of our `simpler_model`.
 summary(simpler_model)
 ```
 
-Note that, unlike what we saw for linear regression in Section \@ref(lin-good-fit), our summary does not provide a statistic on overall model fit or goodness-of-fit.  The main reason for this is that there is no clear unified point of view in the statistics community on a single appropriate measure for model fit in the case of logistic regression.  Nevertheless, a number of options are available to analysts for estimating fit and goodness-of-fit for these models.
+Note that, unlike what we saw for linear regression in @sec-lin-good-fit, our summary does not provide a statistic on overall model fit or goodness-of-fit.  The main reason for this is that there is no clear unified point of view in the statistics community on a single appropriate measure for model fit in the case of logistic regression.  Nevertheless, a number of options are available to analysts for estimating fit and goodness-of-fit for these models.
 
 `r if (knitr::is_latex_output()) '\\index{Pseudo-R-squared!in binomial logistic regression}'`*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here:
 
@@ -482,12 +537,47 @@ predict(simpler_model, new_data, type = "response")
 
 Many of the principles covered in the previous chapter on linear regression are equally important in logistic regression.  For example, input variables should be managed in a similar way.  `r if (knitr::is_latex_output()) '\\index{collinearity}'`Collinearity and `r if (knitr::is_latex_output()) '\\index{multicollinearity}'`multicollinearity should be of concern.  Interaction of input variables can be modeled.  For the most part, analysts should be aware of the fundamental mathematical transformations which take place in a logistic regression model when they consider some of these issues (another reason to ensure that the mathematics covered earlier in this chapter is well understood).  For example, while coefficients in linear regression have a direct additive impact on $y$, in logistic regression they have a direct additive impact on the log odds of $y$, or alternatively their exponents have a direct multiplicative impact on the odds of $y$.  Therefore coefficient overestimation such as that which can occur when collinearity is not managed can result in inferences that could substantially overstate the importance or effect of input variables.
 
-`r if (knitr::is_latex_output()) '\\index{Pearson residuals}'`Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness-of-fit.  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large-enough samples.  We can see in Figure \@ref(fig:pearson-resids) that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
+`r if (knitr::is_latex_output()) '\\index{Pearson residuals}'`Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness-of-fit.  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large-enough samples.  We can see in @fig-pearson-resids that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
 
-```{r pearson-resids, fig.cap= if (knitr::is_latex_output()) {"Distribution of Pearson residuals in \\texttt{simpler\\_model}"} else {"Distribution of Pearson residuals in `simpler_model`"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+
+::: {#fig-pearson-resids}
+```{r} 
+#| fig.align: "center"
 d <- density(residuals(simpler_model, "pearson"))
 plot(d, main= "")
 ```
+
+Distribution of Pearson residuals in `simpler_model`
+:::
+
+## Binomial logistic regression using Python
+
+In Python, binomial logistic regression models can be generated in a similar way to OLS linear regression models using the `statsmodels` formula API, calling the binomial family from the general `statsmodels` API.
+
+```{python}
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# obtain salespeople data
+url = "http://peopleanalytics-regression-book.org/data/salespeople.csv"
+salespeople = pd.read_csv(url)
+
+# define model
+model = smf.glm(formula = "promoted ~ sales + customer_rate", 
+                data = salespeople, 
+                family = sm.families.Binomial())
+
+
+# fit model
+promotion_model = model.fit()
+
+
+# see results summary
+print(promotion_model.summary())
+```
+
+
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression|)}'`
 `r if (knitr::is_latex_output()) '\\newpage'`
 
@@ -499,7 +589,7 @@ plot(d, main= "")
 
 2. Explain why the logistic function is useful to statisticians in modeling.  
 
-3. In the formula for the logistic function in Section \@ref(logistic-origins), what might be a common value for $L$ in probabilistic applications?  Why?
+3. In the formula for the logistic function in @sec-logistic-origins, what might be a common value for $L$ in probabilistic applications?  Why?
 
 4. What types of problems are suitable for logistic regression modeling?  
 

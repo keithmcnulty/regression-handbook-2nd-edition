@@ -1,4 +1,4 @@
-# The Basics of the R Programming Language 
+# The Basics of the R Programming Language {#sec-basic-r}
 
 Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  Sample implementations in Python are also provided at the end of the relevant chapters or sections.  I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages, but my priority has been to keep the code simple, consistent and easily reproducible.  
 
@@ -592,7 +592,7 @@ These are among the most common plots used for data exploration purposes.  They 
 
 `r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{plotly}}'`The `plotly` package allows the use of the `plotly` graphing library in R.  This is an excellent package for interactive graphing and is used for 3D illustrations in this book.  Output can be rendered in HTML---allowing the user to play with and explore the graphs interactively---or can be saved as static 2D images.
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{GGally}}'``GGally` is a package that extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular functions is `ggpairs()`, which produces a pairplot.  `r if (knitr::is_latex_output()) '\\index{R!pairplot}'`A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal.  @fig-basicpair is an example of a pairplot for the `salespeople` data set, which we will explore further in Chapter \@ref(bin-log-reg).
+`r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{GGally}}'``GGally` is a package that extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular functions is `ggpairs()`, which produces a pairplot.  `r if (knitr::is_latex_output()) '\\index{R!pairplot}'`A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal.  @fig-basicpair is an example of a pairplot for the `salespeople` data set, which we will explore further in @sec-bin-log-reg.
 
 ::: {#fig-basicpair}
 ```{r}

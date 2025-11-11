@@ -5,7 +5,7 @@ if (knitr::is_latex_output()) {
   options(width = 100)
 }
 
-knitr::opts_chunk$set(out.width = "90%")
+# knitr::opts_chunk$set(out.width = "90%")
 
 # library(metathis)
 #
