@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Keith McNulty">
+
+<title>11&nbsp; Further Exercises for Practice – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./bibliography.html" rel="next">
+<link href="./power_tests.html" rel="prev">
+<link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-809cd4ad8465a863d451ae2f0a07b33b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./further.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Handbook of Regression Modeling in People Analytics (2nd edition)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./foreword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword by Alexis Fink</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Importance of Regression in People Analytics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basic_r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Basics of the R Programming Language</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./primer_stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Foundations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Regression for Continuous Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./binomial_logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Binomial Logistic Regression for Binary Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./multinomial_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Multinomial Logistic Regression for Nominal Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ordinal_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Odds Logistic Regression for Ordered Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./power_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./further.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#analyzing-graduate-salaries" id="toc-analyzing-graduate-salaries" class="nav-link active" data-scroll-target="#analyzing-graduate-salaries"><span class="header-section-number">11.1</span> Analyzing graduate salaries</a>
+  <ul class="collapse">
+  <li><a href="#the-graduates-data-set" id="toc-the-graduates-data-set" class="nav-link" data-scroll-target="#the-graduates-data-set"><span class="header-section-number">11.1.1</span> The <code>graduates</code> data set</a></li>
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">11.1.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">11.1.3</span> Data exercises</a></li>
+  </ul></li>
+  <li><a href="#analyzing-a-recruiting-process" id="toc-analyzing-a-recruiting-process" class="nav-link" data-scroll-target="#analyzing-a-recruiting-process"><span class="header-section-number">11.2</span> Analyzing a recruiting process</a>
+  <ul class="collapse">
+  <li><a href="#the-recruiting-data-set" id="toc-the-recruiting-data-set" class="nav-link" data-scroll-target="#the-recruiting-data-set"><span class="header-section-number">11.2.1</span> The <code>recruiting</code> data set</a></li>
+  <li><a href="#discussion-questions-1" id="toc-discussion-questions-1" class="nav-link" data-scroll-target="#discussion-questions-1"><span class="header-section-number">11.2.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises-1" id="toc-data-exercises-1" class="nav-link" data-scroll-target="#data-exercises-1"><span class="header-section-number">11.2.3</span> Data exercises</a></li>
+  </ul></li>
+  <li><a href="#analyzing-the-drivers-of-performance-ratings" id="toc-analyzing-the-drivers-of-performance-ratings" class="nav-link" data-scroll-target="#analyzing-the-drivers-of-performance-ratings"><span class="header-section-number">11.3</span> Analyzing the drivers of performance ratings</a>
+  <ul class="collapse">
+  <li><a href="#the-employee_performance-data-set" id="toc-the-employee_performance-data-set" class="nav-link" data-scroll-target="#the-employee_performance-data-set"><span class="header-section-number">11.3.1</span> The <code>employee_performance</code> data set</a></li>
+  <li><a href="#discussion-questions-2" id="toc-discussion-questions-2" class="nav-link" data-scroll-target="#discussion-questions-2"><span class="header-section-number">11.3.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises-2" id="toc-data-exercises-2" class="nav-link" data-scroll-target="#data-exercises-2"><span class="header-section-number">11.3.3</span> Data exercises</a></li>
+  </ul></li>
+  <li><a href="#analyzing-promotion-differences-between-groups" id="toc-analyzing-promotion-differences-between-groups" class="nav-link" data-scroll-target="#analyzing-promotion-differences-between-groups"><span class="header-section-number">11.4</span> Analyzing promotion differences between groups</a>
+  <ul class="collapse">
+  <li><a href="#the-promotion-data-set" id="toc-the-promotion-data-set" class="nav-link" data-scroll-target="#the-promotion-data-set"><span class="header-section-number">11.4.1</span> The <code>promotion</code> data set</a></li>
+  <li><a href="#discussion-questions-3" id="toc-discussion-questions-3" class="nav-link" data-scroll-target="#discussion-questions-3"><span class="header-section-number">11.4.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises-3" id="toc-data-exercises-3" class="nav-link" data-scroll-target="#data-exercises-3"><span class="header-section-number">11.4.3</span> Data exercises</a></li>
+  </ul></li>
+  <li><a href="#analyzing-feedback-on-learning-programs" id="toc-analyzing-feedback-on-learning-programs" class="nav-link" data-scroll-target="#analyzing-feedback-on-learning-programs"><span class="header-section-number">11.5</span> Analyzing feedback on learning programs</a>
+  <ul class="collapse">
+  <li><a href="#the-learning-data-set" id="toc-the-learning-data-set" class="nav-link" data-scroll-target="#the-learning-data-set"><span class="header-section-number">11.5.1</span> The <code>learning</code> data set</a></li>
+  <li><a href="#discussion-questions-4" id="toc-discussion-questions-4" class="nav-link" data-scroll-target="#discussion-questions-4"><span class="header-section-number">11.5.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises-4" id="toc-data-exercises-4" class="nav-link" data-scroll-target="#data-exercises-4"><span class="header-section-number">11.5.3</span> Data exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/further.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This final chapter contains a set of scenarios and exercises that will allow you to put into further practice some of the techniques you have learned in this book, and are supplementary to the exercises provided at the end of each of the earlier chapters. All the exercises are based on data that is available in the <code>peopleanalyticsdata</code> package in R, or alternatively can be downloaded from the internet. While the scenarios are fictitious, they are intended to represent typical questions and situations that arise when doing statistical modeling in people analytics.</p>
+<p>As you work through these scenarios, I encourage you to document your work using either an R Markdown document or a Jupyter Notebook if you prefer. This will help you keep a record of your method, approach and code in case you need to put it into practice again in the future. It will also make it easy for you to share your work with others (for example by putting it in a Github repository), which will allow you to collaborate, discuss and open your work to critique. If you are starting out on your analytics journey, exposing your work to others is one of the best ways to learn. If you are more experienced, then there are others that will undoubtedly benefit from seeing how you went about solving these problems.</p>
+<section id="analyzing-graduate-salaries" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="analyzing-graduate-salaries"><span class="header-section-number">11.1</span> Analyzing graduate salaries</h2>
+<p>Graduate salary levels are important economic indicators of the value of tertiary education. They can provide important insight about the value of education to employers or to the economy as a whole. When studied in detail they can highlight which particular disciplines have higher or lower levels of demand for graduates, and they can be important factors in determining what subjects or majors students choose to specialize in.</p>
+<p>Government agencies and educational institutions will analyze graduate salaries regularly to help critique or validate policy or strategy. Employers will also regularly study publicly available graduate salary information to help them benchmark their compensation and benefits against the external market for graduates.</p>
+<section id="the-graduates-data-set" class="level3" data-number="11.1.1">
+<h3 data-number="11.1.1" class="anchored" data-anchor-id="the-graduates-data-set"><span class="header-section-number">11.1.1</span> The <code>graduates</code> data set</h3>
+<p>The <code>graduates</code> data set contains information on graduates currently in the United States across 173 specific subject majors grouped into 16 disciplines of study. This data set is sourced from the <em>FiveThirtyEight</em> data repository<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Load the <code>graduates</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The fields in the <code>graduate</code> data set are as follows:</p>
+<ul>
+<li><code>Major</code> is the specific subject major.</li>
+<li><code>Discipline</code> is the broad subject discipline.</li>
+<li><code>Total</code> is the number of graduates of working age in the US.</li>
+<li><code>Unemployment_rate</code> is the proportion of graduates currently unemployed.</li>
+<li><code>Median_salary</code> is the current median salary of those employed in US dollars.</li>
+</ul>
+</section>
+<section id="discussion-questions" class="level3" data-number="11.1.2">
+<h3 data-number="11.1.2" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">11.1.2</span> Discussion questions</h3>
+<ol type="1">
+<li>What kind of outcome is the <code>Median_salary</code> column?</li>
+<li>Which of the variables in the data set would you be interested in using to explain the <code>Median_salary</code> outcome? Why?</li>
+<li>Are there any transformations you would consider on any of the input variables to help with interpreting the model?</li>
+<li>What type of model would you use to try to explain the <code>Median_salary</code> outcome using these variables?</li>
+<li>Describe the data type of each of the input variables. How would you interpret the coefficients of the model for each of these data types?</li>
+</ol>
+</section>
+<section id="data-exercises" class="level3" data-number="11.1.3">
+<h3 data-number="11.1.3" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">11.1.3</span> Data exercises</h3>
+<ol type="1">
+<li>Perform an exploratory data analysis on the data set. Do you see any interesting patterns?</li>
+<li>Conduct appropriate hypothesis tests on any of the input variables that interest you to determine if they relate to statistically significant differences in the <code>Median_salary</code> outcome.</li>
+<li>If you wish to, perform transformations on the data to help with the interpretation of model results. For example, are the numerical scales intuitive for interpretation?</li>
+<li>Run an appropriate multivariate model to determine which input variables have a significant effect on median graduate salary.</li>
+<li>Articulate the results of your model, including an estimate of the effect of the input variables and the overall fit and goodness-of-fit of the model.</li>
+</ol>
+</section>
+</section>
+<section id="analyzing-a-recruiting-process" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="analyzing-a-recruiting-process"><span class="header-section-number">11.2</span> Analyzing a recruiting process</h2>
+<p>Organizations are often very interested in analyzing data from recruiting processes, usually with a couple of goals in mind. Firstly, there is an interest in whether the process is efficient and effective. Secondly, there is an interest in whether the process is fair to different groups and a foundation for the recruiting of a sufficiently diverse set of employees.</p>
+<p>The efficiency and effectiveness of a recruiting process can depend heavily on how it is organized, what methods are used and whether those methods are helpful in determining hiring decisions. Statistics from individual elements of the process such as interviews or assessments are often studied. Models can be built to determine which elements influence the decision to hire or not to hire. In an ideal world, some sort of future job performance outcome would be particularly useful in studying the efficiency and effectiveness of a recruiting process, but often this is a very difficult thing to do, especially if the process is very selective. Hiring only a small proportion of applicants usually results in a statistical phenomenon known as <em>range restriction</em>, where the statistics of those hired fall in a very narrow range that makes useful analysis extremely challenging. For this reason, many organizations focus primarily on the final hiring decision as an outcome of interest.</p>
+<p>Understanding fairness in a recruiting process usually involves studying how the statistics of that process differ between subgroups of interest and whether any of the differences are significant enough to infer potential bias. Understanding whether these differences are attributable to a particular element of the process, whether it be a test or the rating behaviors of interviewers, is also important in determining whether specific action can be taken to remedy the situation.</p>
+<section id="the-recruiting-data-set" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="the-recruiting-data-set"><span class="header-section-number">11.2.1</span> The <code>recruiting</code> data set</h3>
+<p>The <code>recruiting</code> data set contains information on 966 applicants who went through the final stages of a recruiting process for graduate positions at a large international financial services company. The recruiting process operates as follows:</p>
+<ol type="1">
+<li>Applications are screened according to a number of criteria, including their SAT scores and their undergraduate GPA as well as an online aptitude test they are requested to take and numerous other judgments made by the individuals screening the applications.</li>
+<li>Applicants who pass the screening stage are invited for three interviews, two of them with line managers and a third with a human resources professional. Different line managers or HR professionals conduct the interviews on different interview days. Each interviewer independently gives an applicant a score on a Likert scale of 1–5 indicating increasing positive sentiment.</li>
+<li>Interviewers and human resources professionals gather to discuss each case and make a final decision on whether to hire or not to hire. All the information used in screening and evaluating applicants is made available to decision makers during this discussion.</li>
+</ol>
+<p>Load the <code>recruiting</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. The fields in the <code>recruiting</code> data set are as follows:</p>
+<ul>
+<li><code>gender</code> is the gender of the applicant.</li>
+<li><code>sat</code> is the SAT score of the applicant.</li>
+<li><code>gpa</code> is the Undergraduate GPA of the applicant.</li>
+<li><code>apttest</code> is the score on the aptitude test given to the applicant.</li>
+<li><code>int1</code> is the rating of the first line manager interviewer.</li>
+<li><code>int2</code> is the rating of the second line manager interviewer.</li>
+<li><code>int3</code> is the rating of the human resources interviewer.</li>
+<li><code>hired</code> is a binary indicator of whether a decision was made to hire the applicant.</li>
+</ul>
+</section>
+<section id="discussion-questions-1" class="level3" data-number="11.2.2">
+<h3 data-number="11.2.2" class="anchored" data-anchor-id="discussion-questions-1"><span class="header-section-number">11.2.2</span> Discussion questions</h3>
+<ol type="1">
+<li>Considering the way the recruiting process works, what kinds of inferential analysis or modeling would you be interested in applying to help understand its efficiency and effectiveness?</li>
+<li>What kind of model is most appropriate for explaining the <code>hired</code> outcome?</li>
+<li>One of your stakeholders is suggesting that the aptitude test is a waste of time and that the information it provides can already be gleaned from the applicants’ SAT scores and GPA. What kind of statistical analysis or model would help you confirm or reject this?</li>
+<li>Do you think that collinearity might pose a risk in this data? If so, what variables would concern you?</li>
+<li>What kind of hypothesis test would you use to determine if the hiring outcome may be different by gender?</li>
+<li>What kind of hypothesis test would you use to determine if the aptitude test score may be different by gender?</li>
+<li>How would you go about determining if any gender difference in the hiring outcome can be attributed to a specific part of the process?</li>
+</ol>
+</section>
+<section id="data-exercises-1" class="level3" data-number="11.2.3">
+<h3 data-number="11.2.3" class="anchored" data-anchor-id="data-exercises-1"><span class="header-section-number">11.2.3</span> Data exercises</h3>
+<ol type="1">
+<li>Perform an exploratory data analysis on the <code>recruiting</code> data set. Be sure to convert data to the best type for your purposes.</li>
+<li>Develop a model to test how the aptitude test results are explained by an applicant’s SAT and GPA. What can you conclude from this? Have you considered possible collinearity in this model?</li>
+<li>Develop a model to explain how all the inputs in the hiring decision (interview ratings, aptitude test, SAT and GPA) influence the hiring decision. Reduce this to the most parsimonious model you are comfortable with. What can you conclude from this model about the role of the different elements of the recruiting process in the final hiring decision?</li>
+<li>Test whether there is a statistically significant difference in the hiring outcome for males versus females.</li>
+<li>By adding gender into your model from Data Exercise 3, determine what element or elements of the recruiting process may be related to any differences in gender in the hiring outcome.</li>
+</ol>
+</section>
+</section>
+<section id="analyzing-the-drivers-of-performance-ratings" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="analyzing-the-drivers-of-performance-ratings"><span class="header-section-number">11.3</span> Analyzing the drivers of performance ratings</h2>
+<p>In many organizations and for many job types, promotion and performance ratings are the primary indicators of the success of employees. However, promotion is not always available to employees and can be very dependent on role and timing. Since performance ratings are usually generated on a regular basis, it is usually these that garner the most attention in the analysis of success.</p>
+<p>However, performance ratings are not perfect indicators of reality. They are usually the result of some judgment from one or more evaluators. Part of that judgment will be informed by data and part will be informed by contextual considerations or personal preferences outside of the data. Therefore it is frequently of interest to analyze performance ratings as the outcome of a decision making process. Such analysis can inform us as to what parts of the evaluation process are operating as intended and what parts are not. Multivariate models around performance can help us understand the degree to which the evaluation process is data driven, the degree to which unfairness might exist in some evaluation decisions and what might be the source of that unfairness.</p>
+<section id="the-employee_performance-data-set" class="level3" data-number="11.3.1">
+<h3 data-number="11.3.1" class="anchored" data-anchor-id="the-employee_performance-data-set"><span class="header-section-number">11.3.1</span> The <code>employee_performance</code> data set</h3>
+<p>The <code>employee_performance</code> data set contains data on the most recent performance evaluations of 366 salespeople in a technology company. Each employee is evaluated by their manager, who considers certain performance indicators together with their own judgment and awards a performance rating from 1 to 3, where 1 means ‘Needs improvement’, 2 means ‘Performing well’ and 3 means ‘Outstanding’.</p>
+<p>Load the <code>employee_performance</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. The fields in the <code>employee_performance</code> data set are as follows:</p>
+<ul>
+<li><code>sales</code>: The sales in millions of dollars made by the salesperson during the evaluation period</li>
+<li><code>new_customers</code>: The number of new customers acquired by the salesperson during the evaluation period</li>
+<li><code>region</code>: The region that the salesperson operates in: North, South, East or West</li>
+<li><code>gender</code>: The gender of the salesperson</li>
+<li><code>rating</code>: The performance rating awarded by the manager</li>
+</ul>
+</section>
+<section id="discussion-questions-2" class="level3" data-number="11.3.2">
+<h3 data-number="11.3.2" class="anchored" data-anchor-id="discussion-questions-2"><span class="header-section-number">11.3.2</span> Discussion questions</h3>
+<ol type="1">
+<li>What hypothesis test should be used to determine if there is a significant relationship between sales and performance rating?</li>
+<li>What hypothesis test should be used to determine if there is a similar distribution of performance ratings between the four regions?</li>
+<li>What type of an outcome is the performance rating? What kind of model is appropriate for explaining what influences performance ratings?</li>
+<li>Which input variables would you want to be significant and which would you want to be insignificant in your model in order to support an argument that the evaluation process is fair and relevant to the job?</li>
+<li>What assumptions would you need to check after you have run your model to have confidence that you can trust your inferences?</li>
+</ol>
+</section>
+<section id="data-exercises-2" class="level3" data-number="11.3.3">
+<h3 data-number="11.3.3" class="anchored" data-anchor-id="data-exercises-2"><span class="header-section-number">11.3.3</span> Data exercises</h3>
+<ol type="1">
+<li>Run separate and appropriate hypothesis tests on each of the input variables to determine if they have a significant effect on the performance outcome.</li>
+<li>Prepare your data for running an appropriate multivariate model to explain the performance outcome. Be sure to convert to appropriate data types.</li>
+<li>Run an appropriate multivariate model to explain the performance outcome. Report on which variables are significant and estimate the effects of the significant variables.</li>
+<li>Determine and comment on the overall fit and goodness-of-fit of your model. Use this to make a comment on how ‘data driven’ you believe the evaluation process to be.</li>
+<li>Perform appropriate checks on the assumptions of your model. What approach might you take if any of these tests fail?</li>
+</ol>
+</section>
+</section>
+<section id="analyzing-promotion-differences-between-groups" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="analyzing-promotion-differences-between-groups"><span class="header-section-number">11.4</span> Analyzing promotion differences between groups</h2>
+<p>As mentioned in the previous section, promotion is a more challenging outcome to analyze because it can happen at different times for different people or groups. Nevertheless, over certain time periods—usually several years—organizations will be interested in understanding what affects the likelihood of promotion among their employees.</p>
+<p>It is particularly interesting to compare subgroups of employees that have common characteristics to see if there is a difference in their likelihood of promotion over a specified time period. This is highly analogous to the study of retention or attrition in that promotion can be considered a singular event that can happen to different individuals at different points in time. Like retention or attrition, we are not only interested in whether this event occurred as at the end of a period of time, we are also interested in when it occurred throughout the period.</p>
+<section id="the-promotion-data-set" class="level3" data-number="11.4.1">
+<h3 data-number="11.4.1" class="anchored" data-anchor-id="the-promotion-data-set"><span class="header-section-number">11.4.1</span> The <code>promotion</code> data set</h3>
+<p>The <code>promotion</code> data set contains data on 1134 individuals who joined a retailer in an entry-level job, and tracks them for up to eight subsequent years post joining. For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0. Once promotion occurs, an individual is no longer tracked. If an individual was not promoted, then the year in which the last record occurred is captured.</p>
+<p>Load the <code>promotion</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. The fields in the data are as follows:</p>
+<ul>
+<li><code>diverse</code> indicates whether or not the individual is a member of one of the organization’s diversity programs.</li>
+<li><code>flexible</code> indicates whether the individual worked on a part-time program for at least 6 months.</li>
+<li><code>store</code> indicates if the individual joined the company in a retail store position.</li>
+<li><code>promoted</code> indicates whether the individual was promoted.</li>
+<li><code>year</code> indicates the year in which the last record was made of the individual.</li>
+</ul>
+</section>
+<section id="discussion-questions-3" class="level3" data-number="11.4.2">
+<h3 data-number="11.4.2" class="anchored" data-anchor-id="discussion-questions-3"><span class="header-section-number">11.4.2</span> Discussion questions</h3>
+<ol type="1">
+<li>What type of analysis is most appropriate to understand if there is a difference in promotion likelihood for employees who are on flexible hours, in diversity programs or who work in-store?</li>
+<li>What type of illustration would you use to show whether each of these three factors individually have an effect on promotion likelihood?</li>
+<li>What type of model would be most appropriate to determine the combined effects of all of these factors on promotion likelihood?</li>
+<li>How would you go about determining whether any differences in promotion likelihood in a given group (such as the flexible working group) is mediated by membership of another group?</li>
+<li>What assumptions would you need to check to validate that your analysis is trustworthy?</li>
+</ol>
+</section>
+<section id="data-exercises-3" class="level3" data-number="11.4.3">
+<h3 data-number="11.4.3" class="anchored" data-anchor-id="data-exercises-3"><span class="header-section-number">11.4.3</span> Data exercises</h3>
+<ol type="1">
+<li>Run an exploratory data analysis to understand any general patterns of interest in the data.</li>
+<li>Perform an analysis and generate an appropriate graph to illustrate the impact of flexible working on the likelihood of promotion. Determine if there is a statistically significant effect.</li>
+<li>Repeat this analysis to determine the impact of diversity program membership.</li>
+<li>Run an appropriate multivariate model to determine how all three variables of flexible working, diversity and in-store working affect the likelihood of promotion. Remember to check the assumptions of your model.</li>
+<li>How would you explain your conclusions? Are there any corrective actions that this analysis might point to?</li>
+</ol>
+</section>
+</section>
+<section id="analyzing-feedback-on-learning-programs" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="analyzing-feedback-on-learning-programs"><span class="header-section-number">11.5</span> Analyzing feedback on learning programs</h2>
+<p>Assessing the effectiveness of learning programs remains one of the most challenging problems in people analytics. As with many challenging analytics problems, measurement is the key issue. It is exceptionally difficult to track and measure the impact of learning on the future day-to-day success of the individuals who have had access to it. While it makes sense to try to understand the influence of learning on important outcomes like employment, promotion or attrition, these outcomes can often be too distant, too generic in nature and too influenced by context and other factors to expect specific learning participation to show any meaningful influence on them.</p>
+<p>Because of the challenges in objectively measuring the impact of learning, analysts often rely on the reaction and feedback of learning participants as an important measure of the success of learning programs. If the content of the program is known to be important to future work and related to future success, and if the participants report that the program was effective for them, then this can create a compelling argument for the success of the program.</p>
+<section id="the-learning-data-set" class="level3" data-number="11.5.1">
+<h3 data-number="11.5.1" class="anchored" data-anchor-id="the-learning-data-set"><span class="header-section-number">11.5.1</span> The <code>learning</code> data set</h3>
+<p>The <code>learning</code> data set contains 4974 instances of feedback from 326 different participants in a range of learning programs offered by an executive education provider. Each row of data represents the feedback of a specific participant on a specific program that they participated in. Participants were not required to respond to all feedback questions and any question where no response was given is indicated as <code>NA</code>.</p>
+<p>Load the <code>learning</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. The fields in the <code>learning</code> data set are as follows:</p>
+<ul>
+<li><code>idcode</code> is the unique ID of the participant.</li>
+<li><code>rec</code> is a binary value indicating whether the participant would recommend the program to others.</li>
+<li><code>rel</code> is a rating from the participant on the relevance of the program to their work, where 1 is Very Low and 5 is Very High.</li>
+<li><code>fun</code> is a rating on how enjoyable and fun the participant found the program, where 1 is Very Low and 5 is Very High</li>
+<li><code>clar</code> is a rating from the participant on the clarity of the content and teaching in the program, where 1 is Very Low and 5 is Very High.</li>
+<li><code>home</code> is a rating from the participant on the quality of the homework or project work in the program, where 1 is Very Low and 5 is Very High.</li>
+<li><code>class</code> is a rating from the participant on the quality of the overall class who attended the program, where 1 is Very Low and 5 is Very High.</li>
+<li><code>fac</code> is a rating from the participant on the quality of the program faculty and instructors, where 1 is Very Low and 5 is Very High.</li>
+</ul>
+</section>
+<section id="discussion-questions-4" class="level3" data-number="11.5.2">
+<h3 data-number="11.5.2" class="anchored" data-anchor-id="discussion-questions-4"><span class="header-section-number">11.5.2</span> Discussion questions</h3>
+<ol type="1">
+<li>What kind of outcome is the <code>rec</code> column and which kind of model best suits this outcome type?</li>
+<li>Describe the nature of the hierarchy in this data set.</li>
+<li>Describe what question we would be answering if we ignored the hierarchy in modeling what influences <code>rec</code>.</li>
+<li>Describe what question we would be answering if we considered the hierarchy in modeling what influences <code>rec</code>.</li>
+<li>What kind of model would you use to explicitly consider this hierarchy in modeling what influences <code>rec</code>? What kinds of parameters would you experiment with in running this model?</li>
+<li>Describe what you would expect to see in the output of a model that considered the hierarchy in modeling what influences <code>rec</code>.</li>
+</ol>
+</section>
+<section id="data-exercises-4" class="level3" data-number="11.5.3">
+<h3 data-number="11.5.3" class="anchored" data-anchor-id="data-exercises-4"><span class="header-section-number">11.5.3</span> Data exercises</h3>
+<ol type="1">
+<li>Prepare and run a model to determine which elements of feedback influence whether or not the program will be recommended to others.</li>
+<li>Prepare and run a separate model to determine which elements of feedback <em>influence a participant</em> in deciding if they would recommend a program to others.</li>
+<li>Experiment with the model from Data Exercise 2 by adjusting which parameters you model at the participant level.</li>
+<li>Describe the different outputs of your models from Data Exercises 2 and 3 and how to interpret them.</li>
+<li>Compare the outputs of your models from Data Exercises 2 and 3 to those from Data Exercise 1. How might your conclusions differ between the two modeling approaches?</li>
+</ol>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>https://github.com/fivethirtyeight/data<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>http://peopleanalytics-regression-book.org/data/graduates.csv<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>http://peopleanalytics-regression-book.org/data/recruiting.csv<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>http://peopleanalytics-regression-book.org/data/employee_performance.csv<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>http://peopleanalytics-regression-book.org/data/promotion.csv<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>http://peopleanalytics-regression-book.org/data/learning.csv<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book-2nd-edition\.org\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./power_tests.html" class="pagination-link" aria-label="Power Analysis to Estimate Required Sample Sizes for Modeling">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./bibliography.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Handbook of Regression Modeling in People Analytics (2nd ed.) was written by Keith McNulty.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/further.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

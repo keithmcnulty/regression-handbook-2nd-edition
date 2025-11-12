@@ -1,10 +1,5 @@
 # Welcome {.unnumbered}
 
-```{r}
-#| echo: false
-source("_common.R")
-```
-
 Welcome to the website for the book *Handbook of Regression Modeling in People Analytics (2nd Edition)* by [Keith McNulty](https://www.linkedin.com/in/keith-mcnulty/).  
 
 This new edition is to be published by Chapman & Hall/CRC Press in 2026.   The online version of this book is free to read here (thanks to Chapman & Hall/CRC Press), and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). If you have any feedback, please feel free to [file an issue on GitHub](https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues). Thank you!

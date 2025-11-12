@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>References – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,42 +21,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
 }
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
 }
-</style>
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -66,7 +50,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./foreword.html" rel="next">
+<link href="./further.html" rel="prev">
 <link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -118,7 +102,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Welcome</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bibliography.html">References</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -153,7 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
   </div>
 </li>
@@ -237,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./bibliography.html" class="sidebar-item-text sidebar-link">
+  <a href="./bibliography.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -246,25 +230,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a>
-  <ul class="collapse">
-  <li><a href="#notes-on-data-used-in-this-book" id="toc-notes-on-data-used-in-this-book" class="nav-link" data-scroll-target="#notes-on-data-used-in-this-book">Notes on data used in this book</a></li>
-  </ul></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Handbook of Regression Modeling in People Analytics (2nd edition)</h1>
-<p class="subtitle lead">With Examples in R and Python</p>
+<h1 class="title">References</h1>
 </div>
 
 
@@ -281,46 +255,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-
-<section id="welcome" class="level1 unnumbered">
-<h1 class="unnumbered">Welcome</h1><p><img src="www/cover/coverpage.png" title="Handbook of Regression Modeling in People Analytics (2nd edition)" class="quarto-cover-image nolightbox img-fluid"></p>
-<p>Welcome to the website for the book <em>Handbook of Regression Modeling in People Analytics (2nd Edition)</em> by <a href="https://www.linkedin.com/in/keith-mcnulty/">Keith McNulty</a>.</p>
-<p>This new edition is to be published by Chapman &amp; Hall/CRC Press in 2026. The online version of this book is free to read here (thanks to Chapman &amp; Hall/CRC Press), and licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. If you have any feedback, please feel free to <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues">file an issue on GitHub</a>. Thank you!</p>
-<section id="notes-on-data-used-in-this-book" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="notes-on-data-used-in-this-book">Notes on data used in this book</h2>
-<p>Each of the data sets used in this book can be downloaded individually by following the code in each chapter. Alternatively, packages containing all the data sets used in this book are now available in R and Python. For R users, install and load the <code>peopleanalyticsdata</code> R package.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install peopleanalyticsdata package</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"peopleanalyticsdata"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(peopleanalyticsdata)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see a list of data sets</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package =</span> <span class="st">"peopleanalyticsdata"</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># find out more about a specific data set ('managers' example)</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(managers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-agresti" class="csl-entry" role="listitem">
+Agresti, Alan. 2007. <em>An Introduction to Categorical Data
+Analysis</em>.
 </div>
-<p>For Python users , use <code>pip install peopleanalyticsdata</code> to install the package into your environment. Then, to use the package:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import peopleanalyticsdata package</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> peopleanalyticsdata <span class="im">as</span> pad</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see a list of data sets</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>pad.list_sets()</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># load data into a dataframe</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pad.managers()</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># find out more about a specific data set ('managers' example)</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>pad.managers().info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ref-ordinal" class="csl-entry" role="listitem">
+———. 2010. <em>Analysis of Ordinal Categorical Data</em>.
 </div>
-<p>Happy modeling!</p>
-<p><em>Last update: 12 November 2025</em></p>
+<div id="ref-bartholomew" class="csl-entry" role="listitem">
+Bartholomew, David J., Martin Knott, and Irini Moustaki. 2011.
+<em>Latent Variable Models and Factor Analysis: A Unified Approach</em>.
+</div>
+<div id="ref-bhattacharya" class="csl-entry" role="listitem">
+Bhattacharya, P. K., and Prabir Burman. 2016. <em>Theory and Methods of
+Statistics</em>.
+</div>
+<div id="ref-collett" class="csl-entry" role="listitem">
+Collett, David. 2015. <em>Modelling Survival Data in Medical
+Research</em>.
+</div>
+<div id="ref-demidenko" class="csl-entry" role="listitem">
+Demidenko, Eugene. 2007. <span>“Sample Size Determination for Logistic
+Regression Revisited.”</span> <em>Statistics in Medicine</em>.
+</div>
+<div id="ref-fagerland-hosmer" class="csl-entry" role="listitem">
+Fagerland, Morten W., and David W. Hosmer. 2017. <span>“How to Test for
+Goodness of Fit in Ordinal Logistic Regression Models.”</span> <em>The
+Stata Journal</em>.
+</div>
+<div id="ref-fagerland" class="csl-entry" role="listitem">
+Fagerland, Morten W., David W. Hosmer, and Anna M. Bofin. 2008.
+<span>“Multinomial Goodness‐of‐fit Tests for Logistic Regression
+Models.”</span> <em>Statistics in Medicine</em>.
+</div>
+<div id="ref-hosmer-logistic" class="csl-entry" role="listitem">
+Hosmer, David W., Stanley Lemeshow, and Rodney X. Sturdivant. 2013.
+<em>Applied Logistic Regression</em>.
+</div>
+<div id="ref-jiang" class="csl-entry" role="listitem">
+Jiang, Jiming. 2007. <em>Linear and Generalized Linear Mixed Models and
+Their Applications</em>.
+</div>
+<div id="ref-lumley" class="csl-entry" role="listitem">
+Lumley, T., P. Diehr, S. Emerson, and L. Chen. 2002. <span>“The
+Importance of the Normality Assumption in Large Public Health Data
+Sets.”</span> <em>Annu Rev Public Health</em>.
+</div>
+<div id="ref-menard" class="csl-entry" role="listitem">
+Menard, Scott. 2010. <em>Logistic Regression: From Introductory to
+Advanced Concepts and Applications</em>.
+</div>
+<div id="ref-linear" class="csl-entry" role="listitem">
+Montgomery, Douglas C., Elizabeth A. Peck, and G. Geoffrey Vining. 2012.
+<em>Introduction to Linear Regression Analysis</em>.
+</div>
+<div id="ref-rao" class="csl-entry" role="listitem">
+Rao, C. Radhakrishna, Shalabh, Helge Toutenburg, and Christian Heumann.
+2008. <em>The Multiple Linear Regression Model and Its Extensions</em>.
+</div>
+<div id="ref-senn" class="csl-entry" role="listitem">
+Senn, Stephen. 2011. <span>“Francis Galton and Regression to the
+Mean.”</span> <em>Significance</em>.
+</div>
+<div id="ref-skrondal" class="csl-entry" role="listitem">
+Skrondal, Anders, and Sophia Rabe-Hesketh. 2004. <em>Generalized Latent
+Variable Modeling: Multilevel, Longitudinal, and Structural Equation
+Models</em>.
+</div>
+<div id="ref-ripley" class="csl-entry" role="listitem">
+Venables, W. N., and B. D. Ripley. 2002. <em>Modern Applied Statistics
+with s</em>.
+</div>
+<div id="ref-ggplot2" class="csl-entry" role="listitem">
+Wickham, Hadley. 2016. <em><span class="nocase">ggplot2</span>: Elegant
+Graphics for Data Analysis</em>. <a href="https://ggplot2-book.org/">https://ggplot2-book.org/</a>.
+</div>
+<div id="ref-wickham" class="csl-entry" role="listitem">
+Wickham, Hadley, and Garrett Grolemund. 2016. <em>R for Data
+Science</em>. <a href="https://r4ds.had.co.nz/">https://r4ds.had.co.nz/</a>.
+</div>
+</div>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -724,11 +741,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./further.html" class="pagination-link" aria-label="Further Exercises for Practice">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./foreword.html" class="pagination-link" aria-label="Foreword by Alexis Fink">
-        <span class="nav-page-text">Foreword by Alexis Fink</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -739,7 +756,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/bibliography.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>Introduction – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,41 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -66,7 +31,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./foreword.html" rel="next">
+<link href="./importance.html" rel="next">
+<link href="./foreword.html" rel="prev">
 <link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -118,7 +84,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Welcome</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introduction.html">Introduction</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -153,7 +119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
   </div>
 </li>
@@ -165,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introduction.html" class="sidebar-item-text sidebar-link">
+  <a href="./introduction.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
@@ -246,25 +212,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a>
-  <ul class="collapse">
-  <li><a href="#notes-on-data-used-in-this-book" id="toc-notes-on-data-used-in-this-book" class="nav-link" data-scroll-target="#notes-on-data-used-in-this-book">Notes on data used in this book</a></li>
-  </ul></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Handbook of Regression Modeling in People Analytics (2nd edition)</h1>
-<p class="subtitle lead">With Examples in R and Python</p>
+<h1 class="title">Introduction</h1>
 </div>
 
 
@@ -281,46 +237,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-
-<section id="welcome" class="level1 unnumbered">
-<h1 class="unnumbered">Welcome</h1><p><img src="www/cover/coverpage.png" title="Handbook of Regression Modeling in People Analytics (2nd edition)" class="quarto-cover-image nolightbox img-fluid"></p>
-<p>Welcome to the website for the book <em>Handbook of Regression Modeling in People Analytics (2nd Edition)</em> by <a href="https://www.linkedin.com/in/keith-mcnulty/">Keith McNulty</a>.</p>
-<p>This new edition is to be published by Chapman &amp; Hall/CRC Press in 2026. The online version of this book is free to read here (thanks to Chapman &amp; Hall/CRC Press), and licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. If you have any feedback, please feel free to <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues">file an issue on GitHub</a>. Thank you!</p>
-<section id="notes-on-data-used-in-this-book" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="notes-on-data-used-in-this-book">Notes on data used in this book</h2>
-<p>Each of the data sets used in this book can be downloaded individually by following the code in each chapter. Alternatively, packages containing all the data sets used in this book are now available in R and Python. For R users, install and load the <code>peopleanalyticsdata</code> R package.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install peopleanalyticsdata package</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"peopleanalyticsdata"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(peopleanalyticsdata)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see a list of data sets</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package =</span> <span class="st">"peopleanalyticsdata"</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># find out more about a specific data set ('managers' example)</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(managers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>For Python users , use <code>pip install peopleanalyticsdata</code> to install the package into your environment. Then, to use the package:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import peopleanalyticsdata package</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> peopleanalyticsdata <span class="im">as</span> pad</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see a list of data sets</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>pad.list_sets()</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># load data into a dataframe</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pad.managers()</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># find out more about a specific data set ('managers' example)</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>pad.managers().info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Happy modeling!</p>
-<p><em>Last update: 12 November 2025</em></p>
+<p><em>This is the original introduction to the 1st edition of the book. It will be revised prior to the finalization of the 2nd edition.</em></p>
+<p>As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term. I would never take another. I struggled with the subject, scored my lowest grade in it and swore I would never go anywhere near it again.</p>
+<p>How wrong I was. Today I live and breathe statistics. How did that happen?</p>
+<p>Firstly, statistics is about solving real-world problems, and amazingly there was not a single mention of a relatable problem from real life in that course I took all those years ago, just abstract mathematics. Nowadays, I know from my work and my personal learning activities that the mathematics has no meaning without a motivating problem to apply it to, and you’ll see example problems all through this book.</p>
+<p>Secondly, statistics is all about data, and working with real data has encouraged me to reengage with statistics and come at it from a different angle—bottom-up you could say. Suddenly all those concepts that were put up on whiteboards using abstract formulas now had real meaning and consequence to the data I was working with. For me, real data helps statistical theory come to life, and this book is supported by numerous data sets designed for the reader to engage with.</p>
+<p>But one more step solidified my newfound love of statistics, and that was when I put regression modeling into practice. Faced with data sets that I initially believed were just far too messy and random to be able to produce genuine insights, I progressively became more and more fascinated by how regression can cut through the messiness, compartmentalize the randomness and lead you straight to inferences that are often surprising both in their clarity and in their conclusions.</p>
+<p>Hence my motivation for writing this book, which is to give others—whether working in people analytics or otherwise—a starting point for a practical learning of regression methods, with the hope that they will see immediate applications to their work and take advantage of a much-underused toolkit that provides strong support for evidence-based practice.</p>
+<p>I am a mathematician who is now a practitioner of analytics. For this reason you should see that this book is neither afraid of nor obsessed with the mathematics of the methodologies covered. It is my general observation that many students and practitioners make the mistake of trying to run multivariate models without even a basic understanding of the underlying mathematics of those models, and I find it very difficult to see how they can be credible in responding to a wide range of questions or critique about their work without such an understanding. That said, it is also not necessary for students and practitioners to understand the deepest levels of theory in order to be fluent in running and interpreting multivariate models. In this book I have tried to limit the mathematical exposition to a level that allows confident and fluent execution and interpretation.</p>
+<p>I subscribe strongly to the principles of open source sharing of knowledge. If you want to reference the material in this book or use the exercises or data sets in trainings or classes, you are free to do so and you do not need to request my permission. I only ask that you make reference to this book as the source.</p>
+<p>I expect this book to improve over time. If you found this book or any part of it helpful to solving a problem, I’d love to hear about it. If you have comments to improve or question any aspect of the contents of this book I encourage you to <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book/issues">leave an issue</a> on its Github repository. This is the most reliable way for me to see your comment. I promise to consider all comments and input, but I do have to make a personal judgment about whether they are helpful to the aims and purpose of this book. If I do make changes or additions based on your input I will make a point to acknowledge your contribution<code>r if (knitr::is_latex_output()) ' in future editions'</code>.</p>
+<p>I would like to thank the following individuals who have reviewed or contributed to this book at some point during its development: <code>r if (knitr::is_html_output()) {"[Liz Romero](https://www.linkedin.com/in/liz-romero-664a6533/)"} else {"Liz Romero"}</code>, <code>r if (knitr::is_html_output()) {"[Alex LoPilato](https://www.linkedin.com/in/alexander-lopilato-0ba5a132/)"} else {"Alex LoPilato"}</code>, <code>r if (knitr::is_html_output()) {"[Kevin Jaggs](https://www.linkedin.com/in/kevin-jaggs-a2116b94/)"} else {"Kevin Jaggs"}</code>, <code>r if (knitr::is_html_output()) {"[Seth Saavedra](https://www.linkedin.com/in/sethsaavedra/)"} else {"Seth Saavedra"}</code>, <code>r if (knitr::is_html_output()) {"[Akshay Kotha](https://www.linkedin.com/in/akshaykotha/)"} else {"Akshay Kotha"}</code>. My sincere thanks to <code>r if (knitr::is_html_output()) {"[Alexis Fink](https://www.linkedin.com/in/alexisfink/)"} else {"Alexis Fink"}</code> for drawing on her years of people analytics experience to set the context for this book in her foreword. My thanks to the people analytics community for their constant encouragement and support in sharing theory, content and method, and to the R community for all the work they do in giving us amazing and constantly improving statistical tools to work with. Finally, I would like to thank my family for their patience and understanding on the evenings and weekends I dedicated to the writing of this book, and for tolerating far too much dinner conversation on the topic of statistics.</p>
+<p>Keith McNulty<br>
+December 2020</p>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -724,10 +655,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./foreword.html" class="pagination-link" aria-label="Foreword by Alexis Fink">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Foreword by Alexis Fink</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./foreword.html" class="pagination-link" aria-label="Foreword by Alexis Fink">
-        <span class="nav-page-text">Foreword by Alexis Fink</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./importance.html" class="pagination-link" aria-label="The Importance of Regression in People Analytics">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Importance of Regression in People Analytics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -739,7 +673,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/introduction.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

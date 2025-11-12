@@ -17,22 +17,27 @@ book:
     right: |
       This book was built with <a href="https://quarto.org/">Quarto</a>.
   cover-image: www/cover/coverpage.png
-  favicon: coverpage-og.png
+  favicon: www/cover/coverpage-og.png
   site-url: https://peopleanalytics-regression-book-2nd-edition.org/
   repo-url: https://github.com/keithmcnulty/regression-handbook-2nd-edition
   repo-branch: main
   repo-actions: [edit, issue]
   chapters:
     - index.qmd
-    - quarto/foreword.qmd
-    - quarto/introduction.qmd
-    - quarto/01-intro.qmd
-    - quarto/02-basic_r.qmd
-    - quarto/03-primer_stats.qmd
-    - quarto/04-linear_regression.qmd
-    - quarto/05-binomial_logistic_regression.qmd
-    - quarto/06-multinomial_regression.qmd
-    - quarto/07-ordinal_regression.qmd
+    - foreword.qmd
+    - introduction.qmd
+    - importance.qmd
+    - basic_r.qmd
+    - primer_stats.qmd
+    - linear_regression.qmd
+    - binomial_logistic_regression.qmd
+    - multinomial_regression.qmd
+    - ordinal_regression.qmd
+    - hierarchical_data.qmd
+    - survival_analysis.qmd
+    - power_tests.qmd
+    - further.qmd
+    - bibliography.qmd
 
 format:
   html:
@@ -44,6 +49,6 @@ format:
 
     author-meta: "Keith McNulty"
     callout-appearance: simple
-    bibliography: quarto/book.bib
+    bibliography: book.bib
 
 editor: source

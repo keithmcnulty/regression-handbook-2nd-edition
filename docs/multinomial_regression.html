@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Keith McNulty">
+
+<title>6&nbsp; Multinomial Logistic Regression for Nominal Category Outcomes – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ordinal_regression.html" rel="next">
+<link href="./binomial_logistic_regression.html" rel="prev">
+<link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-809cd4ad8465a863d451ae2f0a07b33b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./multinomial_regression.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Multinomial Logistic Regression for Nominal Category Outcomes</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Handbook of Regression Modeling in People Analytics (2nd edition)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./foreword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword by Alexis Fink</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Importance of Regression in People Analytics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basic_r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Basics of the R Programming Language</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./primer_stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Foundations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Regression for Continuous Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./binomial_logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Binomial Logistic Regression for Binary Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./multinomial_regression.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Multinomial Logistic Regression for Nominal Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ordinal_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Odds Logistic Regression for Ordered Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./power_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./further.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#when-to-use-it" id="toc-when-to-use-it" class="nav-link active" data-scroll-target="#when-to-use-it"><span class="header-section-number">6.1</span> When to use it</a>
+  <ul class="collapse">
+  <li><a href="#intuition-for-multinomial-logistic-regression" id="toc-intuition-for-multinomial-logistic-regression" class="nav-link" data-scroll-target="#intuition-for-multinomial-logistic-regression"><span class="header-section-number">6.1.1</span> Intuition for multinomial logistic regression</a></li>
+  <li><a href="#use-cases-for-multinomial-logistic-regression" id="toc-use-cases-for-multinomial-logistic-regression" class="nav-link" data-scroll-target="#use-cases-for-multinomial-logistic-regression"><span class="header-section-number">6.1.2</span> Use cases for multinomial logistic regression</a></li>
+  <li><a href="#walkthrough-example" id="toc-walkthrough-example" class="nav-link" data-scroll-target="#walkthrough-example"><span class="header-section-number">6.1.3</span> Walkthrough example</a></li>
+  </ul></li>
+  <li><a href="#sec-stratified" id="toc-sec-stratified" class="nav-link" data-scroll-target="#sec-stratified"><span class="header-section-number">6.2</span> Running stratified binomial models</a>
+  <ul class="collapse">
+  <li><a href="#modeling-the-choice-of-product-a-versus-other-products" id="toc-modeling-the-choice-of-product-a-versus-other-products" class="nav-link" data-scroll-target="#modeling-the-choice-of-product-a-versus-other-products"><span class="header-section-number">6.2.1</span> Modeling the choice of Product A versus other products</a></li>
+  <li><a href="#modeling-other-choices" id="toc-modeling-other-choices" class="nav-link" data-scroll-target="#modeling-other-choices"><span class="header-section-number">6.2.2</span> Modeling other choices</a></li>
+  </ul></li>
+  <li><a href="#running-a-multinomial-regression-model" id="toc-running-a-multinomial-regression-model" class="nav-link" data-scroll-target="#running-a-multinomial-regression-model"><span class="header-section-number">6.3</span> Running a multinomial regression model</a>
+  <ul class="collapse">
+  <li><a href="#sec-def-ref" id="toc-sec-def-ref" class="nav-link" data-scroll-target="#sec-def-ref"><span class="header-section-number">6.3.1</span> Defining a reference level and running the model</a></li>
+  <li><a href="#interpreting-the-model" id="toc-interpreting-the-model" class="nav-link" data-scroll-target="#interpreting-the-model"><span class="header-section-number">6.3.2</span> Interpreting the model</a></li>
+  <li><a href="#sec-changing-ref" id="toc-sec-changing-ref" class="nav-link" data-scroll-target="#sec-changing-ref"><span class="header-section-number">6.3.3</span> Changing the reference</a></li>
+  </ul></li>
+  <li><a href="#model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models" id="toc-model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models" class="nav-link" data-scroll-target="#model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models"><span class="header-section-number">6.4</span> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</a>
+  <ul class="collapse">
+  <li><a href="#sec-elim" id="toc-sec-elim" class="nav-link" data-scroll-target="#sec-elim"><span class="header-section-number">6.4.1</span> Gradual safe elimination of variables</a></li>
+  <li><a href="#model-fit-and-goodness-of-fit" id="toc-model-fit-and-goodness-of-fit" class="nav-link" data-scroll-target="#model-fit-and-goodness-of-fit"><span class="header-section-number">6.4.2</span> Model fit and goodness-of-fit</a></li>
+  </ul></li>
+  <li><a href="#multinomial-logistic-regression-using-python" id="toc-multinomial-logistic-regression-using-python" class="nav-link" data-scroll-target="#multinomial-logistic-regression-using-python"><span class="header-section-number">6.5</span> Multinomial logistic regression using Python</a></li>
+  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">6.6</span> Learning exercises</a>
+  <ul class="collapse">
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">6.6.1</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">6.6.2</span> Data exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/multinomial_regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-multinom" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Multinomial Logistic Regression for Nominal Category Outcomes</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function. In this chapter we look at how to extend this to the case when the outcome has a number of categories that do not have any order to them. When an outcome has this nominal categorical form, it does not have a sense of direction. There is no ‘better’ or ‘worse’‍, no ‘higher’ or ‘lower’‍, there is only ‘different’‍.</p>
+<section id="when-to-use-it" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="when-to-use-it"><span class="header-section-number">6.1</span> When to use it</h2>
+<section id="intuition-for-multinomial-logistic-regression" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="intuition-for-multinomial-logistic-regression"><span class="header-section-number">6.1.1</span> Intuition for multinomial logistic regression</h3>
+<p>A binary or dichotomous outcome like we studied in the previous chapter is already in fact a nominal outcome with two categories, so in principle we already have the basic technology with which to study this problem. That said, the way we approach the problem can differ according to the types of inferences we wish to make.</p>
+<p>If we only wish to make inferences about the choice of each specific category—what drives whether an observation is in Category A versus the others, or Category B versus the others—then we have the option of running separate binomial logistic regression models on a ‘one versus the rest’ basis. In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category. This could potentially lead to models being defined differently for different target outcome categories. Notably, there will be no common comparison category between these models. This is sometimes called a <em>stratified</em> approach.</p>
+<p>However, in many studies there is a need for a ‘reference’ category to better understand the relative odds of category membership. For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the ‘most healthy’ or ‘most recovered’ patients)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different; we would need to make decisions on refining the model differently, and we interpret the coefficients in a different way.</p>
+<p>In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach.</p>
+</section>
+<section id="use-cases-for-multinomial-logistic-regression" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="use-cases-for-multinomial-logistic-regression"><span class="header-section-number">6.1.2</span> Use cases for multinomial logistic regression</h3>
+<p>Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order. An underlying assumption is the independence of irrelevant alternatives (IIA). Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.</p>
+<p>Examples of typical situations that might be modeled by multinomial logistic regression include:</p>
+<ol type="1">
+<li>Modeling voting choice in elections with multiple candidates</li>
+<li>Modeling choice of career options by students</li>
+<li>Modeling choice of benefit options by employees</li>
+</ol>
+</section>
+<section id="walkthrough-example" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="walkthrough-example"><span class="header-section-number">6.1.3</span> Walkthrough example</h3>
+<p>You are an analyst at a large technology company. The company recently introduced a new health insurance provider for its employees. At the beginning of the year the employees had to choose one of three different health plan products from this provider to best suit their needs. You have been asked to determine which factors influenced the choice in product.</p>
+<p>The <code>health_insurance</code> data set consists of the following fields:</p>
+<ul>
+<li><code>product</code>: The choice of product of the individual—A, B or C</li>
+<li><code>age</code>: The age of the individual when they made the choice</li>
+<li><code>gender</code>: The gender of the individual as stated when they made the choice</li>
+<li><code>household</code>: The number of people living with the individual in the same household at the time of the choice</li>
+<li><code>position_level</code>: Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest</li>
+<li><code>absent</code>: The number of days the individual was absent from work in the year prior to the choice</li>
+</ul>
+<p>First we load the data and take a look at it briefly.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, download health_insurance data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view first few rows</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(health_insurance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  product age household position_level gender absent
+1       C  57         2              2   Male     10
+2       A  21         7              2   Male      7
+3       C  66         7              2   Male      1
+4       A  36         4              2 Female      6
+5       A  23         0              2   Male     11
+6       A  31         5              1   Male     14</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view structure</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(health_insurance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   1453 obs. of  6 variables:
+ $ product       : chr  "C" "A" "C" "A" ...
+ $ age           : int  57 21 66 36 23 31 37 37 55 66 ...
+ $ household     : int  2 7 7 4 0 5 3 0 3 2 ...
+ $ position_level: int  2 2 2 2 2 1 3 3 3 4 ...
+ $ gender        : chr  "Male" "Male" "Male" "Female" ...
+ $ absent        : int  10 7 1 6 11 14 12 25 3 18 ...</code></pre>
+</div>
+</div>
+<p>It looks like two of these columns should be converted to factor—<code>product</code> and <code>gender</code>—so let’s do that and then run a pairplot for a quick overview of any patterns, which can be seen in <a href="#fig-insurance-pairplot" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>.</p>
+<div id="fig-insurance-pairplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-insurance-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert product and gender to factors</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(health_insurance<span class="sc">$</span>product)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(health_insurance<span class="sc">$</span>gender)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(health_insurance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="multinomial_regression_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-insurance-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: Pairplot of the <code>health_insurance</code> data set
+</figcaption>
+</figure>
+</div>
+<p>The data appears somewhat chaotic here. However, there are a few things to note. Firstly, we notice that there is a relatively even spread in choice between the products. We also notice that <code>age</code> seems to be playing a role in product choice. There are also some mild-to-moderate correlations in the data—in particular between <code>age</code> and <code>position_level</code>, and between <code>absent</code> and <code>position_level</code>. However, this problem is clearly more complex than we can determine from a bivariate perspective.</p>
+</section>
+</section>
+<section id="sec-stratified" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-stratified"><span class="header-section-number">6.2</span> Running stratified binomial models</h2>
+<p>One approach to this problem is to look at each product choice and treat it as an independent binomial logistic regression model, modeling that choice against an alternative of all other choices. Each such model may help us describe the dynamics of the choice of a specific product, but we have to be careful in making conclusions about the overall choice between the three products. Running stratified models would not be very efficient if we had a wider range of choices for our outcome, but since we only have three possible choices here, it is reasonable to take this route.</p>
+<section id="modeling-the-choice-of-product-a-versus-other-products" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="modeling-the-choice-of-product-a-versus-other-products"><span class="header-section-number">6.2.1</span> Modeling the choice of Product A versus other products</h3>
+<p>Let’s first create and refine a binomial model for the choice of Product A.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(makedummies)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummies for product choice outcome</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>dummy_product <span class="ot">&lt;-</span> makedummies<span class="sc">::</span><span class="fu">makedummies</span>(health_insurance, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">col =</span> <span class="st">"product"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">basal_level =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># combine to original set</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">cbind</span>(health_insurance, dummy_product)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># run a binomial model for the Product A dummy against </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># all input variables (let glm() handle dummy input variables)</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>A_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product_A <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    position_level <span class="sc">+</span> absent, </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance, </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"binomial"</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># summary</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(A_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = product_A ~ age + gender + household + position_level + 
+    absent, family = "binomial", data = health_insurance)
+
+Coefficients:
+                  Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)       5.873634   0.453041  12.965  &lt; 2e-16 ***
+age              -0.239814   0.013945 -17.197  &lt; 2e-16 ***
+genderMale        0.845978   0.168237   5.028 4.94e-07 ***
+genderNon-binary  0.222521   1.246591   0.179    0.858    
+household         0.240205   0.037358   6.430 1.28e-10 ***
+position_level    0.321497   0.071770   4.480 7.48e-06 ***
+absent           -0.003751   0.010753  -0.349    0.727    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1864.15  on 1452  degrees of freedom
+Residual deviance:  940.92  on 1446  degrees of freedom
+AIC: 954.92
+
+Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+</div>
+<p>We see that all variables except <code>absent</code> seem to play a significant role in the choice of Product A. All else being equal, being older makes the choice of Product A less likely. Males are more likely to choose Product A, and larger households and higher position levels also make the choice of Product A more likely. Based on this, we can consider simplifying our model to remove <code>absent</code>. We can also calculate odds ratios and perform some model diagnostics if we wish, similar to how we approached the problem in the previous chapter.</p>
+<p>These results need to be interpreted carefully. For example, the odds ratios for the Product A choice based on a simplified model are as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simpler model</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>A_simple <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product_A <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> gender <span class="sc">+</span> position_level, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"binomial"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># view odds ratio as a data frame</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">exp</span>(A_simple<span class="sc">$</span>coefficients))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 exp(A_simple$coefficients)
+(Intercept)                     343.4406669
+age                               0.7868098
+household                         1.2711317
+genderMale                        2.3282637
+genderNon-binary                  1.2794288
+position_level                    1.3692971</code></pre>
+</div>
+</div>
+<p>As an example, and as a reminder from our previous chapter, we interpret the odds ratio for <code>age</code> as follows: all else being equal, every additional year of age is associated with an approximately 21% decrease in the odds of choosing Product A over the other products.</p>
+</section>
+<section id="modeling-other-choices" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="modeling-other-choices"><span class="header-section-number">6.2.2</span> Modeling other choices</h3>
+<p>In a similar way we can produce two other models, representing the choice of Products B and C. These models produce similar significant variables, except that <code>position_level</code> does not appear to be significant in the choice of Product C. If we simplify all our three models we will have a slightly differently defined model for the choice of Product C versus our models for the other two product choices. However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is <code>absent</code>.</p>
+</section>
+</section>
+<section id="running-a-multinomial-regression-model" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="running-a-multinomial-regression-model"><span class="header-section-number">6.3</span> Running a multinomial regression model</h2>
+<p>An alternative to running separate binary stratified models is to run a multinomial logistic regression model. A multinomial logistic model will base itself from a defined reference category, and run a generalized linear model on the log-odds of membership of each of the other categories versus the reference category. Due to its extensive use in epidemiology and medicine, this is often known as the <em>relative risk</em> of one category compared to the reference category. Mathematically speaking, if <span class="math inline">\(X\)</span> is the vector of input variables, and <span class="math inline">\(y\)</span> takes the value <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> or <span class="math inline">\(C\)</span>, with <span class="math inline">\(A\)</span> as the reference, a multinomial logistic regression model will calculate:</p>
+<p><span class="math display">\[
+\mathrm{ln}\left(\frac{P(y = B)}{P(y=A)}\right) = \alpha{X}
+\]</span> and</p>
+<p><span class="math display">\[
+\mathrm{ln}\left(\frac{P(y = C)}{P(y=A)}\right) = \beta{X}
+\]</span> for different vectors of coefficients <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>.</p>
+<section id="sec-def-ref" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="sec-def-ref"><span class="header-section-number">6.3.1</span> Defining a reference level and running the model</h3>
+<p>The <code>nnet</code> package in R contains a <code>multinom()</code> function for running a multinomial logistic regression model using neural network technology<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Before we can run the model we need to make sure our reference level is defined.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define reference by ensuring it is the first level of the factor</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">relevel</span>(health_insurance<span class="sc">$</span>product, <span class="at">ref =</span> <span class="st">"A"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check that A is now our reference</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(health_insurance<span class="sc">$</span>product)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "A" "B" "C"</code></pre>
+</div>
+</div>
+<p>Once the reference outcome is defined, the <code>multinom()</code> function from the <code>nnet</code> package will run a series of binomial models comparing the reference to each of the other categories.</p>
+<p>First we will calculate our multinomial logistic regression model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>multi_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    position_level <span class="sc">+</span> absent, </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we will look at a summary of the results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multi_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+multinom(formula = product ~ age + gender + household + position_level + 
+    absent, data = health_insurance)
+
+Coefficients:
+  (Intercept)       age  genderMale genderNon-binary  household position_level
+B    -4.60100 0.2436645 -2.38259765        0.2523409 -0.9677237     -0.4153040
+C   -10.22617 0.2698141  0.09670752       -1.2715643  0.2043568     -0.2135843
+       absent
+B 0.011676034
+C 0.003263631
+
+Std. Errors:
+  (Intercept)        age genderMale genderNon-binary  household position_level
+B   0.5105532 0.01543139  0.2324262         1.226141 0.06943089     0.08916739
+C   0.6197408 0.01567034  0.1954353         2.036273 0.04960655     0.08226087
+      absent
+B 0.01298141
+C 0.01241814
+
+Residual Deviance: 1489.365 
+AIC: 1517.365 </code></pre>
+</div>
+</div>
+<p>Notice that the output of <code>summary(multi_model)</code> is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference. To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the z-statistics and converting (we covered this hypothesis testing methodology in <a href="primer_stats.html#sec-means-sig" class="quarto-xref"><span>Section 3.3.1</span></a>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate z-statistics of coefficients</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>z_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients<span class="sc">/</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(multi_model)<span class="sc">$</span>standard.errors</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to p-values</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>p_values <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(z_stats)))<span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># display p-values in transposed data frame</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(p_values))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            B            C
+(Intercept)      0.000000e+00 0.000000e+00
+age              0.000000e+00 0.000000e+00
+genderMale       0.000000e+00 6.207192e-01
+genderNon-binary 8.369465e-01 5.323278e-01
+household        0.000000e+00 3.796088e-05
+position_level   3.199529e-06 9.419906e-03
+absent           3.684170e-01 7.926958e-01</code></pre>
+</div>
+</div>
+</section>
+<section id="interpreting-the-model" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="interpreting-the-model"><span class="header-section-number">6.3.2</span> Interpreting the model</h3>
+<p>This confirms that all variables except <code>absent</code> play a role in the choice between all products relative to a reference of Product A. We can also calculate odds ratios as before.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># display odds ratios in transposed data frame</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>odds_ratios <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(odds_ratios))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                          B            C
+(Intercept)      0.01004179 3.621021e-05
+age              1.27591615 1.309721e+00
+genderMale       0.09231048 1.101538e+00
+genderNon-binary 1.28703467 2.803927e-01
+household        0.37994694 1.226736e+00
+position_level   0.66013957 8.076841e-01
+absent           1.01174446 1.003269e+00</code></pre>
+</div>
+</div>
+<p>Here are some examples of how these odds ratios can be interpreted in the multinomial context (used in combination with the p-values above):</p>
+<ul>
+<li>All else being equal, every additional year of age increases the relative odds of selecting Product B versus Product A by approximately 28%, and increases the relative odds of selecting Product C versus Product A by approximately 31%</li>
+<li>All else being equal, being Male reduces the relative odds of selecting Product B relative to Product A by 91%.</li>
+<li>All else being equal, each additional household member deceases the odds of selecting Product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.</li>
+</ul>
+</section>
+<section id="sec-changing-ref" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="sec-changing-ref"><span class="header-section-number">6.3.3</span> Changing the reference</h3>
+<p>It may be the case that someone would like to hear the odds ratios stated against the reference of an individual choosing Product B. For example, what are the odds ratios of Product C relative to a reference of Product B? One way to do this would be to change the reference and run the model again. Another option is to note that:</p>
+<p><span class="math display">\[
+\frac{P(y = C)}{P(y=B)} = \frac{\frac{P(y = C)}{P(y = A)}}{\frac{P(y=B)}{P(y = A)}}
+= \frac{e^{\beta{X}}}{e^{\alpha{X}}}
+= e^{(\beta - \alpha)X}
+\]</span> Therefore</p>
+<p><span class="math display">\[
+\mathrm{ln}\left(\frac{P(y = C)}{P(y=B)}\right) = (\beta - \alpha)X
+\]</span> This means we can obtain the coefficients of C against the reference of B by simply calculating the difference between the coefficients of C and B against the common reference of A. Let’s do this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate difference between coefficients and view as column</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>coefs_c_to_b <span class="ot">&lt;-</span> <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients[<span class="dv">2</span>, ] <span class="sc">-</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients[<span class="dv">1</span>, ]</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(coefs_c_to_b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 coefs_c_to_b
+(Intercept)      -5.625169520
+age               0.026149597
+genderMale        2.479305168
+genderNon-binary -1.523905192
+household         1.172080452
+position_level    0.201719688
+absent           -0.008412403</code></pre>
+</div>
+</div>
+<p>If the number of categories in the outcome variable is limited, this can be an efficient way to obtain the model coefficients against various reference points without having to rerun models. However, to determine standard errors and p-values for these coefficients the model will need to be recalculated against the new reference.</p>
+</section>
+</section>
+<section id="model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models"><span class="header-section-number">6.4</span> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</h2>
+<p>Simplifying a multinomial regression model needs to be done with care. In a binomial model, there is one set of coefficients and their p-values can be a strong guide to which variables can be removed safely. However, in multinomial models there are several sets of coefficients to consider.</p>
+<section id="sec-elim" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="sec-elim"><span class="header-section-number">6.4.1</span> Gradual safe elimination of variables</h3>
+<p>In <span class="citation" data-cites="hosmer-logistic">Hosmer, Lemeshow, and Sturdivant (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:</p>
+<ul>
+<li>Start with the variable with the least significant p-values in all sets of coefficients—in our case <code>absent</code> would be the obvious first candidate.</li>
+<li>Run the multinomial model without this variable.</li>
+<li>Test that none of the previous coefficients change by more than 20–25%.</li>
+<li>If there was no such change, safely remove the variable and proceed to the next non-significant variable.</li>
+<li>If there is such a change, retain the variable and proceed to the next non-significant variable.</li>
+<li>Stop when all non-significant variables have been tested.</li>
+</ul>
+<p>In our case, we can compare the coefficients of the model with and without <code>absent</code> included and verify that the changes in the coefficients are not substantial.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove absent</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>simpler_multi_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> position_level,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance, </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="cn">TRUE</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients with absent</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                           B             C
+(Intercept)      -4.60099991 -10.226169428
+age               0.24366447   0.269814063
+genderMale       -2.38259765   0.096707521
+genderNon-binary  0.25234087  -1.271564323
+household        -0.96772368   0.204356774
+position_level   -0.41530400  -0.213584308
+absent            0.01167603   0.003263631</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients without absent</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(simpler_multi_model)<span class="sc">$</span>coefficients))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                          B            C
+(Intercept)      -4.5008999 -10.19269011
+age               0.2433855   0.26976294
+genderMale       -2.3771342   0.09801281
+genderNon-binary  0.1712091  -1.29636779
+household        -0.9641956   0.20510806
+position_level   -0.3912014  -0.20908835</code></pre>
+</div>
+</div>
+<p>We can see that only <code>genderNon-binary</code> changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. It therefore appears safe to remove <code>absent</code>. Furthermore, the Akaike Information Criterion is equally valid in multinomial models for evaluating model parsimony. Here we can calculate that the AIC of our model with and without <code>absent</code> is 1517.36 and 1514.25, respectively, confirming that the model without <code>absent</code> is marginally more parsimonious.</p>
+</section>
+<section id="model-fit-and-goodness-of-fit" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="model-fit-and-goodness-of-fit"><span class="header-section-number">6.4.2</span> Model fit and goodness-of-fit</h3>
+<p>As with the binomial case, a variety of Pseudo-<span class="math inline">\(R^2\)</span> methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">PseudoR2</span>(simpler_multi_model, </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">which =</span> <span class="fu">c</span>(<span class="st">"McFadden"</span>, <span class="st">"CoxSnell"</span>, <span class="st">"Nagelkerke"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  McFadden   CoxSnell Nagelkerke 
+ 0.5329175  0.6896945  0.7760413 </code></pre>
+</div>
+</div>
+<p>Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research. The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in <span class="citation" data-cites="fagerland">Fagerland, Hosmer, and Bofin (<a href="bibliography.html#ref-fagerland" role="doc-biblioref">2008</a>)</span> for multinomial models. An implementation is available in the <code>generalhoslem</code> package in R. However, this version of the Hosmer-Lemeshow test is problematic for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here. For further exploration of this topic, Chapter 8 of <span class="citation" data-cites="hosmer-logistic">Hosmer, Lemeshow, and Sturdivant (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span> is recommended, and for a more thorough treatment of the entire topic of categorical analytics, <span class="citation" data-cites="agresti">Agresti (<a href="bibliography.html#ref-agresti" role="doc-biblioref">2007</a>)</span> is an excellent companion.</p>
+</section>
+</section>
+<section id="multinomial-logistic-regression-using-python" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="multinomial-logistic-regression-using-python"><span class="header-section-number">6.5</span> Multinomial logistic regression using Python</h2>
+<p>In Python, multinomial logistic regression is similarly available using the <code>statsmodels</code> formula API. As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explicitly constructed, and a constant term must be added to ensure an intercept is calculated.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load health insurance data</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># convert product to categorical as an outcome variable</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> pd.Categorical(health_insurance[<span class="st">'product'</span>])</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummies for gender</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> pd.get_dummies(health_insurance[<span class="st">'gender'</span>], drop_first <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="co"># replace back into input variables </span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> health_insurance.drop([<span class="st">'product'</span>, <span class="st">'gender'</span>], axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.concat([X1, X2], axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co"># add a constant term to ensure intercept is calculated</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> sm.add_constant(X)</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="co"># define model</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.MNLogit(y, Xc.astype(<span class="bu">float</span>))</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>insurance_model <span class="op">=</span> model.fit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see results summary</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(insurance_model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                          MNLogit Regression Results                          
+==============================================================================
+Dep. Variable:                      y   No. Observations:                 1453
+Model:                        MNLogit   Df Residuals:                     1439
+Method:                           MLE   Df Model:                           12
+Date:                Wed, 12 Nov 2025   Pseudo R-squ.:                  0.5332
+Time:                        17:17:38   Log-Likelihood:                -744.68
+converged:                       True   LL-Null:                       -1595.3
+Covariance Type:            nonrobust   LLR p-value:                     0.000
+==================================================================================
+           y=B       coef    std err          z      P&gt;|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+const             -4.6010      0.511     -9.012      0.000      -5.602      -3.600
+Male              -2.3826      0.232    -10.251      0.000      -2.838      -1.927
+Non-binary         0.2528      1.226      0.206      0.837      -2.151       2.656
+age                0.2437      0.015     15.790      0.000       0.213       0.274
+household         -0.9677      0.069    -13.938      0.000      -1.104      -0.832
+position_level    -0.4153      0.089     -4.658      0.000      -0.590      -0.241
+absent             0.0117      0.013      0.900      0.368      -0.014       0.037
+----------------------------------------------------------------------------------
+           y=C       coef    std err          z      P&gt;|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+const            -10.2261      0.620    -16.501      0.000     -11.441      -9.011
+Male               0.0967      0.195      0.495      0.621      -0.286       0.480
+Non-binary        -1.2698      2.036     -0.624      0.533      -5.261       2.721
+age                0.2698      0.016     17.218      0.000       0.239       0.301
+household          0.2043      0.050      4.119      0.000       0.107       0.302
+position_level    -0.2136      0.082     -2.597      0.009      -0.375      -0.052
+absent             0.0033      0.012      0.263      0.793      -0.021       0.028
+==================================================================================</code></pre>
+</div>
+</div>
+</section>
+<section id="learning-exercises" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">6.6</span> Learning exercises</h2>
+<section id="discussion-questions" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">6.6.1</span> Discussion questions</h3>
+<ol type="1">
+<li>Describe the difference between a stratified versus a multinomial approach to modeling an outcome with more than two nominal categories.</li>
+<li>Describe how you would interpret the odds ratio of an input variable for a given category in a stratified modeling approach.</li>
+<li>Describe what is meant by the ‘reference’ of a multinomial logistic regression model with at least three nominal outcome categories.</li>
+<li>Describe how you would interpret the odds ratio of an input variable for a given category in a multinomial modeling approach.</li>
+<li>Given a multinomial logistic regression model with outcome categories A, B, C and D and reference category A, describe two ways to determine the coefficients of a multinomial logistic regression model with reference category C.</li>
+<li>Describe a process for safely simplifying a multinomial logistic regression model by removing input variables.</li>
+</ol>
+</section>
+<section id="data-exercises" class="level3" data-number="6.6.2">
+<h3 data-number="6.6.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">6.6.2</span> Data exercises</h3>
+<p>Use the same <code>health_insurance</code> data set from this chapter to answer these questions.</p>
+<ol type="1">
+<li>Complete the full stratified approach to modeling the three product choices that was started in <a href="#sec-stratified" class="quarto-xref"><span>Section 6.2</span></a>. Calculate the coefficients, odds ratios and p-values in each case.</li>
+<li>Carefully write down your interpretation of the odds ratios from the previous question.</li>
+<li>Run a multinomial logistic regression model on the <code>product</code> outcome using Product B as reference. Calculate the coefficients, ratios and p-values in each case.</li>
+<li>Verify that the coefficients for Product C against reference Product B matches those calculated in <a href="#sec-changing-ref" class="quarto-xref"><span>Section 6.3.3</span></a>.</li>
+<li>Carefully write down your interpretation of the odds ratios calculated in the previous question.</li>
+<li>Use the process described in <a href="#sec-elim" class="quarto-xref"><span>Section 6.4.1</span></a> to simplify the multinomial model in Question 3.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-agresti" class="csl-entry" role="listitem">
+Agresti, Alan. 2007. <em>An Introduction to Categorical Data Analysis</em>.
+</div>
+<div id="ref-fagerland" class="csl-entry" role="listitem">
+Fagerland, Morten W., David W. Hosmer, and Anna M. Bofin. 2008. <span>“Multinomial Goodness‐of‐fit Tests for Logistic Regression Models.”</span> <em>Statistics in Medicine</em>.
+</div>
+<div id="ref-hosmer-logistic" class="csl-entry" role="listitem">
+Hosmer, David W., Stanley Lemeshow, and Rodney X. Sturdivant. 2013. <em>Applied Logistic Regression</em>.
+</div>
+</div>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>In <span class="citation" data-cites="hosmer-logistic">Hosmer, Lemeshow, and Sturdivant (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network. Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done. In the case of these observations of <code>genderNon-binary</code>, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book-2nd-edition\.org\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./binomial_logistic_regression.html" class="pagination-link" aria-label="Binomial Logistic Regression for Binary Outcomes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Binomial Logistic Regression for Binary Outcomes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ordinal_regression.html" class="pagination-link" aria-label="Proportional Odds Logistic Regression for Ordered Category Outcomes">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Odds Logistic Regression for Ordered Category Outcomes</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Handbook of Regression Modeling in People Analytics (2nd ed.) was written by Keith McNulty.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/multinomial_regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
