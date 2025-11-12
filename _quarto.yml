@@ -10,7 +10,6 @@ book:
   title: "Handbook of Regression Modeling in People Analytics (2nd edition)"
   subtitle: "With Examples in R and Python"
   reader-mode: true
-
   page-footer:
     left: |
       Handbook of Regression Modeling in People Analytics (2nd ed.) was written by Keith McNulty.
@@ -50,5 +49,6 @@ format:
     author-meta: "Keith McNulty"
     callout-appearance: simple
     bibliography: book.bib
+    engine: knitr
 
 editor: source
