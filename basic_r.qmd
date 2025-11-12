@@ -657,7 +657,7 @@ salespeople <- read.csv(url)
 ```
 
 ````
-`r`{r} ''` nrow(salespeople)`
+`{r}`r ''` nrow(salespeople)`
 ````
 
 inline will display `{r} nrow(salespeople)` in the final document.  Entire code blocks can be included and executed by using triple-backticks.  The following code block:

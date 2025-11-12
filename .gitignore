@@ -27,3 +27,4 @@ conf/
 renv/
 /env/
 /.quarto/
+docs/CNAME
