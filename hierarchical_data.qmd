@@ -235,7 +235,7 @@ If we believe that different individuals are influenced differently by one or mo
 
 ### Mixed effects models using Python
 
-The `pymer4` package provides a simple implementation of linear and generalized linear mixed effects models.  The `glmer()` function is used for generalized linear mixed models, and the specific model is defined by the `family` parameter.  This package is implements R under the hood, and also requires Polars rather than Pandas DataFrames.  To avoid issues related to the back-end R code, it is recommended that you explicitly remove all rows containing `NaN` values before fitting a model, or else perform imputation to fill these values.
+The `pymer4` package provides a simple implementation of linear and generalized linear mixed effects models.  The `glmer()` function is used for generalized linear mixed models, and the specific model is defined by the `family` parameter.  This package is implemented in R under the hood, and also requires Polars rather than Pandas DataFrames.  To avoid issues related to the back-end R code, it is recommended that you explicitly remove all rows containing `NaN` values before fitting a model, or else perform imputation to fill these values.
 
 To recreate our model random intercept model from the previous section using `pymer4`, we would use the following code:
 
