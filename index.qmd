@@ -45,7 +45,7 @@ pad.managers().info()
 
 Happy modeling!
 
-*Last update:  `r format(Sys.Date(), "%d %B %Y")`*
+*Last update:  `{r} format(Sys.Date(), "%d %B %Y")`*
 
 
 

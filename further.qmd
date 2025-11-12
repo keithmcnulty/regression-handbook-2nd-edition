@@ -1,4 +1,4 @@
-# Further Exercises for Practice
+# Further Exercises for Practice {#sec-practice}
 
 This final chapter contains a set of scenarios and exercises that will allow you to put into further practice some of the techniques you have learned in this book, and are supplementary to the exercises provided at the end of each of the earlier chapters.  All the exercises are based on data that is available in the `peopleanalyticsdata` package in R, or alternatively can be downloaded from the internet.  While the scenarios are fictitious, they are intended to represent typical questions and situations that arise when doing statistical modeling in people analytics.
 
@@ -17,7 +17,7 @@ Government agencies and educational institutions will analyze graduate salaries 
 graduates <- read.csv("data/graduates.csv")
 ```
 
-`r if (knitr::is_latex_output()) '\\index{data sets!graduates@\\texttt{graduates}}'`The `graduates` data set contains information on graduates currently in the United States across `r nrow(graduates)` specific subject majors grouped into `r length(unique(graduates$Discipline))` disciplines of study.  This data set is sourced from the *FiveThirtyEight* data repository^[https://github.com/fivethirtyeight/data].
+The `graduates` data set contains information on graduates currently in the United States across `{r} nrow(graduates)` specific subject majors grouped into `{r} length(unique(graduates$Discipline))` disciplines of study.  This data set is sourced from the *FiveThirtyEight* data repository^[https://github.com/fivethirtyeight/data].
 
 Load the `graduates` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/graduates.csv].  The fields in the `graduate` data set are as follows:
 
@@ -59,7 +59,7 @@ Understanding fairness in a recruiting process usually involves studying how the
 recruiting <- read.csv("data/recruiting.csv")
 ```
 
-`r if (knitr::is_latex_output()) '\\index{data sets!recruiting@\\texttt{recruiting}}'`The `recruiting` data set contains information on `r nrow(recruiting)` applicants who went through the final stages of a recruiting process for graduate positions at a large international financial services company.  The recruiting process operates as follows:
+The `recruiting` data set contains information on `{r} nrow(recruiting)` applicants who went through the final stages of a recruiting process for graduate positions at a large international financial services company.  The recruiting process operates as follows:
 
 1. Applications are screened according to a number of criteria, including their SAT scores and their undergraduate GPA as well as an online aptitude test they are requested to take and numerous other judgments made by the individuals screening the applications.
 2. Applicants who pass the screening stage are invited for three interviews, two of them with line managers and a third with a human resources professional.  Different line managers or HR professionals conduct the interviews on different interview days.  Each interviewer independently gives an applicant a score on a Likert scale of 1--5 indicating increasing positive sentiment.
@@ -107,7 +107,7 @@ However, performance ratings are not perfect indicators of reality.  They are us
 employee_performance <- read.csv("data/employee_performance.csv")
 ```
 
-`r if (knitr::is_latex_output()) '\\index{data sets!employee\\_performance@\\texttt{employee\\_performance}}'`The `employee_performance` data set contains data on the most recent performance evaluations of `r nrow(employee_performance)` salespeople in a technology company.  Each employee is evaluated by their manager, who considers certain performance indicators together with their own judgment and awards a performance rating from 1 to 3, where 1 means 'Needs improvement', 2 means 'Performing well' and 3 means 'Outstanding'.  
+The `employee_performance` data set contains data on the most recent performance evaluations of `{r} nrow(employee_performance)` salespeople in a technology company.  Each employee is evaluated by their manager, who considers certain performance indicators together with their own judgment and awards a performance rating from 1 to 3, where 1 means 'Needs improvement', 2 means 'Performing well' and 3 means 'Outstanding'.  
 
 Load the `employee_performance` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/employee_performance.csv].  The fields in the `employee_performance` data set are as follows:
 
@@ -147,7 +147,7 @@ It is particularly interesting to compare subgroups of employees that have commo
 promotion <- read.csv("data/promotion.csv")
 ```
 
-`r if (knitr::is_latex_output()) '\\index{data sets!promotion@\\texttt{promotion}}'`The `promotion` data set contains data on `r nrow(promotion)` individuals who joined a retailer in an entry-level job, and tracks them for up to eight subsequent years post joining.  For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0.  Once promotion occurs, an individual is no longer tracked.  If an individual was not promoted, then the year in which the last record occurred is captured.  
+The `promotion` data set contains data on `{r} nrow(promotion)` individuals who joined a retailer in an entry-level job, and tracks them for up to eight subsequent years post joining.  For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0.  Once promotion occurs, an individual is no longer tracked.  If an individual was not promoted, then the year in which the last record occurred is captured.  
 
 Load the `promotion` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/promotion.csv].  The fields in the data are as follows:
 
@@ -187,7 +187,7 @@ Because of the challenges in objectively measuring the impact of learning, analy
 learning <- read.csv("data/learning.csv")
 ```
 
-`r if (knitr::is_latex_output()) '\\index{data sets!learning@\\texttt{learning}}'`The `learning` data set contains `r nrow(learning)` instances of feedback from `r length(unique(learning$idcode))` different participants in a range of learning programs offered by an executive education provider.  Each row of data represents the feedback of a specific participant on a specific program that they participated in.  Participants were not required to respond to all feedback questions and any question where no response was given is indicated as `NA`.
+The `learning` data set contains `{r} nrow(learning)` instances of feedback from `{r} length(unique(learning$idcode))` different participants in a range of learning programs offered by an executive education provider.  Each row of data represents the feedback of a specific participant on a specific program that they participated in.  Participants were not required to respond to all feedback questions and any question where no response was given is indicated as `NA`.
 
 Load the `learning` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/learning.csv].  The fields in the `learning` data set are as follows:
 
