@@ -294,6 +294,8 @@ AIC(absent_poisson_model, absent_nb_model)
 ```
 The AIC for the Negative Binomial model is substantially lower than for the Poisson model, again confirming that it is the superior and more parsimonious model for our overdispersed data.
 
+Note that it is not advisable to use Pseudo R-squared metrics to compare Poisson and Negative Binomial models, as these metrics can be misleading in the presence of overdispersion.  These metrics are more appropriate for comparing models of the same family (e.g., two Poisson models with different input variables).
+
 ## Other considerations in count regression
 
 In this section we provide a brief overview of some additional topics that are relevant when working with count data.  For deeper study on this topic, @hilbe is an excellent introductory text, while @friendly provides a more advanced treatment on the analysis of discrete data more broadly.
@@ -423,18 +425,17 @@ If needed, zero-inflated models can be fit using the `statsmodels` library's `Ze
 
 ### Data exercises
 
-::: {.content-visible when-format="pdf"}
-A retail company wants to understand factors affecting the number of customer complaints received by their customer service representatives. Load the `complaints` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/complaints.csv]. It contains the following data:
+A retail company wants to understand factors affecting the number of customer complaints received about their telephone customer service representatives. Load the `complaints` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/complaints.csv]. It contains the following data for 376 representatives:
 
-* `n_complaints`: The number of complaints received by the representative in the past month
+* `n_complaints`: Number of complaints received about the representative in the past year
 * `experience`: Years of experience in customer service
 * `training_hours`: Hours of training received in the past year  
 * `workload`: Average number of customer interactions per day
 * `shift`: The primary shift worked (Day, Evening, or Night)
 * `remote`: Whether the representative works remotely (1 = yes, 0 = no)
-* `satisfaction_score`: The representative's job satisfaction score (1-10 scale)
+* `satisfaction_score`: The representative's job satisfaction score (1-10 scale of increasing satisfaction)
 
-1. Load the data and obtain statistical summaries. Check data types and handle any missing values. Create appropriate visualizations to understand the distribution of complaints.
+1. Load the data and obtain statistical summaries. Check data types and create an appropriate visualization to understand the distribution of `n_complaints`.  How would you describe the distribution of `n_complaints`?
 
 2. Check whether the mean and variance of `n_complaints` are similar. What does this tell you about potential overdispersion?
 
@@ -442,15 +443,13 @@ A retail company wants to understand factors affecting the number of customer co
 
 4. Calculate and interpret the incidence rate ratios for the significant input variables.
 
-5. Perform diagnostic checks for your Poisson model, including tests for overdispersion and residual plots.
+5. Perform diagnostic checks for overdispersion in your Poisson model.
 
 6. Fit a negative binomial regression model with the same input variables. How do the results compare to the Poisson model?
 
 7. Compare the Poisson and negative binomial models using AIC and likelihood ratio tests. Which model is preferred and why?
 
-8. Create predictions for three hypothetical customer service representatives with different characteristics. Compare the predictions from both models.
+8. Determine the expected number of complaints for three hypothetical customer service representatives with different characteristics. Compare the predictions from both models.
 
-9. Write a brief report for management explaining your findings and recommendations for reducing customer complaints.
+9. Write a brief report explaining your findings and recommendations for reducing customer complaints.
 
-10. **Extension:** Investigate whether there might be interaction effects between experience and training hours. Test this hypothesis and interpret the results if significant.
-:::

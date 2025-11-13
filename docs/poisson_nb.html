@@ -733,6 +733,7 @@ absent_nb_model       5 5637.075</code></pre>
 </div>
 </div>
 <p>The AIC for the Negative Binomial model is substantially lower than for the Poisson model, again confirming that it is the superior and more parsimonious model for our overdispersed data.</p>
+<p>Note that it is not advisable to use Pseudo R-squared metrics to compare Poisson and Negative Binomial models, as these metrics can be misleading in the presence of overdispersion. These metrics are more appropriate for comparing models of the same family (e.g., two Poisson models with different input variables).</p>
 </section>
 </section>
 <section id="other-considerations-in-count-regression" class="level2" data-number="8.5">
@@ -819,7 +820,7 @@ Model Family:                 Poisson   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -4459.5
 Date:                Thu, 13 Nov 2025   Deviance:                       5799.6
-Time:                        17:41:20   Pearson chi2:                 5.99e+03
+Time:                        22:16:57   Pearson chi2:                 5.99e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -863,7 +864,7 @@ Model Family:        NegativeBinomial   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -2842.3
 Date:                Thu, 13 Nov 2025   Deviance:                       702.79
-Time:                        17:41:21   Pearson chi2:                     548.
+Time:                        22:16:57   Pearson chi2:                     548.
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -897,6 +898,28 @@ performance_rating    -0.0228      0.048     -0.479      0.632      -0.116      
 </section>
 <section id="data-exercises" class="level3" data-number="8.7.2">
 <h3 data-number="8.7.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">8.7.2</span> Data exercises</h3>
+<p>A retail company wants to understand factors affecting the number of customer complaints received about their telephone customer service representatives. Load the <code>complaints</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. It contains the following data for 376 representatives:</p>
+<ul>
+<li><code>n_complaints</code>: Number of complaints received about the representative in the past year</li>
+<li><code>experience</code>: Years of experience in customer service</li>
+<li><code>training_hours</code>: Hours of training received in the past year<br>
+</li>
+<li><code>workload</code>: Average number of customer interactions per day</li>
+<li><code>shift</code>: The primary shift worked (Day, Evening, or Night)</li>
+<li><code>remote</code>: Whether the representative works remotely (1 = yes, 0 = no)</li>
+<li><code>satisfaction_score</code>: The representative’s job satisfaction score (1-10 scale of increasing satisfaction)</li>
+</ul>
+<ol type="1">
+<li><p>Load the data and obtain statistical summaries. Check data types and create an appropriate visualization to understand the distribution of <code>n_complaints</code>. How would you describe the distribution of <code>n_complaints</code>?</p></li>
+<li><p>Check whether the mean and variance of <code>n_complaints</code> are similar. What does this tell you about potential overdispersion?</p></li>
+<li><p>Fit a Poisson regression model using all input variables. Which variables have significant effects on the number of complaints?</p></li>
+<li><p>Calculate and interpret the incidence rate ratios for the significant input variables.</p></li>
+<li><p>Perform diagnostic checks for overdispersion in your Poisson model.</p></li>
+<li><p>Fit a negative binomial regression model with the same input variables. How do the results compare to the Poisson model?</p></li>
+<li><p>Compare the Poisson and negative binomial models using AIC and likelihood ratio tests. Which model is preferred and why?</p></li>
+<li><p>Determine the expected number of complaints for three hypothetical customer service representatives with different characteristics. Compare the predictions from both models.</p></li>
+<li><p>Write a brief report explaining your findings and recommendations for reducing customer complaints.</p></li>
+</ol>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -913,6 +936,7 @@ Hilbe, Joseph M. 2014. <em>Modeling Count Data</em>.
 <hr>
 <ol>
 <li id="fn1"><p>In fact, the distribution had already been discovered by the famous French mathematician Abraham De Moivre in the early 18th century.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>http://peopleanalytics-regression-book.org/data/complaints.csv<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
