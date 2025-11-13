@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>10&nbsp; Power Analysis to Estimate Required Sample Sizes for Modeling – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>11&nbsp; Power Analysis to Estimate Required Sample Sizes for Modeling – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,7 +168,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./power_tests.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./power_tests.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -263,26 +263,32 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./poisson_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson and Negative Binomial Regression for Count Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./power_tests.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./further.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -301,12 +307,12 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#errors-effect-sizes-and-statistical-power" id="toc-errors-effect-sizes-and-statistical-power" class="nav-link active" data-scroll-target="#errors-effect-sizes-and-statistical-power"><span class="header-section-number">10.1</span> Errors, effect sizes and statistical power</a></li>
-  <li><a href="#sec-simple-stats" id="toc-sec-simple-stats" class="nav-link" data-scroll-target="#sec-simple-stats"><span class="header-section-number">10.2</span> Power analysis for simple hypothesis tests</a></li>
-  <li><a href="#power-analysis-for-linear-regression-models" id="toc-power-analysis-for-linear-regression-models" class="nav-link" data-scroll-target="#power-analysis-for-linear-regression-models"><span class="header-section-number">10.3</span> Power analysis for linear regression models</a></li>
-  <li><a href="#power-analysis-for-log-likelihood-regression-models" id="toc-power-analysis-for-log-likelihood-regression-models" class="nav-link" data-scroll-target="#power-analysis-for-log-likelihood-regression-models"><span class="header-section-number">10.4</span> Power analysis for log-likelihood regression models</a></li>
-  <li><a href="#power-analysis-for-hierarchical-regression-models" id="toc-power-analysis-for-hierarchical-regression-models" class="nav-link" data-scroll-target="#power-analysis-for-hierarchical-regression-models"><span class="header-section-number">10.5</span> Power analysis for hierarchical regression models</a></li>
-  <li><a href="#power-analysis-using-python" id="toc-power-analysis-using-python" class="nav-link" data-scroll-target="#power-analysis-using-python"><span class="header-section-number">10.6</span> Power analysis using Python</a></li>
+  <li><a href="#errors-effect-sizes-and-statistical-power" id="toc-errors-effect-sizes-and-statistical-power" class="nav-link active" data-scroll-target="#errors-effect-sizes-and-statistical-power"><span class="header-section-number">11.1</span> Errors, effect sizes and statistical power</a></li>
+  <li><a href="#sec-simple-stats" id="toc-sec-simple-stats" class="nav-link" data-scroll-target="#sec-simple-stats"><span class="header-section-number">11.2</span> Power analysis for simple hypothesis tests</a></li>
+  <li><a href="#power-analysis-for-linear-regression-models" id="toc-power-analysis-for-linear-regression-models" class="nav-link" data-scroll-target="#power-analysis-for-linear-regression-models"><span class="header-section-number">11.3</span> Power analysis for linear regression models</a></li>
+  <li><a href="#power-analysis-for-log-likelihood-regression-models" id="toc-power-analysis-for-log-likelihood-regression-models" class="nav-link" data-scroll-target="#power-analysis-for-log-likelihood-regression-models"><span class="header-section-number">11.4</span> Power analysis for log-likelihood regression models</a></li>
+  <li><a href="#power-analysis-for-hierarchical-regression-models" id="toc-power-analysis-for-hierarchical-regression-models" class="nav-link" data-scroll-target="#power-analysis-for-hierarchical-regression-models"><span class="header-section-number">11.5</span> Power analysis for hierarchical regression models</a></li>
+  <li><a href="#power-analysis-using-python" id="toc-power-analysis-using-python" class="nav-link" data-scroll-target="#power-analysis-using-python"><span class="header-section-number">11.6</span> Power analysis using Python</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/power_tests.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -315,7 +321,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-power-tests" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></h1>
+<h1 class="title"><span id="sec-power-tests" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></h1>
 </div>
 
 
@@ -341,8 +347,8 @@ window.Quarto = {
 </ol>
 <p>Both prospective and retrospective experiments can involve a lot of work—either in setting up experiments or in extracting data from history. There is a natural question as to whether the chances of success justify the required resources and effort. Before proceeding in these cases, it is sensible to get a point of view on the likely power of the experiment and what level of sample size might be needed in order to establish a meaningful inference. For this reason, power analysis is a common component of research proposals in the medical or social sciences.</p>
 <p>Power analysis is a relatively blunt instrument whose primary value is to make sure that substantial effort is not being wasted on foolhardy research. If the analyst already has reasonably available data and wants to test for the effect of a certain phenomenon, the most direct approach is to just go and run the appropriate model assuming that it is relatively straightforward to do so. Power analysis should only be considered if there is clearly some substantial labor involved in the proposed modeling work.</p>
-<section id="errors-effect-sizes-and-statistical-power" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="errors-effect-sizes-and-statistical-power"><span class="header-section-number">10.1</span> Errors, effect sizes and statistical power</h2>
+<section id="errors-effect-sizes-and-statistical-power" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="errors-effect-sizes-and-statistical-power"><span class="header-section-number">11.1</span> Errors, effect sizes and statistical power</h2>
 <p>Before looking at practical ways to conduct power tests on proposed experiments, let’s review an example of the logical and mathematical principles behind power testing, so that we understand what the results of power tests mean. Recall from <a href="primer_stats.html#sec-hyp-tests" class="quarto-xref"><span>Section 3.3</span></a> the logical mechanisms for testing hypotheses of statistical difference. Given data on samples of two groups in a population, the <em>null hypothesis</em> <span class="math inline">\(H_0\)</span> is the hypothesis that a difference does not exist between the groups in the overall population. If the null hypothesis is rejected, we entertain the alternative hypothesis <span class="math inline">\(H_1\)</span> that a difference may exist between the groups in the population.</p>
 <p>Recall also that we use the statistical properties of the samples to make inferences about the null hypothesis based on statistical likelihood. This means that four possible situations can occur when we run hypothesis tests:</p>
 <ol type="1">
@@ -370,8 +376,8 @@ window.Quarto = {
 <p>where <span class="math inline">\(\Phi\)</span> is the cumulative normal probability distribution function, and <span class="math inline">\(d = \frac{\mu_1 - \mu_0}{\sigma}\)</span> is known as <em>Cohen’s effect size</em>. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen’s <span class="math inline">\(d\)</span>) the significance level <span class="math inline">\(\alpha\)</span> and the sample size <span class="math inline">\(n\)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis. We can assert a minimum level of statistical power that we would wish for—usually this is somewhere between 0.8 and 0.9. We can also assert our <span class="math inline">\(\alpha\)</span>. But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size). This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Practically speaking, looking at ranges of values will be common in power analysis.</p>
 </section>
-<section id="sec-simple-stats" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="sec-simple-stats"><span class="header-section-number">10.2</span> Power analysis for simple hypothesis tests</h2>
+<section id="sec-simple-stats" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="sec-simple-stats"><span class="header-section-number">11.2</span> Power analysis for simple hypothesis tests</h2>
 <p>Usually we will run power analyses to get a sense of required sample sizes. Given the observations on unknowns in the previous section, we will have to assert certain possible statistical results in order to estimate required sample sizes. Most often, we will need to suggest the observed effect size in order to obtain the minimum sample size for that effect size to return a statistically significant result at a desired level of statistical power.</p>
 <p>Using our example from the previous section, let’s assume that we would see a ‘medium’ effect size on our samples. <em>Cohen’s Rule of Thumb</em> for <span class="math inline">\(d\)</span> states that <span class="math inline">\(d = 0.2\)</span> is a small effect size, <span class="math inline">\(d = 0.5\)</span> a medium effect size and <span class="math inline">\(d = 0.8\)</span> a large effect size. We can use the <code>wp.t()</code> function from the <code>WebPower</code> package in R to do a power analysis on a paired two-sample <span class="math inline">\(t\)</span>-test and return a minimum required sample size. We can assume <span class="math inline">\(d = 0.5\)</span> and that we require a power of 0.8—that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.</p>
 <div class="cell">
@@ -403,7 +409,7 @@ NOTE: n is number of *pairs*
 URL: http://psychstat.org/ttest</code></pre>
 </div>
 </div>
-<p>This tells us that a minimum sample size of 40 would result in a power of 0.87. A similar process can be used to plot the dependence between power and sample size under various conditions as in <a href="#fig-powersampleplot" class="quarto-xref">Figure&nbsp;<span>10.1</span></a>. This is known as a <em>power curve</em>.</p>
+<p>This tells us that a minimum sample size of 40 would result in a power of 0.87. A similar process can be used to plot the dependence between power and sample size under various conditions as in <a href="#fig-powersampleplot" class="quarto-xref">Figure&nbsp;<span>11.1</span></a>. This is known as a <em>power curve</em>.</p>
 <div id="fig-powersampleplot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-powersampleplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -423,11 +429,11 @@ URL: http://psychstat.org/ttest</code></pre>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powersampleplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.1: Plot of power against sample size for a paired t-test
+Figure&nbsp;11.1: Plot of power against sample size for a paired t-test
 </figcaption>
 </figure>
 </div>
-<p>We can see a ‘sweet spot’ of approximately 40–60 minimum required participants, and a diminishing return on statistical power over and above this. Similarly we can plot a proposed minimum sample size against a range of effect sizes as in <a href="#fig-powerdplot" class="quarto-xref">Figure&nbsp;<span>10.2</span></a>.</p>
+<p>We can see a ‘sweet spot’ of approximately 40–60 minimum required participants, and a diminishing return on statistical power over and above this. Similarly we can plot a proposed minimum sample size against a range of effect sizes as in <a href="#fig-powerdplot" class="quarto-xref">Figure&nbsp;<span>11.2</span></a>.</p>
 <div id="fig-powerdplot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-powerdplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -449,11 +455,11 @@ Figure&nbsp;10.1: Plot of power against sample size for a paired t-test
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerdplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.2: Plot of power against effect size for a paired t-test
+Figure&nbsp;11.2: Plot of power against effect size for a paired t-test
 </figcaption>
 </figure>
 </div>
-<p>Similar power test variants exist for other common simple hypothesis tests. Let’s assume that we want to institute a screening test in a recruiting process, and we want to validate this test by running it on a random set of employees with the aim of proving that the test score has a significant non-zero correlation with job performance. If we assume that we will see a moderate correlation of <span class="math inline">\(r = 0.3\)</span> in our sample<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, we can use the <code>wp.correlation()</code> function in <code>WebPower</code> to do a power analysis, resulting in <a href="#fig-correlpower" class="quarto-xref">Figure&nbsp;<span>10.3</span></a>.</p>
+<p>Similar power test variants exist for other common simple hypothesis tests. Let’s assume that we want to institute a screening test in a recruiting process, and we want to validate this test by running it on a random set of employees with the aim of proving that the test score has a significant non-zero correlation with job performance. If we assume that we will see a moderate correlation of <span class="math inline">\(r = 0.3\)</span> in our sample<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, we can use the <code>wp.correlation()</code> function in <code>WebPower</code> to do a power analysis, resulting in <a href="#fig-correlpower" class="quarto-xref">Figure&nbsp;<span>11.3</span></a>.</p>
 <div id="fig-correlpower" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-correlpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -471,19 +477,19 @@ Figure&nbsp;10.2: Plot of power against effect size for a paired t-test
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-correlpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.3: Plot of power against sample size for a correlation test
+Figure&nbsp;11.3: Plot of power against sample size for a correlation test
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-correlpower" class="quarto-xref">Figure&nbsp;<span>10.3</span></a> informs us that we will likely want to be hitting at least 100 employees in our study to have any reasonable chance of establishing possible validity for our screening test.</p>
+<p><a href="#fig-correlpower" class="quarto-xref">Figure&nbsp;<span>11.3</span></a> informs us that we will likely want to be hitting at least 100 employees in our study to have any reasonable chance of establishing possible validity for our screening test.</p>
 </section>
-<section id="power-analysis-for-linear-regression-models" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="power-analysis-for-linear-regression-models"><span class="header-section-number">10.3</span> Power analysis for linear regression models</h2>
+<section id="power-analysis-for-linear-regression-models" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="power-analysis-for-linear-regression-models"><span class="header-section-number">11.3</span> Power analysis for linear regression models</h2>
 <p>In power tests of linear regression models, the effect size is a statistic of the difference in model fit between the two models being compared. Most commonly this will be a comparison of a ‘full’ fitted model involving specific input variables compared to a ‘reduced’ model with fewer input variables (often a random variance model with no input variables).</p>
 <p>The <span class="math inline">\(f^2\)</span> statistic is defined as follows:</p>
 <p><span class="math display">\[
 f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^2}
-\]</span> where the formula refers to the <span class="math inline">\(R^2\)</span> fit statistics for the two models being compared. As an example, imagine we already know that GPA in college has a significant relationship with job performance, and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA. We might run two linear regression models, one relating job performance to GPA, and another relating job performance to <em>both</em> GPA and screening test score. Assuming we would observe a relatively small effect size for our screening test, we assume <span class="math inline">\(f^2 = 0.05\)</span><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, we can plot sample size against power in determining whether the two models are significantly different. We will also need to define the number of predictors in the full model (<code>p1 = 2</code>) and the reduced model (<code>p2 = 1</code>). The plot is shown in <a href="#fig-regressionpower" class="quarto-xref">Figure&nbsp;<span>10.4</span></a>.</p>
+\]</span> where the formula refers to the <span class="math inline">\(R^2\)</span> fit statistics for the two models being compared. As an example, imagine we already know that GPA in college has a significant relationship with job performance, and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA. We might run two linear regression models, one relating job performance to GPA, and another relating job performance to <em>both</em> GPA and screening test score. Assuming we would observe a relatively small effect size for our screening test, we assume <span class="math inline">\(f^2 = 0.05\)</span><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, we can plot sample size against power in determining whether the two models are significantly different. We will also need to define the number of predictors in the full model (<code>p1 = 2</code>) and the reduced model (<code>p2 = 1</code>). The plot is shown in <a href="#fig-regressionpower" class="quarto-xref">Figure&nbsp;<span>11.4</span></a>.</p>
 <div id="fig-regressionpower" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-regressionpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -503,13 +509,13 @@ f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-regressionpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.4: Plot of power against sample size for a small effect of a second input variable in a linear regression model
+Figure&nbsp;11.4: Plot of power against sample size for a small effect of a second input variable in a linear regression model
 </figcaption>
 </figure>
 </div>
 </section>
-<section id="power-analysis-for-log-likelihood-regression-models" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="power-analysis-for-log-likelihood-regression-models"><span class="header-section-number">10.4</span> Power analysis for log-likelihood regression models</h2>
+<section id="power-analysis-for-log-likelihood-regression-models" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="power-analysis-for-log-likelihood-regression-models"><span class="header-section-number">11.4</span> Power analysis for log-likelihood regression models</h2>
 <p>In <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>, we reviewed how measures of fit for log-likelihood models are still the subject of some debate. Given this, it is unsurprising that measures of effect size for log-likelihood models are not well established. The most well-developed current method appeared in <span class="citation" data-cites="demidenko">Demidenko (<a href="bibliography.html#ref-demidenko" role="doc-biblioref">2007</a>)</span>, and works when we want to do a power test on a single input variable <span class="math inline">\(x\)</span> using the Wald test on the significance of model coefficients (see <a href="ordinal_regression.html#sec-wald" class="quarto-xref"><span>Section 7.3.2</span></a> for a reminder of the Wald test).</p>
 <p>In this method, the statistical power of a significance test on the input variable <span class="math inline">\(x\)</span> is determined using multiple inputs as follows:</p>
 <ol type="1">
@@ -518,7 +524,7 @@ Figure&nbsp;10.4: Plot of power against sample size for a small effect of a seco
 <li>A distribution for <span class="math inline">\(x\)</span> is inputted (<code>family</code> below) and the parameters of that distribution are also entered (<code>parameter</code> below). For example, if the distribution is assumed to be normal then the mean and standard deviation would be entered as parameters.</li>
 <li>This information is fed into the Wald test, and the power for specific sample sizes is calculated.</li>
 </ol>
-<p>For example, let’s assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion. We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21. We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2 percentage points. We run the <code>wp.logistic()</code> function in <code>WebPower</code> to plot a power curve for various sample sizes as in <a href="#fig-logisticpower" class="quarto-xref">Figure&nbsp;<span>10.5</span></a>.</p>
+<p>For example, let’s assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion. We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21. We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2 percentage points. We run the <code>wp.logistic()</code> function in <code>WebPower</code> to plot a power curve for various sample sizes as in <a href="#fig-logisticpower" class="quarto-xref">Figure&nbsp;<span>11.5</span></a>.</p>
 <div id="fig-logisticpower" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-logisticpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -540,23 +546,23 @@ Figure&nbsp;10.4: Plot of power against sample size for a small effect of a seco
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logisticpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.5: Plot of power against sample size for a single input variable in logistic regression
+Figure&nbsp;11.5: Plot of power against sample size for a single input variable in logistic regression
 </figcaption>
 </figure>
 </div>
 <p>This test suggests that we would need over 1000 individuals in our experiment in order to have at least an 80% chance of establishing the statistical significance of a true relationship between screening test score and promotion likelihood.</p>
 </section>
-<section id="power-analysis-for-hierarchical-regression-models" class="level2" data-number="10.5">
-<h2 data-number="10.5" class="anchored" data-anchor-id="power-analysis-for-hierarchical-regression-models"><span class="header-section-number">10.5</span> Power analysis for hierarchical regression models</h2>
+<section id="power-analysis-for-hierarchical-regression-models" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="power-analysis-for-hierarchical-regression-models"><span class="header-section-number">11.5</span> Power analysis for hierarchical regression models</h2>
 <p>Power tests for explicit hierarchical models usually originate from the context of the design of clinical trials, which not only concern themselves with the entire sample size of a study but also need to determine the split of that sample between treatment and control. It is rare that power analysis would need to be conducted for hierarchical models in people analytics but the technology is available in the <code>WebPower</code> package to explore this.</p>
 <p><em>Cluster randomized trials</em> are trials where it is not possible to allocate individuals randomly to treatment or control groups and where entire clusters have been allocated at random instead. This creates substantial additional complexity in understanding statistical power and required sample sizes. The <code>wp.crt2arm()</code> function in <code>WebPower</code> supports power analysis on 2-arm trials (treatment and control), and the <code>wp.crt3arm()</code> function supports power analysis on 3-arm trials (Two different treatments and a control).</p>
 <p><em>Multisite randomized trials</em> are trials where individuals are assigned to treatment or control groups at random, but where these individuals also belong to different clusters which are important in modeling—for example, they may be members of clinical groups based on pre-existing conditions, or they may be being treated in different hospitals or outpatient facilities. Again, this makes for a substantially more complex calculation of statistical power. The <code>wp.mrt2arm()</code> and <code>wp.mrt3arm()</code> functions offer support for this.</p>
 <p>Power tests are also available for structural equation models. This involves comparing a more ‘complete’ structural model to a ‘subset’ model where some of the coefficients from the more ‘complete’ model are set to zero. Such power tests can be valuable when structural models have been applied previously on responses to survey instruments and there is an intention to test alternative models in the future. They can provide information on required future survey participation and response rates in order to establish whether the improved fit can be established for the alternative models.</p>
 <p>There are two approaches to power tests for structural equation models, using a chi square test and a root mean squared error (RMSEA) approach. Both of these methods take a substantial number of input parameters, consistent with the complexity of structural equation model parameters and the various alternatives for measuring fit of these models. The chi square test approach is implemented by the <code>wp.sem.chisq()</code> function, and the RMSEA approach is implemented by the <code>wp.sem.rmsea()</code> function in <code>WebPower</code>.</p>
 </section>
-<section id="power-analysis-using-python" class="level2" data-number="10.6">
-<h2 data-number="10.6" class="anchored" data-anchor-id="power-analysis-using-python"><span class="header-section-number">10.6</span> Power analysis using Python</h2>
-<p>A limited set of resources for doing power analysis is available in the <code>stats.power</code> module of the <code>statsmodels</code> package. As an example, here is how we would conduct the power analysis for a paired <span class="math inline">\(t\)</span>-test as in <a href="#sec-simple-stats" class="quarto-xref"><span>Section 10.2</span></a> above.</p>
+<section id="power-analysis-using-python" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="power-analysis-using-python"><span class="header-section-number">11.6</span> Power analysis using Python</h2>
+<p>A limited set of resources for doing power analysis is available in the <code>stats.power</code> module of the <code>statsmodels</code> package. As an example, here is how we would conduct the power analysis for a paired <span class="math inline">\(t\)</span>-test as in <a href="#sec-simple-stats" class="quarto-xref"><span>Section 11.2</span></a> above.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.power <span class="im">import</span> TTestPower</span>
@@ -570,7 +576,7 @@ Figure&nbsp;10.5: Plot of power against sample size for a single input variable 
 <pre><code>34</code></pre>
 </div>
 </div>
-<p>And a power curve can be constructed as in <a href="#fig-pythonpowerplot" class="quarto-xref">Figure&nbsp;<span>10.6</span></a>.</p>
+<p>And a power curve can be constructed as in <a href="#fig-pythonpowerplot" class="quarto-xref">Figure&nbsp;<span>11.6</span></a>.</p>
 <div id="fig-pythonpowerplot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pythonpowerplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -593,7 +599,7 @@ Figure&nbsp;10.5: Plot of power against sample size for a single input variable 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pythonpowerplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.6: Plot of power against sample size for a paired t-test
+Figure&nbsp;11.6: Plot of power against sample size for a paired t-test
 </figcaption>
 </figure>
 </div>
@@ -1018,12 +1024,12 @@ Demidenko, Eugene. 2007. <span>“Sample Size Determination for Logistic Regress
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./survival_analysis.html" class="pagination-link" aria-label="Survival Analysis for Modeling Singular Events Over Time">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./further.html" class="pagination-link" aria-label="Further Exercises for Practice">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

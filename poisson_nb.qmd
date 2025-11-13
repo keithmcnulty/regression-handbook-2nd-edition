@@ -1,0 +1,456 @@
+# Poisson and Negative Binomial Regression for Count Outcomes {#sec-count-reg}
+
+In the previous chapters, we have explored how to model outcomes that are continuous, binary or multinomial in nature. We now turn our attention to another common type of data in people analytics: count data. Count data consists of non-negative integers (0, 1, 2, 3, ...) that represent the number of times an event has occurred within a specific period of time, location, or group. Examples in the workplace are numerous: the number of safety incidents in a factory per month, the number of days an employee was absent in a year, the number of hires made by a recruiting team in a quarter, or the number of customer complaints received by a service agent in a week.
+
+Because count data is not continuous and is bounded below at zero, linear regression is not appropriate. The assumptions of normality and constant variance of residuals are typically violated. A linear model could also illogically predict negative counts. While we could model a binary outcome (e.g., 'had at least one absence' vs. 'had zero absences') using logistic regression, this approach throws away a lot of valuable information about the magnitude of the count.
+
+To properly model count outcomes, we turn to other members of the generalized linear model (GLM) family.  First we will look at Poisson regression. Poisson regression is specifically designed for count data and, like logistic regression, uses a transformation--—in this case, the natural logarithm—--to establish a linear relationship between the input variables and the (transformed) outcome. However, Poisson regression rests on a very strong assumption that the mean and variance of the count variable are equal. When this assumption is violated, a condition known as *overdispersion* occurs, and the Poisson model's estimates can become unreliable. In this case, we will see that a related model, Negative Binomial regression, provides a more flexible and robust alternative. Mastering these two techniques is essential for any analyst who wants to understand the drivers of event-based phenomena in the workplace.
+
+## When to use it
+
+### Origins and intuition of the Poisson distribution {#sec-poisson-origins}
+
+The Poisson distribution is named after the French mathematician Siméon Denis Poisson, who introduced it in 1837 in a work that focused on the probability of wrongful convictions in court cases^[In fact, the distribution had already been discovered by the famous French mathematician Abraham De Moivre in the early 18th century.]. However, the distribution's most famous early application came sixty years later from the Polish-Russian economist and statistician Ladislaus von Bortkiewicz.
+
+Bortkiewicz analyzed data on the number of Prussian cavalry soldiers who were fatally kicked by their horses each year across 14 different army corps over a 20-year period.  He observed that this was a "rare event." In any given corps in any given year, the number of deaths was very low, but it was not zero. He found that the observed frequency of 0, 1, 2, or more deaths per corps-year closely matched the predictions of the Poisson distribution. The key insight is that the Poisson distribution effectively models the number of times an event occurs in a fixed interval of time or space, given that these events happen with a known constant mean rate (denoted by $\lambda$) and are independent of the time since the last event. The shape of the distribution for different mean rates is shown in @fig-poisson-dist. For a low mean, the distribution is highly skewed with most observations at or near zero. As the mean increases, the distribution becomes more symmetric and starts to resemble a normal distribution.
+
+::: {#fig-poisson-dist}
+```{r}
+#| fig.align: "center"
+#| echo: false
+library(ggplot2)
+
+# Create data for different lambda values
+lambda_values <- c(1, 4, 10)
+x <- 0:20
+data_list <- list()
+
+for (lambda in lambda_values) {
+  data_list[[length(data_list) + 1]] <- data.frame(
+    x = x,
+    probability = dpois(x, lambda),
+    lambda = as.factor(lambda)
+  )
+}
+
+plot_data <- do.call(rbind, data_list)
+
+ggplot(plot_data, aes(x = x, y = probability, fill = lambda)) +
+  geom_bar(stat = "identity", position = "dodge", alpha = 0.7) +
+  labs(x = "Count", y = "Probability") +
+  scale_fill_manual(values = c("red", "blue", "green"),
+                    name = expression(lambda)) +
+  theme_minimal()
+```
+
+Poisson distributions showing how the shape changes with different mean event rates $\lambda$
+:::
+
+
+The core idea of modeling rates is central to Poisson regression. We are not just modeling a count; we are modeling the *expected rate* at which events occur, and then examining how different factors or characteristics influence that rate.
+
+### Use cases for Poisson and Negative Binomial regression
+
+Poisson and Negative Binomial regression can be used when the outcome of interest is a count of events. Here are some example questions that could be approached using these methods:
+
+*   What are the characteristics of employees that are associated with a higher number of days of unplanned absence per year?
+*   What are the characteristics of job postings that are associated with a higher number of applicants in the first 30 days?
+*   What elements in a factory's environment are related to the number of safety incidents per month?
+
+### Walkthrough example {#sec-walkthrough-poisson}
+
+performance_rating <- round(rnorm(n, 3.5, 0.7))You are an analyst at a large technology firm. The HR leadership team is concerned about employee absenteeism and wants to understand its drivers to better target support and intervention programs. They believe that factors like an employee's tenure with the company, their performance, and whether or not they are a manager could all play a role.
+
+You are provided with a data set of 865 employees for the most recent full year. The `absenteeism` data set contains the following fields:
+
+*   `days_absent`: The number of unscheduled days of absence for the employee in the last calendar year (our outcome variable).
+*   `tenure`: The employee's tenure at the company in years.
+*   `is_manager`: A binary value indicating 1 if the employee is a manager and 0 if not.
+*   `performance_rating`: The employee's most recent performance score on a scale from 1 to 5.
+
+
+Let's download the `absenteeism` data set and take a quick look at it.
+
+```{r}
+# if needed, download data
+url <- "http://peopleanalytics-regression-book.org/data/absenteeism.csv"
+absenteeism <- read.csv(url)
+```
+
+```{r}
+head(absenteeism)
+```
+
+The data looks as expected, but we should do some type conversion for the `is_manager` column before we get a summary.
+
+```{r}
+# convert is_manager to factor
+absenteeism$is_manager <- as.factor(absenteeism$is_manager)
+
+summary(absenteeism)
+```
+
+We see that `days_absent` ranges from `{r} min(absenteeism$days_absent)` to `{r} max(absenteeism$days_absent)`, with a mean of `{r} round(mean(absenteeism$days_absent), 2)`. The input variables all seem to be within reasonable ranges. Let's create a pairplot to get an initial feel for the relationships in the data, as shown in @fig-poisson-pairplot.
+
+::: {#fig-poisson-pairplot}
+```{r}
+#| fig.align: "center"
+#| warning: false
+library(GGally)
+
+# generate pairplot
+GGally::ggpairs(absenteeism)
+```
+
+Pairplot for the `absenteeism` data set
+:::
+
+The most striking feature of the pairplot is the distribution of our outcome variable, `days_absent`. It is highly right-skewed, with most employees having a low number of absences and a "long tail" of employees with a high number of absences. This is a classic shape for count data, and suggests that Poisson regression is a good initial approach for this problem.
+
+## Modeling count outcomes with Poisson regression {#sec-mod-poisson}
+
+We cannot directly model a count outcome with a linear equation because the expected count must be non-negative. As with logistic regression, we will need a transformation to connect the linear combination of our input variables to the expected count.
+
+### The Poisson model and the log transformation
+
+The formula for the Poisson distribution gives the probability of observing exactly $k$ events in an interval, given a mean event rate of $\lambda$:
+
+$$
+P(Y=k) = \frac{\lambda^k e^{-\lambda}}{k!}
+$$
+
+We assume that the expected event count $\lambda_i$ for each individual observation $i$ depends on that observation's input variables ($x_{i1}, x_{i2}, \dots, x_{ip}$). To ensure that our predicted $\lambda_i$ is always positive, we model the *natural logarithm* of $\lambda_i$ as a linear function of the input variables. This is the *log transformation*.
+
+$$
+\ln(\lambda_i) = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_px_{ip}
+$$
+
+This equation should look familiar. It's a linear model, just like in linear regression. The crucial difference is that we are not modeling the expected count outcome directly; we are modeling the *log of the expected count*.
+
+By exponentiating both sides, we can see how the input variables relate to the expected count itself:
+
+$$
+\begin{aligned}
+\lambda_i &= e^{\beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_px_{ip}} \\
+&= e^{\beta_0}(e^{\beta_1})^{x_{i1}}(e^{\beta_2})^{x_{i2}}\dots(e^{\beta_p})^{x_{ip}}
+\end{aligned}
+$$
+
+This shows that the effects of the input variables are multiplicative on the expected count $\lambda_i$. This is analogous to work we have done in previous chapters, where logistic regression coefficients have a multiplicative effect on the odds of an outcome.
+
+### Fitting and interpreting a Poisson regression model
+
+Let's fit a Poisson model to our `absenteeism` data to understand the drivers of absent days. We use the `glm()` function, specifying `family = "poisson"` which automatically uses the log transformation.
+
+```{r}
+# run a poisson model
+absent_poisson_model <- glm(formula = days_absent ~ tenure + is_manager + performance_rating,
+                            data = absenteeism,
+                            family = "poisson")
+
+# view the summary
+summary(absent_poisson_model)
+```
+
+The summary output is similar to what we've seen before. We have coefficient estimates, standard errors, z-values, and p-values. Let's interpret the `tenure` coefficient.  For a one-year increase in `tenure`, the log of the expected number of absent days increases by `{r} round(coef(absent_poisson_model)["tenure"], 4)`, holding all other variables constant. A much more intuitive interpretation comes from exponentiating the coefficients. The exponentiated value is called an **Incidence Rate Ratio (IRR)**.  The IRR tells us the multiplicative factor by which the expected count changes for a one-unit increase in the predictor.
+
+Let's calculate the IRRs for our model.
+
+```{r}
+# Exponentiate coefficients to get Incidence Rate Ratios (IRRs)
+(irr <- exp(coef(absent_poisson_model)))
+```
+
+Now we can interpret these more easily:
+
+*   **Intercept:** `{r} round(irr[1], 2)` is the expected number of absent days for a brand new non-manager with a performance rating of 1. This is not practically meaningful, but serves as the baseline for the model.
+*   **tenure:** The IRR is `{r} round(irr["tenure"], 4)`. For each additional year of tenure, the expected count of absent days increases by about `{r} round((irr["tenure"] - 1)*100, 2)`%, holding other factors constant.
+*   **is_manager1:** The IRR is `{r} round(irr["is_manager1"], 4)`. This means that being a manager (compared to not being a manager) is associated with an expected absent day count that is `{r} round(irr["is_manager1"], 4)` times the count for a non-manager, or about `{r} round((1 - irr["is_manager1"])*100, 2)`% lower, holding other factors constant.
+*   **performance_rating:** The IRR is `{r} round(irr["performance_rating"], 4)`. For each one-point increase in performance score, the expected number of absent days decreases by about `{r} round((1 - irr["performance_rating"])*100, 2)`%, holding other factors constant.  However, this effect is not statistically significant.
+
+Just as with logistic regression, we can calculate confidence intervals for these IRRs to understand the range of plausible values for the effect.
+
+```{r}
+# Confidence intervals for the IRRs
+exp(confint(absent_poisson_model))
+```
+
+For example, we are 95% confident that for each additional year of tenure, the incidence rate ratio is between `{r} round(exp(confint(absent_poisson_model))["tenure", 1], 3)` and `{r} round(exp(confint(absent_poisson_model))["tenure", 2], 3)`. Since this entire range is above 1, we can be confident that the relationship is positive and statistically significant.
+
+## Model Diagnostics: Overdispersion
+
+Before we can trust our Poisson model's conclusions, we must check its primary assumption: that the mean (expected value) and variance of the count outcome are approximately equal. That is, $E(Y) \approx Var(Y)$.  In real-world data, this assumption is rarely met. It is far more common for the variance to be larger than the mean. This is called **overdispersion** ($Var(Y) > E()$).
+
+Overdispersion often occurs for a number of reasons, including:
+
+1. **Unobserved Heterogeneity:** There may be other unmeasured factors that influence the count. For instance, in our example some employees might have chronic health conditions that make them more prone to absence. This creates extra variability in the counts that is not captured by our input variables.
+
+2. **Clustering or Non-independence:** Events may not be independent. If one person in a team gets a virus or flu, it might spread, leading to a cluster of absences. This violates the Poisson assumption that events are independent.
+
+If we use a Poisson model on overdispersed data, the coefficient estimates ($\beta$) are still unbiased (correct on average), but their standard errors are underestimated. This makes the z-scores artificially large and the p-values artificially small. We might therefore conclude that a predictor is statistically significant when, in fact, it is not. Therefore, the model can become overconfident in its findings.
+
+### Detecting Overdispersion
+
+There are several ways to check for overdispersion.
+
+1.  **Compare Mean and Variance:** The simplest check is to compare the raw mean and variance of our outcome variable.
+
+    ```{r}
+    c(mean = mean(absenteeism$days_absent), 
+      variance = var(absenteeism$days_absent))
+    ```
+    
+The variance (`{r} round(var(absenteeism$days_absent), 2)`) is much larger than the mean (`{r} round(mean(absenteeism$days_absent), 2)`), which is a strong initial sign of overdispersion.
+
+2.  **Calculate the Dispersion Parameter:** A more formal check comes from the model itself. The dispersion parameter is calculated by dividing the model's residual deviance by its residual degrees of freedom. For a Poisson model, this value should be close to 1. A value significantly greater than 1 indicates overdispersion.
+
+    ```{r}
+    # Calculate dispersion parameter
+    (dispersion_param <- summary(absent_poisson_model)$deviance / summary(absent_poisson_model)$df.residual)
+    ```
+
+
+Our dispersion parameter of `{r} round(dispersion_param, 2)` is substantially greater than 1, confirming that our data is overdispersed and the Poisson model is likely not appropriate.
+
+3.  **Formal Hypothesis Test:** The `AER` package provides a formal test for overdispersion. The null hypothesis is that the data is equidispersed (mean = variance), while the alternative is that it is overdispersed. A small p-value provides evidence for overdispersion.
+
+    ```{r}
+    #| message: false
+    library(AER)
+    dispersiontest(absent_poisson_model)
+    ```
+
+The very small p-value leads us to reject the null hypothesis and conclude that overdispersion is present. This suggests that we should search for an alternative approach that can handle overdispersed count data.
+
+## Negative Binomial Regression for Overdispersed Count Data {#sec-neg-bin}
+
+When we have confirmed that our count data is overdispersed, the alternative method to use is Negative Binomial regression. The Negative Binomial distribution is a generalization of the Poisson distribution that includes an additional parameter, called the dispersion parameter $\theta$ (theta), which allows the variance to be greater than the mean.
+
+The variance for a Negative Binomial distribution is modeled as:
+
+$$
+Var(Y) = \mu + \frac{\mu^2}{\theta}
+$$
+
+Here, $\mu$ is the mean (equivalent to $\lambda$ in the Poisson model). The term $\frac{\mu^2}{\theta}$ allows for the extra variance. As the dispersion parameter $\theta$ gets larger and approaches infinity, the term $\frac{\mu^2}{\theta}$ approaches zero, and the variance approaches the mean, $\mu$. In this case, the Negative Binomial distribution converges to the Poisson distribution. A smaller $\theta$ indicates greater overdispersion.
+
+### Fitting and Interpreting a Negative Binomial Model
+
+We can fit an Negative Binomial model in R using the `glm.nb()` function from the `MASS` package (which comes with R). The syntax is identical to `glm()`.
+
+```{r}
+#| message: false
+library(MASS)
+
+# run a negative binomial model
+absent_nb_model <- glm.nb(formula = days_absent ~ tenure + is_manager + performance_rating,
+                          data = absenteeism)
+
+# view the summary
+summary(absent_nb_model)
+```
+
+The output looks very similar to the Poisson summary, but with one key addition: at the bottom, we see "Theta: `{r} round(absent_nb_model$theta, 4)`". This is the estimated dispersion parameter $\theta$. The `summary()` also provides a standard error for $\theta$ and tests whether it is significantly different from infinity (i.e., whether the Negative Binomial model is a significant improvement over the Poisson model).
+
+The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get Incidence Rate Ratios (IRRs).
+
+```{r}
+# IRRs for the Negative Binomial model
+(irr_nb <- exp(coef(absent_nb_model)))
+```
+
+Let's compare these with the IRRs from our original Poisson model.
+
+```{r}
+# Compare IRRs side-by-side
+cbind(IRR_Poisson = irr, IRR_NB = irr_nb)
+```
+
+The point estimates for the IRRs are quite similar. This is expected, as the coefficients are generally unbiased even when a Poisson model is used on overdispersed data. The real difference is in the standard errors and p-values.
+
+```{r}
+# Compare standard errors
+cbind(SE_Poisson = summary(absent_poisson_model)$coefficients[, "Std. Error"],
+      SE_NB = summary(absent_nb_model)$coefficients[, "Std. Error"])
+```
+
+Notice that the standard errors for the Negative Binomial model are larger across the board. By accounting for the overdispersion, the Negative Binomial model provides more realistic (and conservative) estimates of the uncertainty around our coefficients. This leads to larger p-values and more trustworthy inferences. In this case, while `tenure` remains a significant input variable, we see that `is_manager` is no longer significant.
+
+### Comparing Poisson and Negative Binomial Models
+
+We have strong evidence that the Negative Binomial model is a better choice, but we can formally compare the models. Since the Poisson model is a nested version of the Negative Binomial model (it's what you get when $\theta \to \infty$), we can use a likelihood ratio test using the `lmtest` package to see if the addition of the $\theta$ parameter provides a significant improvement in fit.
+
+```{r}
+#| message: false
+library(lmtest)
+lrtest(absent_poisson_model, absent_nb_model)
+```
+The extremely small p-value indicates that the Negative Binomial model provides a significantly better fit to the data than the Poisson model.
+
+We can also compare the models using the Akaike Information Criterion (AIC), which as we have learned previously is a measure of model parsimony. Since both of our models use the same input variables,  a lower AIC indicates a better fit.
+
+```{r}
+AIC(absent_poisson_model, absent_nb_model)
+```
+The AIC for the Negative Binomial model is substantially lower than for the Poisson model, again confirming that it is the superior and more parsimonious model for our overdispersed data.
+
+## Other Considerations in Count Regression
+
+In this section we provide a brief overview of some additional topics that are relevant when working with count data.  For deeper study on this topic, @hilbe is an excellent introductory text, while @friendly provides a more advanced treatment on the analysis of discrete data more broadly.
+
+### Prediction
+
+Predicting expected counts from a new set of data works just like in other `glm` models. We use the `predict()` function with `type = "response"` to get the prediction on the original count scale (i.e., the expected number of events, $\lambda_i$).
+
+```{r}
+# define new observations
+(new_employees <- data.frame(tenure = c(2, 25, 15),
+                             is_manager = as.factor(c(0, 1, 0)),
+                             performance_rating = c(4, 3, 3)))
+
+# predict expected days absent using our final NB model
+predict(absent_nb_model, new_employees, type = "response")
+```
+
+### Exposure and Offsets
+
+Sometimes we are not just modeling a raw count, but a rate relative to some measure of "exposure". For example, we might want to model the number of safety incidents, but we know that a large factory with 1,000 employees is naturally going to have more incidents than a small one with 100 employees, even if the small factory is less safe. We need to control for this exposure.
+
+In this case, our outcome of interest is really the *rate* of incidents per employee. Let's say we model 
+
+$$
+E[\mathrm{incidents}_i] = \mathrm{rate}_i \times \mathrm{employees}_i
+$$  
+
+Taking logs, we get 
+
+$$
+\ln(E[\mathrm{incidents}_i]) = \ln(\mathrm{rate}_i) + \ln(\mathrm{employees}_i)
+$$
+
+We model the log-rate as a linear combination of input variables: 
+
+$$
+\ln(\mathrm{rate}_i) = \beta_0 + \beta_1x_{i1} + \dots
+$$  
+
+Substituting this in gives:
+
+$$
+\ln(E[\mathrm{incidents}_i]) = (\beta_0 + \beta_1x_{i1} + \dots) + \ln(\mathrm{employees}_i)
+$$
+
+The term $\ln(\mathrm{employees}_i)$ is called an **offset**. It is an input variable whose coefficient is fixed to 1. We include it in the model to account for the varying exposure time or group size. In R's `glm()` and `glm.nb()`, this is specified using the `offset()` function inside the formula.  For example
+
+```
+glm(incidents ~ X1 + X2 + offset(log(employees)), family=poisson)
+```
+
+### Zero-inflation
+
+Sometimes count data has an excess of zeros beyond what would be expected from a Poisson or Negative Binomial distribution. This can occur when there are two processes at work: one determining whether the event can occur at all, and another determining how many times it occurs. For example, some employees might never be absent due to perfect health and proximity to work (structural zeros), while others have some probability of absence following a count distribution.
+
+Zero-inflated Poisson and zero-inflated negative binomial models can handle such data by combining a binary model for the zero/non-zero outcome with a count model for the non-zero outcomes.  The `pscl` package in R offers a function `zeroinfl()` to fit these models.
+
+
+
+## Poisson and Negative Binomial Regression using Python
+
+In Python, count models can be fit using the `statsmodels` library, very similar to the linear and logistic regression models we have already seen.  First let's get our data set.
+
+
+
+```{python}
+import pandas as pd
+
+url = "http://peopleanalytics-regression-book.org/data/absenteeism.csv"
+absenteeism = pd.read_csv(url)
+```
+
+Now, we can fit our Poisson model.
+
+```{python}
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# Fit Poisson Model
+poisson_model = smf.glm(
+    formula="days_absent ~ tenure + is_manager + performance_rating",
+    data=absenteeism,
+    family=sm.families.Poisson()
+).fit()
+
+print(poisson_model.summary())
+```
+
+We exponentiate the coefficients to get Incidence Rate Ratios (IRRs):
+
+```{python}
+import numpy as np
+print(np.exp(poisson_model.params))
+```
+
+We can also fit our Negative Binomial model.
+
+```{python}
+#| warning: false
+# Fit Negative Binomial Model
+nb_model = smf.glm(
+    formula="days_absent ~ tenure + is_manager + performance_rating",
+    data=absenteeism,
+    family=sm.families.NegativeBinomial()
+).fit()
+
+print(nb_model.summary())
+```
+
+If needed, zero-inflated models can be fit using the `statsmodels` library's `ZeroInflatedPoisson` and `ZeroInflatedNegativeBinomialP` classes.
+
+## Learning exercises
+
+### Discussion questions
+
+1.  What are the key characteristics of count data? Why is linear regression not a suitable method for modeling it?
+2.  What are the main assumptions of the Poisson distribution? Which one is most frequently violated in practice?
+3.  In Poisson regression, we model the log of the expected count as a linear function of the input variables. Why do we use the log transformation? What does this imply about the effect of input variables on the expected count itself?
+4.  Explain the concept of an Incidence Rate Ratio (IRR). If a predictor has an IRR of 1.15, how would you interpret its effect? What about an IRR of 0.85?
+5.  What is overdispersion? Describe two common reasons why it might occur in people-related data.
+6.  What are the consequences of ignoring overdispersion and using a Poisson model regardless?
+7.  Describe three methods you could use to test for overdispersion in your data.
+8.  How does the Negative Binomial distribution differ from the Poisson distribution? Explain the role of the dispersion parameter $\theta$.
+9.  When would you use an offset in a count model? Provide a people-related example.
+10. What are zero-inflated models and when might they be needed?
+
+### Data exercises
+
+::: {.content-visible when-format="pdf"}
+A retail company wants to understand factors affecting the number of customer complaints received by their customer service representatives. Load the `complaints` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/complaints.csv]. It contains the following data:
+
+* `n_complaints`: The number of complaints received by the representative in the past month
+* `experience`: Years of experience in customer service
+* `training_hours`: Hours of training received in the past year  
+* `workload`: Average number of customer interactions per day
+* `shift`: The primary shift worked (Day, Evening, or Night)
+* `remote`: Whether the representative works remotely (1 = yes, 0 = no)
+* `satisfaction_score`: The representative's job satisfaction score (1-10 scale)
+
+1. Load the data and obtain statistical summaries. Check data types and handle any missing values. Create appropriate visualizations to understand the distribution of complaints.
+
+2. Check whether the mean and variance of `n_complaints` are similar. What does this tell you about potential overdispersion?
+
+3. Fit a Poisson regression model using all input variables. Which variables have significant effects on the number of complaints?
+
+4. Calculate and interpret the incidence rate ratios for the significant input variables.
+
+5. Perform diagnostic checks for your Poisson model, including tests for overdispersion and residual plots.
+
+6. Fit a negative binomial regression model with the same input variables. How do the results compare to the Poisson model?
+
+7. Compare the Poisson and negative binomial models using AIC and likelihood ratio tests. Which model is preferred and why?
+
+8. Create predictions for three hypothetical customer service representatives with different characteristics. Compare the predictions from both models.
+
+9. Write a brief report for management explaining your findings and recommendations for reducing customer complaints.
+
+10. **Extension:** Investigate whether there might be interaction effects between experience and training hours. Test this hypothesis and interpret the results if significant.
+:::

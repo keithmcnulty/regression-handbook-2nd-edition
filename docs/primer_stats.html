@@ -263,26 +263,32 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./poisson_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson and Negative Binomial Regression for Count Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./power_tests.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./further.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -722,7 +728,7 @@ mean of x mean of y
 </div>
 <p>Because our p-value is less than our alpha of 0.05, we reject the null hypothesis in favor of the alternative hypothesis. The standard <span class="math inline">\(\alpha = 0.05\)</span> is associated with the term <em>statistically significant</em>. Therefore we could say here that the two performance groups have a statistically significant difference in mean sales.</p>
 <p>In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty. While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example, some medical fields). Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with ‘indications’ from the data. In many statistical software packages, including those that we will see in this book, tests that meet an <span class="math inline">\(\alpha = 0.1\)</span> standard are usually marked with period(<code>.</code>), those that meet <span class="math inline">\(\alpha = 0.05\)</span> with an asterisk(<code>*</code>), <span class="math inline">\(\alpha = 0.01\)</span> a double asterisk(<code>**</code>) and <span class="math inline">\(\alpha = 0.001\)</span> a triple asterisk(<code>***</code>).</p>
-<p>Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data. In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards—a process known as ‘p-hacking’—has been of increasing concern recently. See <a href="power_tests.html" class="quarto-xref"><span>Chapter 10</span></a> for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.</p>
+<p>Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data. In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards—a process known as ‘p-hacking’—has been of increasing concern recently. See <a href="power_tests.html" class="quarto-xref"><span>Chapter 11</span></a> for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.</p>
 </section>
 <section id="sec-t-test-cor" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="sec-t-test-cor"><span class="header-section-number">3.3.2</span> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)</h3>

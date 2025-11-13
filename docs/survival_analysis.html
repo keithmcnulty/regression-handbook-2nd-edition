@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>9&nbsp; Survival Analysis for Modeling Singular Events Over Time – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>10&nbsp; Survival Analysis for Modeling Singular Events Over Time – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,7 +168,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./survival_analysis.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./survival_analysis.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -263,26 +263,32 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./poisson_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson and Negative Binomial Regression for Count Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./power_tests.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./further.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -301,18 +307,18 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#tracking-and-illustrating-survival-rates-over-the-study-period" id="toc-tracking-and-illustrating-survival-rates-over-the-study-period" class="nav-link active" data-scroll-target="#tracking-and-illustrating-survival-rates-over-the-study-period"><span class="header-section-number">9.1</span> Tracking and illustrating survival rates over the study period</a></li>
-  <li><a href="#sec-coxphmodel" id="toc-sec-coxphmodel" class="nav-link" data-scroll-target="#sec-coxphmodel"><span class="header-section-number">9.2</span> Cox proportional hazard regression models</a>
+  <li><a href="#tracking-and-illustrating-survival-rates-over-the-study-period" id="toc-tracking-and-illustrating-survival-rates-over-the-study-period" class="nav-link active" data-scroll-target="#tracking-and-illustrating-survival-rates-over-the-study-period"><span class="header-section-number">10.1</span> Tracking and illustrating survival rates over the study period</a></li>
+  <li><a href="#sec-coxphmodel" id="toc-sec-coxphmodel" class="nav-link" data-scroll-target="#sec-coxphmodel"><span class="header-section-number">10.2</span> Cox proportional hazard regression models</a>
   <ul class="collapse">
-  <li><a href="#running-a-cox-proportional-hazard-regression-model" id="toc-running-a-cox-proportional-hazard-regression-model" class="nav-link" data-scroll-target="#running-a-cox-proportional-hazard-regression-model"><span class="header-section-number">9.2.1</span> Running a Cox proportional hazard regression model</a></li>
-  <li><a href="#checking-the-proportional-hazard-assumption" id="toc-checking-the-proportional-hazard-assumption" class="nav-link" data-scroll-target="#checking-the-proportional-hazard-assumption"><span class="header-section-number">9.2.2</span> Checking the proportional hazard assumption</a></li>
+  <li><a href="#running-a-cox-proportional-hazard-regression-model" id="toc-running-a-cox-proportional-hazard-regression-model" class="nav-link" data-scroll-target="#running-a-cox-proportional-hazard-regression-model"><span class="header-section-number">10.2.1</span> Running a Cox proportional hazard regression model</a></li>
+  <li><a href="#checking-the-proportional-hazard-assumption" id="toc-checking-the-proportional-hazard-assumption" class="nav-link" data-scroll-target="#checking-the-proportional-hazard-assumption"><span class="header-section-number">10.2.2</span> Checking the proportional hazard assumption</a></li>
   </ul></li>
-  <li><a href="#frailty-models" id="toc-frailty-models" class="nav-link" data-scroll-target="#frailty-models"><span class="header-section-number">9.3</span> Frailty models</a></li>
-  <li><a href="#survival-analysis-using-python" id="toc-survival-analysis-using-python" class="nav-link" data-scroll-target="#survival-analysis-using-python"><span class="header-section-number">9.4</span> Survival analysis using Python</a></li>
-  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">9.5</span> Learning exercises</a>
+  <li><a href="#frailty-models" id="toc-frailty-models" class="nav-link" data-scroll-target="#frailty-models"><span class="header-section-number">10.3</span> Frailty models</a></li>
+  <li><a href="#survival-analysis-using-python" id="toc-survival-analysis-using-python" class="nav-link" data-scroll-target="#survival-analysis-using-python"><span class="header-section-number">10.4</span> Survival analysis using Python</a></li>
+  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">10.5</span> Learning exercises</a>
   <ul class="collapse">
-  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">9.5.1</span> Discussion questions</a></li>
-  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">9.5.2</span> Data exercises</a></li>
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">10.5.1</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">10.5.2</span> Data exercises</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/survival_analysis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -322,7 +328,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-survival" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></h1>
+<h1 class="title"><span id="sec-survival" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></h1>
 </div>
 
 
@@ -374,8 +380,8 @@ window.Quarto = {
 <li><code>left</code>: A binary variable indicating whether or not the individual had left their job as at the last follow-up</li>
 <li><code>month</code>: The month of the last follow-up</li>
 </ul>
-<section id="tracking-and-illustrating-survival-rates-over-the-study-period" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="tracking-and-illustrating-survival-rates-over-the-study-period"><span class="header-section-number">9.1</span> Tracking and illustrating survival rates over the study period</h2>
+<section id="tracking-and-illustrating-survival-rates-over-the-study-period" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="tracking-and-illustrating-survival-rates-over-the-study-period"><span class="header-section-number">10.1</span> Tracking and illustrating survival rates over the study period</h2>
 <p>In our example, we are defining ‘survival’ as ‘remaining in substantially the same job’‍. We can regard the starting point as month 0, and we are following up in each of months 1 through 12. For a given month <span class="math inline">\(i\)</span>, we can define a survival rate <span class="math inline">\(S_i\)</span> as follows</p>
 <p><span class="math display">\[
 S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
@@ -492,7 +498,7 @@ S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
    12    254       8    0.517 0.02218        0.476        0.563</code></pre>
 </div>
 </div>
-<p>We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs. The <code>ggsurvplot()</code> function in the <code>survminer</code> package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in <a href="#fig-survivalplot" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>.</p>
+<p>We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs. The <code>ggsurvplot()</code> function in the <code>survminer</code> package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in <a href="#fig-survivalplot" class="quarto-xref">Figure&nbsp;<span>10.1</span></a>.</p>
 <div id="fig-survivalplot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-survivalplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -519,14 +525,14 @@ S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-survivalplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.1: Survival curves by sentiment category in the <code>job_retention</code> data
+Figure&nbsp;10.1: Survival curves by sentiment category in the <code>job_retention</code> data
 </figcaption>
 </figure>
 </div>
 <p>This confirms that the survival difference between the two sentiment groups is statistically significant and provides a highly intuitive visualization of the effect of sentiment on retention throughout the period of study.</p>
 </section>
-<section id="sec-coxphmodel" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="sec-coxphmodel"><span class="header-section-number">9.2</span> Cox proportional hazard regression models</h2>
+<section id="sec-coxphmodel" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="sec-coxphmodel"><span class="header-section-number">10.2</span> Cox proportional hazard regression models</h2>
 <p>Let’s imagine that we have a survival outcome that we are modeling for a population over a time <span class="math inline">\(t\)</span>, and we are interested in how a set of input variables <span class="math inline">\(x_1, x_2, \dots, x_p\)</span> influences that survival outcome. Given that our survival outcome is a binary variable, we can model survival at any time <span class="math inline">\(t\)</span> as a binary logistic regression. We define <span class="math inline">\(h(t)\)</span> as the proportion who have not survived at time <span class="math inline">\(t\)</span>, called the <em>hazard function</em>, and based on our work in <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>:</p>
 <p><span class="math display">\[
 h(t) = h_0(t)e^{\beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p}
@@ -539,8 +545,8 @@ h(t) = h_0(t)e^{\beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p}
 \end{aligned}
 \]</span></p>
 <p>Note that there is no <span class="math inline">\(t\)</span> in our final equation. The important observation here is that the hazard for person B relative to person A is <em>constant and independent of time</em>. This allows us to take a complicating factor out of our model. It means we can model the effect of input variables on the hazard without needing to account for changes over times, making this model very similar in interpretation to a standard binomial regression model.</p>
-<section id="running-a-cox-proportional-hazard-regression-model" class="level3" data-number="9.2.1">
-<h3 data-number="9.2.1" class="anchored" data-anchor-id="running-a-cox-proportional-hazard-regression-model"><span class="header-section-number">9.2.1</span> Running a Cox proportional hazard regression model</h3>
+<section id="running-a-cox-proportional-hazard-regression-model" class="level3" data-number="10.2.1">
+<h3 data-number="10.2.1" class="anchored" data-anchor-id="running-a-cox-proportional-hazard-regression-model"><span class="header-section-number">10.2.1</span> Running a Cox proportional hazard regression model</h3>
 <p>A Cox proportional hazard model can be run using the <code>coxph()</code> function in the <code>survival</code> package, with the outcome as a survival object. Let’s model our survival against the input variables <code>gender</code>, <code>field</code>, <code>level</code> and <code>sentiment</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run cox model against survival outcome</span></span>
@@ -596,8 +602,8 @@ Score (logrank) test = 95.31  on 9 df,   p=&lt;2e-16</code></pre>
 </ul>
 <p>Importantly, as well as statistically validating that sentiment has a significant effect on retention, our Cox model has allowed us to control for possible mediating variables. We can now say that sentiment has a significant effect on retention even for individuals of the same gender, in the same field and at the same level.</p>
 </section>
-<section id="checking-the-proportional-hazard-assumption" class="level3" data-number="9.2.2">
-<h3 data-number="9.2.2" class="anchored" data-anchor-id="checking-the-proportional-hazard-assumption"><span class="header-section-number">9.2.2</span> Checking the proportional hazard assumption</h3>
+<section id="checking-the-proportional-hazard-assumption" class="level3" data-number="10.2.2">
+<h3 data-number="10.2.2" class="anchored" data-anchor-id="checking-the-proportional-hazard-assumption"><span class="header-section-number">10.2.2</span> Checking the proportional hazard assumption</h3>
 <p>Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption. As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.</p>
 <p>The most popular test of this assumption uses a residual known as a <em>Schoenfeld residual</em>, which would be expected to be independent of time if the proportional hazard assumption holds. The <code>cox.zph()</code> function in the <code>survival</code> package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time. The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.</p>
 <div class="cell">
@@ -611,7 +617,7 @@ sentiment  1.828  1 0.18
 GLOBAL    11.156  9 0.27</code></pre>
 </div>
 </div>
-<p>In our case, we can confirm that the proportional hazard assumption is not rejected. The <code>ggcoxzph()</code> function in the <code>survminer</code> package takes the result of the <code>cox.zph()</code> check and allows a graphical check by plotting the residuals against time, as seen in <a href="#fig-schoenfeld" class="quarto-xref">Figure&nbsp;<span>9.2</span></a>.</p>
+<p>In our case, we can confirm that the proportional hazard assumption is not rejected. The <code>ggcoxzph()</code> function in the <code>survminer</code> package takes the result of the <code>cox.zph()</code> check and allows a graphical check by plotting the residuals against time, as seen in <a href="#fig-schoenfeld" class="quarto-xref">Figure&nbsp;<span>10.2</span></a>.</p>
 <div id="fig-schoenfeld" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-schoenfeld-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -630,15 +636,15 @@ GLOBAL    11.156  9 0.27</code></pre>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schoenfeld-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.2: Schoenfeld test on proportional hazard assumption for <code>cox_model</code>
+Figure&nbsp;10.2: Schoenfeld test on proportional hazard assumption for <code>cox_model</code>
 </figcaption>
 </figure>
 </div>
 </section>
 </section>
-<section id="frailty-models" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="frailty-models"><span class="header-section-number">9.3</span> Frailty models</h2>
-<p>We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard. It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition. This is analogous to a mixed model which we looked at in <a href="hierarchical_data.html#sec-mixed" class="quarto-xref"><span>Section 8.1</span></a>.</p>
+<section id="frailty-models" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="frailty-models"><span class="header-section-number">10.3</span> Frailty models</h2>
+<p>We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard. It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition. This is analogous to a mixed model which we looked at in <a href="hierarchical_data.html#sec-mixed" class="quarto-xref"><span>Section 9.1</span></a>.</p>
 <p>In this case we would apply a random intercept effect to the base hazard function <span class="math inline">\(h_0(t)\)</span> according to the field of employment of an individual, in order to take this into account in our modeling. This kind of model is called a <em>frailty model</em>, taken from the clinical context, where different groups of patients may have different frailties (background risks of death).</p>
 <p>There are many variants of how frailty models are run in the clinical context (see <span class="citation" data-cites="collett">Collett (<a href="bibliography.html#ref-collett" role="doc-biblioref">2015</a>)</span> for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data. This is called a <em>shared frailty model</em>. The <code>frailtypack</code> R package allows various frailty models to be run with relative ease. This is how we would run a shared frailty model on our <code>job_retention</code> data to take account of the different background attrition risk for the different fields of employment.</p>
 <div class="cell">
@@ -654,7 +660,7 @@ Figure&nbsp;9.2: Schoenfeld test on proportional hazard assumption for <code>cox
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Be patient. The program is computing ... 
-The program took 0.61 seconds </code></pre>
+The program took 0.62 seconds </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
@@ -703,7 +709,7 @@ level 5.17425  2   0.0752
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="fu">rep</span>(<span class="dv">10000</span>, <span class="dv">2</span>)</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This can then be plotted to observe how baseline retention differs by group, as in <a href="#fig-stratified" class="quarto-xref">Figure&nbsp;<span>9.3</span></a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>This can then be plotted to observe how baseline retention differs by group, as in <a href="#fig-stratified" class="quarto-xref">Figure&nbsp;<span>10.3</span></a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
 <div id="fig-stratified" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-stratified-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -722,16 +728,16 @@ level 5.17425  2   0.0752
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stratified-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.3: Baseline retention curves for the two sentiment categories in the <code>job_retention</code> data set
+Figure&nbsp;10.3: Baseline retention curves for the two sentiment categories in the <code>job_retention</code> data set
 </figcaption>
 </figure>
 </div>
 <p>NULL NULL</p>
 </section>
-<section id="survival-analysis-using-python" class="level2" data-number="9.4">
-<h2 data-number="9.4" class="anchored" data-anchor-id="survival-analysis-using-python"><span class="header-section-number">9.4</span> Survival analysis using Python</h2>
+<section id="survival-analysis-using-python" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="survival-analysis-using-python"><span class="header-section-number">10.4</span> Survival analysis using Python</h2>
 <p>The <code>lifelines</code> package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions. A full tutorial is available <a href="https://lifelines.readthedocs.io/en/latest/index.html">here</a>.</p>
-<p>Here is an example of how to plot Kaplan-Meier survival curves in Python using this chapter’s walkthrough example. The survival curves are displayed in <a href="#fig-survival-python" class="quarto-xref">Figure&nbsp;<span>9.4</span></a>.</p>
+<p>Here is an example of how to plot Kaplan-Meier survival curves in Python using this chapter’s walkthrough example. The survival curves are displayed in <a href="#fig-survival-python" class="quarto-xref">Figure&nbsp;<span>10.4</span></a>.</p>
 <div id="fig-survival-python" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-survival-python-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -774,11 +780,11 @@ Figure&nbsp;9.3: Baseline retention curves for the two sentiment categories in t
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-survival-python-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.4: Survival curves by sentiment category in the <code>job_retention</code> data
+Figure&nbsp;10.4: Survival curves by sentiment category in the <code>job_retention</code> data
 </figcaption>
 </figure>
 </div>
-<p>And here is an example of how to fit a Cox Proportional Hazard model similarly to <a href="#sec-coxphmodel" class="quarto-xref"><span>Section 9.2</span></a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>And here is an example of how to fit a Cox Proportional Hazard model similarly to <a href="#sec-coxphmodel" class="quarto-xref"><span>Section 10.2</span></a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lifelines <span class="im">import</span> CoxPHFitter</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -798,7 +804,7 @@ Figure&nbsp;9.4: Survival curves by sentiment category in the <code>job_retentio
    number of observations = 3770
 number of events observed = 1354
    partial log-likelihood = -10724.52
-         time fit was run = 2025-11-12 21:09:43 UTC
+         time fit was run = 2025-11-13 17:17:30 UTC
 
 ---
                             coef exp(coef)  se(coef)  coef lower 95%  coef upper 95% exp(coef) lower 95% exp(coef) upper 95%
@@ -888,10 +894,10 @@ the call in `.fit`. See documentation in link [E] below.
 </div>
 </div>
 </section>
-<section id="learning-exercises" class="level2" data-number="9.5">
-<h2 data-number="9.5" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">9.5</span> Learning exercises</h2>
-<section id="discussion-questions" class="level3" data-number="9.5.1">
-<h3 data-number="9.5.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">9.5.1</span> Discussion questions</h3>
+<section id="learning-exercises" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">10.5</span> Learning exercises</h2>
+<section id="discussion-questions" class="level3" data-number="10.5.1">
+<h3 data-number="10.5.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">10.5.1</span> Discussion questions</h3>
 <ol type="1">
 <li>Describe some of the reasons why a survival analysis is a useful tool for analyzing data where outcome events happen at different times.</li>
 <li>Describe the Kaplan-Meier survival estimate and how it is calculated.</li>
@@ -901,8 +907,8 @@ the call in `.fit`. See documentation in link [E] below.
 <li>What is a frailty model, and why might it be useful in the context of survival analysis?</li>
 </ol>
 </section>
-<section id="data-exercises" class="level3" data-number="9.5.2">
-<h3 data-number="9.5.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">9.5.2</span> Data exercises</h3>
+<section id="data-exercises" class="level3" data-number="10.5.2">
+<h3 data-number="10.5.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">10.5.2</span> Data exercises</h3>
 <p>For these exercises, use the same <code>job_retention</code> data set as in the walkthrough example for this chapter, which can be loaded via the <code>peopleanalyticsdata</code> package or downloaded from the internet<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. The <code>intention</code> field represents a score of 1 to 10 on the individual’s intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention. This response was recorded at the beginning of the study period.</p>
 <ol type="1">
 <li>Create three categories of <code>intention</code> as follows: High (score of 7 or higher), Moderate (score of 4–6), Low (score of 3 or less)</li>
@@ -926,7 +932,7 @@ Collett, David. 2015. <em>Modelling Survival Data in Medical Research</em>.
 <ol>
 <li id="fn1"><p>The concordance measure returned is a measure of how well the model can predict in any given pair who will survive longer and is valuable in a number of medical research contexts.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Note there needs to be a <code>kappa</code> for each level of the stratification.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>This is another route to calculating survival curves similar to <a href="#fig-survivalplot" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>This is another route to calculating survival curves similar to <a href="#fig-survivalplot" class="quarto-xref">Figure&nbsp;<span>10.1</span></a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>I am not aware of any way of running frailty models currently in Python.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Schoenfeld residual plots can be seen by setting <code>show_plots = True</code> in the parameters.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>http://peopleanalytics-regression-book.org/data/job_retention.csv<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -1336,12 +1342,12 @@ Collett, David. 2015. <em>Modelling Survival Data in Medical Research</em>.
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./hierarchical_data.html" class="pagination-link" aria-label="Modeling Explicit and Latent Hierarchy in Data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./power_tests.html" class="pagination-link" aria-label="Power Analysis to Estimate Required Sample Sizes for Modeling">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

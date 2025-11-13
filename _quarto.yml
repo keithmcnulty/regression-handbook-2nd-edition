@@ -34,6 +34,7 @@ book:
     - binomial_logistic_regression.qmd
     - multinomial_regression.qmd
     - ordinal_regression.qmd
+    - poisson_nb.qmd
     - hierarchical_data.qmd
     - survival_analysis.qmd
     - power_tests.qmd

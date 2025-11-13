@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Keith McNulty">
+
+<title>8&nbsp; Poisson and Negative Binomial Regression for Count Outcomes – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./hierarchical_data.html" rel="next">
+<link href="./ordinal_regression.html" rel="prev">
+<link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-809cd4ad8465a863d451ae2f0a07b33b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./poisson_nb.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson and Negative Binomial Regression for Count Outcomes</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Handbook of Regression Modeling in People Analytics (2nd edition)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./foreword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword by Alexis Fink</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Importance of Regression in People Analytics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basic_r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Basics of the R Programming Language</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./primer_stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Foundations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Regression for Continuous Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./binomial_logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Binomial Logistic Regression for Binary Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./multinomial_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Multinomial Logistic Regression for Nominal Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ordinal_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Odds Logistic Regression for Ordered Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poisson_nb.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson and Negative Binomial Regression for Count Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./power_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./further.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#when-to-use-it" id="toc-when-to-use-it" class="nav-link active" data-scroll-target="#when-to-use-it"><span class="header-section-number">8.1</span> When to use it</a>
+  <ul class="collapse">
+  <li><a href="#sec-poisson-origins" id="toc-sec-poisson-origins" class="nav-link" data-scroll-target="#sec-poisson-origins"><span class="header-section-number">8.1.1</span> Origins and intuition of the Poisson distribution</a></li>
+  <li><a href="#use-cases-for-poisson-and-negative-binomial-regression" id="toc-use-cases-for-poisson-and-negative-binomial-regression" class="nav-link" data-scroll-target="#use-cases-for-poisson-and-negative-binomial-regression"><span class="header-section-number">8.1.2</span> Use cases for Poisson and Negative Binomial regression</a></li>
+  <li><a href="#sec-walkthrough-poisson" id="toc-sec-walkthrough-poisson" class="nav-link" data-scroll-target="#sec-walkthrough-poisson"><span class="header-section-number">8.1.3</span> Walkthrough example</a></li>
+  </ul></li>
+  <li><a href="#sec-mod-poisson" id="toc-sec-mod-poisson" class="nav-link" data-scroll-target="#sec-mod-poisson"><span class="header-section-number">8.2</span> Modeling count outcomes with Poisson regression</a>
+  <ul class="collapse">
+  <li><a href="#the-poisson-model-and-the-log-transformation" id="toc-the-poisson-model-and-the-log-transformation" class="nav-link" data-scroll-target="#the-poisson-model-and-the-log-transformation"><span class="header-section-number">8.2.1</span> The Poisson model and the log transformation</a></li>
+  <li><a href="#fitting-and-interpreting-a-poisson-regression-model" id="toc-fitting-and-interpreting-a-poisson-regression-model" class="nav-link" data-scroll-target="#fitting-and-interpreting-a-poisson-regression-model"><span class="header-section-number">8.2.2</span> Fitting and interpreting a Poisson regression model</a></li>
+  </ul></li>
+  <li><a href="#model-diagnostics-overdispersion" id="toc-model-diagnostics-overdispersion" class="nav-link" data-scroll-target="#model-diagnostics-overdispersion"><span class="header-section-number">8.3</span> Model Diagnostics: Overdispersion</a>
+  <ul class="collapse">
+  <li><a href="#detecting-overdispersion" id="toc-detecting-overdispersion" class="nav-link" data-scroll-target="#detecting-overdispersion"><span class="header-section-number">8.3.1</span> Detecting Overdispersion</a></li>
+  </ul></li>
+  <li><a href="#sec-neg-bin" id="toc-sec-neg-bin" class="nav-link" data-scroll-target="#sec-neg-bin"><span class="header-section-number">8.4</span> Negative Binomial Regression for Overdispersed Count Data</a>
+  <ul class="collapse">
+  <li><a href="#fitting-and-interpreting-a-negative-binomial-model" id="toc-fitting-and-interpreting-a-negative-binomial-model" class="nav-link" data-scroll-target="#fitting-and-interpreting-a-negative-binomial-model"><span class="header-section-number">8.4.1</span> Fitting and Interpreting a Negative Binomial Model</a></li>
+  <li><a href="#comparing-poisson-and-negative-binomial-models" id="toc-comparing-poisson-and-negative-binomial-models" class="nav-link" data-scroll-target="#comparing-poisson-and-negative-binomial-models"><span class="header-section-number">8.4.2</span> Comparing Poisson and Negative Binomial Models</a></li>
+  </ul></li>
+  <li><a href="#other-considerations-in-count-regression" id="toc-other-considerations-in-count-regression" class="nav-link" data-scroll-target="#other-considerations-in-count-regression"><span class="header-section-number">8.5</span> Other Considerations in Count Regression</a>
+  <ul class="collapse">
+  <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="header-section-number">8.5.1</span> Prediction</a></li>
+  <li><a href="#exposure-and-offsets" id="toc-exposure-and-offsets" class="nav-link" data-scroll-target="#exposure-and-offsets"><span class="header-section-number">8.5.2</span> Exposure and Offsets</a></li>
+  <li><a href="#zero-inflation" id="toc-zero-inflation" class="nav-link" data-scroll-target="#zero-inflation"><span class="header-section-number">8.5.3</span> Zero-inflation</a></li>
+  </ul></li>
+  <li><a href="#poisson-and-negative-binomial-regression-using-python" id="toc-poisson-and-negative-binomial-regression-using-python" class="nav-link" data-scroll-target="#poisson-and-negative-binomial-regression-using-python"><span class="header-section-number">8.6</span> Poisson and Negative Binomial Regression using Python</a></li>
+  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">8.7</span> Learning exercises</a>
+  <ul class="collapse">
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">8.7.1</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">8.7.2</span> Data exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/poisson_nb.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-count-reg" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson and Negative Binomial Regression for Count Outcomes</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In the previous chapters, we have explored how to model outcomes that are continuous, binary or multinomial in nature. We now turn our attention to another common type of data in people analytics: count data. Count data consists of non-negative integers (0, 1, 2, 3, …) that represent the number of times an event has occurred within a specific period of time, location, or group. Examples in the workplace are numerous: the number of safety incidents in a factory per month, the number of days an employee was absent in a year, the number of hires made by a recruiting team in a quarter, or the number of customer complaints received by a service agent in a week.</p>
+<p>Because count data is not continuous and is bounded below at zero, linear regression is not appropriate. The assumptions of normality and constant variance of residuals are typically violated. A linear model could also illogically predict negative counts. While we could model a binary outcome (e.g., ‘had at least one absence’ vs.&nbsp;‘had zero absences’) using logistic regression, this approach throws away a lot of valuable information about the magnitude of the count.</p>
+<p>To properly model count outcomes, we turn to other members of the generalized linear model (GLM) family. First we will look at Poisson regression. Poisson regression is specifically designed for count data and, like logistic regression, uses a transformation–—in this case, the natural logarithm—–to establish a linear relationship between the input variables and the (transformed) outcome. However, Poisson regression rests on a very strong assumption that the mean and variance of the count variable are equal. When this assumption is violated, a condition known as <em>overdispersion</em> occurs, and the Poisson model’s estimates can become unreliable. In this case, we will see that a related model, Negative Binomial regression, provides a more flexible and robust alternative. Mastering these two techniques is essential for any analyst who wants to understand the drivers of event-based phenomena in the workplace.</p>
+<section id="when-to-use-it" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="when-to-use-it"><span class="header-section-number">8.1</span> When to use it</h2>
+<section id="sec-poisson-origins" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="sec-poisson-origins"><span class="header-section-number">8.1.1</span> Origins and intuition of the Poisson distribution</h3>
+<p>The Poisson distribution is named after the French mathematician Siméon Denis Poisson, who introduced it in 1837 in a work that focused on the probability of wrongful convictions in court cases<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. However, the distribution’s most famous early application came sixty years later from the Polish-Russian economist and statistician Ladislaus von Bortkiewicz.</p>
+<p>Bortkiewicz analyzed data on the number of Prussian cavalry soldiers who were fatally kicked by their horses each year across 14 different army corps over a 20-year period. He observed that this was a “rare event.” In any given corps in any given year, the number of deaths was very low, but it was not zero. He found that the observed frequency of 0, 1, 2, or more deaths per corps-year closely matched the predictions of the Poisson distribution. The key insight is that the Poisson distribution effectively models the number of times an event occurs in a fixed interval of time or space, given that these events happen with a known constant mean rate (denoted by <span class="math inline">\(\lambda\)</span>) and are independent of the time since the last event. The shape of the distribution for different mean rates is shown in <a href="#fig-poisson-dist" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>. For a low mean, the distribution is highly skewed with most observations at or near zero. As the mean increases, the distribution becomes more symmetric and starts to resemble a normal distribution.</p>
+<div id="fig-poisson-dist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-poisson-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="poisson_nb_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-poisson-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.1: Poisson distributions showing how the shape changes with different mean event rates <span class="math inline">\(\lambda\)</span>
+</figcaption>
+</figure>
+</div>
+<p>The core idea of modeling rates is central to Poisson regression. We are not just modeling a count; we are modeling the <em>expected rate</em> at which events occur, and then examining how different factors or characteristics influence that rate.</p>
+</section>
+<section id="use-cases-for-poisson-and-negative-binomial-regression" class="level3" data-number="8.1.2">
+<h3 data-number="8.1.2" class="anchored" data-anchor-id="use-cases-for-poisson-and-negative-binomial-regression"><span class="header-section-number">8.1.2</span> Use cases for Poisson and Negative Binomial regression</h3>
+<p>Poisson and Negative Binomial regression can be used when the outcome of interest is a count of events. Here are some example questions that could be approached using these methods:</p>
+<ul>
+<li>What are the characteristics of employees that are associated with a higher number of days of unplanned absence per year?</li>
+<li>What are the characteristics of job postings that are associated with a higher number of applicants in the first 30 days?</li>
+<li>What elements in a factory’s environment are related to the number of safety incidents per month?</li>
+</ul>
+</section>
+<section id="sec-walkthrough-poisson" class="level3" data-number="8.1.3">
+<h3 data-number="8.1.3" class="anchored" data-anchor-id="sec-walkthrough-poisson"><span class="header-section-number">8.1.3</span> Walkthrough example</h3>
+<p>performance_rating &lt;- round(rnorm(n, 3.5, 0.7))You are an analyst at a large technology firm. The HR leadership team is concerned about employee absenteeism and wants to understand its drivers to better target support and intervention programs. They believe that factors like an employee’s tenure with the company, their performance, and whether or not they are a manager could all play a role.</p>
+<p>You are provided with a data set of 865 employees for the most recent full year. The <code>absenteeism</code> data set contains the following fields:</p>
+<ul>
+<li><code>days_absent</code>: The number of unscheduled days of absence for the employee in the last calendar year (our outcome variable).</li>
+<li><code>tenure</code>: The employee’s tenure at the company in years.</li>
+<li><code>is_manager</code>: A binary value indicating 1 if the employee is a manager and 0 if not.</li>
+<li><code>performance_rating</code>: The employee’s most recent performance score on a scale from 1 to 5.</li>
+</ul>
+<p>Let’s download the <code>absenteeism</code> data set and take a quick look at it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, download data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/absenteeism.csv"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>absenteeism <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(absenteeism)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  days_absent tenure is_manager performance_rating
+1           2     16          0                  2
+2          13      4          0                  5
+3           0      0          0                  3
+4           8     24          0                  5
+5          12      9          0                  3
+6           8      3          0                  4</code></pre>
+</div>
+</div>
+<p>The data looks as expected, but we should do some type conversion for the <code>is_manager</code> column before we get a summary.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert is_manager to factor</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>absenteeism<span class="sc">$</span>is_manager <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(absenteeism<span class="sc">$</span>is_manager)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absenteeism)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  days_absent        tenure      is_manager performance_rating
+ Min.   : 0.00   Min.   : 0.00   0:753      Min.   :1.000     
+ 1st Qu.: 3.00   1st Qu.: 8.00   1:112      1st Qu.:3.000     
+ Median : 7.00   Median :15.00              Median :3.000     
+ Mean   :10.26   Mean   :15.16              Mean   :3.473     
+ 3rd Qu.:14.00   3rd Qu.:23.00              3rd Qu.:4.000     
+ Max.   :62.00   Max.   :30.00              Max.   :5.000     </code></pre>
+</div>
+</div>
+<p>We see that <code>days_absent</code> ranges from 0 to 62, with a mean of 10.26. The input variables all seem to be within reasonable ranges. Let’s create a pairplot to get an initial feel for the relationships in the data, as shown in <a href="#fig-poisson-pairplot" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>.</p>
+<div id="fig-poisson-pairplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-poisson-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generate pairplot</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(absenteeism)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="poisson_nb_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-poisson-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.2: Pairplot for the <code>absenteeism</code> data set
+</figcaption>
+</figure>
+</div>
+<p>The most striking feature of the pairplot is the distribution of our outcome variable, <code>days_absent</code>. It is highly right-skewed, with most employees having a low number of absences and a “long tail” of employees with a high number of absences. This is a classic shape for count data, and suggests that Poisson regression is a good initial approach for this problem.</p>
+</section>
+</section>
+<section id="sec-mod-poisson" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="sec-mod-poisson"><span class="header-section-number">8.2</span> Modeling count outcomes with Poisson regression</h2>
+<p>We cannot directly model a count outcome with a linear equation because the expected count must be non-negative. As with logistic regression, we will need a transformation to connect the linear combination of our input variables to the expected count.</p>
+<section id="the-poisson-model-and-the-log-transformation" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="the-poisson-model-and-the-log-transformation"><span class="header-section-number">8.2.1</span> The Poisson model and the log transformation</h3>
+<p>The formula for the Poisson distribution gives the probability of observing exactly <span class="math inline">\(k\)</span> events in an interval, given a mean event rate of <span class="math inline">\(\lambda\)</span>:</p>
+<p><span class="math display">\[
+P(Y=k) = \frac{\lambda^k e^{-\lambda}}{k!}
+\]</span></p>
+<p>We assume that the expected event count <span class="math inline">\(\lambda_i\)</span> for each individual observation <span class="math inline">\(i\)</span> depends on that observation’s input variables (<span class="math inline">\(x_{i1}, x_{i2}, \dots, x_{ip}\)</span>). To ensure that our predicted <span class="math inline">\(\lambda_i\)</span> is always positive, we model the <em>natural logarithm</em> of <span class="math inline">\(\lambda_i\)</span> as a linear function of the input variables. This is the <em>log transformation</em>.</p>
+<p><span class="math display">\[
+\ln(\lambda_i) = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_px_{ip}
+\]</span></p>
+<p>This equation should look familiar. It’s a linear model, just like in linear regression. The crucial difference is that we are not modeling the expected count outcome directly; we are modeling the <em>log of the expected count</em>.</p>
+<p>By exponentiating both sides, we can see how the input variables relate to the expected count itself:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\lambda_i &amp;= e^{\beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_px_{ip}} \\
+&amp;= e^{\beta_0}(e^{\beta_1})^{x_{i1}}(e^{\beta_2})^{x_{i2}}\dots(e^{\beta_p})^{x_{ip}}
+\end{aligned}
+\]</span></p>
+<p>This shows that the effects of the input variables are multiplicative on the expected count <span class="math inline">\(\lambda_i\)</span>. This is analogous to work we have done in previous chapters, where logistic regression coefficients have a multiplicative effect on the odds of an outcome.</p>
+</section>
+<section id="fitting-and-interpreting-a-poisson-regression-model" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="fitting-and-interpreting-a-poisson-regression-model"><span class="header-section-number">8.2.2</span> Fitting and interpreting a Poisson regression model</h3>
+<p>Let’s fit a Poisson model to our <code>absenteeism</code> data to understand the drivers of absent days. We use the <code>glm()</code> function, specifying <code>family = "poisson"</code> which automatically uses the log transformation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a poisson model</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>absent_poisson_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> absenteeism,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">family =</span> <span class="st">"poisson"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># view the summary</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absent_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = days_absent ~ tenure + is_manager + performance_rating, 
+    family = "poisson", data = absenteeism)
+
+Coefficients:
+                    Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)         1.505418   0.054170  27.791  &lt; 2e-16 ***
+tenure              0.051144   0.001270  40.280  &lt; 2e-16 ***
+is_manager1        -0.157984   0.033025  -4.784 1.72e-06 ***
+performance_rating -0.009937   0.013878  -0.716    0.474    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 7544.2  on 864  degrees of freedom
+Residual deviance: 5799.6  on 861  degrees of freedom
+AIC: 8927
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<p>The summary output is similar to what we’ve seen before. We have coefficient estimates, standard errors, z-values, and p-values. Let’s interpret the <code>tenure</code> coefficient. For a one-year increase in <code>tenure</code>, the log of the expected number of absent days increases by 0.0511, holding all other variables constant. A much more intuitive interpretation comes from exponentiating the coefficients. The exponentiated value is called an <strong>Incidence Rate Ratio (IRR)</strong>. The IRR tells us the multiplicative factor by which the expected count changes for a one-unit increase in the predictor.</p>
+<p>Let’s calculate the IRRs for our model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exponentiate coefficients to get Incidence Rate Ratios (IRRs)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(irr <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(absent_poisson_model)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       (Intercept)             tenure        is_manager1 performance_rating 
+         4.5060347          1.0524742          0.8538633          0.9901123 </code></pre>
+</div>
+</div>
+<p>Now we can interpret these more easily:</p>
+<ul>
+<li><strong>Intercept:</strong> 4.51 is the expected number of absent days for a brand new non-manager with a performance rating of 1. This is not practically meaningful, but serves as the baseline for the model.</li>
+<li><strong>tenure:</strong> The IRR is 1.0525. For each additional year of tenure, the expected count of absent days increases by about 5.25%, holding other factors constant.</li>
+<li><strong>is_manager1:</strong> The IRR is 0.8539. This means that being a manager (compared to not being a manager) is associated with an expected absent day count that is 0.8539 times the count for a non-manager, or about 14.61% lower, holding other factors constant.</li>
+<li><strong>performance_rating:</strong> The IRR is 0.9901. For each one-point increase in performance score, the expected number of absent days decreases by about 0.99%, holding other factors constant. However, this effect is not statistically significant.</li>
+</ul>
+<p>Just as with logistic regression, we can calculate confidence intervals for these IRRs to understand the range of plausible values for the effect.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence intervals for the IRRs</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(absent_poisson_model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       2.5 %    97.5 %
+(Intercept)        4.0513303 5.0097586
+tenure             1.0498634 1.0551020
+is_manager1        0.7999133 0.9104788
+performance_rating 0.9635426 1.0174134</code></pre>
+</div>
+</div>
+<p>For example, we are 95% confident that for each additional year of tenure, the incidence rate ratio is between 1.05 and 1.055. Since this entire range is above 1, we can be confident that the relationship is positive and statistically significant.</p>
+</section>
+</section>
+<section id="model-diagnostics-overdispersion" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="model-diagnostics-overdispersion"><span class="header-section-number">8.3</span> Model Diagnostics: Overdispersion</h2>
+<p>Before we can trust our Poisson model’s conclusions, we must check its primary assumption: that the mean (expected value) and variance of the count outcome are approximately equal. That is, <span class="math inline">\(E(Y) \approx Var(Y)\)</span>. In real-world data, this assumption is rarely met. It is far more common for the variance to be larger than the mean. This is called <strong>overdispersion</strong> (<span class="math inline">\(Var(Y) &gt; E()\)</span>).</p>
+<p>Overdispersion often occurs for a number of reasons, including:</p>
+<ol type="1">
+<li><p><strong>Unobserved Heterogeneity:</strong> There may be other unmeasured factors that influence the count. For instance, in our example some employees might have chronic health conditions that make them more prone to absence. This creates extra variability in the counts that is not captured by our input variables.</p></li>
+<li><p><strong>Clustering or Non-independence:</strong> Events may not be independent. If one person in a team gets a virus or flu, it might spread, leading to a cluster of absences. This violates the Poisson assumption that events are independent.</p></li>
+</ol>
+<p>If we use a Poisson model on overdispersed data, the coefficient estimates (<span class="math inline">\(\beta\)</span>) are still unbiased (correct on average), but their standard errors are underestimated. This makes the z-scores artificially large and the p-values artificially small. We might therefore conclude that a predictor is statistically significant when, in fact, it is not. Therefore, the model can become overconfident in its findings.</p>
+<section id="detecting-overdispersion" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="detecting-overdispersion"><span class="header-section-number">8.3.1</span> Detecting Overdispersion</h3>
+<p>There are several ways to check for overdispersion.</p>
+<ol type="1">
+<li><p><strong>Compare Mean and Variance:</strong> The simplest check is to compare the raw mean and variance of our outcome variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(absenteeism<span class="sc">$</span>days_absent), </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance =</span> <span class="fu">var</span>(absenteeism<span class="sc">$</span>days_absent))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     mean  variance 
+ 10.26243 103.25397 </code></pre>
+</div>
+</div></li>
+</ol>
+<p>The variance (103.25) is much larger than the mean (10.26), which is a strong initial sign of overdispersion.</p>
+<ol start="2" type="1">
+<li><p><strong>Calculate the Dispersion Parameter:</strong> A more formal check comes from the model itself. The dispersion parameter is calculated by dividing the model’s residual deviance by its residual degrees of freedom. For a Poisson model, this value should be close to 1. A value significantly greater than 1 indicates overdispersion.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate dispersion parameter</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>(dispersion_param <span class="ot">&lt;-</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>deviance <span class="sc">/</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>df.residual)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.735929</code></pre>
+</div>
+</div></li>
+</ol>
+<p>Our dispersion parameter of 6.74 is substantially greater than 1, confirming that our data is overdispersed and the Poisson model is likely not appropriate.</p>
+<ol start="3" type="1">
+<li><p><strong>Formal Hypothesis Test:</strong> The <code>AER</code> package provides a formal test for overdispersion. The null hypothesis is that the data is equidispersed (mean = variance), while the alternative is that it is overdispersed. A small p-value provides evidence for overdispersion.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dispersiontest</span>(absent_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Overdispersion test
+
+data:  absent_poisson_model
+z = 13.31, p-value &lt; 2.2e-16
+alternative hypothesis: true dispersion is greater than 1
+sample estimates:
+dispersion 
+  6.926057 </code></pre>
+</div>
+</div></li>
+</ol>
+<p>The very small p-value leads us to reject the null hypothesis and conclude that overdispersion is present. This suggests that we should search for an alternative approach that can handle overdispersed count data.</p>
+</section>
+</section>
+<section id="sec-neg-bin" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="sec-neg-bin"><span class="header-section-number">8.4</span> Negative Binomial Regression for Overdispersed Count Data</h2>
+<p>When we have confirmed that our count data is overdispersed, the alternative method to use is Negative Binomial regression. The Negative Binomial distribution is a generalization of the Poisson distribution that includes an additional parameter, called the dispersion parameter <span class="math inline">\(\theta\)</span> (theta), which allows the variance to be greater than the mean.</p>
+<p>The variance for a Negative Binomial distribution is modeled as:</p>
+<p><span class="math display">\[
+Var(Y) = \mu + \frac{\mu^2}{\theta}
+\]</span></p>
+<p>Here, <span class="math inline">\(\mu\)</span> is the mean (equivalent to <span class="math inline">\(\lambda\)</span> in the Poisson model). The term <span class="math inline">\(\frac{\mu^2}{\theta}\)</span> allows for the extra variance. As the dispersion parameter <span class="math inline">\(\theta\)</span> gets larger and approaches infinity, the term <span class="math inline">\(\frac{\mu^2}{\theta}\)</span> approaches zero, and the variance approaches the mean, <span class="math inline">\(\mu\)</span>. In this case, the Negative Binomial distribution converges to the Poisson distribution. A smaller <span class="math inline">\(\theta\)</span> indicates greater overdispersion.</p>
+<section id="fitting-and-interpreting-a-negative-binomial-model" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="fitting-and-interpreting-a-negative-binomial-model"><span class="header-section-number">8.4.1</span> Fitting and Interpreting a Negative Binomial Model</h3>
+<p>We can fit an Negative Binomial model in R using the <code>glm.nb()</code> function from the <code>MASS</code> package (which comes with R). The syntax is identical to <code>glm()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># run a negative binomial model</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>absent_nb_model <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(<span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> absenteeism)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># view the summary</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm.nb(formula = days_absent ~ tenure + is_manager + performance_rating, 
+    data = absenteeism, init.theta = 1.553571254, link = log)
+
+Coefficients:
+                    Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)         1.571059   0.147302  10.666   &lt;2e-16 ***
+tenure              0.049723   0.003338  14.894   &lt;2e-16 ***
+is_manager1        -0.138416   0.088722  -1.560    0.119    
+performance_rating -0.022527   0.039176  -0.575    0.565    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for Negative Binomial(1.5536) family taken to be 1)
+
+    Null deviance: 1208.49  on 864  degrees of freedom
+Residual deviance:  978.86  on 861  degrees of freedom
+AIC: 5637.1
+
+Number of Fisher Scoring iterations: 1
+
+              Theta:  1.5536 
+          Std. Err.:  0.0894 
+
+ 2 x log-likelihood:  -5627.0750 </code></pre>
+</div>
+</div>
+<p>The output looks very similar to the Poisson summary, but with one key addition: at the bottom, we see “Theta: 1.5536”. This is the estimated dispersion parameter <span class="math inline">\(\theta\)</span>. The <code>summary()</code> also provides a standard error for <span class="math inline">\(\theta\)</span> and tests whether it is significantly different from infinity (i.e., whether the Negative Binomial model is a significant improvement over the Poisson model).</p>
+<p>The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get Incidence Rate Ratios (IRRs).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># IRRs for the Negative Binomial model</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(irr_nb <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(absent_nb_model)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       (Intercept)             tenure        is_manager1 performance_rating 
+         4.8117411          1.0509798          0.8707365          0.9777244 </code></pre>
+</div>
+</div>
+<p>Let’s compare these with the IRRs from our original Poisson model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare IRRs side-by-side</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">IRR_Poisson =</span> irr, <span class="at">IRR_NB =</span> irr_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   IRR_Poisson    IRR_NB
+(Intercept)          4.5060347 4.8117411
+tenure               1.0524742 1.0509798
+is_manager1          0.8538633 0.8707365
+performance_rating   0.9901123 0.9777244</code></pre>
+</div>
+</div>
+<p>The point estimates for the IRRs are quite similar. This is expected, as the coefficients are generally unbiased even when a Poisson model is used on overdispersed data. The real difference is in the standard errors and p-values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare standard errors</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">SE_Poisson =</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>coefficients[, <span class="st">"Std. Error"</span>],</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">SE_NB =</span> <span class="fu">summary</span>(absent_nb_model)<span class="sc">$</span>coefficients[, <span class="st">"Std. Error"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    SE_Poisson       SE_NB
+(Intercept)        0.054169623 0.147301916
+tenure             0.001269716 0.003338447
+is_manager1        0.033024551 0.088721754
+performance_rating 0.013878275 0.039175545</code></pre>
+</div>
+</div>
+<p>Notice that the standard errors for the Negative Binomial model are larger across the board. By accounting for the overdispersion, the Negative Binomial model provides more realistic (and conservative) estimates of the uncertainty around our coefficients. This leads to larger p-values and more trustworthy inferences. In this case, while <code>tenure</code> remains a significant input variable, we see that <code>is_manager</code> is no longer significant.</p>
+</section>
+<section id="comparing-poisson-and-negative-binomial-models" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="comparing-poisson-and-negative-binomial-models"><span class="header-section-number">8.4.2</span> Comparing Poisson and Negative Binomial Models</h3>
+<p>We have strong evidence that the Negative Binomial model is a better choice, but we can formally compare the models. Since the Poisson model is a nested version of the Negative Binomial model (it’s what you get when <span class="math inline">\(\theta \to \infty\)</span>), we can use a likelihood ratio test using the <code>lmtest</code> package to see if the addition of the <span class="math inline">\(\theta\)</span> parameter provides a significant improvement in fit.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(absent_poisson_model, absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio test
+
+Model 1: days_absent ~ tenure + is_manager + performance_rating
+Model 2: days_absent ~ tenure + is_manager + performance_rating
+  #Df  LogLik Df Chisq Pr(&gt;Chisq)    
+1   4 -4459.5                        
+2   5 -2813.5  1  3292  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The extremely small p-value indicates that the Negative Binomial model provides a significantly better fit to the data than the Poisson model.</p>
+<p>We can also compare the models using the Akaike Information Criterion (AIC), which as we have learned previously is a measure of model parsimony. Since both of our models use the same input variables, a lower AIC indicates a better fit.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(absent_poisson_model, absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     df      AIC
+absent_poisson_model  4 8927.050
+absent_nb_model       5 5637.075</code></pre>
+</div>
+</div>
+<p>The AIC for the Negative Binomial model is substantially lower than for the Poisson model, again confirming that it is the superior and more parsimonious model for our overdispersed data.</p>
+</section>
+</section>
+<section id="other-considerations-in-count-regression" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="other-considerations-in-count-regression"><span class="header-section-number">8.5</span> Other Considerations in Count Regression</h2>
+<p>In this section we provide a brief overview of some additional topics that are relevant when working with count data. For deeper study on this topic, <span class="citation" data-cites="hilbe">Hilbe (<a href="bibliography.html#ref-hilbe" role="doc-biblioref">2014</a>)</span> is an excellent introductory text, while <span class="citation" data-cites="friendly">Friendly and Meyer (<a href="bibliography.html#ref-friendly" role="doc-biblioref">2016</a>)</span> provides a more advanced treatment on the analysis of discrete data more broadly.</p>
+<section id="prediction" class="level3" data-number="8.5.1">
+<h3 data-number="8.5.1" class="anchored" data-anchor-id="prediction"><span class="header-section-number">8.5.1</span> Prediction</h3>
+<p>Predicting expected counts from a new set of data works just like in other <code>glm</code> models. We use the <code>predict()</code> function with <code>type = "response"</code> to get the prediction on the original count scale (i.e., the expected number of events, <span class="math inline">\(\lambda_i\)</span>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define new observations</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>(new_employees <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tenure =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">25</span>, <span class="dv">15</span>),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">is_manager =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)),</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">performance_rating =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  tenure is_manager performance_rating
+1      2          0                  4
+2     25          1                  3
+3     15          0                  3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># predict expected days absent using our final NB model</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(absent_nb_model, new_employees, <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2         3 
+ 4.856874 13.573681  9.481285 </code></pre>
+</div>
+</div>
+</section>
+<section id="exposure-and-offsets" class="level3" data-number="8.5.2">
+<h3 data-number="8.5.2" class="anchored" data-anchor-id="exposure-and-offsets"><span class="header-section-number">8.5.2</span> Exposure and Offsets</h3>
+<p>Sometimes we are not just modeling a raw count, but a rate relative to some measure of “exposure”. For example, we might want to model the number of safety incidents, but we know that a large factory with 1,000 employees is naturally going to have more incidents than a small one with 100 employees, even if the small factory is less safe. We need to control for this exposure.</p>
+<p>In this case, our outcome of interest is really the <em>rate</em> of incidents per employee. Let’s say we model</p>
+<p><span class="math display">\[
+E[\mathrm{incidents}_i] = \mathrm{rate}_i \times \mathrm{employees}_i
+\]</span></p>
+<p>Taking logs, we get</p>
+<p><span class="math display">\[
+\ln(E[\mathrm{incidents}_i]) = \ln(\mathrm{rate}_i) + \ln(\mathrm{employees}_i)
+\]</span></p>
+<p>We model the log-rate as a linear combination of input variables:</p>
+<p><span class="math display">\[
+\ln(\mathrm{rate}_i) = \beta_0 + \beta_1x_{i1} + \dots
+\]</span></p>
+<p>Substituting this in gives:</p>
+<p><span class="math display">\[
+\ln(E[\mathrm{incidents}_i]) = (\beta_0 + \beta_1x_{i1} + \dots) + \ln(\mathrm{employees}_i)
+\]</span></p>
+<p>The term <span class="math inline">\(\ln(\mathrm{employees}_i)\)</span> is called an <strong>offset</strong>. It is an input variable whose coefficient is fixed to 1. We include it in the model to account for the varying exposure time or group size. In R’s <code>glm()</code> and <code>glm.nb()</code>, this is specified using the <code>offset()</code> function inside the formula. For example</p>
+<pre><code>glm(incidents ~ X1 + X2 + offset(log(employees)), family=poisson)</code></pre>
+</section>
+<section id="zero-inflation" class="level3" data-number="8.5.3">
+<h3 data-number="8.5.3" class="anchored" data-anchor-id="zero-inflation"><span class="header-section-number">8.5.3</span> Zero-inflation</h3>
+<p>Sometimes count data has an excess of zeros beyond what would be expected from a Poisson or Negative Binomial distribution. This can occur when there are two processes at work: one determining whether the event can occur at all, and another determining how many times it occurs. For example, some employees might never be absent due to perfect health and proximity to work (structural zeros), while others have some probability of absence following a count distribution.</p>
+<p>Zero-inflated Poisson and zero-inflated negative binomial models can handle such data by combining a binary model for the zero/non-zero outcome with a count model for the non-zero outcomes. The <code>pscl</code> package in R offers a function <code>zeroinfl()</code> to fit these models.</p>
+</section>
+</section>
+<section id="poisson-and-negative-binomial-regression-using-python" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="poisson-and-negative-binomial-regression-using-python"><span class="header-section-number">8.6</span> Poisson and Negative Binomial Regression using Python</h2>
+<p>In Python, count models can be fit using the <code>statsmodels</code> library, very similar to the linear and logistic regression models we have already seen. First let’s get our data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/absenteeism.csv"</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>absenteeism <span class="op">=</span> pd.read_csv(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, we can fit our Poisson model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Poisson Model</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>poisson_model <span class="op">=</span> smf.glm(</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">"days_absent ~ tenure + is_manager + performance_rating"</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>absenteeism,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span>sm.families.Poisson()</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>).fit()</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poisson_model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:            days_absent   No. Observations:                  865
+Model:                            GLM   Df Residuals:                      861
+Model Family:                 Poisson   Df Model:                            3
+Link Function:                    Log   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -4459.5
+Date:                Thu, 13 Nov 2025   Deviance:                       5799.6
+Time:                        17:16:06   Pearson chi2:                 5.99e+03
+No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
+Covariance Type:            nonrobust                                         
+======================================================================================
+                         coef    std err          z      P&gt;|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------
+Intercept              1.5054      0.054     27.791      0.000       1.399       1.612
+tenure                 0.0511      0.001     40.280      0.000       0.049       0.054
+is_manager            -0.1580      0.033     -4.784      0.000      -0.223      -0.093
+performance_rating    -0.0099      0.014     -0.716      0.474      -0.037       0.017
+======================================================================================</code></pre>
+</div>
+</div>
+<p>We exponentiate the coefficients to get Incidence Rate Ratios (IRRs):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.exp(poisson_model.params))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept             4.506035
+tenure                1.052474
+is_manager            0.853863
+performance_rating    0.990112
+dtype: float64</code></pre>
+</div>
+</div>
+<p>We can also fit our Negative Binomial model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Negative Binomial Model</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>nb_model <span class="op">=</span> smf.glm(</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">"days_absent ~ tenure + is_manager + performance_rating"</span>,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>absenteeism,</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span>sm.families.NegativeBinomial()</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>).fit()</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nb_model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:            days_absent   No. Observations:                  865
+Model:                            GLM   Df Residuals:                      861
+Model Family:        NegativeBinomial   Df Model:                            3
+Link Function:                    Log   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -2842.3
+Date:                Thu, 13 Nov 2025   Deviance:                       702.79
+Time:                        17:16:07   Pearson chi2:                     548.
+No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
+Covariance Type:            nonrobust                                         
+======================================================================================
+                         coef    std err          z      P&gt;|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------
+Intercept              1.5732      0.178      8.814      0.000       1.223       1.923
+tenure                 0.0496      0.004     12.290      0.000       0.042       0.058
+is_manager            -0.1373      0.107     -1.278      0.201      -0.348       0.073
+performance_rating    -0.0228      0.048     -0.479      0.632      -0.116       0.070
+======================================================================================</code></pre>
+</div>
+</div>
+<p>If needed, zero-inflated models can be fit using the <code>statsmodels</code> library’s <code>ZeroInflatedPoisson</code> and <code>ZeroInflatedNegativeBinomialP</code> classes.</p>
+</section>
+<section id="learning-exercises" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">8.7</span> Learning exercises</h2>
+<section id="discussion-questions" class="level3" data-number="8.7.1">
+<h3 data-number="8.7.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">8.7.1</span> Discussion questions</h3>
+<ol type="1">
+<li>What are the key characteristics of count data? Why is linear regression not a suitable method for modeling it?</li>
+<li>What are the main assumptions of the Poisson distribution? Which one is most frequently violated in practice?</li>
+<li>In Poisson regression, we model the log of the expected count as a linear function of the input variables. Why do we use the log transformation? What does this imply about the effect of input variables on the expected count itself?</li>
+<li>Explain the concept of an Incidence Rate Ratio (IRR). If a predictor has an IRR of 1.15, how would you interpret its effect? What about an IRR of 0.85?</li>
+<li>What is overdispersion? Describe two common reasons why it might occur in people-related data.</li>
+<li>What are the consequences of ignoring overdispersion and using a Poisson model regardless?</li>
+<li>Describe three methods you could use to test for overdispersion in your data.</li>
+<li>How does the Negative Binomial distribution differ from the Poisson distribution? Explain the role of the dispersion parameter <span class="math inline">\(\theta\)</span>.</li>
+<li>When would you use an offset in a count model? Provide a people-related example.</li>
+<li>What are zero-inflated models and when might they be needed?</li>
+</ol>
+</section>
+<section id="data-exercises" class="level3" data-number="8.7.2">
+<h3 data-number="8.7.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">8.7.2</span> Data exercises</h3>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-friendly" class="csl-entry" role="listitem">
+Friendly, Michael, and David Meyer. 2016. <em>Discrete Data Analysis with r: Visualization and Modeling Techniques for Categorical and Count Data</em>.
+</div>
+<div id="ref-hilbe" class="csl-entry" role="listitem">
+Hilbe, Joseph M. 2014. <em>Modeling Count Data</em>.
+</div>
+</div>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>In fact, the distribution had already been discovered by the famous French mathematician Abraham De Moivre in the early 18th century.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book-2nd-edition\.org\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ordinal_regression.html" class="pagination-link" aria-label="Proportional Odds Logistic Regression for Ordered Category Outcomes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Odds Logistic Regression for Ordered Category Outcomes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./hierarchical_data.html" class="pagination-link" aria-label="Modeling Explicit and Latent Hierarchy in Data">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Handbook of Regression Modeling in People Analytics (2nd ed.) was written by Keith McNulty.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/poisson_nb.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
