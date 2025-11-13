@@ -318,22 +318,22 @@ window.Quarto = {
   <li><a href="#the-poisson-model-and-the-log-transformation" id="toc-the-poisson-model-and-the-log-transformation" class="nav-link" data-scroll-target="#the-poisson-model-and-the-log-transformation"><span class="header-section-number">8.2.1</span> The Poisson model and the log transformation</a></li>
   <li><a href="#fitting-and-interpreting-a-poisson-regression-model" id="toc-fitting-and-interpreting-a-poisson-regression-model" class="nav-link" data-scroll-target="#fitting-and-interpreting-a-poisson-regression-model"><span class="header-section-number">8.2.2</span> Fitting and interpreting a Poisson regression model</a></li>
   </ul></li>
-  <li><a href="#model-diagnostics-overdispersion" id="toc-model-diagnostics-overdispersion" class="nav-link" data-scroll-target="#model-diagnostics-overdispersion"><span class="header-section-number">8.3</span> Model Diagnostics: Overdispersion</a>
+  <li><a href="#model-diagnostics-overdispersion" id="toc-model-diagnostics-overdispersion" class="nav-link" data-scroll-target="#model-diagnostics-overdispersion"><span class="header-section-number">8.3</span> Model diagnostics: overdispersion</a>
   <ul class="collapse">
-  <li><a href="#detecting-overdispersion" id="toc-detecting-overdispersion" class="nav-link" data-scroll-target="#detecting-overdispersion"><span class="header-section-number">8.3.1</span> Detecting Overdispersion</a></li>
+  <li><a href="#detecting-overdispersion" id="toc-detecting-overdispersion" class="nav-link" data-scroll-target="#detecting-overdispersion"><span class="header-section-number">8.3.1</span> Detecting overdispersion</a></li>
   </ul></li>
-  <li><a href="#sec-neg-bin" id="toc-sec-neg-bin" class="nav-link" data-scroll-target="#sec-neg-bin"><span class="header-section-number">8.4</span> Negative Binomial Regression for Overdispersed Count Data</a>
+  <li><a href="#sec-neg-bin" id="toc-sec-neg-bin" class="nav-link" data-scroll-target="#sec-neg-bin"><span class="header-section-number">8.4</span> Negative Binomial regression for overdispersed count data</a>
   <ul class="collapse">
-  <li><a href="#fitting-and-interpreting-a-negative-binomial-model" id="toc-fitting-and-interpreting-a-negative-binomial-model" class="nav-link" data-scroll-target="#fitting-and-interpreting-a-negative-binomial-model"><span class="header-section-number">8.4.1</span> Fitting and Interpreting a Negative Binomial Model</a></li>
-  <li><a href="#comparing-poisson-and-negative-binomial-models" id="toc-comparing-poisson-and-negative-binomial-models" class="nav-link" data-scroll-target="#comparing-poisson-and-negative-binomial-models"><span class="header-section-number">8.4.2</span> Comparing Poisson and Negative Binomial Models</a></li>
+  <li><a href="#fitting-and-interpreting-a-negative-binomial-model" id="toc-fitting-and-interpreting-a-negative-binomial-model" class="nav-link" data-scroll-target="#fitting-and-interpreting-a-negative-binomial-model"><span class="header-section-number">8.4.1</span> Fitting and interpreting a Negative Binomial model</a></li>
+  <li><a href="#comparing-poisson-and-negative-binomial-models" id="toc-comparing-poisson-and-negative-binomial-models" class="nav-link" data-scroll-target="#comparing-poisson-and-negative-binomial-models"><span class="header-section-number">8.4.2</span> Comparing Poisson and Negative Binomial models</a></li>
   </ul></li>
-  <li><a href="#other-considerations-in-count-regression" id="toc-other-considerations-in-count-regression" class="nav-link" data-scroll-target="#other-considerations-in-count-regression"><span class="header-section-number">8.5</span> Other Considerations in Count Regression</a>
+  <li><a href="#other-considerations-in-count-regression" id="toc-other-considerations-in-count-regression" class="nav-link" data-scroll-target="#other-considerations-in-count-regression"><span class="header-section-number">8.5</span> Other considerations in count regression</a>
   <ul class="collapse">
   <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="header-section-number">8.5.1</span> Prediction</a></li>
-  <li><a href="#exposure-and-offsets" id="toc-exposure-and-offsets" class="nav-link" data-scroll-target="#exposure-and-offsets"><span class="header-section-number">8.5.2</span> Exposure and Offsets</a></li>
+  <li><a href="#exposure-and-offsets" id="toc-exposure-and-offsets" class="nav-link" data-scroll-target="#exposure-and-offsets"><span class="header-section-number">8.5.2</span> Exposure and offsets</a></li>
   <li><a href="#zero-inflation" id="toc-zero-inflation" class="nav-link" data-scroll-target="#zero-inflation"><span class="header-section-number">8.5.3</span> Zero-inflation</a></li>
   </ul></li>
-  <li><a href="#poisson-and-negative-binomial-regression-using-python" id="toc-poisson-and-negative-binomial-regression-using-python" class="nav-link" data-scroll-target="#poisson-and-negative-binomial-regression-using-python"><span class="header-section-number">8.6</span> Poisson and Negative Binomial Regression using Python</a></li>
+  <li><a href="#poisson-and-negative-binomial-regression-using-python" id="toc-poisson-and-negative-binomial-regression-using-python" class="nav-link" data-scroll-target="#poisson-and-negative-binomial-regression-using-python"><span class="header-section-number">8.6</span> Poisson and Negative Binomial regression using Python</a></li>
   <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">8.7</span> Learning exercises</a>
   <ul class="collapse">
   <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">8.7.1</span> Discussion questions</a></li>
@@ -404,7 +404,7 @@ Figure&nbsp;8.1: Poisson distributions showing how the shape changes with differ
 </section>
 <section id="sec-walkthrough-poisson" class="level3" data-number="8.1.3">
 <h3 data-number="8.1.3" class="anchored" data-anchor-id="sec-walkthrough-poisson"><span class="header-section-number">8.1.3</span> Walkthrough example</h3>
-<p>performance_rating &lt;- round(rnorm(n, 3.5, 0.7))You are an analyst at a large technology firm. The HR leadership team is concerned about employee absenteeism and wants to understand its drivers to better target support and intervention programs. They believe that factors like an employee’s tenure with the company, their performance, and whether or not they are a manager could all play a role.</p>
+<p>You are an analyst at a large technology firm. The HR leadership team is concerned about employee absenteeism and wants to understand its drivers to better target support and intervention programs. They believe that factors like an employee’s tenure with the company, their performance, and whether or not they are a manager could all play a role.</p>
 <p>You are provided with a data set of 865 employees for the most recent full year. The <code>absenteeism</code> data set contains the following fields:</p>
 <ul>
 <li><code>days_absent</code>: The number of unscheduled days of absence for the employee in the last calendar year (our outcome variable).</li>
@@ -563,7 +563,7 @@ performance_rating 0.9635426 1.0174134</code></pre>
 </section>
 </section>
 <section id="model-diagnostics-overdispersion" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="model-diagnostics-overdispersion"><span class="header-section-number">8.3</span> Model Diagnostics: Overdispersion</h2>
+<h2 data-number="8.3" class="anchored" data-anchor-id="model-diagnostics-overdispersion"><span class="header-section-number">8.3</span> Model diagnostics: overdispersion</h2>
 <p>Before we can trust our Poisson model’s conclusions, we must check its primary assumption: that the mean (expected value) and variance of the count outcome are approximately equal. That is, <span class="math inline">\(E(Y) \approx Var(Y)\)</span>. In real-world data, this assumption is rarely met. It is far more common for the variance to be larger than the mean. This is called <strong>overdispersion</strong> (<span class="math inline">\(Var(Y) &gt; E()\)</span>).</p>
 <p>Overdispersion often occurs for a number of reasons, including:</p>
 <ol type="1">
@@ -572,7 +572,7 @@ performance_rating 0.9635426 1.0174134</code></pre>
 </ol>
 <p>If we use a Poisson model on overdispersed data, the coefficient estimates (<span class="math inline">\(\beta\)</span>) are still unbiased (correct on average), but their standard errors are underestimated. This makes the z-scores artificially large and the p-values artificially small. We might therefore conclude that a predictor is statistically significant when, in fact, it is not. Therefore, the model can become overconfident in its findings.</p>
 <section id="detecting-overdispersion" class="level3" data-number="8.3.1">
-<h3 data-number="8.3.1" class="anchored" data-anchor-id="detecting-overdispersion"><span class="header-section-number">8.3.1</span> Detecting Overdispersion</h3>
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="detecting-overdispersion"><span class="header-section-number">8.3.1</span> Detecting overdispersion</h3>
 <p>There are several ways to check for overdispersion.</p>
 <ol type="1">
 <li><p><strong>Compare Mean and Variance:</strong> The simplest check is to compare the raw mean and variance of our outcome variable.</p>
@@ -619,7 +619,7 @@ dispersion
 </section>
 </section>
 <section id="sec-neg-bin" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="sec-neg-bin"><span class="header-section-number">8.4</span> Negative Binomial Regression for Overdispersed Count Data</h2>
+<h2 data-number="8.4" class="anchored" data-anchor-id="sec-neg-bin"><span class="header-section-number">8.4</span> Negative Binomial regression for overdispersed count data</h2>
 <p>When we have confirmed that our count data is overdispersed, the alternative method to use is Negative Binomial regression. The Negative Binomial distribution is a generalization of the Poisson distribution that includes an additional parameter, called the dispersion parameter <span class="math inline">\(\theta\)</span> (theta), which allows the variance to be greater than the mean.</p>
 <p>The variance for a Negative Binomial distribution is modeled as:</p>
 <p><span class="math display">\[
@@ -627,7 +627,7 @@ Var(Y) = \mu + \frac{\mu^2}{\theta}
 \]</span></p>
 <p>Here, <span class="math inline">\(\mu\)</span> is the mean (equivalent to <span class="math inline">\(\lambda\)</span> in the Poisson model). The term <span class="math inline">\(\frac{\mu^2}{\theta}\)</span> allows for the extra variance. As the dispersion parameter <span class="math inline">\(\theta\)</span> gets larger and approaches infinity, the term <span class="math inline">\(\frac{\mu^2}{\theta}\)</span> approaches zero, and the variance approaches the mean, <span class="math inline">\(\mu\)</span>. In this case, the Negative Binomial distribution converges to the Poisson distribution. A smaller <span class="math inline">\(\theta\)</span> indicates greater overdispersion.</p>
 <section id="fitting-and-interpreting-a-negative-binomial-model" class="level3" data-number="8.4.1">
-<h3 data-number="8.4.1" class="anchored" data-anchor-id="fitting-and-interpreting-a-negative-binomial-model"><span class="header-section-number">8.4.1</span> Fitting and Interpreting a Negative Binomial Model</h3>
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="fitting-and-interpreting-a-negative-binomial-model"><span class="header-section-number">8.4.1</span> Fitting and interpreting a Negative Binomial model</h3>
 <p>We can fit an Negative Binomial model in R using the <code>glm.nb()</code> function from the <code>MASS</code> package (which comes with R). The syntax is identical to <code>glm()</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
@@ -705,7 +705,7 @@ performance_rating 0.013878275 0.039175545</code></pre>
 <p>Notice that the standard errors for the Negative Binomial model are larger across the board. By accounting for the overdispersion, the Negative Binomial model provides more realistic (and conservative) estimates of the uncertainty around our coefficients. This leads to larger p-values and more trustworthy inferences. In this case, while <code>tenure</code> remains a significant input variable, we see that <code>is_manager</code> is no longer significant.</p>
 </section>
 <section id="comparing-poisson-and-negative-binomial-models" class="level3" data-number="8.4.2">
-<h3 data-number="8.4.2" class="anchored" data-anchor-id="comparing-poisson-and-negative-binomial-models"><span class="header-section-number">8.4.2</span> Comparing Poisson and Negative Binomial Models</h3>
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="comparing-poisson-and-negative-binomial-models"><span class="header-section-number">8.4.2</span> Comparing Poisson and Negative Binomial models</h3>
 <p>We have strong evidence that the Negative Binomial model is a better choice, but we can formally compare the models. Since the Poisson model is a nested version of the Negative Binomial model (it’s what you get when <span class="math inline">\(\theta \to \infty\)</span>), we can use a likelihood ratio test using the <code>lmtest</code> package to see if the addition of the <span class="math inline">\(\theta\)</span> parameter provides a significant improvement in fit.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
@@ -736,7 +736,7 @@ absent_nb_model       5 5637.075</code></pre>
 </section>
 </section>
 <section id="other-considerations-in-count-regression" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="other-considerations-in-count-regression"><span class="header-section-number">8.5</span> Other Considerations in Count Regression</h2>
+<h2 data-number="8.5" class="anchored" data-anchor-id="other-considerations-in-count-regression"><span class="header-section-number">8.5</span> Other considerations in count regression</h2>
 <p>In this section we provide a brief overview of some additional topics that are relevant when working with count data. For deeper study on this topic, <span class="citation" data-cites="hilbe">Hilbe (<a href="bibliography.html#ref-hilbe" role="doc-biblioref">2014</a>)</span> is an excellent introductory text, while <span class="citation" data-cites="friendly">Friendly and Meyer (<a href="bibliography.html#ref-friendly" role="doc-biblioref">2016</a>)</span> provides a more advanced treatment on the analysis of discrete data more broadly.</p>
 <section id="prediction" class="level3" data-number="8.5.1">
 <h3 data-number="8.5.1" class="anchored" data-anchor-id="prediction"><span class="header-section-number">8.5.1</span> Prediction</h3>
@@ -761,7 +761,7 @@ absent_nb_model       5 5637.075</code></pre>
 </div>
 </section>
 <section id="exposure-and-offsets" class="level3" data-number="8.5.2">
-<h3 data-number="8.5.2" class="anchored" data-anchor-id="exposure-and-offsets"><span class="header-section-number">8.5.2</span> Exposure and Offsets</h3>
+<h3 data-number="8.5.2" class="anchored" data-anchor-id="exposure-and-offsets"><span class="header-section-number">8.5.2</span> Exposure and offsets</h3>
 <p>Sometimes we are not just modeling a raw count, but a rate relative to some measure of “exposure”. For example, we might want to model the number of safety incidents, but we know that a large factory with 1,000 employees is naturally going to have more incidents than a small one with 100 employees, even if the small factory is less safe. We need to control for this exposure.</p>
 <p>In this case, our outcome of interest is really the <em>rate</em> of incidents per employee. Let’s say we model</p>
 <p><span class="math display">\[
@@ -789,7 +789,7 @@ E[\mathrm{incidents}_i] = \mathrm{rate}_i \times \mathrm{employees}_i
 </section>
 </section>
 <section id="poisson-and-negative-binomial-regression-using-python" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="poisson-and-negative-binomial-regression-using-python"><span class="header-section-number">8.6</span> Poisson and Negative Binomial Regression using Python</h2>
+<h2 data-number="8.6" class="anchored" data-anchor-id="poisson-and-negative-binomial-regression-using-python"><span class="header-section-number">8.6</span> Poisson and Negative Binomial regression using Python</h2>
 <p>In Python, count models can be fit using the <code>statsmodels</code> library, very similar to the linear and logistic regression models we have already seen. First let’s get our data set.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -819,7 +819,7 @@ Model Family:                 Poisson   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -4459.5
 Date:                Thu, 13 Nov 2025   Deviance:                       5799.6
-Time:                        17:16:06   Pearson chi2:                 5.99e+03
+Time:                        17:41:20   Pearson chi2:                 5.99e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -863,7 +863,7 @@ Model Family:        NegativeBinomial   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -2842.3
 Date:                Thu, 13 Nov 2025   Deviance:                       702.79
-Time:                        17:16:07   Pearson chi2:                     548.
+Time:                        17:41:21   Pearson chi2:                     548.
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
 Covariance Type:            nonrobust                                         
 ======================================================================================
