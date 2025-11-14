@@ -44,7 +44,7 @@ ggplot2::ggplot(binom_data, aes(x = k, y = prob)) +
 Binomial distribution showing the probability of $k$ successes in 100 observations with a success probability of 0.3 
 :::
 
-Now, although the outcome variable $Y$ here is discrete (can only take non-negative integer values), we can see that the shape of $Y$ resembles a normal distribution.  In fact, as long as $n$ is not very small and $p$ is not very biased^[I usually find that $n > 50$ and $0.2 < p < 0.8$ are decent rules of thumb for my needs.], the binomial distribution can be well approximated by a normal distribution with mean $np$ and variance $np(1 - p)$ (standard deviation $\sqrt{np(1-p)}$) as shown in @fig-binomial-normal-approx for $n = 100$ and $p = 0.3$.  
+Now, although the variable $Y$ here is discrete (can only take non-negative integer values), we can see that the shape of $Y$ resembles a normal distribution.  In fact, as long as $n$ is not very small and $p$ is not very biased^[I usually find that $n > 50$ and $0.2 < p < 0.8$ are decent rules of thumb for my needs.], the binomial distribution can be well approximated by a normal distribution with mean $np$ and variance $np(1 - p)$ (standard deviation $\sqrt{np(1-p)}$) as shown in @fig-binomial-normal-approx for $n = 100$ and $p = 0.3$.  
 
 ::: {#fig-binomial-normal-approx}
 ```{r}
@@ -95,6 +95,10 @@ ggplot2::ggplot(binom_data, aes(x = k, y = cum_prob)) +
   theme_minimal()
 
 ```
+
+Cumulative binomial distribution with $n = 100$, $p = 0.3$ (blue bars) and normal approximation with $\mu = 30$, $\sigma = \sqrt{21}$ (red line)
+:::
+
 
 We will be interested in modeling this cumulative probability of success, in order to understand how various input variables might influence it.  Now that we know that it is well approximated by the normal distribution, we can use a function that has very similar charateristics to the normal distribution, but is easier to work with mathematically:  called the *logistic function*.
 
