@@ -9,7 +9,7 @@ In any situation where our outcome is binary, we are effectively working with li
 
 ### Origins and intuition of binomial logistic regression {#sec-logistic-origins}
 
-Imagine that we have a set of observations of data that are binary or dichotomous in nature.  For convenience, let's call the two values the data can take as 'success' and 'failure'.  Let's say that the probability of an observation being a success is $p$, and therefore the probability of an observation being a failure is $1 - p$.  
+Imagine that we have a set of observations of data that are binary or dichotomous in nature.  For convenience, let's call the two values the data can take 'success' and 'failure'.  Let's say that the probability of an observation being a success is $p$, and therefore the probability of an observation being a failure is $1 - p$.  
 
 Let's also imagine we take a sample of $n$ observations at random, with each observation being independent of the other.  Then the number of successes in the sample, which we will call $Y$, will follow a *binomial distribution* with parameters $n$ and $p$.  The probability of observing exactly $k$ successes in our sample is given by the formula:
 
@@ -100,7 +100,7 @@ Cumulative binomial distribution with $n = 100$, $p = 0.3$ (blue bars) and norma
 :::
 
 
-We will be interested in modeling this cumulative probability of success, in order to understand how various input variables might influence it.  Now that we know that it is well approximated by the normal distribution, we can use a function that has very similar charateristics to the normal distribution, but is easier to work with mathematically:  called the *logistic function*.
+We will be interested in modeling this cumulative probability of success, in order to understand how various input variables might influence it.  Because we know that it is well approximated by the normal distribution, we can utilize a function that has very similar characteristics to the normal distribution, but is easier to work with mathematically.
 
 The *logistic function* was first introduced by the Belgian mathematician Pierre François Verhulst in the early 1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population.  The formula for Verhulst's function was:
 
