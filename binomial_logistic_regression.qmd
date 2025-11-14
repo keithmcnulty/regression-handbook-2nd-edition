@@ -9,7 +9,7 @@ In any situation where our outcome is binary, we are effectively working with li
 
 ### Origins and intuition of binomial logistic regression {#sec-logistic-origins}
 
-Imagine that we have a set of observations of data that is binory or dichotomous in nature.  For convenience, let's call the two values the data can take as 'success' and 'failure'.  Let's say that the probability of an observation being a success is $p$, and therefore the probability of an observation being a failure is $1 - p$.  
+Imagine that we have a set of observations of data that are binary or dichotomous in nature.  For convenience, let's call the two values the data can take as 'success' and 'failure'.  Let's say that the probability of an observation being a success is $p$, and therefore the probability of an observation being a failure is $1 - p$.  
 
 Let's also imagine we take a sample of $n$ observations at random, with each observation being independent of the other.  Then the number of successes in the sample, which we will call $Y$, will follow a *binomial distribution* with parameters $n$ and $p$.  The probability of observing exactly $k$ successes in our sample is given by the formula:
 
@@ -17,7 +17,7 @@ $$
 P(Y = k) = \binom{n}{k} p^k (1 - p)^{n - k}
 $$
 
-where $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ is the binomial coefficient, which gives the number of ways of choosing $k$ successes from $n$ trials.  Here is the distribution of $Y$ for $n = 100$ and $p = 0.3$, shown in @fig-binomial-dist:
+where $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ is the binomial coefficient, which gives the number of ways of choosing $k$ successes from $n$ observations.  Here is the distribution of $Y$ for $n = 100$ and $p = 0.3$, shown in @fig-binomial-dist:
 
 ::: {#fig-binomial-dist}
 ```{r}
@@ -41,10 +41,10 @@ ggplot2::ggplot(binom_data, aes(x = k, y = prob)) +
   theme_minimal() 
 ```
 
-Binomial distribution showing the probability of $k$ successes in 100 trials with a success probability of 0.3 
+Binomial distribution showing the probability of $k$ successes in 100 observations with a success probability of 0.3 
 :::
 
-Now, although the outcome variable $Y$ here is discrete (can only take non-negative integer values), we can see that the shape of $Y$ resembles a normal distribution.  In fact, as long as $n$ is not very small and $p$ is not very biased^[I usually find that $n > 50$ and $0.2 < p < 0.8$ are decent rules of thumb for my needs], the binomial distribution can be well approximated by a normal distribution with mean $np$ and variance $np(1 - p)$ (standard deviation $\sqrt{np(1-p)}$) as shown in @fig-binomial-normal-approx for $n = 100$ and $p = 0.3$.  
+Now, although the outcome variable $Y$ here is discrete (can only take non-negative integer values), we can see that the shape of $Y$ resembles a normal distribution.  In fact, as long as $n$ is not very small and $p$ is not very biased^[I usually find that $n > 50$ and $0.2 < p < 0.8$ are decent rules of thumb for my needs.], the binomial distribution can be well approximated by a normal distribution with mean $np$ and variance $np(1 - p)$ (standard deviation $\sqrt{np(1-p)}$) as shown in @fig-binomial-normal-approx for $n = 100$ and $p = 0.3$.  
 
 ::: {#fig-binomial-normal-approx}
 ```{r}

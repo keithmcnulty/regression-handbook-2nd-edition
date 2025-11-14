@@ -207,7 +207,7 @@ There are several ways to check for overdispersion.
       variance = var(absenteeism$days_absent))
     ```
     
-The variance (`{r} round(var(absenteeism$days_absent), 2)`) is much larger than the mean (`{r} round(mean(absenteeism$days_absent), 2)`), which is a strong initial sign of overdispersion.
+    The variance (`{r} round(var(absenteeism$days_absent), 2)`) is much larger than the mean (`{r} round(mean(absenteeism$days_absent), 2)`), which is a strong initial sign of overdispersion.
 
 2.  **Calculate the Dispersion Parameter:** A more formal check comes from the model itself. The dispersion parameter is calculated by dividing the model's residual deviance by its residual degrees of freedom. For a Poisson model, this value should be close to 1. A value significantly greater than 1 indicates overdispersion.
 
@@ -217,7 +217,7 @@ The variance (`{r} round(var(absenteeism$days_absent), 2)`) is much larger than 
     ```
 
 
-Our dispersion parameter of `{r} round(dispersion_param, 2)` is substantially greater than 1, confirming that our data is overdispersed and the Poisson model is likely not appropriate.
+    Our dispersion parameter of `{r} round(dispersion_param, 2)` is substantially greater than 1, confirming that our data is overdispersed and the Poisson model is likely not appropriate.
 
 3.  **Formal Hypothesis Test:** The `AER` package provides a formal test for overdispersion. The null hypothesis is that the data is equidispersed (mean = variance), while the alternative is that it is overdispersed. A small p-value provides evidence for overdispersion.
 
@@ -227,7 +227,7 @@ Our dispersion parameter of `{r} round(dispersion_param, 2)` is substantially gr
     dispersiontest(absent_poisson_model)
     ```
 
-The very small p-value leads us to reject the null hypothesis and conclude that overdispersion is present. This suggests that we should search for an alternative approach that can handle overdispersed count data.
+    The very small p-value leads us to reject the null hypothesis and conclude that overdispersion is present. This suggests that we should search for an     alternative approach that can handle overdispersed count data.
 
 When we have confirmed that our count data is overdispersed, there are two alternative methods we can use: Quasi-Poisson regression and negative binomial regression.  
 
@@ -384,7 +384,7 @@ glm(incidents ~ X1 + X2 + offset(log(employees)), family=poisson)
 
 Sometimes count data has an excess of zeros beyond what would be expected from a Poisson or negative binomial distribution. This can occur when there are two processes at work: one determining whether the event can occur at all, and another determining how many times it occurs. For example, some employees might never be absent due to perfect health and proximity to work (structural zeros), while others have some probability of absence following a count distribution.
 
-The `performance` package in R provides functions to check for zero-inflation in a Poisson or negative binomial model.  First we will check for our Poisson model. 
+If you believe there may be structural reasons for an excess of zeros in your data, you can use the `performance` package in R to check for zero-inflation in a Poisson or negative binomial model.  First we will check for our Poisson model. 
 
 ```{r}
 # check for zero-inflation in Poisson model
@@ -413,14 +413,14 @@ summary(zip_model)
 
 The first set of coefficients are the regression coefficients for a Poisson model fitted to the non-zero outcome values, confirming as per our previous Poisson model that higher tenure is significantly positively associated with increased absence, and that being a manager is significantly negatively associated.  The second set of coefficients are from a binomial logistic regression model on an outcome of whether an observation is a structural zero.  Here we see that higher tenure is significantly negatively associated with being a structural zero, meaning that employees with longer tenure are less likely to be in the always-zero group.
 
-However, we know that overdispersion is present in our data, so let's check whether there is zero-inflation in our negative binomial model.
+However, we know that overdispersion is present in our data, which could be a better explanation for the excess zeros, especially if we have no basis to support a structural reasobn.    So let's check whether there is zero-inflation in our negative binomial model.
 
 ```{r}
 # check for zero-inflation in negative binomial model
 check_zeroinflation(absent_nb_model)
 ```
 
-It seems unlikely based on this check that zero-inflation is an issue in the negative binomial model.  Nevertheless, for completeness, we can fit a zero-inflated negative binomial model as well.
+It seems unlikely based on this check that zero-inflation is an issue in the negative binomial model, so the excess zeros could well be a consequence of overdispersion.  Nevertheless, for completeness, we can fit a zero-inflated negative binomial model as well.
 
 
 ```{r}
@@ -435,7 +435,7 @@ zinb_model <- zeroinfl(
 summary(zinb_model)
 ```
 
-The more conservative negative binomial model suggests that there are no variables significantly associated with being a member of the structural zero group, and confirms the findings from our previous negative binomial model that only tenure is significantly positively associated with increased absence.  This suggests that zero-inflation is not a concern for our data under a negative binomial model.
+The more conservative negative binomial model suggests that there are no variables significantly associated with being a member of the structural zero group, and confirms the findings from our previous negative binomial model that only tenure is significantly positively associated with increased absence.  This suggests that zero-inflation is not a concern in this case.
 
 
 ## Poisson and negative binomial regression using Python

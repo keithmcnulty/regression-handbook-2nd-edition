@@ -577,10 +577,8 @@ performance_rating 0.9635426 1.0174134</code></pre>
 <pre><code>     mean  variance 
  10.26243 103.25397 </code></pre>
 </div>
-</div></li>
-</ol>
-<p>The variance (103.25) is much larger than the mean (10.26), which is a strong initial sign of overdispersion.</p>
-<ol start="2" type="1">
+</div>
+<p>The variance (103.25) is much larger than the mean (10.26), which is a strong initial sign of overdispersion.</p></li>
 <li><p><strong>Calculate the Dispersion Parameter:</strong> A more formal check comes from the model itself. The dispersion parameter is calculated by dividing the model’s residual deviance by its residual degrees of freedom. For a Poisson model, this value should be close to 1. A value significantly greater than 1 indicates overdispersion.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate dispersion parameter</span></span>
@@ -588,10 +586,8 @@ performance_rating 0.9635426 1.0174134</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.735929</code></pre>
 </div>
-</div></li>
-</ol>
-<p>Our dispersion parameter of 6.74 is substantially greater than 1, confirming that our data is overdispersed and the Poisson model is likely not appropriate.</p>
-<ol start="3" type="1">
+</div>
+<p>Our dispersion parameter of 6.74 is substantially greater than 1, confirming that our data is overdispersed and the Poisson model is likely not appropriate.</p></li>
 <li><p><strong>Formal Hypothesis Test:</strong> The <code>AER</code> package provides a formal test for overdispersion. The null hypothesis is that the data is equidispersed (mean = variance), while the alternative is that it is overdispersed. A small p-value provides evidence for overdispersion.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
@@ -607,9 +603,9 @@ sample estimates:
 dispersion 
   6.926057 </code></pre>
 </div>
-</div></li>
+</div>
+<p>The very small p-value leads us to reject the null hypothesis and conclude that overdispersion is present. This suggests that we should search for an alternative approach that can handle overdispersed count data.</p></li>
 </ol>
-<p>The very small p-value leads us to reject the null hypothesis and conclude that overdispersion is present. This suggests that we should search for an alternative approach that can handle overdispersed count data.</p>
 <p>When we have confirmed that our count data is overdispersed, there are two alternative methods we can use: Quasi-Poisson regression and negative binomial regression.</p>
 </section>
 <section id="quasi-poisson-regression" class="level3" data-number="8.3.2">
@@ -820,7 +816,7 @@ E[\mathrm{incidents}_i] = \mathrm{rate}_i \times \mathrm{employees}_i
 <section id="zero-inflation" class="level3" data-number="8.4.3">
 <h3 data-number="8.4.3" class="anchored" data-anchor-id="zero-inflation"><span class="header-section-number">8.4.3</span> Zero-inflation</h3>
 <p>Sometimes count data has an excess of zeros beyond what would be expected from a Poisson or negative binomial distribution. This can occur when there are two processes at work: one determining whether the event can occur at all, and another determining how many times it occurs. For example, some employees might never be absent due to perfect health and proximity to work (structural zeros), while others have some probability of absence following a count distribution.</p>
-<p>The <code>performance</code> package in R provides functions to check for zero-inflation in a Poisson or negative binomial model. First we will check for our Poisson model.</p>
+<p>If you believe there may be structural reasons for an excess of zeros in your data, you can use the <code>performance</code> package in R to check for zero-inflation in a Poisson or negative binomial model. First we will check for our Poisson model.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check for zero-inflation in Poisson model</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
@@ -879,7 +875,7 @@ Log-likelihood: -4179 on 8 Df</code></pre>
 </div>
 </div>
 <p>The first set of coefficients are the regression coefficients for a Poisson model fitted to the non-zero outcome values, confirming as per our previous Poisson model that higher tenure is significantly positively associated with increased absence, and that being a manager is significantly negatively associated. The second set of coefficients are from a binomial logistic regression model on an outcome of whether an observation is a structural zero. Here we see that higher tenure is significantly negatively associated with being a structural zero, meaning that employees with longer tenure are less likely to be in the always-zero group.</p>
-<p>However, we know that overdispersion is present in our data, so let’s check whether there is zero-inflation in our negative binomial model.</p>
+<p>However, we know that overdispersion is present in our data, which could be a better explanation for the excess zeros, especially if we have no basis to support a structural reasobn. So let’s check whether there is zero-inflation in our negative binomial model.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check for zero-inflation in negative binomial model</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_zeroinflation</span>(absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -891,7 +887,7 @@ Log-likelihood: -4179 on 8 Df</code></pre>
             Ratio: 0.88</code></pre>
 </div>
 </div>
-<p>It seems unlikely based on this check that zero-inflation is an issue in the negative binomial model. Nevertheless, for completeness, we can fit a zero-inflated negative binomial model as well.</p>
+<p>It seems unlikely based on this check that zero-inflation is an issue in the negative binomial model, so the excess zeros could well be a consequence of overdispersion. Nevertheless, for completeness, we can fit a zero-inflated negative binomial model as well.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit zero-inflated negative binomial model</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>zinb_model <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>(</span>
@@ -934,7 +930,7 @@ Number of iterations in BFGS optimization: 20
 Log-likelihood: -2812 on 9 Df</code></pre>
 </div>
 </div>
-<p>The more conservative negative binomial model suggests that there are no variables significantly associated with being a member of the structural zero group, and confirms the findings from our previous negative binomial model that only tenure is significantly positively associated with increased absence. This suggests that zero-inflation is not a concern for our data under a negative binomial model.</p>
+<p>The more conservative negative binomial model suggests that there are no variables significantly associated with being a member of the structural zero group, and confirms the findings from our previous negative binomial model that only tenure is significantly positively associated with increased absence. This suggests that zero-inflation is not a concern in this case.</p>
 </section>
 </section>
 <section id="poisson-and-negative-binomial-regression-using-python" class="level2" data-number="8.5">
@@ -968,7 +964,7 @@ Model Family:                 Poisson   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -4459.5
 Date:                Fri, 14 Nov 2025   Deviance:                       5799.6
-Time:                        16:18:43   Pearson chi2:                 5.99e+03
+Time:                        16:49:56   Pearson chi2:                 5.99e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -1012,7 +1008,7 @@ Model Family:        NegativeBinomial   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -2842.3
 Date:                Fri, 14 Nov 2025   Deviance:                       702.79
-Time:                        16:18:44   Pearson chi2:                     548.
+Time:                        16:49:56   Pearson chi2:                     548.
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
 Covariance Type:            nonrobust                                         
 ======================================================================================
