@@ -444,15 +444,11 @@ Figure&nbsp;8.1: Poisson distributions showing how the shape changes with differ
  Max.   :62.00   Max.   :30.00              Max.   :5.000     </code></pre>
 </div>
 </div>
-<p>We see that <code>days_absent</code> ranges from 0 to 62, with a mean of 10.26. The input variables all seem to be within reasonable ranges. Let’s create a pairplot to get an initial feel for the relationships in the data, as shown in <a href="#fig-poisson-pairplot" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>.</p>
-<div id="fig-poisson-pairplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>We see that <code>days_absent</code> ranges from 0 to 62, with a mean of 10.26. The distribution of absences is shown in <a href="#fig-daysabsent-dist" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>.</p>
+<div id="fig-daysabsent-dist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-poisson-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-daysabsent-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generate pairplot</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(absenteeism)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -462,12 +458,12 @@ Figure&nbsp;8.1: Poisson distributions showing how the shape changes with differ
 </div>
 </div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-poisson-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.2: Pairplot for the <code>absenteeism</code> data set
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-daysabsent-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.2: Distribution of <code>days_absent</code> with histogram and density plot
 </figcaption>
 </figure>
 </div>
-<p>The most striking feature of the pairplot is the distribution of our outcome variable, <code>days_absent</code>. It is highly right-skewed, with most employees having a low number of absences and a “long tail” of employees with a high number of absences. This is a classic shape for count data, and suggests that Poisson regression is a good initial approach for this problem.</p>
+<p>This is a highly right-skewed distribution, with most employees having a low number of absences and a “long tail” of employees with a high number of absences. This is a classic shape for count data, and suggests that Poisson regression is a good initial approach for this problem.</p>
 </section>
 </section>
 <section id="sec-mod-poisson" class="level2" data-number="8.2">
@@ -497,13 +493,13 @@ P(Y=k) = \frac{\lambda^k e^{-\lambda}}{k!}
 <h3 data-number="8.2.2" class="anchored" data-anchor-id="fitting-and-interpreting-a-poisson-regression-model"><span class="header-section-number">8.2.2</span> Fitting and interpreting a Poisson regression model</h3>
 <p>Let’s fit a Poisson model to our <code>absenteeism</code> data to understand the drivers of absent days. We use the <code>glm()</code> function, specifying <code>family = "poisson"</code> which automatically uses the log transformation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a poisson model</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>absent_poisson_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> absenteeism,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">family =</span> <span class="st">"poisson"</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># view the summary</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absent_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a poisson model</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>absent_poisson_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> absenteeism,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">family =</span> <span class="st">"poisson"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># view the summary</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absent_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -531,8 +527,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <p>The summary output is similar to what we’ve seen before. We have coefficient estimates, standard errors, z-values, and p-values. Let’s interpret the <code>tenure</code> coefficient. For a one-year increase in <code>tenure</code>, the log of the expected number of absent days increases by 0.0511, holding all other variables constant. A much more intuitive interpretation comes from exponentiating the coefficients. The exponentiated value is called an <strong>Incidence Rate Ratio (IRR)</strong>. The IRR tells us the multiplicative factor by which the expected count changes for a one-unit increase in the predictor.</p>
 <p>Let’s calculate the IRRs for our model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exponentiate coefficients to get Incidence Rate Ratios (IRRs)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(irr <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(absent_poisson_model)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exponentiate coefficients to get Incidence Rate Ratios (IRRs)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>(irr <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(absent_poisson_model)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       (Intercept)             tenure        is_manager1 performance_rating 
          4.5060347          1.0524742          0.8538633          0.9901123 </code></pre>
@@ -547,8 +543,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </ul>
 <p>Just as with logistic regression, we can calculate confidence intervals for these IRRs to understand the range of plausible values for the effect.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence intervals for the IRRs</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(absent_poisson_model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence intervals for the IRRs</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(absent_poisson_model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                       2.5 %    97.5 %
 (Intercept)        4.0513303 5.0097586
@@ -562,7 +558,7 @@ performance_rating 0.9635426 1.0174134</code></pre>
 </section>
 <section id="sec-overdispersion" class="level2" data-number="8.3">
 <h2 data-number="8.3" class="anchored" data-anchor-id="sec-overdispersion"><span class="header-section-number">8.3</span> Model diagnostics: overdispersion</h2>
-<p>Before we can trust our Poisson model’s conclusions, we must check its primary assumption: that the mean (expected value) and variance of the count outcome are approximately equal. That is, <span class="math inline">\(E(Y) \approx Var(Y)\)</span>. In real-world data, this assumption is rarely met. It is far more common for the variance to be larger than the mean. This is called <strong>overdispersion</strong> (<span class="math inline">\(Var(Y) &gt; E()\)</span>)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>Before we can trust our Poisson model’s conclusions, we must check its primary assumption: that the mean (expected value) and variance of the count outcome are approximately equal. That is, <span class="math inline">\(E(y) \approx Var(y)\)</span>. In real-world data, this assumption is rarely met. It is far more common for the variance to be larger than the mean. This is called <strong>overdispersion</strong> (<span class="math inline">\(Var(y) &gt; E(y)\)</span>)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
 <p>Overdispersion is common for a number of reasons, including:</p>
 <ol type="1">
 <li><p><strong>Unobserved Heterogeneity:</strong> There may be other unmeasured factors that influence the count. For instance, in our example some employees might have chronic health conditions that make them more prone to absence. This creates extra variability in the counts that is not captured by our input variables.</p></li>
@@ -575,8 +571,8 @@ performance_rating 0.9635426 1.0174134</code></pre>
 <ol type="1">
 <li><p><strong>Compare Mean and Variance:</strong> The simplest check is to compare the raw mean and variance of our outcome variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(absenteeism<span class="sc">$</span>days_absent), </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance =</span> <span class="fu">var</span>(absenteeism<span class="sc">$</span>days_absent))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(absenteeism<span class="sc">$</span>days_absent), </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance =</span> <span class="fu">var</span>(absenteeism<span class="sc">$</span>days_absent))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     mean  variance 
  10.26243 103.25397 </code></pre>
@@ -587,8 +583,8 @@ performance_rating 0.9635426 1.0174134</code></pre>
 <ol start="2" type="1">
 <li><p><strong>Calculate the Dispersion Parameter:</strong> A more formal check comes from the model itself. The dispersion parameter is calculated by dividing the model’s residual deviance by its residual degrees of freedom. For a Poisson model, this value should be close to 1. A value significantly greater than 1 indicates overdispersion.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate dispersion parameter</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>(dispersion_param <span class="ot">&lt;-</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>deviance <span class="sc">/</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>df.residual)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate dispersion parameter</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>(dispersion_param <span class="ot">&lt;-</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>deviance <span class="sc">/</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>df.residual)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.735929</code></pre>
 </div>
@@ -598,8 +594,8 @@ performance_rating 0.9635426 1.0174134</code></pre>
 <ol start="3" type="1">
 <li><p><strong>Formal Hypothesis Test:</strong> The <code>AER</code> package provides a formal test for overdispersion. The null hypothesis is that the data is equidispersed (mean = variance), while the alternative is that it is overdispersed. A small p-value provides evidence for overdispersion.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dispersiontest</span>(absent_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dispersiontest</span>(absent_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Overdispersion test
@@ -620,18 +616,18 @@ dispersion
 <h3 data-number="8.3.2" class="anchored" data-anchor-id="quasi-poisson-regression"><span class="header-section-number">8.3.2</span> Quasi-Poisson regression</h3>
 <p>Quasi-Poisson regression, which is a simple extension of the Poisson model, relaxes the assumption that the mean and variance are equal, allowing the variance to be a linear function of the mean. That is</p>
 <p><span class="math display">\[
-Var(Y) = \theta \mu
+Var(y) = \theta \mu
 \]</span></p>
 <p>where <span class="math inline">\(\theta\)</span> is a dispersion parameter estimated from the data and <span class="math inline">\(\mu\)</span> is the average event count (equivalent to <span class="math inline">\(\lambda\)</span> in the Poisson model). We expect <span class="math inline">\(\theta &gt; 1\)</span> in the presence of overdispersion, and a greater <span class="math inline">\(\theta\)</span> means greater dispersion. The coefficient estimates in a Quasi-Poisson model are identical to the Poisson model, but the standard errors are adjusted, which affects which input variables are returned as significant.</p>
 <p>Quasi-Poisson regression can be performed in R using the <code>glm()</code> function with <code>family = "quasipoisson"</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a quasi-poisson model</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>absent_quasi_poisson_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">data =</span> absenteeism,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">family =</span> <span class="st">"quasipoisson"</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># view the summary</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absent_quasi_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a quasi-poisson model</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>absent_quasi_poisson_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">data =</span> absenteeism,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">family =</span> <span class="st">"quasipoisson"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># view the summary</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absent_quasi_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -663,19 +659,19 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <p>Another option in the presence of overdispersion is to use negative binomial regression. The negative binomial distribution is a generalization of the Poisson distribution that includes an additional dispersion parameter which allows the variance to be greater than the mean.</p>
 <p>The variance for a negative binomial distribution is modeled as:</p>
 <p><span class="math display">\[
-Var(Y) = \mu + \frac{\mu^2}{\theta}
+Var(y) = \mu + \frac{\mu^2}{\theta}
 \]</span></p>
 <p>where <span class="math inline">\(\theta\)</span> is a dispersion parameter, so the term <span class="math inline">\(\frac{\mu^2}{\theta}\)</span> allows for the extra variance. Note that in this model the variance is a quadratic function of the mean, rather than the linear function used in the Quasi-Poisson model. Note also that a greater <span class="math inline">\(\theta\)</span> means less dispersion, and as <span class="math inline">\(\theta\)</span> gets larger and approaches infinity, the term <span class="math inline">\(\frac{\mu^2}{\theta}\)</span> approaches zero, and the variance approaches the mean <span class="math inline">\(\mu\)</span>. In this case, the negative binomial distribution converges to the Poisson distribution.</p>
 <p>We can fit a negative binomial model in R using the <code>glm.nb()</code> function from the <code>MASS</code> package. The syntax is identical to <code>glm()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># run a negative binomial model</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>absent_nb_model <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(<span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> absenteeism)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># view the summary</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># run a negative binomial model</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>absent_nb_model <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(<span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> absenteeism)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># view the summary</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -708,8 +704,8 @@ Number of Fisher Scoring iterations: 1
 <p>The output looks very similar to the Poisson and Quasi-Poisson summaries, but with one key addition: at the bottom, we see “Theta: 1.5536”. This is the estimated dispersion parameter <span class="math inline">\(\theta\)</span>. The <code>summary()</code> also provides a standard error for <span class="math inline">\(\theta\)</span> and tests whether it is significantly different from infinity (i.e., whether the negative binomial model is a significant improvement over the Poisson model).</p>
 <p>The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get Incidence Rate Ratios (IRRs).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># IRRs for the negative binomial model</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>(irr_nb <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(absent_nb_model)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># IRRs for the negative binomial model</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>(irr_nb <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(absent_nb_model)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       (Intercept)             tenure        is_manager1 performance_rating 
          4.8117411          1.0509798          0.8707365          0.9777244 </code></pre>
@@ -717,8 +713,8 @@ Number of Fisher Scoring iterations: 1
 </div>
 <p>Let’s compare these with the IRRs from our original Poisson model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare IRRs side-by-side</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">IRR_Poisson =</span> irr, <span class="at">IRR_NB =</span> irr_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare IRRs side-by-side</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">IRR_Poisson =</span> irr, <span class="at">IRR_NB =</span> irr_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   IRR_Poisson    IRR_NB
 (Intercept)          4.5060347 4.8117411
@@ -729,9 +725,9 @@ performance_rating   0.9901123 0.9777244</code></pre>
 </div>
 <p>The point estimates for the IRRs are quite similar. This is expected, as the coefficients are generally unbiased even when a Poisson model is used on overdispersed data. The real difference is in the standard errors and p-values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare standard errors</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">SE_Poisson =</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>coefficients[, <span class="st">"Std. Error"</span>],</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">SE_NB =</span> <span class="fu">summary</span>(absent_nb_model)<span class="sc">$</span>coefficients[, <span class="st">"Std. Error"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare standard errors</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">SE_Poisson =</span> <span class="fu">summary</span>(absent_poisson_model)<span class="sc">$</span>coefficients[, <span class="st">"Std. Error"</span>],</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">SE_NB =</span> <span class="fu">summary</span>(absent_nb_model)<span class="sc">$</span>coefficients[, <span class="st">"Std. Error"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    SE_Poisson       SE_NB
 (Intercept)        0.054169623 0.147301916
@@ -746,8 +742,8 @@ performance_rating 0.013878275 0.039175545</code></pre>
 <h3 data-number="8.3.4" class="anchored" data-anchor-id="comparing-poisson-and-negative-binomial-models"><span class="header-section-number">8.3.4</span> Comparing Poisson and negative binomial models</h3>
 <p>We have strong evidence that the negative binomial model is a better choice compared to the original Poisson model, but we can also formally compare the models. Since the Poisson model is a nested version of the negative binomial model (it’s what you get when <span class="math inline">\(\theta \to \infty\)</span>), we can use a likelihood ratio test using the <code>lmtest</code> package to see if the addition of the <span class="math inline">\(\theta\)</span> parameter provides a significant improvement in fit. This is a notable advantage of the negative binomial model over the Quasi-Poisson model, which does not have a likelihood function and therefore cannot be compared in this way.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(absent_poisson_model, absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(absent_poisson_model, absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood ratio test
 
@@ -763,7 +759,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>The extremely small p-value indicates that the negative binomial model provides a significantly better fit to the data than the Poisson model.</p>
 <p>We can also compare the models using the Akaike Information Criterion (AIC), which as we have learned previously is a measure of model parsimony. Since both of our models use the same input variables, a lower AIC indicates a better fit.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(absent_poisson_model, absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(absent_poisson_model, absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     df      AIC
 absent_poisson_model  4 8927.050
@@ -781,18 +777,18 @@ absent_nb_model       5 5637.075</code></pre>
 <h3 data-number="8.4.1" class="anchored" data-anchor-id="prediction"><span class="header-section-number">8.4.1</span> Prediction</h3>
 <p>Predicting expected counts from a new set of data works just like in other <code>glm</code> models. We use the <code>predict()</code> function with <code>type = "response"</code> to get the prediction on the original count scale (i.e., the expected number of events, <span class="math inline">\(\lambda_i\)</span>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define new observations</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>(new_employees <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tenure =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">25</span>, <span class="dv">15</span>),</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">is_manager =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)),</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">performance_rating =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define new observations</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>(new_employees <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tenure =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">25</span>, <span class="dv">15</span>),</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">is_manager =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)),</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">performance_rating =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  tenure is_manager performance_rating
 1      2          0                  4
 2     25          1                  3
 3     15          0                  3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># predict expected days absent using our final NB model</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(absent_nb_model, new_employees, <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># predict expected days absent using our final NB model</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(absent_nb_model, new_employees, <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        1         2         3 
  4.856874 13.573681  9.481285 </code></pre>
@@ -824,31 +820,145 @@ E[\mathrm{incidents}_i] = \mathrm{rate}_i \times \mathrm{employees}_i
 <section id="zero-inflation" class="level3" data-number="8.4.3">
 <h3 data-number="8.4.3" class="anchored" data-anchor-id="zero-inflation"><span class="header-section-number">8.4.3</span> Zero-inflation</h3>
 <p>Sometimes count data has an excess of zeros beyond what would be expected from a Poisson or negative binomial distribution. This can occur when there are two processes at work: one determining whether the event can occur at all, and another determining how many times it occurs. For example, some employees might never be absent due to perfect health and proximity to work (structural zeros), while others have some probability of absence following a count distribution.</p>
-<p>Zero-inflated Poisson and zero-inflated negative binomial models can handle such data by combining a binary model for the zero/non-zero outcome with a count model for the non-zero outcomes. The <code>pscl</code> package in R offers a function <code>zeroinfl()</code> to fit these models.</p>
+<p>The <code>performance</code> package in R provides functions to check for zero-inflation in a Poisson or negative binomial model. First we will check for our Poisson model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check for zero-inflation in Poisson model</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_zeroinflation</span>(absent_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Check for zero-inflation
+
+   Observed zeros: 56
+  Predicted zeros: 2
+            Ratio: 0.04</code></pre>
+</div>
+</div>
+<p>The output indicates that our Poisson model may have too many zeros compared to what would normally be expected in a Poisson distribution. In this situation, we could consider using a zero-inflated model, which combines a binary model for the zero/non-zero outcome with a count model for the non-zero outcomes. The <code>pscl</code> package in R offers a function <code>zeroinfl()</code> to fit these models. The formula syntax is similar to <code>glm()</code>, but we can specify separate input variables for the zero-inflation part of the model.</p>
+<p>Here we fit a zero-inflated Poisson model to our absenteeism data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pscl)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit zero-inflated Poisson model using all variables for both the zero-inflated and poisson parts</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>zip_model <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>(</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># poisson input variables first, binomial second</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating <span class="sc">|</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism,</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">dist =</span> <span class="st">"poisson"</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(zip_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+zeroinfl(formula = days_absent ~ tenure + is_manager + performance_rating | 
+    tenure + is_manager + performance_rating, data = absenteeism, dist = "poisson")
+
+Pearson residuals:
+    Min      1Q  Median      3Q     Max 
+-3.6724 -1.5248 -0.4967  0.9931  9.6365 
+
+Count model coefficients (poisson with log link):
+                    Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)         1.625565   0.054553  29.798  &lt; 2e-16 ***
+tenure              0.048091   0.001281  37.542  &lt; 2e-16 ***
+is_manager1        -0.140534   0.033089  -4.247 2.16e-05 ***
+performance_rating -0.012928   0.013904  -0.930    0.352    
+
+Zero-inflation model coefficients (binomial with logit link):
+                   Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)        -1.39762    0.68731  -2.033 0.042007 *  
+tenure             -0.05497    0.01667  -3.298 0.000974 ***
+is_manager1         0.19858    0.40512   0.490 0.624014    
+performance_rating -0.17071    0.18989  -0.899 0.368647    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Number of iterations in BFGS optimization: 14 
+Log-likelihood: -4179 on 8 Df</code></pre>
+</div>
+</div>
+<p>The first set of coefficients are the regression coefficients for a Poisson model fitted to the non-zero outcome values, confirming as per our previous Poisson model that higher tenure is significantly positively associated with increased absence, and that being a manager is significantly negatively associated. The second set of coefficients are from a binomial logistic regression model on an outcome of whether an observation is a structural zero. Here we see that higher tenure is significantly negatively associated with being a structural zero, meaning that employees with longer tenure are less likely to be in the always-zero group.</p>
+<p>However, we know that overdispersion is present in our data, so let’s check whether there is zero-inflation in our negative binomial model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check for zero-inflation in negative binomial model</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_zeroinflation</span>(absent_nb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Check for zero-inflation
+
+   Observed zeros: 56
+  Predicted zeros: 49
+            Ratio: 0.88</code></pre>
+</div>
+</div>
+<p>It seems unlikely based on this check that zero-inflation is an issue in the negative binomial model. Nevertheless, for completeness, we can fit a zero-inflated negative binomial model as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit zero-inflated negative binomial model</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>zinb_model <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>(</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># negative binomial input variables first, binomial second</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating <span class="sc">|</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dist =</span> <span class="st">"negbin"</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(zinb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+zeroinfl(formula = days_absent ~ tenure + is_manager + performance_rating | 
+    tenure + is_manager + performance_rating, data = absenteeism, dist = "negbin")
+
+Pearson residuals:
+    Min      1Q  Median      3Q     Max 
+-1.2341 -0.7063 -0.2438  0.4825  4.6896 
+
+Count model coefficients (negbin with log link):
+                    Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)         1.638010   0.155648  10.524  &lt; 2e-16 ***
+tenure              0.049110   0.003451  14.231  &lt; 2e-16 ***
+is_manager1        -0.123632   0.090017  -1.373    0.170    
+performance_rating -0.035067   0.040599  -0.864    0.388    
+Log(theta)          0.511736   0.080944   6.322 2.58e-10 ***
+
+Zero-inflation model coefficients (binomial with logit link):
+                   Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)        -0.94964    3.24416  -0.293    0.770
+tenure             -0.04573    0.09641  -0.474    0.635
+is_manager1         0.76056    1.25077   0.608    0.543
+performance_rating -0.82878    0.90994  -0.911    0.362
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Theta = 1.6682 
+Number of iterations in BFGS optimization: 20 
+Log-likelihood: -2812 on 9 Df</code></pre>
+</div>
+</div>
+<p>The more conservative negative binomial model suggests that there are no variables significantly associated with being a member of the structural zero group, and confirms the findings from our previous negative binomial model that only tenure is significantly positively associated with increased absence. This suggests that zero-inflation is not a concern for our data under a negative binomial model.</p>
 </section>
 </section>
 <section id="poisson-and-negative-binomial-regression-using-python" class="level2" data-number="8.5">
 <h2 data-number="8.5" class="anchored" data-anchor-id="poisson-and-negative-binomial-regression-using-python"><span class="header-section-number">8.5</span> Poisson and negative binomial regression using Python</h2>
 <p>In Python, count models can be fit using the <code>statsmodels</code> library, very similar to the linear and logistic regression models we have already seen. First let’s get our data set.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/absenteeism.csv"</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>absenteeism <span class="op">=</span> pd.read_csv(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/absenteeism.csv"</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>absenteeism <span class="op">=</span> pd.read_csv(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we can fit our Poisson model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Poisson Model</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>poisson_model <span class="op">=</span> smf.glm(</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">"days_absent ~ tenure + is_manager + performance_rating"</span>,</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>absenteeism,</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span>sm.families.Poisson()</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>).fit()</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poisson_model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Poisson Model</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>poisson_model <span class="op">=</span> smf.glm(</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">"days_absent ~ tenure + is_manager + performance_rating"</span>,</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>absenteeism,</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span>sm.families.Poisson()</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>).fit()</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poisson_model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 Generalized Linear Model Regression Results                  
 ==============================================================================
@@ -858,7 +968,7 @@ Model Family:                 Poisson   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -4459.5
 Date:                Fri, 14 Nov 2025   Deviance:                       5799.6
-Time:                        00:48:00   Pearson chi2:                 5.99e+03
+Time:                        13:29:22   Pearson chi2:                 5.99e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -873,8 +983,8 @@ performance_rating    -0.0099      0.014     -0.716      0.474      -0.037      
 </div>
 <p>We exponentiate the coefficients to get Incidence Rate Ratios (IRRs):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.exp(poisson_model.params))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.exp(poisson_model.params))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Intercept             4.506035
 tenure                1.052474
@@ -885,14 +995,14 @@ dtype: float64</code></pre>
 </div>
 <p>We can also fit our negative binomial model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit negative binomial Model</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>nb_model <span class="op">=</span> smf.glm(</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">"days_absent ~ tenure + is_manager + performance_rating"</span>,</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>absenteeism,</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span>sm.families.NegativeBinomial()</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>).fit()</span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nb_model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit negative binomial Model</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>nb_model <span class="op">=</span> smf.glm(</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">"days_absent ~ tenure + is_manager + performance_rating"</span>,</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>absenteeism,</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span>sm.families.NegativeBinomial()</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>).fit()</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nb_model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 Generalized Linear Model Regression Results                  
 ==============================================================================
@@ -902,7 +1012,7 @@ Model Family:        NegativeBinomial   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -2842.3
 Date:                Fri, 14 Nov 2025   Deviance:                       702.79
-Time:                        00:48:01   Pearson chi2:                     548.
+Time:                        13:29:22   Pearson chi2:                     548.
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -975,7 +1085,7 @@ Hilbe, Joseph M. 2014. <em>Modeling Count Data</em>.
 <hr>
 <ol>
 <li id="fn1"><p>In fact, the distribution had already been discovered by the famous French mathematician Abraham De Moivre in the early 18th century.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>In more rare circumstances, the variance may be smaller than the mean, which is called <strong>underdispersion</strong> (<span class="math inline">\(Var(Y) &lt; E(Y)\)</span>). Similar methods to those described in this chapter can also be used to treat underdispersed data.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In more rare circumstances, the variance may be smaller than the mean, which is called <strong>underdispersion</strong> (<span class="math inline">\(Var(y) &lt; E(y)\)</span>). Similar methods to those described in this chapter can also be used to treat underdispersed data.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>http://peopleanalytics-regression-book.org/data/complaints.csv<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
