@@ -4,7 +4,7 @@ In the previous chapters, we have explored how to model outcomes that are contin
 
 Because count data is not continuous and is bounded below at zero, linear regression is not appropriate. The assumptions of normality and constant variance of residuals are typically violated. A linear model could also illogically predict negative counts. While we could model a binary outcome (e.g., 'had at least one absence' vs. 'had zero absences') using logistic regression, this approach throws away a lot of valuable information about the magnitude of the count.
 
-To properly model count outcomes, we turn to other members of the generalized linear model (GLM) family.  First we will look at Poisson regression. Poisson regression is specifically designed for count data and, like logistic regression, uses a transformation--—in this case, the natural logarithm—--to establish a linear relationship between the input variables and the (transformed) outcome. However, Poisson regression rests on a very strong assumption that the mean and variance of the count variable are equal. When this assumption is violated, a condition known as *overdispersion* occurs, and the Poisson model's estimates can become unreliable. In this case, we will see that a related model, Negative Binomial regression, provides a more flexible and robust alternative. Mastering these two techniques is essential for any analyst who wants to understand the drivers of event-based phenomena in the workplace.
+To properly model count outcomes, we turn to other members of the generalized linear model (GLM) family.  First we will look at Poisson regression. Poisson regression is specifically designed for count data and, like logistic regression, uses a transformation--—in this case, the natural logarithm—--to establish a linear relationship between the input variables and the (transformed) outcome. However, Poisson regression rests on a very strong assumption that the mean and variance of the count variable are equal. When this assumption is violated, a condition known as *overdispersion* occurs, and the Poisson model's estimates can become unreliable. In this case, we will see that related models, namely Quasi-Poisson or negative binomial regression models, provide more flexible alternatives. Mastering these techniques is essential for any analyst who wants to understand the drivers of event-based phenomena in the workplace.
 
 ## When to use it
 
@@ -49,9 +49,9 @@ Poisson distributions showing how the shape changes with different mean event ra
 
 The core idea of modeling rates is central to Poisson regression. We are not just modeling a count; we are modeling the *expected rate* at which events occur, and then examining how different factors or characteristics influence that rate.
 
-### Use cases for Poisson and Negative Binomial regression
+### Use cases for count regression
 
-Poisson and Negative Binomial regression can be used when the outcome of interest is a count of events. Here are some example questions that could be approached using these methods:
+Poisson, Quasi-Poisson and negative binomial regression can be used when the outcome of interest is a count of events. Here are some example questions that could be approached using these methods:
 
 *   What are the characteristics of employees that are associated with a higher number of days of unplanned absence per year?
 *   What are the characteristics of job postings that are associated with a higher number of applicants in the first 30 days?
@@ -177,17 +177,17 @@ exp(confint(absent_poisson_model))
 
 For example, we are 95% confident that for each additional year of tenure, the incidence rate ratio is between `{r} round(exp(confint(absent_poisson_model))["tenure", 1], 3)` and `{r} round(exp(confint(absent_poisson_model))["tenure", 2], 3)`. Since this entire range is above 1, we can be confident that the relationship is positive and statistically significant.
 
-## Model diagnostics: overdispersion
+## Model diagnostics: overdispersion {#sec-overdispersion}
 
-Before we can trust our Poisson model's conclusions, we must check its primary assumption: that the mean (expected value) and variance of the count outcome are approximately equal. That is, $E(Y) \approx Var(Y)$.  In real-world data, this assumption is rarely met. It is far more common for the variance to be larger than the mean. This is called **overdispersion** ($Var(Y) > E()$).
+Before we can trust our Poisson model's conclusions, we must check its primary assumption: that the mean (expected value) and variance of the count outcome are approximately equal. That is, $E(Y) \approx Var(Y)$.  In real-world data, this assumption is rarely met. It is far more common for the variance to be larger than the mean. This is called **overdispersion** ($Var(Y) > E()$)^[In more rare circumstances, the variance may be smaller than the mean, which is called **underdispersion** ($Var(Y) < E(Y)$).  Similar methods to those described in this chapter can also be used to treat underdispersed data.].
 
-Overdispersion often occurs for a number of reasons, including:
+Overdispersion is common for a number of reasons, including:
 
 1. **Unobserved Heterogeneity:** There may be other unmeasured factors that influence the count. For instance, in our example some employees might have chronic health conditions that make them more prone to absence. This creates extra variability in the counts that is not captured by our input variables.
 
 2. **Clustering or Non-independence:** Events may not be independent. If one person in a team gets a virus or flu, it might spread, leading to a cluster of absences. This violates the Poisson assumption that events are independent.
 
-If we use a Poisson model on overdispersed data, the coefficient estimates ($\beta$) are still unbiased (correct on average), but their standard errors are underestimated. This makes the z-scores artificially large and the p-values artificially small. We might therefore conclude that a predictor is statistically significant when, in fact, it is not. Therefore, the model can become overconfident in its findings.
+If we use a Poisson model on overdispersed data, the coefficient estimates ($\beta$) are still unbiased (correct on average), but their standard errors are underestimated. This makes the z-scores artificially large and the p-values artificially small. We might therefore conclude that a predictor is statistically significant when, in fact, it is not. Therefore, the model can become overconfident in its findings.  
 
 ### Detecting overdispersion
 
@@ -222,21 +222,46 @@ Our dispersion parameter of `{r} round(dispersion_param, 2)` is substantially gr
 
 The very small p-value leads us to reject the null hypothesis and conclude that overdispersion is present. This suggests that we should search for an alternative approach that can handle overdispersed count data.
 
-## Negative Binomial regression for overdispersed count data {#sec-neg-bin}
+When we have confirmed that our count data is overdispersed, there are two alternative methods we can use: Quasi-Poisson regression and negative binomial regression.  
 
-When we have confirmed that our count data is overdispersed, the alternative method to use is Negative Binomial regression. The Negative Binomial distribution is a generalization of the Poisson distribution that includes an additional parameter, called the dispersion parameter $\theta$ (theta), which allows the variance to be greater than the mean.
+### Quasi-Poisson regression 
 
-The variance for a Negative Binomial distribution is modeled as:
+Quasi-Poisson regression, which is a simple extension of the Poisson model, relaxes the assumption that the mean and variance are equal, allowing the variance to be a linear function of the mean. That is 
+
+$$
+Var(Y) = \theta \mu
+$$
+
+where $\theta$ is a dispersion parameter estimated from the data and $\mu$ is the average event count (equivalent to $\lambda$ in the Poisson model).  We expect $\theta > 1$ in the presence of overdispersion, and a greater $\theta$ means greater dispersion.  The coefficient estimates in a Quasi-Poisson model are identical to the Poisson model, but the standard errors are adjusted, which affects which input variables are returned as significant. 
+
+Quasi-Poisson regression can be performed in R using the `glm()` function with `family = "quasipoisson"`. 
+
+```{r}
+# run a quasi-poisson model
+absent_quasi_poisson_model <- glm(formula = days_absent ~ tenure + is_manager + performance_rating,
+                                  data = absenteeism,
+                                  family = "quasipoisson")
+
+# view the summary
+summary(absent_quasi_poisson_model)
+```
+
+
+This model suggests that the `is_manager` variable is no longer statistically significant once we account for overdispersion. The coefficient estimates are the same as in the Poisson model, so the IRRs are unchanged.
+
+### Negative binomial regression
+
+Another option in the presence of overdispersion is to use negative binomial regression. The negative binomial distribution is a generalization of the Poisson distribution that includes an additional dispersion parameter which allows the variance to be greater than the mean.
+
+The variance for a negative binomial distribution is modeled as:
 
 $$
 Var(Y) = \mu + \frac{\mu^2}{\theta}
 $$
 
-Here, $\mu$ is the mean (equivalent to $\lambda$ in the Poisson model). The term $\frac{\mu^2}{\theta}$ allows for the extra variance. As the dispersion parameter $\theta$ gets larger and approaches infinity, the term $\frac{\mu^2}{\theta}$ approaches zero, and the variance approaches the mean, $\mu$. In this case, the Negative Binomial distribution converges to the Poisson distribution. A smaller $\theta$ indicates greater overdispersion.
+where $\theta$ is a dispersion parameter, so the term $\frac{\mu^2}{\theta}$ allows for the extra variance. Note that in this model the variance is a quadratic function of the mean, rather than the linear function used in the Quasi-Poisson model.   Note also that a greater $\theta$ means less dispersion, and as $\theta$ gets larger and approaches infinity, the term $\frac{\mu^2}{\theta}$ approaches zero, and the variance approaches the mean $\mu$. In this case, the negative binomial distribution converges to the Poisson distribution. 
 
-### Fitting and interpreting a Negative Binomial model
-
-We can fit an Negative Binomial model in R using the `glm.nb()` function from the `MASS` package (which comes with R). The syntax is identical to `glm()`.
+We can fit a negative binomial model in R using the `glm.nb()` function from the `MASS` package. The syntax is identical to `glm()`.
 
 ```{r}
 #| message: false
@@ -250,12 +275,12 @@ absent_nb_model <- glm.nb(formula = days_absent ~ tenure + is_manager + performa
 summary(absent_nb_model)
 ```
 
-The output looks very similar to the Poisson summary, but with one key addition: at the bottom, we see "Theta: `{r} round(absent_nb_model$theta, 4)`". This is the estimated dispersion parameter $\theta$. The `summary()` also provides a standard error for $\theta$ and tests whether it is significantly different from infinity (i.e., whether the Negative Binomial model is a significant improvement over the Poisson model).
+The output looks very similar to the Poisson and Quasi-Poisson summaries, but with one key addition: at the bottom, we see "Theta: `{r} round(absent_nb_model$theta, 4)`". This is the estimated dispersion parameter $\theta$. The `summary()` also provides a standard error for $\theta$ and tests whether it is significantly different from infinity (i.e., whether the negative binomial model is a significant improvement over the Poisson model).
 
 The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get Incidence Rate Ratios (IRRs).
 
 ```{r}
-# IRRs for the Negative Binomial model
+# IRRs for the negative binomial model
 (irr_nb <- exp(coef(absent_nb_model)))
 ```
 
@@ -274,27 +299,27 @@ cbind(SE_Poisson = summary(absent_poisson_model)$coefficients[, "Std. Error"],
       SE_NB = summary(absent_nb_model)$coefficients[, "Std. Error"])
 ```
 
-Notice that the standard errors for the Negative Binomial model are larger across the board. By accounting for the overdispersion, the Negative Binomial model provides more realistic (and conservative) estimates of the uncertainty around our coefficients. This leads to larger p-values and more trustworthy inferences. In this case, while `tenure` remains a significant input variable, we see that `is_manager` is no longer significant.
+Notice that the standard errors for the negative binomial model are larger across the board. By accounting for the overdispersion, the negative binomial model provides more realistic (and conservative) estimates of the uncertainty around our coefficients. This leads to larger p-values and more trustworthy inferences. In this case, while `tenure` remains a significant input variable, we see that `is_manager` is no longer significant.
 
-### Comparing Poisson and Negative Binomial models
+### Comparing Poisson and negative binomial models
 
-We have strong evidence that the Negative Binomial model is a better choice, but we can formally compare the models. Since the Poisson model is a nested version of the Negative Binomial model (it's what you get when $\theta \to \infty$), we can use a likelihood ratio test using the `lmtest` package to see if the addition of the $\theta$ parameter provides a significant improvement in fit.
+We have strong evidence that the negative binomial model is a better choice compared to the original Poisson model, but we can also formally compare the models. Since the Poisson model is a nested version of the negative binomial model (it's what you get when $\theta \to \infty$), we can use a likelihood ratio test using the `lmtest` package to see if the addition of the $\theta$ parameter provides a significant improvement in fit.  This is a notable advantage of the negative binomial model over the Quasi-Poisson model, which does not have a likelihood function and therefore cannot be compared in this way.
 
 ```{r}
 #| message: false
 library(lmtest)
 lrtest(absent_poisson_model, absent_nb_model)
 ```
-The extremely small p-value indicates that the Negative Binomial model provides a significantly better fit to the data than the Poisson model.
+The extremely small p-value indicates that the negative binomial model provides a significantly better fit to the data than the Poisson model.
 
 We can also compare the models using the Akaike Information Criterion (AIC), which as we have learned previously is a measure of model parsimony. Since both of our models use the same input variables,  a lower AIC indicates a better fit.
 
 ```{r}
 AIC(absent_poisson_model, absent_nb_model)
 ```
-The AIC for the Negative Binomial model is substantially lower than for the Poisson model, again confirming that it is the superior and more parsimonious model for our overdispersed data.
+The AIC for the negative binomial model is substantially lower than for the Poisson model, again confirming that it is the superior and more parsimonious model for our overdispersed data.
 
-Note that it is not advisable to use Pseudo R-squared metrics to compare Poisson and Negative Binomial models, as these metrics can be misleading in the presence of overdispersion.  These metrics are more appropriate for comparing models of the same family (e.g., two Poisson models with different input variables).
+Note that it is not advisable to use Pseudo R-squared metrics to compare Poisson and negative binomial models, as these metrics can be misleading in the presence of overdispersion.  These metrics are more appropriate for comparing models of the same family (e.g., two Poisson models with different input variables).
 
 ## Other considerations in count regression
 
@@ -350,13 +375,13 @@ glm(incidents ~ X1 + X2 + offset(log(employees)), family=poisson)
 
 ### Zero-inflation
 
-Sometimes count data has an excess of zeros beyond what would be expected from a Poisson or Negative Binomial distribution. This can occur when there are two processes at work: one determining whether the event can occur at all, and another determining how many times it occurs. For example, some employees might never be absent due to perfect health and proximity to work (structural zeros), while others have some probability of absence following a count distribution.
+Sometimes count data has an excess of zeros beyond what would be expected from a Poisson or negative binomial distribution. This can occur when there are two processes at work: one determining whether the event can occur at all, and another determining how many times it occurs. For example, some employees might never be absent due to perfect health and proximity to work (structural zeros), while others have some probability of absence following a count distribution.
 
 Zero-inflated Poisson and zero-inflated negative binomial models can handle such data by combining a binary model for the zero/non-zero outcome with a count model for the non-zero outcomes.  The `pscl` package in R offers a function `zeroinfl()` to fit these models.
 
 
 
-## Poisson and Negative Binomial regression using Python
+## Poisson and negative binomial regression using Python
 
 In Python, count models can be fit using the `statsmodels` library, very similar to the linear and logistic regression models we have already seen.  First let's get our data set.
 
@@ -392,11 +417,11 @@ import numpy as np
 print(np.exp(poisson_model.params))
 ```
 
-We can also fit our Negative Binomial model.
+We can also fit our negative binomial model.
 
 ```{python}
 #| warning: false
-# Fit Negative Binomial Model
+# Fit negative binomial Model
 nb_model = smf.glm(
     formula="days_absent ~ tenure + is_manager + performance_rating",
     data=absenteeism,
@@ -419,7 +444,7 @@ If needed, zero-inflated models can be fit using the `statsmodels` library's `Ze
 5.  What is overdispersion? Describe two common reasons why it might occur in people-related data.
 6.  What are the consequences of ignoring overdispersion and using a Poisson model regardless?
 7.  Describe three methods you could use to test for overdispersion in your data.
-8.  How does the Negative Binomial distribution differ from the Poisson distribution? Explain the role of the dispersion parameter $\theta$.
+8.  How does the negative binomial distribution differ from the Poisson distribution? Explain the role of the dispersion parameter $\theta$.
 9.  When would you use an offset in a count model? Provide a people-related example.
 10. What are zero-inflated models and when might they be needed?
 
@@ -445,11 +470,13 @@ A retail company wants to understand factors affecting the number of customer co
 
 5. Perform diagnostic checks for overdispersion in your Poisson model.
 
-6. Fit a negative binomial regression model with the same input variables. How do the results compare to the Poisson model?
+6. Fit a Quasi-Poisson regression model. How do the standard errors and significance of input variables change compared to the Poisson model?
 
-7. Compare the Poisson and negative binomial models using AIC and likelihood ratio tests. Which model is preferred and why?
+7. Fit a negative binomial regression model with the same input variables. How do the results compare to the Poisson model?
 
-8. Determine the expected number of complaints for three hypothetical customer service representatives with different characteristics. Compare the predictions from both models.
+8. Compare the Poisson and negative binomial models using AIC and likelihood ratio tests. Which model is preferred and why?
 
-9. Write a brief report explaining your findings and recommendations for reducing customer complaints.
+9. Determine the expected number of complaints for three hypothetical customer service representatives with different characteristics. Compare the predictions from both models.
+
+10. Write a brief report explaining your findings and recommendations for reducing customer complaints.
 
