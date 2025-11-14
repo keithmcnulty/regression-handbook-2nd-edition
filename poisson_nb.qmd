@@ -1,4 +1,4 @@
-# Poisson and Negative Binomial Regression for Count Outcomes {#sec-count-reg}
+# Poisson, Quasi-Poisson and Negative Binomial Regression for Count Outcomes {#sec-count-reg}
 
 In the previous chapters, we have explored how to model outcomes that are continuous, binary or multinomial in nature. We now turn our attention to another common type of data in people analytics: count data. Count data consists of non-negative integers (0, 1, 2, 3, ...) that represent the number of times an event has occurred within a specific period of time, location, or group. Examples in the workplace are numerous: the number of safety incidents in a factory per month, the number of days an employee was absent in a year, the number of hires made by a recruiting team in a quarter, or the number of customer complaints received by a service agent in a week.
 
