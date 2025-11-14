@@ -122,7 +122,7 @@ knitr::include_graphics("www/05/logistic-curve.png")
 Verhulst's logistic function modeled both the exponential nature and the natural limit of population growth
 :::
 
-In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was observed that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in @fig-norm-log-curves^[The logistic function plotted in @fig-norm-log-curves takes the simple form $y = \frac{1}{1 + e^{-x}}$.], where the $x$ scale represents standard deviations around a mean.  As we will learn, the logistic function gives rise to a mathematical model where the coefficients are easily interpreted in terms of likelihood of the outcome.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
+In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was observed that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in @fig-norm-log-curves^[The logistic function plotted in @fig-norm-log-curves takes the simple form $y = \frac{1}{1 + e^{-\frac{x}{0.61}}}$.], where the $x$ scale for the normal distribution represents standard deviations around the mean.  As we will learn, the logistic function gives rise to a mathematical model where the coefficients are easily interpreted in terms of likelihood of the outcome.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
 
 ::: {#fig-norm-log-curves}
 ```{r} 
@@ -135,7 +135,7 @@ ggplot2::ggplot() +
   xlab("x") +
   ylab("Cumulative Probability") +
   ggplot2::geom_function(fun = pnorm, color = "red") +
-  ggplot2::geom_function(fun = plogis, color = "blue", linetype = "dashed") +
+  ggplot2::geom_function(fun = function(x) plogis(x, scale = 0.61), color = "blue", linetype = "dashed") +
   theme_minimal()
 
 ```
