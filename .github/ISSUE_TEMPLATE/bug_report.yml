@@ -1,0 +1,105 @@
+name: Bug Report
+description: Report an error, broken code example, or technical issue
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report an issue! Please provide as much detail as possible to help us resolve it quickly.
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What type of issue are you reporting?
+      options:
+        - Code error (R example doesn't work)
+        - Code error (Python example doesn't work)
+        - Technical inaccuracy in content
+        - Rendering or display problem
+        - Broken link or missing resource
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: "Where is the issue located? (e.g., Chapter 5: Linear Regression, Section 5.2, Line 234)"
+      placeholder: "Chapter X, Section X.X"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a clear and concise description of the issue
+      placeholder: "When I try to run the example code..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: "For code errors: How can we reproduce the issue?"
+      placeholder: |
+        1. Open chapter X
+        2. Run code block Y
+        3. Error appears...
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: "The code should produce a regression plot showing..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened? Include error messages if applicable
+      placeholder: "Error: object 'data' not found"
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Please provide information about your environment
+      value: |
+        - Quarto version: [e.g., 1.4.550]
+        - R version: [e.g., 4.5.1]
+        - Python version: [e.g., 3.11.5]
+        - Operating System: [e.g., Windows 11, macOS 14, Ubuntu 22.04]
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or information about the issue
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues to ensure this hasn't been reported before
+          required: true
+        - label: I have verified this issue exists in the latest version of the book
+          required: false
