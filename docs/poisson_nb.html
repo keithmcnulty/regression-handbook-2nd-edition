@@ -287,8 +287,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian Inference - A Modern Alternative to Classical Statistical Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./further.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -569,7 +575,7 @@ performance_rating 0.9635426 1.0174134</code></pre>
 <h3 data-number="8.3.1" class="anchored" data-anchor-id="detecting-overdispersion"><span class="header-section-number">8.3.1</span> Detecting overdispersion</h3>
 <p>There are several ways to check for overdispersion.</p>
 <ol type="1">
-<li><p><strong>Compare Mean and Variance:</strong> The simplest check is to compare the raw mean and variance of our outcome variable.</p>
+<li><p><strong>Compare Mean and Variance:</strong> A simple ‘rule of thumb’ check is to compare the raw mean and variance of our outcome variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(absenteeism<span class="sc">$</span>days_absent), </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance =</span> <span class="fu">var</span>(absenteeism<span class="sc">$</span>days_absent))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -963,8 +969,8 @@ Model:                            GLM   Df Residuals:                      861
 Model Family:                 Poisson   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -4459.5
-Date:                Fri, 14 Nov 2025   Deviance:                       5799.6
-Time:                        18:16:26   Pearson chi2:                 5.99e+03
+Date:                Tue, 25 Nov 2025   Deviance:                       5799.6
+Time:                        22:22:42   Pearson chi2:                 5.99e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -1007,8 +1013,8 @@ Model:                            GLM   Df Residuals:                      861
 Model Family:        NegativeBinomial   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -2842.3
-Date:                Fri, 14 Nov 2025   Deviance:                       702.79
-Time:                        18:16:27   Pearson chi2:                     548.
+Date:                Tue, 25 Nov 2025   Deviance:                       702.79
+Time:                        22:22:43   Pearson chi2:                     548.
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
 Covariance Type:            nonrobust                                         
 ======================================================================================

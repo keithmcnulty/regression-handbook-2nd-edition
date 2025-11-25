@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Keith McNulty">
+
+<title>12&nbsp; Bayesian Inference - A Modern Alternative to Classical Statistical Methods – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./further.html" rel="next">
+<link href="./power_tests.html" rel="prev">
+<link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-809cd4ad8465a863d451ae2f0a07b33b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bayesian_inference.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian Inference - A Modern Alternative to Classical Statistical Methods</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Handbook of Regression Modeling in People Analytics (2nd edition)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./foreword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword by Alexis Fink</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Importance of Regression in People Analytics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basic_r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Basics of the R Programming Language</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./primer_stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Foundations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Regression for Continuous Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./binomial_logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Binomial Logistic Regression for Binary Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./multinomial_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Multinomial Logistic Regression for Nominal Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ordinal_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Odds Logistic Regression for Ordered Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poisson_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson, Quasi-Poisson and Negative Binomial Regression for Count Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./power_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian Inference - A Modern Alternative to Classical Statistical Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./further.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#bayes-theorem-and-the-mechanics-of-bayesian-inference" id="toc-bayes-theorem-and-the-mechanics-of-bayesian-inference" class="nav-link active" data-scroll-target="#bayes-theorem-and-the-mechanics-of-bayesian-inference"><span class="header-section-number">12.1</span> Bayes’ Theorem and the mechanics of Bayesian Inference</a></li>
+  <li><a href="#walkthrough-example" id="toc-walkthrough-example" class="nav-link" data-scroll-target="#walkthrough-example"><span class="header-section-number">12.2</span> Walkthrough Example</a>
+  <ul class="collapse">
+  <li><a href="#defining-the-prior-belief-ptheta" id="toc-defining-the-prior-belief-ptheta" class="nav-link" data-scroll-target="#defining-the-prior-belief-ptheta"><span class="header-section-number">12.2.1</span> Defining the prior belief <span class="math inline">\(P(\theta)\)</span></a></li>
+  <li><a href="#defining-the-likelihood-pd-mid-theta" id="toc-defining-the-likelihood-pd-mid-theta" class="nav-link" data-scroll-target="#defining-the-likelihood-pd-mid-theta"><span class="header-section-number">12.2.2</span> Defining the likelihood <span class="math inline">\(P(D \mid \theta)\)</span></a></li>
+  <li><a href="#calculating-the-posterior-ptheta-mid-d" id="toc-calculating-the-posterior-ptheta-mid-d" class="nav-link" data-scroll-target="#calculating-the-posterior-ptheta-mid-d"><span class="header-section-number">12.2.3</span> Calculating the posterior <span class="math inline">\(P(\theta \mid D)\)</span></a></li>
+  <li><a href="#bayesian-updating" id="toc-bayesian-updating" class="nav-link" data-scroll-target="#bayesian-updating"><span class="header-section-number">12.2.4</span> Bayesian Updating</a></li>
+  <li><a href="#summary-statistics-and-credible-intervals-of-the-posterior-distribution" id="toc-summary-statistics-and-credible-intervals-of-the-posterior-distribution" class="nav-link" data-scroll-target="#summary-statistics-and-credible-intervals-of-the-posterior-distribution"><span class="header-section-number">12.2.5</span> Summary statistics and credible intervals of the posterior distribution</a></li>
+  <li><a href="#computational-methods-for-bayesian-inference" id="toc-computational-methods-for-bayesian-inference" class="nav-link" data-scroll-target="#computational-methods-for-bayesian-inference"><span class="header-section-number">12.2.6</span> Computational Methods for Bayesian Inference</a></li>
+  </ul></li>
+  <li><a href="#bayesian-hypothesis-testing" id="toc-bayesian-hypothesis-testing" class="nav-link" data-scroll-target="#bayesian-hypothesis-testing"><span class="header-section-number">12.3</span> Bayesian hypothesis testing</a>
+  <ul class="collapse">
+  <li><a href="#asec-bayes-ttest" id="toc-asec-bayes-ttest" class="nav-link" data-scroll-target="#asec-bayes-ttest"><span class="header-section-number">12.3.1</span> Bayesian t-test for difference in means between two independent groups</a></li>
+  <li><a href="#bayesian-test-for-non-zero-correlation" id="toc-bayesian-test-for-non-zero-correlation" class="nav-link" data-scroll-target="#bayesian-test-for-non-zero-correlation"><span class="header-section-number">12.3.2</span> Bayesian test for non-zero correlation</a></li>
+  <li><a href="#bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups" id="toc-bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups" class="nav-link" data-scroll-target="#bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups"><span class="header-section-number">12.3.3</span> Bayesian chi-square test (Test for difference in frequency distribution between groups)</a></li>
+  </ul></li>
+  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">12.4</span> Learning exercises</a>
+  <ul class="collapse">
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">12.4.1</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">12.4.2</span> Data exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/bayesian_inference.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian Inference - A Modern Alternative to Classical Statistical Methods</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>All of the methods and approaches we have seen in this book so far are based on a philosophy that repeated sampling from a population will yield information about that population. For example, in <a href="primer_stats.html" class="quarto-xref"><span>Chapter 3</span></a>, we discussed how to use sample data to estimate population parameters such as means and correlation coefficients, how to construct confidence intervals around those parameter estimates and how to test hypotheses about our population parameters. In later chapters we learned how to do the same with model coefficients, allowing us to extract meaningful information from our models to help us with real-life problems.</p>
+<p>The philosophy underlying this approach is that the population parameter that we seek is a single true unknown value, and that by taking repeated samples from the population and determining the frequency of occurrence of specific values for our parameter of interest, we can learn more and more about the true value of the parameter for our population. This is the basis of <em>classical</em> or <em>frequentist</em> statistics.</p>
+<p>In this chapter we are going to ‘flip the script’ on this philosophy. Instead of our population parameter being a fixed unknown value which we estimate through many repeated samples of data, we are going to treat our population parameter as a random variable that can take on a range of possible values, each with some probability, and we will treat our data as fixed. This leads us to a different way of thinking about statistical inference, and provides us with a toolkit that has more flexibility than classical statistics. In particular, we can incorporate prior knowledge or beliefs about our parameters into our analyses, we can make direct probability statements about our parameters given the data we have availalable, and we can continuously update our beliefs about parameters as new data becomes available.</p>
+<p>The critical theorem from probability theory that underpins this approach is <em>Bayes’ Theorem</em>, named after the Reverend Thomas Bayes, an 18th century statistician and theologian. As we will see, Bayes’ Theorem provides us with a mathematical way to combine our prior beliefs about a parameter with the evidence provided by our data to arrive at an updated <em>posterior</em> belief about the parameter. This mechanism is the essence of <em>Bayesian inference</em>.</p>
+<p>Bayesian inference has become increasingly popular in recent years. This was not always so, because the techniques used in Bayesian inference require simulation of data, which can require substantially more computational resources compared to classical approaches. Only in the past two decades has widespread computational power become available that has made it more feasible to apply Bayesian methods to large datasets. As a result, Bayesian approaches are now widely used in fields such as machine learning, epidemiology, ecology and social sciences, to name but a small few. All of the methods that we have learned so far using classical statistics have Bayesian counterparts.</p>
+<p>In People Analytics, Bayesian methods can be particularly useful when dealing with small sample sizes, when incorporating prior knowledge about employee behavior or organizational context, or when making probabilistic predictions about future outcomes. It is fair to say that not all individuals working in this field will need to have a knowledge of Bayesian inference, as classical approaches will often yield similar conclusions especially when sample sizes are larger and prior beliefs are limited. However, having a basic grasp of Bayesian methods can provide an analyst with a greater depth of understanding on how the processes they are trying to model play out statistically. For this reason, readers should regard this and subsequent chapters as optional, advanced material.</p>
+<p>In this chapter we will explore the fundamental mechanics of how Bayesian inference works via Bayes’ Theorem, we will introduce how hypothesis testing can be done within the Bayesian framework, and we will introduce some important concepts that we can take forward into subsequent chapters.</p>
+<section id="bayes-theorem-and-the-mechanics-of-bayesian-inference" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="bayes-theorem-and-the-mechanics-of-bayesian-inference"><span class="header-section-number">12.1</span> Bayes’ Theorem and the mechanics of Bayesian Inference</h2>
+<p>Recall that in earlier chapters we adopted a frequentist approach to statistical inference, where we treated our data as random and our parameters as fixed but unknown. In effect, this approach asks the question: <em>Given a fixed but unknown parameter (such as a population mean), what is the probability of observing the sample data that we have collected?</em>. Using probability notation, if we call our parameter <span class="math inline">\(\theta\)</span> and our observed data <span class="math inline">\(D\)</span>, we can express this question as <span class="math inline">\(P(D \mid \theta)\)</span>, which is known as the <em>likelihood</em> of the data given the parameter.</p>
+<p>In Bayesian inference, we reverse this question to ask: <em>Given the fixed data that we have observed, what are the possible values of the parameter we are interested in?</em> That is, we are interested in <span class="math inline">\(P(\theta \mid D)\)</span>, which we call the <em>posterior</em> probability of the parameter given the data. Bayes’ Theorem provides us with a way to calculate this posterior probability by combining our prior beliefs about the parameter with the likelihood of the observed data. Bayes’ Theorem is expressed mathematically as follows:</p>
+<p><span class="math display">\[P(\theta \mid D) = \frac{P(D \mid \theta) P(\theta)}{P(D)}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(P(\theta \mid D)\)</span> is the <em>posterior</em> probability of the parameter <span class="math inline">\(\theta\)</span> given the data <span class="math inline">\(D\)</span>.</li>
+<li><span class="math inline">\(P(D \mid \theta)\)</span> is the <em>likelihood</em> of the data <span class="math inline">\(D\)</span> given the parameter <span class="math inline">\(\theta\)</span>.</li>
+<li><span class="math inline">\(P(\theta)\)</span> is the <em>prior</em> probability of the parameter <span class="math inline">\(\theta\)</span> before observing the data.</li>
+<li><span class="math inline">\(P(D)\)</span> is the <em>marginal likelihood</em> or <em>evidence</em>, which is the total probability of observing the data <span class="math inline">\(D\)</span> under all possible values of <span class="math inline">\(\theta\)</span>. Using <span class="math inline">\(P(D)\)</span> as a denominator in the formula for the posterior ensures that the posterior probabilities sum to 1 across all possible values of <span class="math inline">\(\theta\)</span>.</li>
+</ul>
+<p>In practice, when performing Bayesian inference, we often focus on the numerator of Bayes’ Theorem, <span class="math inline">\(P(D \mid \theta) P(\theta)\)</span>, since the denominator <span class="math inline">\(P(D)\)</span> is a normalizing constant that does not depend on <span class="math inline">\(\theta\)</span>. Therefore, we can also express the posterior probability as being <em>proportional</em> to the product of the likelihood and the prior. That is:</p>
+<p><span class="math display">\[P(\theta \mid D) \propto P(D \mid \theta) P(\theta)\]</span></p>
+<p>Let’s consider a concrete walkthrough example to illustrate what each of these components of Bayes’ Theorem represent and to understand how Bayesian inference works. For this walkthrough, we will use basic R functions to perform the calculations and simulations, rather than relying on specialized Bayesian software packages, so that we can directly observe the mechanics of how Bayesian inference works under the hood. Once we have grasped a basic understanding of Bayesian inference, we will start to explore how we run Bayesian models with specialized software packages.</p>
+</section>
+<section id="walkthrough-example" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="walkthrough-example"><span class="header-section-number">12.2</span> Walkthrough Example</h2>
+<p>You have been asked to help a group of learning experts at a technology company understand the effectiveness of a new training program that they have implemented for their engineers. The training program helps the engineers prepare for a certification exam that is important for their career development. The company wants to know what proportion of engineers who complete the training program will go on to pass the certification exam. So far, only 20 engineers have completed the training program, and of those, 12 have passed the certification exam, with 8 failing the exam. However, the learning experts at the company have done market research on similar programs and their expectation is that they will see a pass rate of around 80-90% over time, though they admit that there is some uncertainty regarding this estimate.</p>
+<section id="defining-the-prior-belief-ptheta" class="level3" data-number="12.2.1">
+<h3 data-number="12.2.1" class="anchored" data-anchor-id="defining-the-prior-belief-ptheta"><span class="header-section-number">12.2.1</span> Defining the prior belief <span class="math inline">\(P(\theta)\)</span></h3>
+<p>In Bayesian inference, we start by defining our <em>prior</em> belief about the parameter of interest before observing any data. In this case, our parameter of interest is the pass rate for the certification exam among engineers who complete the training program. Since our parameter involves a specified proportion of passes and fails in the certification exam, we can use a <em>Beta distribution</em> to represent our prior belief. A Beta distribution is a continuous probability distribution defined on the interval [0, 1], which makes it suitable for modeling proportions and probabilities.</p>
+<p>If we call our pass rate parameter <span class="math inline">\(\theta\)</span>, where <span class="math inline">\(0 \leq \theta \leq 1\)</span>, we can define our prior belief about <span class="math inline">\(\theta\)</span> using a Beta distribution with shape parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> represent the number of passes and fails respectively. Therefore or prior belief can be expressed as the following distribution:</p>
+<p><span class="math display">\[
+\theta \sim \text{Beta}(\alpha, \beta)
+\]</span></p>
+<p>Now we need to decide on the shape parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> for our prior distribution. If we have absolutely no information on the pass rate, we might choose a uniform prior with <span class="math inline">\(\alpha = 1\)</span> and <span class="math inline">\(\beta = 1\)</span>, which reflects complete uncertainty about the pass rate. This kind of prior belief is called a <strong>non-informative prior</strong>. You can see the shape of this prior distribution in <a href="#fig-pass-noninform" class="quarto-xref">Figure&nbsp;<span>12.1</span></a>, where it assumes that all values of <span class="math inline">\(\theta\)</span> are equally likely.</p>
+<div id="fig-pass-noninform" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pass-noninform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pass-noninform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.1: Non-informative Beta (1, 1) (uniform) prior on distribution of pass rate (<span class="math inline">\(\theta\)</span>) before observing any data.
+</figcaption>
+</figure>
+</div>
+<p>However, we do have some information from market research that suggests a high pass rate is likely, so we could choose an <strong>informative prior</strong> that reflects this belief. Based on the market research, we might choose <span class="math inline">\(\alpha = 8\)</span> and <span class="math inline">\(\beta = 2\)</span>, which reflects our belief that the pass rate is likely to be high (around 80-90%), but with some uncertainty. Our informative prior distribution can therefore be expressed as:</p>
+<p><span class="math display">\[
+\theta \sim \text{Beta}(8, 2)
+\]</span></p>
+<p>Let’s simulate and plot this prior distribution to visualize our initial beliefs about the pass rate before observing any data. First, we will take 1000 possible values of <span class="math inline">\(\theta\)</span> between 0 and 1 and simulate a Beta distribution. We can use the <code>dbeta()</code> function to calculate the density of the Beta distribution for different values of <span class="math inline">\(\theta\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set a seed to ensure this process can be reproduced exactly</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a vector with 1000 possible values for theta between 0 and 1</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>theta_values <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate the prior distribution using a Beta distribution with alpha = 8 and beta = 2</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>prior_distribution <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta_values, <span class="at">shape1 =</span> <span class="dv">8</span>, <span class="at">shape2 =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This has provided us with the probability density function (PDF) across our 1000 values of <span class="math inline">\(\theta\)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Let’s now plot our simulated prior distribution to visualize our initial beliefs about the pass rate before observing any data, as in <a href="#fig-pass-prior" class="quarto-xref">Figure&nbsp;<span>12.2</span></a>.</p>
+<div id="fig-pass-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pass-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ggplot2 for plotting</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>prior_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta_values, <span class="at">density =</span> prior_distribution)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the prior distribution</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(prior_df, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> density)) <span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pass Rate (θ)"</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pass-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.2: Informative prior distribution of pass rate (<span class="math inline">\(\theta\)</span>) before observing any data.
+</figcaption>
+</figure>
+</div>
+<p>Comparing to the non-informative prior in <a href="#fig-pass-noninform" class="quarto-xref">Figure&nbsp;<span>12.1</span></a>, we can see that the area has shifted significantly to the right, indicating our prior belief that pass rates are likely to be high.</p>
+</section>
+<section id="defining-the-likelihood-pd-mid-theta" class="level3" data-number="12.2.2">
+<h3 data-number="12.2.2" class="anchored" data-anchor-id="defining-the-likelihood-pd-mid-theta"><span class="header-section-number">12.2.2</span> Defining the likelihood <span class="math inline">\(P(D \mid \theta)\)</span></h3>
+<p>Next, we need to define the <em>likelihood</em> of the observed data given our parameter of interest. Our observed data from the first learning program consists of 12 passes and 8 fails among the 20 engineers who completed the training program. Since our data involves counts of passes and fails, recall from <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a> that we can use a <em>Binomial distribution</em> to model the likelihood of observing this data given different values of the pass rate <span class="math inline">\(\theta\)</span>. In this case, the likelihood function can be expressed as:</p>
+<p><span class="math display">\[
+P(D \mid \theta) = \binom{20}{12} \theta^{12}(1 - \theta)^{8}
+\]</span></p>
+<p>Let’s simulate and plot this likelihood function to visualize how likely our observed data is for the 1000 different values of the pass rate <span class="math inline">\(\theta\)</span>. We can use the <code>dbinom()</code> function in R to calculate the likelihood of observing 12 passes out of 20 engineers for the different values of <span class="math inline">\(\theta\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate the likelihood function using a Binomial distribution</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>likelihood_function <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">12</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">prob =</span> theta_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s now plot our simulated likelihood function in <a href="#fig-pass-likelihood" class="quarto-xref">Figure&nbsp;<span>12.3</span></a>. Note, importantly, that the likelihood function is not a probability distribution and does not need to sum to 1 across all our values of <span class="math inline">\(\theta\)</span>.</p>
+<div id="fig-pass-likelihood" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pass-likelihood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>likelihood_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta_values, <span class="at">likelihood =</span> likelihood_function)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the likelihood function</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(likelihood_df, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> likelihood)) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pass Rate (θ)"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Likelihood"</span>) <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pass-likelihood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.3: Likelihood of observing 12 passes out of 20 engineers for different values of pass rate (<span class="math inline">\(\theta\)</span>).
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="calculating-the-posterior-ptheta-mid-d" class="level3" data-number="12.2.3">
+<h3 data-number="12.2.3" class="anchored" data-anchor-id="calculating-the-posterior-ptheta-mid-d"><span class="header-section-number">12.2.3</span> Calculating the posterior <span class="math inline">\(P(\theta \mid D)\)</span></h3>
+<p>Now that we have defined our prior belief and the likelihood of the observed data, we can use Bayes’ Theorem to calculate the <em>posterior</em> distribution of the pass rate <span class="math inline">\(\theta\)</span> given the observed data. Here we will take all 1000 simulated values of <span class="math inline">\(\theta\)</span> and apply Bayes’ theorem across each of them to calculate the posterior probability that <span class="math inline">\(\theta\)</span> is our population pass rate given the data we have observed. We multiply the prior distribution and the likelihood function for each value of <span class="math inline">\(\theta\)</span>, and then normalize the result to ensure that the posterior distribution sums to 1:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the unnormalized posterior distribution (numerator of Bayes' Theorem)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>unnormalized_posterior <span class="ot">&lt;-</span> prior_distribution <span class="sc">*</span> likelihood_function</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize the posterior distribution (divide by total area to ensure it integates to 1)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>posterior_distribution <span class="ot">&lt;-</span> unnormalized_posterior <span class="sc">/</span> <span class="fu">sum</span>(unnormalized_posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s now plot our calculated posterior distribution <span class="math inline">\(P(\theta \mid D)\)</span> to visualize our updated beliefs about the pass rate <span class="math inline">\(\theta\)</span> after observing the data, as in <a href="#fig-pass-posterior" class="quarto-xref">Figure&nbsp;<span>12.4</span></a>.</p>
+<div id="fig-pass-posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pass-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>posterior_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta_values, <span class="at">density =</span> posterior_distribution)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the posterior distribution</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_df, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> density)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pass Rate (θ)"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pass-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.4: Posterior distribution of pass rate (<span class="math inline">\(\theta\)</span>) after observing the data.
+</figcaption>
+</figure>
+</div>
+<p>From the posterior distribution plot, we can see how our beliefs about the pass rate <span class="math inline">\(\theta\)</span> have been updated after observing the data, and we now expect our pass rate to most likely be lower than the prior distribution might suggest. The posterior distribution reflects both our prior beliefs and the evidence provided by the observed data. We can use this posterior distribution to make direct probabilistic statements about the pass rate. If we plot our prior, likelihood and posterior together on a scaled plot so that probabilities are standardized and comparable, we can see that the most likely (modal) posterior outcome (the peak of the distribution) is a pass rate of 0.68, which is a compromise between our prior belief (0.87) and what the data tells us (0.6), as seen in <a href="#fig-pass-all" class="quarto-xref">Figure&nbsp;<span>12.5</span></a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<div id="fig-pass-all" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pass-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pass-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.5: Prior, Likelihood and Posterior probabilities of pass rate (<span class="math inline">\(\theta\)</span>) plotted and standardized for comparison
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="bayesian-updating" class="level3" data-number="12.2.4">
+<h3 data-number="12.2.4" class="anchored" data-anchor-id="bayesian-updating"><span class="header-section-number">12.2.4</span> Bayesian Updating</h3>
+<p>One of the powerful features of Bayesian inference is the ability to continuously update our beliefs about a parameter as new data becomes available. In our example, suppose that after some time, an additional 30 engineers complete the training program, and of those, 25 pass the certification exam while 5 fail. We can use our current posterior distribution as the new prior distribution and incorporate this new data to update our beliefs about the pass rate <span class="math inline">\(\theta\)</span>. A common saying in Bayesian statistics is that <em>today’s posterior is tomorrow’s prior</em>.</p>
+<p>To perform this Bayesian updating, we can follow the same steps as before. First, we will define our new prior distribution using the current posterior distribution. Then, we will define the likelihood of the new observed data using a Binomial distribution. Finally, we will calculate the new posterior distribution by combining the new prior and the new likelihood using Bayes’ Theorem, as in <a href="#fig-post-update" class="quarto-xref">Figure&nbsp;<span>12.6</span></a>.</p>
+<div id="fig-post-update" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-post-update-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new observed data</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>new_passes <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>new_fails <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># define new prior distribution using current posterior distribution</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>new_prior_distribution <span class="ot">&lt;-</span> posterior_distribution</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate the likelihood function for the new observed data</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>new_likelihood_function <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(new_passes, <span class="at">size =</span> new_passes <span class="sc">+</span> new_fails, <span class="at">prob =</span> theta_values)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the unnormalized new posterior distribution</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>unnormalized_new_posterior <span class="ot">&lt;-</span> new_prior_distribution <span class="sc">*</span> new_likelihood_function</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize the new posterior distribution</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>new_posterior_distribution <span class="ot">&lt;-</span> unnormalized_new_posterior <span class="sc">/</span> <span class="fu">sum</span>(unnormalized_new_posterior)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the new posterior distribution</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>new_posterior_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta_values, <span class="at">density =</span> new_posterior_distribution)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(new_posterior_df, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> density)) <span class="sc">+</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"purple"</span>) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pass Rate (θ)"</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post-update-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.6: Posterior distribution of pass rate (<span class="math inline">\(\theta\)</span>) after updating with new data.
+</figcaption>
+</figure>
+</div>
+<p>We see that the most likely (modal) pass rate has now increased to 0.76, reflecting the additional evidence provided by the new data. This demonstrates how Bayesian inference allows us to continuously update our beliefs about a parameter as new data becomes available.</p>
+</section>
+<section id="summary-statistics-and-credible-intervals-of-the-posterior-distribution" class="level3" data-number="12.2.5">
+<h3 data-number="12.2.5" class="anchored" data-anchor-id="summary-statistics-and-credible-intervals-of-the-posterior-distribution"><span class="header-section-number">12.2.5</span> Summary statistics and credible intervals of the posterior distribution</h3>
+<p>We can calculate summary statistics of our posterior distribution to better state our updated beliefs about the pass rate <span class="math inline">\(\theta\)</span>. For example, we can calculate the mean and median of the posterior distribution to get a sense of the central tendency of our updated beliefs. We can also calculate the mode of the posterior distribution, which represents the most likely value of <span class="math inline">\(\theta\)</span> given the observed data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mean (expected value) of the new posterior distribution</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>(mean_posterior <span class="ot">&lt;-</span> <span class="fu">sum</span>(theta_values <span class="sc">*</span> new_posterior_distribution))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.75</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the median of the new posterior distribution</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>(median_posterior <span class="ot">&lt;-</span> theta_values[<span class="fu">which</span>(<span class="fu">cumsum</span>(new_posterior_distribution) <span class="sc">&gt;=</span> <span class="fl">0.5</span>)[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7527528</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mode of the posterior distribution</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>(mode_posterior <span class="ot">&lt;-</span> theta_values[<span class="fu">which.max</span>(new_posterior_distribution)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7587588</code></pre>
+</div>
+</div>
+<p>Aditionally, given that we have determined a specific distribution for our parameter of interest (the pass rate <span class="math inline">\(\theta\)</span>), we can also calculate <em>credible intervals</em> to express the uncertainty around our estimate. A credible interval is an interval within which the parameter is believed to lie with a certain probability, based on the posterior distribution. For example, a 95% credible interval for the pass rate <span class="math inline">\(\theta\)</span> would indicate that there is a 95% probability that the true pass rate lies within this interval, given the observed data. We can calculate the 95% credible interval for our updated posterior distribution using the <code>quantile()</code> function in R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the 95% credible interval for the updated posterior distribution</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>interval_boundaries <span class="ot">&lt;-</span> <span class="fu">quantile</span>(new_posterior_distribution, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cumulative sum of probability</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>cumsum_posterior <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(new_posterior_distribution)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Find lower and upper bounds (approximate)</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> theta_values[<span class="fu">which</span>(cumsum_posterior <span class="sc">&gt;=</span> <span class="fl">0.025</span>)[<span class="dv">1</span>]]</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> theta_values[<span class="fu">which</span>(cumsum_posterior <span class="sc">&gt;=</span> <span class="fl">0.975</span>)[<span class="dv">1</span>]]</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"95% Credible Interval: ["</span>, <span class="fu">round</span>(lower_bound, <span class="dv">2</span>), <span class="st">", "</span>, <span class="fu">round</span>(upper_bound, <span class="dv">2</span>), <span class="st">"]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95% Credible Interval: [0.63, 0.85]"</code></pre>
+</div>
+</div>
+<p>Note that credible intervals are quite different from the confidence intervals we have seen in previous chapters using classical statistics. A 95% confidence interval indicates that if we were to repeat our sampling process many times, 95% of the calculated confidence intervals would contain the true parameter value. In contrast, a 95% credible interval indicates that there is a 95% probability that the true parameter value lies within the interval, given the observed data and our prior beliefs. This distinction highlights one of the key differences between Bayesian and frequentist approaches to statistical inference.</p>
+</section>
+<section id="computational-methods-for-bayesian-inference" class="level3" data-number="12.2.6">
+<h3 data-number="12.2.6" class="anchored" data-anchor-id="computational-methods-for-bayesian-inference"><span class="header-section-number">12.2.6</span> Computational Methods for Bayesian Inference</h3>
+<p>It is clear from our example above that, different from classical statistics, Bayesian inference focuses on deriving the entire posterior distribution of a parameter rather than just point estimates and confidence intervals. This requires that simulations are used to approximate the posterior distribution, and this explains why Bayesian inference is significantly more computationally demanding. In our walkthrough example, we have used one of the simpler methods of simulation known as <em>grid approximation</em>, where we evaluated the prior, likelihood and posterior based a grid of possible values for the parameter <span class="math inline">\(\theta\)</span>. This method works well for simple models with a single parameter, but it can become computationally infeasible for more complex models with multiple parameters.</p>
+<p>In practice, calculating posterior distributions analytically can be challenging, especially for complex models or large datasets. As a result, Bayesian inference often relies on computational methods such as Markov Chain Monte Carlo (MCMC) to approximate posterior distributions. MCMC methods generate samples from the posterior distribution by constructing a Markov chain that converges to the target distribution over time. These samples can then be used to estimate summary statistics and credible intervals for the parameters of interest. There are several software packages available for performing Bayesian inference using MCMC methods. These packages provide user-friendly interfaces for specifying Bayesian models and running MCMC simulations, making it easier for practitioners to apply Bayesian methods to real-world problems. We will use the <code>stan</code> software package<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> to perform Bayesian inference in this and subsequent chapters, often via the <code>rstanarm</code> package and other common R packages.</p>
+</section>
+</section>
+<section id="bayesian-hypothesis-testing" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="bayesian-hypothesis-testing"><span class="header-section-number">12.3</span> Bayesian hypothesis testing</h2>
+<p>In classical statistics, we rely heavily on the <span class="math inline">\(p\)</span>-value to test hypotheses. We set up a null hypothesis (usually that there is no effect or no difference) and an alternative hypothesis. If the <span class="math inline">\(p\)</span>-value falls below a defined <span class="math inline">\(\alpha\)</span> (usually 0.05), we reject the null hypothesis. However, as we discussed in previous chapters, the <span class="math inline">\(p\)</span>-value is often misunderstood. It tells us the probability of observing data at least as extreme as ours, <em>assuming the null hypothesis is true</em>, that is <span class="math inline">\(P(D \mid H_0)\)</span>. It does <strong>not</strong> tell us the probability that the hypothesis itself is true.</p>
+<p>Using a Bayesian approach, we can calculate the probability of our hypotheses being true given the data we observe, that is <span class="math inline">\(P(H \mid D)\)</span>. This allows us to test any defined hypothesis <span class="math inline">\(H\)</span> against our data <span class="math inline">\(D\)</span> and make direct statements about the probability that <span class="math inline">\(H\)</span> is true.</p>
+<p>Using Bayes’ theorem again, we can express this as:</p>
+<p><span class="math display">\[
+P(H \mid D) = \frac{P(D \mid H) P(H)}{P(D)}
+\]</span></p>
+<p>Where: - <span class="math inline">\(P(H \mid D)\)</span> is the <em>posterior</em> probability of the hypothesis <span class="math inline">\(H\)</span> given the data <span class="math inline">\(D\)</span>. - <span class="math inline">\(P(D \mid H)\)</span> is the <em>likelihood</em> of the data <span class="math inline">\(D\)</span> given the hypothesis <span class="math inline">\(H\)</span>. - <span class="math inline">\(P(H)\)</span> is the <em>prior</em> probability of the hypothesis <span class="math inline">\(H\)</span> before observing the data. - <span class="math inline">\(P(D)\)</span> is the <em>marginal likelihood</em> or <em>evidence</em>, which is the total probability of observing the data <span class="math inline">\(D\)</span> under all possible hypotheses—a normalizing denominator as before.</p>
+<p>Now let’s assume we have two competing hypotheses: the Null Hypothesis (<span class="math inline">\(H_0\)</span>) and the Alternative Hypothesis (<span class="math inline">\(H_1\)</span>). We want to compare these two hypotheses given our observed data <span class="math inline">\(D\)</span>. If we apply Bayes’ Theorem to both and find their quotient, we arrive at the following:</p>
+<p><span class="math display">\[
+\frac{P(H_1 \mid D)}{P(H_0 \mid D)} = \frac{P(D \mid H_1)}{P(D \mid H_0)} \times \frac{P(H_1)}{P(H_0)}
+\]</span></p>
+<p>The left side of this equation is known as the <strong>posterior odds</strong> of the two hypotheses, while the right side consists of two components: the <strong>Bayes Factor</strong> (the first term) and the <strong>prior odds</strong> (the second term). The Bayes Factor is a multiple which quantifies how much more likely the data is under one hypothesis compared to the other, while the prior odds represent our initial beliefs about the relative plausibility of the two hypotheses before observing the data. For example, if we have no prior preference for either hypothesis, the prior odds would be 1. Then if the Bayes Factor is 5, the posterior odds would also be 5, meaning that after observing the data, the Alternative Hypothesis is 5 times more likely than the Null Hypothesis.</p>
+<p>If we are comparing an Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) against a Null Hypothesis (<span class="math inline">\(H_0\)</span>), the Bayes Factor is usually denoted as <span class="math inline">\(BF_{10}\)</span>:</p>
+<p><span class="math display">\[
+BF_{10} = \frac{P(D \mid H_1)}{P(D \mid H_0)}
+\]</span></p>
+<p>Using the Bayes Factor, we can interpret the strength of evidence provided by the data in favor of one hypothesis over the other, as follows:</p>
+<ul>
+<li>If <span class="math inline">\(BF_{10} = 1\)</span>, the data provides equal evidence for both hypotheses.</li>
+<li>If <span class="math inline">\(BF_{10} &gt; 1\)</span>, the data favors the Alternative Hypothesis (<span class="math inline">\(H_1\)</span>).</li>
+<li>If <span class="math inline">\(BF_{10} &lt; 1\)</span>, the data favors the Null Hypothesis (<span class="math inline">\(H_0\)</span>).</li>
+</ul>
+<p>A common rule of thumb (see <span class="citation" data-cites="jeffreys">Jeffreys (<a href="bibliography.html#ref-jeffreys" role="doc-biblioref">1961</a>)</span>) for interpreting Bayes Factors which favor the Alternative Hypothesis is:</p>
+<ul>
+<li><strong>1-3</strong>: Anecdotal evidence</li>
+<li><strong>3-10</strong>: Moderate evidence</li>
+<li><strong>10-30</strong>: Strong evidence</li>
+<li><strong>&gt;30</strong>: Very strong evidence</li>
+</ul>
+<p>To implement Bayesian hypothesis tests in R, we will utilize the <code>BayesFactor</code> package. This package allows us to perform statistical hypothesis tests within a Bayesian framework without needing to write complex custom simulations from scratch. To illustrate these tests, we will use the same examples of hypothesis tests on our <code>salespeople</code> data set as we used in <a href="primer_stats.html" class="quarto-xref"><span>Chapter 3</span></a> for classical statistics, but now using smaller subsets of this data and a Bayesian approach. Let’s download that set first.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, use online url to download salespeople data</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove NAs</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="asec-bayes-ttest" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="asec-bayes-ttest"><span class="header-section-number">12.3.1</span> Bayesian t-test for difference in means between two independent groups</h3>
+<p>As in <a href="primer_stats.html" class="quarto-xref"><span>Chapter 3</span></a>, we want to test if there is a difference in sales between high performing and low performing salespeople.</p>
+<p>We will take random samples of 10 salespeople in the lowest performing group and 10 salespeople in the highest performing group. We will assume for our purposes in this chapter that we only have data for these 20 salespeople.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people with performance ratings 1 and 4 </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>low_perf <span class="ot">&lt;-</span> salespeople[salespeople<span class="sc">$</span>performance <span class="sc">==</span> <span class="dv">1</span>, ]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>sample_low <span class="ot">&lt;-</span> low_perf[<span class="fu">sample</span>(<span class="fu">nrow</span>(low_perf), <span class="dv">10</span>), ]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>high_perf <span class="ot">&lt;-</span> salespeople[salespeople<span class="sc">$</span>performance <span class="sc">==</span> <span class="dv">4</span>, ]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>sample_high <span class="ot">&lt;-</span> high_perf[<span class="fu">sample</span>(<span class="fu">nrow</span>(high_perf), <span class="dv">10</span>), ]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># combine into a single data frame</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>df_sales <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sample_low, sample_high)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next we will run a Bayesian t-test to compare the mean sales between the two performance groups. Our Null Hypothesis (<span class="math inline">\(H_0\)</span>) is that there is no difference in mean sales between high and low performing salespeople, while our Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) is that there is a difference in mean sales between the two groups.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load BayesFactor package</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesFactor)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run a Bayesian t-test</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ttestBF</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> df_sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bayes factor analysis
+--------------
+[1] Alt., r=0.707 : 3.244716 ±0.01%
+
+Against denominator:
+  Null, mu1-mu2 = 0 
+---
+Bayes factor type: BFindepSample, JZS</code></pre>
+</div>
+</div>
+<p>We see that the Bayes Factor <span class="math inline">\(BF_{10}\)</span> is over just over 3, indicating that the data would approximately triple any prior belief we have about the likelihood of the alternative hypothesis. This is moderate evidence in favor of the data supporting the Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) that there is a difference in mean sales between high and low performing salespeople.</p>
+<p>Note that because of the Bayes Factor, we did not even have to look at the posterior distributions of the difference in means to make this conclusion. However, we can still plot these posterior distributions to visualize the difference in means between the two groups, as in <a href="#fig-bayes-ttest" class="quarto-xref">Figure&nbsp;<span>12.7</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian t-test and extract posterior samples over 10000 simulations</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>bf_result <span class="ot">&lt;-</span> <span class="fu">ttestBF</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> df_sales)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>posterior_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_result, <span class="at">iterations =</span> <span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can view the first few rows of the posterior samples to see the estimated difference in sales between low and high performing salespeople.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(posterior_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Markov Chain Monte Carlo (MCMC) output:
+Start = 1 
+End = 7 
+Thinning interval = 1 
+           mu beta (1 - 4)     sig2      delta         g
+[1,] 589.0649    -183.5547 22442.51 -1.2252640 0.6993191
+[2,] 555.0884    -128.8223 23560.82 -0.8392590 6.6988426
+[3,] 515.0254    -316.9280 33857.86 -1.7223876 2.2065154
+[4,] 537.9935    -216.5419 23059.63 -1.4259881 1.1656368
+[5,] 493.3200    -170.4056 17089.27 -1.3035331 1.7582119
+[6,] 499.8313    -129.1826 38461.20 -0.6587075 4.7096177
+[7,] 551.0253    -221.3193 14510.69 -1.8372801 1.6424736</code></pre>
+</div>
+</div>
+<p>The key column we are interested in is the <code>beta (1 - 4)</code> column, which represents the difference in sales between low performing (performance = 1) and high performing (performance = 4) salespeople for each sample iteration. A negative value indicates that high performing salespeople have higher sales than low performing salespeople. We can use this data to plot our posterior as in <a href="#fig-bayes-ttest" class="quarto-xref">Figure&nbsp;<span>12.7</span></a>, negating our data to show a more intuitive difference between high performing and low performing salespeople.</p>
+<div id="fig-bayes-ttest" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes-ttest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>posterior_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sales_diff =</span> <span class="fu">as.vector</span>(<span class="sc">-</span>posterior_samples[ ,<span class="st">"beta (1 - 4)"</span>])</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plot posterior distributions of sales for low and high performing salespeople</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_df, <span class="fu">aes</span>(<span class="at">x =</span> sales_diff)) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Difference"</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes-ttest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.7: Posterior distribution of sales difference between high and low performing salespeople.
+</figcaption>
+</figure>
+</div>
+<p>We can also calculate summary statistics and credible intervals for the posterior distribution of the sales difference between high and low performing salespeople, using the convenient <code>describe_posterior()</code> function§ from the <code>bayestestR</code> package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayestestR)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>(posterior_summary <span class="ot">&lt;-</span> <span class="fu">describe_posterior</span>(<span class="sc">-</span>posterior_samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Summary of Posterior Distribution
+
+Parameter    |    Median |                 95% CI |     pd |          ROPE | % in ROPE
+--------------------------------------------------------------------------------------
+mu           |   -525.86 | [  -608.67,   -445.46] |   100% | [-0.10, 0.10] |        0%
+beta (1 - 4) |    156.42 | [     1.69,    321.02] | 97.63% | [-0.10, 0.10] |        0%
+sig2         | -32612.55 | [-68006.46, -17957.97] |   100% | [-0.10, 0.10] |        0%
+delta        |      0.86 | [     0.01,      1.86] | 97.63% | [-0.10, 0.10] |     1.86%
+g            |     -0.94 | [   -26.60,     -0.12] |   100% | [-0.10, 0.10] |        0%</code></pre>
+</div>
+</div>
+<p>The output shows the posterior median sales difference (row <code>beta (1 - 4)</code>) between high and low performing salespeople is approximately 156.42, with a 95% credible interval provided. This allows us to say that there is a 95% probability that the difference in sales between low and high performing sales people is within this range given the data that we observe. Using the <code>pd</code> column, we can explicitly say that there is a 0.98 probability that the sales difference is greater than zero given the data we observe. We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis. We see that there is no overlap between the 95% credible interval the ROPE.</p>
+<p>One visual way of representing both the posterior distribution and its summary statistics is to use a <em>halfeye plot</em> (via the <code>ggdist</code> package), as in <a href="#fig-bayes-ttest-halfeye" class="quarto-xref">Figure&nbsp;<span>12.8</span></a>. A halfeye plot combines a density plot of the posterior distribution with a point and interval summary of the distribution. By default, the point estimate is the median (this can be adjusted to mean and mode using he <code>point_interval</code> argument), and the intervals are the 66% credible interval and the 95% credible interval (these can be adjusted using the <code>.width</code> argument).</p>
+<div id="fig-bayes-ttest-halfeye" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes-ttest-halfeye-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ggdist package for halfeye plots</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot halfeye of posterior distribution of sales difference</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_df, <span class="fu">aes</span>(<span class="at">x =</span> sales_diff)) <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Difference"</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes-ttest-halfeye-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.8: Halfeye plot of posterior distribution of sales difference between high and low performing salespeople.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="bayesian-test-for-non-zero-correlation" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="bayesian-test-for-non-zero-correlation"><span class="header-section-number">12.3.2</span> Bayesian test for non-zero correlation</h3>
+<p>Next, let’s take a look at whether there is a non-zero correlation between sales and average customer rating. As before, we will take a random sample of 10 salespeople from our data set for this test, and assume this is the only data we have available.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 10 salespeople</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>sample_salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">10</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First, we will run a Bayesian correlation test to assess the evidence for a non-zero correlation between sales and average customer rating. Our Null Hypothesis (<span class="math inline">\(H_0\)</span>) is that there is no correlation between sales and average customer rating, while our Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) is that there is a non-zero correlation between the two variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a Bayesian correlation test</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bayes factor analysis
+--------------
+[1] Alt., r=0.333 : 10.14819 ±0%
+
+Against denominator:
+  Null, rho = 0 
+---
+Bayes factor type: BFcorrelation, Jeffreys-beta*</code></pre>
+</div>
+</div>
+<p>We see that the Bayes Factor <span class="math inline">\(BF_{10}\)</span> suggests strong evidence from the data supporting the Alternative Hypothesis <span class="math inline">\(H_1\)</span>. We can visualize our posterior distribution of the correlation coefficient using a halfeye plot as before.</p>
+<div id="fig-bayes-corr" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian correlation test and extract posterior samples over 10000 simulations</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>bf_corr_result <span class="ot">&lt;-</span> <span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>posterior_corr_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_corr_result, <span class="at">iterations =</span> <span class="dv">10000</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>posterior_corr_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">correlation =</span> <span class="fu">as.vector</span>(posterior_corr_samples[ ,<span class="st">"rho"</span>])</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create a halfeye plot of posterior distribution of correlation coefficient</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_corr_df, <span class="fu">aes</span>(<span class="at">x =</span> correlation)) <span class="sc">+</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"pink"</span>,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Correlation Coefficient"</span>,</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.9: Posterior distribution of correlation coefficient between sales and average customer rating.
+</figcaption>
+</figure>
+</div>
+<p>And, like before, we can view summary statistics and credible intervals for the posterior distribution of the correlation coefficient.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe_posterior</span>(posterior_corr_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Summary of Posterior Distribution
+
+Parameter | Median |       95% CI |   pd |          ROPE | % in ROPE
+--------------------------------------------------------------------
+rho       |   0.62 | [0.17, 0.86] | 100% | [-0.10, 0.10] |        0%
+zeta      |   0.72 | [0.17, 1.31] | 100% | [-0.10, 0.10] |        0%</code></pre>
+</div>
+</div>
+<p>Therefore we can say that there is a 1 probability that the correlation between sales and average customer rating is greater than zero given the data we observe. We see that the 95% credible interval has a very small overlap with the ROPE around zero, indicating that the correlation is likely to be non-zero in practical terms.</p>
+</section>
+<section id="bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups" class="level3" data-number="12.3.3">
+<h3 data-number="12.3.3" class="anchored" data-anchor-id="bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups"><span class="header-section-number">12.3.3</span> Bayesian chi-square test (Test for difference in frequency distribution between groups)</h3>
+<p>Finally, let’s look at categorical data. We will test if there is a difference in likelihood of promotion between the performance categories of salespeople. Again we will take a random sample of 20 salespeople in each performance category (1 to 4) from our data set making a total sample of 80 salespeople, and we assume this is the only data we have available.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people from each performance rating group</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>sample_data <span class="ot">=</span> <span class="fu">data.frame</span>()</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  perf_group <span class="ot">&lt;-</span> salespeople[salespeople<span class="sc">$</span>performance <span class="sc">==</span> i, ]</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  sample_group <span class="ot">&lt;-</span> perf_group[<span class="fu">sample</span>(<span class="fu">nrow</span>(perf_group), <span class="dv">20</span>), ]</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  sample_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sample_data, sample_group)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the Bayesian framework, we test whether promotion likelihood is independent from performance category using a contingency table Bayes Factor. First we create our contingency table of promoted vs performance for our sample of 40 salespeople.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table of promoted vs performance</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>(contingency <span class="ot">&lt;-</span> <span class="fu">table</span>(sample_data<span class="sc">$</span>promoted, sample_data<span class="sc">$</span>performance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+     1  2  3  4
+  0 15 18  9  9
+  1  5  2 11 11</code></pre>
+</div>
+</div>
+<p>Now we can apply the hypothesis, but before we do so we need to define the sampling method in order to inform the simulation. For this we have four choices:</p>
+<ol type="1">
+<li><code>jointMulti</code>: Joint multinomial sampling. This means that the total sample size is fixed, but the row and column totals are free to vary. In our case this means that the total number of salespeople is fixed, but the number of promoted vs not promoted and the number of salespeople in each performance category are free to vary.</li>
+<li><code>indepMulti</code>: Independent multinomial sampling. This means that the row totals are fixed, but the column totals are free to vary. In our case this means that the number of promoted vs not promoted salespeople is fixed, but the number of salespeople in each performance category are free to vary.</li>
+<li><code>condMulti</code>: Conditional multinomial sampling. This means that the column totals are fixed, but the row totals are free to vary. In our case this means that the number of salespeople in each performance category is fixed, but the number of promoted vs not promoted salespeople are free to vary.</li>
+<li><code>poisson</code>: Poisson sampling. This means that nothing is fixed, and all counts are free to vary.</li>
+</ol>
+<p>The choice you make for your sampling method requires a knowledge of the processes behind your data. In our case, we will use <code>jointMulti</code>, as we have a fixed total number of salespeople in our data, but we assume that promotion rate and performance ratings are not strictly controlled and can vary.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Bayesian Contingency Table Test</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bayes factor analysis
+--------------
+[1] Non-indep. (a=1) : 79.98032 ±0%
+
+Against denominator:
+  Null, independence, a = 1 
+---
+Bayes factor type: BFcontingencyTable, joint multinomial</code></pre>
+</div>
+</div>
+<p>Here we see a Bayes Factor <span class="math inline">\(BF_{10}\)</span> which indicates very strong evidence from the data in favor of the Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) that the categories are not independent and there is a difference in promotion rates between performance rating groups. We can visualize the posterior distributions of the promotion rates for using a halfeye plot, as in <a href="#fig-bayes-chi" class="quarto-xref">Figure&nbsp;<span>12.10</span></a>. This requires some manipulation of the data that is produced when our posterior is simulated.</p>
+<div id="fig-bayes-chi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes-chi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian contingency table test and extract posterior samples over 10000 simulations</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>bf_contingency_result <span class="ot">&lt;-</span> <span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>posterior_contingency_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_contingency_result, <span class="at">iterations =</span> <span class="dv">10000</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate relative promotion rates within each performance category</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi["</span>, i, <span class="st">"]"</span>)] <span class="ot">&lt;-</span> posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[2,"</span>, i, <span class="st">"]"</span>)] <span class="sc">/</span> </span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    (posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[1,"</span>, i, <span class="st">"]"</span>)] <span class="sc">+</span> posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[2,"</span>, i, <span class="st">"]"</span>)])</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create data frame for halfeye plot</span></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>posterior_contingency_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">promotion_rate =</span> <span class="fu">c</span>(<span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[1]"</span>]),</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[2]"</span>]),</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[3]"</span>]),</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[4]"</span>])),</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">performance_rating =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">each =</span> <span class="fu">nrow</span>(posterior_contingency_samples))</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a><span class="co"># plot posterior distributions of promotion rates using halfeye plot</span></span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_contingency_df, <span class="fu">aes</span>(<span class="at">x =</span> promotion_rate, <span class="at">y =</span> <span class="fu">as.factor</span>(performance_rating))) <span class="sc">+</span></span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Promotion Rate"</span>,</span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Performance Rating"</span>) <span class="sc">+</span></span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes-chi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.10: Posterior distributions of promotion rates for each performance category.
+</figcaption>
+</figure>
+</div>
+<p>Visualizing the posteriors in this way gives us additional information regarding the promotion likelihood for each performance category. We see that the difference between performance category 2 and the higher two performance categories is quite pronounced, and is the main reason why the Bayes Factor indicates strong evidence for a difference in promotion rates between performance categories.</p>
+</section>
+</section>
+<section id="learning-exercises" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">12.4</span> Learning exercises</h2>
+<section id="discussion-questions" class="level3" data-number="12.4.1">
+<h3 data-number="12.4.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">12.4.1</span> Discussion questions</h3>
+<ol type="1">
+<li><p>In classical (frequentist) statistics, the population parameter (e.g., the true mean of a population) is considered a fixed, unknown constant. How does the Bayesian approach view the population parameter differently? How does this change the way we interpret the results of an analysis?</p></li>
+<li><p>State Bayes’ Theorem and explain each of its components in the context of Bayesian inference.</p></li>
+<li><p>Explain the difference between an <strong>informative prior</strong> and a <strong>non-informative prior</strong>. Why might each be used in different scenarios? Provide an example of when you might choose one over the other.</p></li>
+<li><p>Which of the three components of Bayes’ Theorem (prior, likelihood, posterior) are probability distributions which sum to 1. Which are not? Explain why.</p></li>
+<li><p>“Today’s posterior is tomorrow’s prior.” Explain this concept and how it applies to Bayesian updating.</p></li>
+<li><p>How does the interpretation of a <strong>95% Credible Interval</strong> differ from a <strong>95% Confidence Interval</strong>?</p></li>
+<li><p>Why does Bayesian inference allow us to interpret a 95% Credible Interval?</p></li>
+<li><p>If you calculate a Bayes Factor <span class="math inline">\(BF_{10}\)</span> of 12.5 in favor of an Alternative Hypothesis (<span class="math inline">\(H_1\)</span>), how would you interpret this according to the classification scheme provided in this chapter?</p></li>
+<li><p>Explain the meaning of the Bayes Factor <span class="math inline">\(BF_{10}\)</span> in the context of hypothesis testing. How does it differ from the <span class="math inline">\(p\)</span>-value used in classical statistics?</p></li>
+<li><p>What is a halfeye plot and what are the key components it displays? Why are halfeye plots useful for visualizing posterior distributions?</p></li>
+</ol>
+</section>
+<section id="data-exercises" class="level3" data-number="12.4.2">
+<h3 data-number="12.4.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">12.4.2</span> Data exercises</h3>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-jeffreys" class="csl-entry" role="listitem">
+Jeffreys, Harold. 1961. <em>The Theory of Probability (3rd Edition)</em>.
+</div>
+</div>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Note that this is a continuous PDF and therefore does not plot the specific probabilities for <span class="math inline">\(\theta\)</span>. One way to interpret the density function is that if <span class="math inline">\(\theta_1\)</span> has a density of 1 and <span class="math inline">\(\theta_2\)</span> has a density of 2, then <span class="math inline">\(\theta_2\)</span> is twice as likely to occur compared to <span class="math inline">\(\theta_1\)</span>. If we wished, we could normalize this simulated density to provide specific probabilities by dividing each our 1000 values by their total sum, but this would make no difference to the output of Bayes’ Theorem, If you are unconvinced by this, try rerunning everything with a normalized PDF as a prior.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In fact, because the Beta distribution is a <em>conjugate prior</em> for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations. The posterior distribution will also be a Beta distribution with updated shape parameters <span class="math inline">\(\alpha + x\)</span> and <span class="math inline">\(\beta + n - x\)</span> where <span class="math inline">\(x\)</span> is the number of success and <span class="math inline">\(n-x\)</span> is the number fo failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Named after the mathematician Stanislaw Ulam, who was one of the inventors of the Monte Carlo method.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book-2nd-edition\.org\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./power_tests.html" class="pagination-link" aria-label="Power Analysis to Estimate Required Sample Sizes for Modeling">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./further.html" class="pagination-link" aria-label="Further Exercises for Practice">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/bayesian_inference.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

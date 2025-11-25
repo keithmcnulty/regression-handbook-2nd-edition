@@ -36,6 +36,7 @@ book:
     - hierarchical_data.qmd
     - survival_analysis.qmd
     - power_tests.qmd
+    - bayesian_inference.qmd
     - further.qmd
     - bibliography.qmd
 

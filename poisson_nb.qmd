@@ -200,7 +200,7 @@ If we use a Poisson model on overdispersed data, the coefficient estimates ($\be
 
 There are several ways to check for overdispersion.
 
-1.  **Compare Mean and Variance:** The simplest check is to compare the raw mean and variance of our outcome variable.
+1.  **Compare Mean and Variance:** A simple 'rule of thumb' check is to compare the raw mean and variance of our outcome variable.
 
     ```{r}
     c(mean = mean(absenteeism$days_absent), 

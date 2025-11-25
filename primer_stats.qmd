@@ -691,5 +691,4 @@ For these exercises, load the `charity_donation` data set via the `peopleanalyti
 7.  By using an appropriate hypothesis test, determine if the mean age of those who made a recent donation is different from those who did not.
 8.  By using an appropriate hypothesis test, determine if there is a difference in whether or not a recent donation was made according to where people reside.
 9. **Extension:** By using an appropriate hypothesis test, determine if the age of those who have recently donated is at least 10 years older than those who have not recently donated in the population.
-10. **Extension:** By using an appropriate hypothesis test, determine if the average donation amount is at least 10 dollars higher for those who recently donated versus those who did not.  Retest for 20 dollars higher.
-
+10. **Extension:** By using an appropriate hypothesis test, determine if the average donation amount is at least 10 dollars higher for those who recently donated versus those who did not.  Retest for 20 dollars higher. 

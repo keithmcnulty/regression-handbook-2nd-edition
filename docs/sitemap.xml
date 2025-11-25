@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book-2nd-edition.org/primer_stats.html</loc>
-    <lastmod>2025-11-12T19:30:36.533Z</lastmod>
+    <lastmod>2025-11-23T20:19:44.927Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book-2nd-edition.org/linear_regression.html</loc>
@@ -42,7 +42,7 @@
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book-2nd-edition.org/poisson_nb.html</loc>
-    <lastmod>2025-11-14T17:05:27.848Z</lastmod>
+    <lastmod>2025-11-25T22:12:31.822Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book-2nd-edition.org/hierarchical_data.html</loc>
@@ -55,6 +55,10 @@
   <url>
     <loc>https://peopleanalytics-regression-book-2nd-edition.org/power_tests.html</loc>
     <lastmod>2025-11-12T20:05:14.698Z</lastmod>
+  </url>
+  <url>
+    <loc>https://peopleanalytics-regression-book-2nd-edition.org/bayesian_inference.html</loc>
+    <lastmod>2025-11-25T22:08:41.118Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book-2nd-edition.org/further.html</loc>
