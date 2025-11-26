@@ -599,7 +599,7 @@ Visualizing the posteriors in this way gives us additional information regarding
 
 3.  Explain the difference between an **informative prior** and a **non-informative prior**. Why might each be used in different scenarios? Provide an example of when you might choose one over the other.
 
-4.  Which of the three components of Bayes' Theorem (prior, likelihood, posterior) are probability distributions which sum to 1.  Which are not? Explain why.
+4.  Which of the three components of Bayes' Theorem (prior, likelihood, posterior) are probability distributions?  Which are not? Explain why.
 
 5.  "Today's posterior is tomorrow's prior." Explain this concept and how it applies to Bayesian updating.
 
@@ -607,14 +607,39 @@ Visualizing the posteriors in this way gives us additional information regarding
 
 7.  Why does Bayesian inference allow us to interpret a 95% Credible Interval?
 
-8.  If you calculate a Bayes Factor $BF_{10}$ of 12.5 in favor of an Alternative Hypothesis ($H_1$), how would you interpret this according to the classification scheme provided in this chapter?
+8.  Explain the meaning of the Bayes Factor $BF_{10}$ in the context of hypothesis testing. 
 
-9.  Explain the meaning of the Bayes Factor  $BF_{10}$ in the context of hypothesis testing. How does it differ from the $p$-value used in classical statistics?
+9.  If you calculate a Bayes Factor $BF_{10}$ of 12.5, how would you interpret this according to the classification scheme provided in this chapter?
 
 10.  What is a halfeye plot and what are the key components it displays?  Why are halfeye plots useful for visualizing posterior distributions?
 
 ### Data exercises
 
+Load the `ugtests` data set which we used in @sec-linear-reg-ols via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/ugtests.csv]. Remind yourself of what this data set contains.
+
+For questions 1 to 5, focus on the Year 1 examination scores.  Take a random sample of 20 students from the data set to use as your first set of observed data, and remove these from the full data.  Then take another random sample of 30 students from the remaining data set to use as your second set of observed data for Bayesian updating.  
+
+1.  The academic administrator informs you a score of 40 represents a Pass.  It is their belief that 'somewhere around 7 in 10' students will pass the Year 1 examination.  Simulate an informative prior distribution for the pass rate based on this belief.  Plot the prior distribution.
+
+2.  Using your first set of observed data, simulate the likelihood function for the pass rate.  
+
+3.  Use your work from questions 1 and 2 to calculate the posterior distribution for the Year 1 pass rate.  Plot the prior, likelihood and posterior together on a standardized plot to compare them.
+
+4.  Using the posterior distribution from question 3 as your new prior, and using your second set of observed data, calculate the updated posterior distribution for the Year 1 pass rate.  Plot the updated posterior distribution.
+
+5.  Calculate summary statistics (mean, median, mode) and a 95% credible interval for the updated posterior distribution from Question 4.
+
+For questions 6 to 10, take a random sample of 50 rows for the full `ugtests` data set and treat this as your observed data.  
+
+6.  Test the hypothesis that there is a difference in Year 2 score between top quartile students and bottom quartile students from Year 1.  Use a Bayesian t-test to perform this test.  Report and interpret the Bayes Factor.  
+
+7.  Visualize the posterior distribution of the difference in means between the two groups using a halfeye plot.  
+
+8.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in scores between the two groups. 
+
+9.  Test the hypothesis that there is a non-zero correlation between Year 2 and Final Year examination scores using a Bayesian correlation test.  Report and interpret the Bayes Factor.
+
+10.  Visualize the posterior distribution of the correlation coefficient using a halfeye plot.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the correlation coefficient.  Write a summary of your findings from questions 6 to 10.
 
 
 

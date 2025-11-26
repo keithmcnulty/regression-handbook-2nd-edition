@@ -1015,17 +1015,34 @@ Figure&nbsp;12.10: Posterior distributions of promotion rates for each performan
 <li><p>In classical (frequentist) statistics, the population parameter (e.g., the true mean of a population) is considered a fixed, unknown constant. How does the Bayesian approach view the population parameter differently? How does this change the way we interpret the results of an analysis?</p></li>
 <li><p>State Bayes’ Theorem and explain each of its components in the context of Bayesian inference.</p></li>
 <li><p>Explain the difference between an <strong>informative prior</strong> and a <strong>non-informative prior</strong>. Why might each be used in different scenarios? Provide an example of when you might choose one over the other.</p></li>
-<li><p>Which of the three components of Bayes’ Theorem (prior, likelihood, posterior) are probability distributions which sum to 1. Which are not? Explain why.</p></li>
+<li><p>Which of the three components of Bayes’ Theorem (prior, likelihood, posterior) are probability distributions? Which are not? Explain why.</p></li>
 <li><p>“Today’s posterior is tomorrow’s prior.” Explain this concept and how it applies to Bayesian updating.</p></li>
 <li><p>How does the interpretation of a <strong>95% Credible Interval</strong> differ from a <strong>95% Confidence Interval</strong>?</p></li>
 <li><p>Why does Bayesian inference allow us to interpret a 95% Credible Interval?</p></li>
-<li><p>If you calculate a Bayes Factor <span class="math inline">\(BF_{10}\)</span> of 12.5 in favor of an Alternative Hypothesis (<span class="math inline">\(H_1\)</span>), how would you interpret this according to the classification scheme provided in this chapter?</p></li>
-<li><p>Explain the meaning of the Bayes Factor <span class="math inline">\(BF_{10}\)</span> in the context of hypothesis testing. How does it differ from the <span class="math inline">\(p\)</span>-value used in classical statistics?</p></li>
+<li><p>Explain the meaning of the Bayes Factor <span class="math inline">\(BF_{10}\)</span> in the context of hypothesis testing.</p></li>
+<li><p>If you calculate a Bayes Factor <span class="math inline">\(BF_{10}\)</span> of 12.5, how would you interpret this according to the classification scheme provided in this chapter?</p></li>
 <li><p>What is a halfeye plot and what are the key components it displays? Why are halfeye plots useful for visualizing posterior distributions?</p></li>
 </ol>
 </section>
 <section id="data-exercises" class="level3" data-number="12.4.2">
 <h3 data-number="12.4.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">12.4.2</span> Data exercises</h3>
+<p>Load the <code>ugtests</code> data set which we used in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a> via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Remind yourself of what this data set contains.</p>
+<p>For questions 1 to 5, focus on the Year 1 examination scores. Take a random sample of 20 students from the data set to use as your first set of observed data, and remove these from the full data. Then take another random sample of 30 students from the remaining data set to use as your second set of observed data for Bayesian updating.</p>
+<ol type="1">
+<li><p>The academic administrator informs you a score of 40 represents a Pass. It is their belief that ‘somewhere around 7 in 10’ students will pass the Year 1 examination. Simulate an informative prior distribution for the pass rate based on this belief. Plot the prior distribution.</p></li>
+<li><p>Using your first set of observed data, simulate the likelihood function for the pass rate.</p></li>
+<li><p>Use your work from questions 1 and 2 to calculate the posterior distribution for the Year 1 pass rate. Plot the prior, likelihood and posterior together on a standardized plot to compare them.</p></li>
+<li><p>Using the posterior distribution from question 3 as your new prior, and using your second set of observed data, calculate the updated posterior distribution for the Year 1 pass rate. Plot the updated posterior distribution.</p></li>
+<li><p>Calculate summary statistics (mean, median, mode) and a 95% credible interval for the updated posterior distribution from Question 4.</p></li>
+</ol>
+<p>For questions 6 to 10, take a random sample of 50 rows for the full <code>ugtests</code> data set and treat this as your observed data.</p>
+<ol start="6" type="1">
+<li><p>Test the hypothesis that there is a difference in Year 2 score between top quartile students and bottom quartile students from Year 1. Use a Bayesian t-test to perform this test. Report and interpret the Bayes Factor.</p></li>
+<li><p>Visualize the posterior distribution of the difference in means between the two groups using a halfeye plot.</p></li>
+<li><p>Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in scores between the two groups.</p></li>
+<li><p>Test the hypothesis that there is a non-zero correlation between Year 2 and Final Year examination scores using a Bayesian correlation test. Report and interpret the Bayes Factor.</p></li>
+<li><p>Visualize the posterior distribution of the correlation coefficient using a halfeye plot. Calculate summary statistics and a 95% credible interval for the posterior distribution of the correlation coefficient. Write a summary of your findings from questions 6 to 10.</p></li>
+</ol>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -1041,6 +1058,7 @@ Jeffreys, Harold. 1961. <em>The Theory of Probability (3rd Edition)</em>.
 <li id="fn1"><p>Note that this is a continuous PDF and therefore does not plot the specific probabilities for <span class="math inline">\(\theta\)</span>. One way to interpret the density function is that if <span class="math inline">\(\theta_1\)</span> has a density of 1 and <span class="math inline">\(\theta_2\)</span> has a density of 2, then <span class="math inline">\(\theta_2\)</span> is twice as likely to occur compared to <span class="math inline">\(\theta_1\)</span>. If we wished, we could normalize this simulated density to provide specific probabilities by dividing each our 1000 values by their total sum, but this would make no difference to the output of Bayes’ Theorem, If you are unconvinced by this, try rerunning everything with a normalized PDF as a prior.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>In fact, because the Beta distribution is a <em>conjugate prior</em> for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations. The posterior distribution will also be a Beta distribution with updated shape parameters <span class="math inline">\(\alpha + x\)</span> and <span class="math inline">\(\beta + n - x\)</span> where <span class="math inline">\(x\)</span> is the number of success and <span class="math inline">\(n-x\)</span> is the number fo failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Named after the mathematician Stanislaw Ulam, who was one of the inventors of the Monte Carlo method.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>http://peopleanalytics-regression-book.org/data/ugtests.csv<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
