@@ -629,7 +629,7 @@ For questions 1 to 5, focus on the Year 1 examination scores.  Take a random sam
 
 5.  Calculate summary statistics (mean, median, mode) and a 95% credible interval for the updated posterior distribution from Question 4.
 
-For questions 6 to 10, take a random sample of 50 rows for the full `ugtests` data set and treat this as your observed data.  
+For questions 6 to 10, take a random sample of 50 rows from the full `ugtests` data set and treat this as your observed data.  
 
 6.  Test the hypothesis that there is a difference in Year 2 score between top quartile students and bottom quartile students from Year 1.  Use a Bayesian t-test to perform this test.  Report and interpret the Bayes Factor.  
 
