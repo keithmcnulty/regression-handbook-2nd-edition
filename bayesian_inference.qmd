@@ -515,7 +515,8 @@ And, like before, we can view summary statistics and credible intervals for the 
 ```{r}
 describe_posterior(posterior_corr_samples)
 ```
-Therefore we can say that there is a `r round(describe_posterior(posterior_corr_samples)$pd[1], 2)` probability that the correlation between sales and average customer rating is greater than zero given the data we observe.  We see that the 95% credible interval has a very small overlap with the ROPE around zero, indicating that the correlation is likely to be non-zero in practical terms.
+
+Therefore we can say that there is a probability of 1 `r round(describe_posterior(posterior_corr_samples)$pd[1], 2)` that the correlation between sales and average customer rating is greater than zero given the data we observe.  We see that the 95% credible interval hs no overlap with the ROPE, further supporting our Alternative Hypothesis^[As before, we can explicitly calculate the one-tailed Bayes Factor for a *positive* correlation by using `nullInterval = c(-1, 0)` in our test function].
 
 ### Bayesian chi-square test (Test for difference in frequency distribution between groups)
 
@@ -646,7 +647,7 @@ For questions 6 to 10, take a random sample of 50 rows from the full `ugtests` d
 
 8.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in scores between the two groups. 
 
-9.  Test the hypothesis that there is a non-zero correlation between Year 2 and Final Year examination scores using a Bayesian correlation test.  Report and interpret the Bayes Factor.
+9.  Test the hypothesis that there is a correlation between Year 2 and Final Year examination scores using a Bayesian correlation test.  Report and interpret the Bayes Factor.
 
 10.  Visualize the posterior distribution of the correlation coefficient using a halfeye plot.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the correlation coefficient.  Write a summary of your findings from questions 6 to 10.
 

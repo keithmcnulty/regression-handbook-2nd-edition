@@ -921,7 +921,7 @@ rho       |   0.62 | [0.17, 0.86] | 100% | [-0.10, 0.10] |        0%
 zeta      |   0.72 | [0.17, 1.31] | 100% | [-0.10, 0.10] |        0%</code></pre>
 </div>
 </div>
-<p>Therefore we can say that there is a 1 probability that the correlation between sales and average customer rating is greater than zero given the data we observe. We see that the 95% credible interval has a very small overlap with the ROPE around zero, indicating that the correlation is likely to be non-zero in practical terms.</p>
+<p>Therefore we can say that there is a probability of 1 1 that the correlation between sales and average customer rating is greater than zero given the data we observe. We see that the 95% credible interval hs no overlap with the ROPE, further supporting our Alternative Hypothesis<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 </section>
 <section id="bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups" class="level3" data-number="12.3.3">
 <h3 data-number="12.3.3" class="anchored" data-anchor-id="bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups"><span class="header-section-number">12.3.3</span> Bayesian chi-square test (Test for difference in frequency distribution between groups)</h3>
@@ -1043,7 +1043,7 @@ Figure&nbsp;12.10: Posterior distributions of promotion rates for each performan
 </section>
 <section id="data-exercises" class="level3" data-number="12.4.2">
 <h3 data-number="12.4.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">12.4.2</span> Data exercises</h3>
-<p>Load the <code>ugtests</code> data set which we used in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a> via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Remind yourself of what this data set contains.</p>
+<p>Load the <code>ugtests</code> data set which we used in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a> via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Remind yourself of what this data set contains.</p>
 <p>For questions 1 to 5, focus on the Year 1 examination scores. Take a random sample of 20 students from the data set to use as your first set of observed data, and remove these from the full data. Then take another random sample of 30 students from the remaining data set to use as your second set of observed data for Bayesian updating.</p>
 <ol type="1">
 <li><p>The academic administrator informs you that a minimum score of 40 represents a Pass. It is their belief that ‘somewhere around 7 in 10’ students will pass the Year 1 examination. Simulate an informative prior distribution for the pass rate based on this belief. Plot the prior distribution.</p></li>
@@ -1057,7 +1057,7 @@ Figure&nbsp;12.10: Posterior distributions of promotion rates for each performan
 <li><p>Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers. Use a Bayesian t-test to perform this test. Report and interpret the Bayes Factor.</p></li>
 <li><p>Visualize the posterior distribution of the difference in means between the two groups using a halfeye plot.</p></li>
 <li><p>Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in scores between the two groups.</p></li>
-<li><p>Test the hypothesis that there is a non-zero correlation between Year 2 and Final Year examination scores using a Bayesian correlation test. Report and interpret the Bayes Factor.</p></li>
+<li><p>Test the hypothesis that there is a correlation between Year 2 and Final Year examination scores using a Bayesian correlation test. Report and interpret the Bayes Factor.</p></li>
 <li><p>Visualize the posterior distribution of the correlation coefficient using a halfeye plot. Calculate summary statistics and a 95% credible interval for the posterior distribution of the correlation coefficient. Write a summary of your findings from questions 6 to 10.</p></li>
 </ol>
 
@@ -1085,7 +1085,8 @@ McElreath, Richard. 2020. <em>Statistical Rethinking: A Bayesian Course with Exa
 <li id="fn2"><p>In fact, because the Beta distribution is a <em>conjugate prior</em> for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations. The posterior distribution will also be a Beta distribution with updated shape parameters <span class="math inline">\(\alpha + x\)</span> and <span class="math inline">\(\beta + n - x\)</span> where <span class="math inline">\(x\)</span> is the number of success and <span class="math inline">\(n-x\)</span> is the number of failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Named after the mathematician Stanislaw Ulam, who was one of the inventors of the Monte Carlo method.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>The output here is agnostic to direction, and will always return the probability of the most likely direction, akin to a one-tailed test without a specified direction.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>http://peopleanalytics-regression-book.org/data/ugtests.csv<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>As before, we can explicitly calculate the one-tailed Bayes Factor for a <em>positive</em> correlation by using <code>nullInterval = c(-1, 0)</code> in our test function<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>http://peopleanalytics-regression-book.org/data/ugtests.csv<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
