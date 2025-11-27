@@ -364,8 +364,8 @@ window.Quarto = {
 <p>In this chapter we are going to ‘flip the script’ on this philosophy. Instead of our population parameter being a fixed unknown value which we estimate through many repeated samples of data, we are going to treat our population parameter as a random variable that can take on a range of possible values, each with some probability, and we will treat our data as fixed. This leads us to a different way of thinking about statistical inference, and provides us with a toolkit that has more flexibility than classical statistics. In particular, we can incorporate prior knowledge or beliefs about our parameters into our analyses, we can make direct probability statements about our parameters given the data we have availalable, and we can continuously update our beliefs about parameters as new data becomes available.</p>
 <p>The critical theorem from probability theory that underpins this approach is <em>Bayes’ Theorem</em>, named after the Reverend Thomas Bayes, an 18th century statistician and theologian. As we will see, Bayes’ Theorem provides us with a mathematical way to combine our prior beliefs about a parameter with the evidence provided by our data to arrive at an updated <em>posterior</em> belief about the parameter. This mechanism is the essence of <em>Bayesian inference</em>.</p>
 <p>Bayesian inference has become increasingly popular in recent years. This was not always so, because the techniques used in Bayesian inference require simulation of data, which can require substantially more computational resources compared to classical approaches. Only in the past two decades has widespread computational power become available that has made it more feasible to apply Bayesian methods to large datasets. As a result, Bayesian approaches are now widely used in fields such as machine learning, epidemiology, ecology and social sciences, to name but a small few. All of the methods that we have learned so far using classical statistics have Bayesian counterparts.</p>
-<p>In People Analytics, Bayesian methods can be particularly useful when dealing with small sample sizes, when incorporating prior knowledge about employee behavior or organizational context, or when making probabilistic predictions about future outcomes. It is fair to say that not all individuals working in this field will need to have a knowledge of Bayesian inference, as classical approaches will often yield similar conclusions especially when sample sizes are larger and prior beliefs are limited. However, having a basic grasp of Bayesian methods can provide an analyst with a greater depth of understanding on how the processes they are trying to model play out statistically. For this reason, readers should regard this and subsequent chapters as optional, advanced material.<br>
-In this chapter we will explore the fundamental mechanics of how Bayesian inference works via Bayes’ Theorem, we will introduce how hypothesis testing can be done within the Bayesian framework, and we will outline some important concepts that we can take forward into subsequent chapters. For a more in depth treatment of Bayesian inference, <span class="citation" data-cites="gelman">Gelman et al. (<a href="bibliography.html#ref-gelman" role="doc-biblioref">2013</a>)</span> is highly recommended for theory and examples while <span class="citation" data-cites="mcelreath">McElreath (<a href="bibliography.html#ref-mcelreath" role="doc-biblioref">2020</a>)</span> is an excellent practical resource which includes R code.</p>
+<p>In People Analytics, Bayesian methods can be particularly useful when dealing with small sample sizes, when incorporating prior knowledge about employee behavior or organizational context, or when making probabilistic predictions about future outcomes. It is fair to say that not all individuals working in this field will need to have a knowledge of Bayesian inference, as classical approaches will often yield similar conclusions especially when sample sizes are larger and prior beliefs are limited. However, having a basic grasp of Bayesian methods can provide an analyst with a greater depth of understanding on how the processes they are trying to model play out statistically. For this reason, readers should regard this and subsequent chapters as optional, advanced material.</p>
+<p>In this chapter we will explore the fundamental mechanics of how Bayesian inference works via Bayes’ Theorem, we will introduce how hypothesis testing can be done within the Bayesian framework, and we will outline some important concepts that we can take forward into subsequent chapters. For a more in depth treatment of Bayesian inference, <span class="citation" data-cites="gelman">Gelman et al. (<a href="bibliography.html#ref-gelman" role="doc-biblioref">2013</a>)</span> is highly recommended for theory and examples while <span class="citation" data-cites="mcelreath">McElreath (<a href="bibliography.html#ref-mcelreath" role="doc-biblioref">2020</a>)</span> is an excellent practical resource which includes R code.</p>
 <section id="bayes-theorem-and-the-mechanics-of-bayesian-inference" class="level2" data-number="12.1">
 <h2 data-number="12.1" class="anchored" data-anchor-id="bayes-theorem-and-the-mechanics-of-bayesian-inference"><span class="header-section-number">12.1</span> Bayes’ Theorem and the mechanics of Bayesian Inference</h2>
 <p>Recall that in earlier chapters we adopted a frequentist approach to statistical inference, where we treated our data as random and our parameters as fixed but unknown. In effect, this approach asks the question: <em>Given a fixed but unknown parameter (such as a population mean), what is the probability of observing the sample data that we have collected?</em>. Using probability notation, if we call our parameter <span class="math inline">\(\theta\)</span> and our observed data <span class="math inline">\(D\)</span>, we can express this question as <span class="math inline">\(P(D \mid \theta)\)</span>, which is known as the <em>likelihood</em> of the data given the parameter.</p>
@@ -388,7 +388,7 @@ In this chapter we will explore the fundamental mechanics of how Bayesian infere
 <section id="defining-the-prior-belief-ptheta" class="level3" data-number="12.2.1">
 <h3 data-number="12.2.1" class="anchored" data-anchor-id="defining-the-prior-belief-ptheta"><span class="header-section-number">12.2.1</span> Defining the prior belief <span class="math inline">\(P(\theta)\)</span></h3>
 <p>In Bayesian inference, we start by defining our <em>prior</em> belief about the parameter of interest before observing any data. In this case, our parameter of interest is the pass rate for the certification exam among engineers who complete the training program. Since our parameter involves a specified proportion of passes and fails in the certification exam, we can use a <em>Beta distribution</em> to represent our prior belief. A Beta distribution is a continuous probability distribution defined on the interval [0, 1], which makes it suitable for modeling proportions and probabilities.</p>
-<p>If we call our pass rate parameter <span class="math inline">\(\theta\)</span>, where <span class="math inline">\(0 \leq \theta \leq 1\)</span>, we can define our prior belief about <span class="math inline">\(\theta\)</span> using a Beta distribution with shape parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> represent the number of passes and fails respectively. Therefore or prior belief can be expressed as the following distribution:</p>
+<p>If we call our pass rate parameter <span class="math inline">\(\theta\)</span>, where <span class="math inline">\(0 \leq \theta \leq 1\)</span>, we can define our prior belief about <span class="math inline">\(\theta\)</span> using a Beta distribution with shape parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> represent the number of passes and fails respectively. Therefore our prior belief can be expressed as the following distribution:</p>
 <p><span class="math display">\[
 \theta \sim \text{Beta}(\alpha, \beta)
 \]</span></p>
@@ -799,7 +799,7 @@ delta        |      0.86 | [     0.01,      1.86] | 97.63% | [-0.10, 0.10] |    
 g            |     -0.94 | [   -26.60,     -0.12] |   100% | [-0.10, 0.10] |        0%</code></pre>
 </div>
 </div>
-<p>The output shows the posterior median sales difference (row <code>beta (1 - 4)</code>) between high and low performing salespeople is approximately 156.42, with a 95% credible interval provided. This allows us to say that there is a 95% probability that the difference in sales between low and high performing sales people is within this range given the data that we observe. Using the <code>pd</code> column, we can explicitly say that there is a 0.98 probability that the sales difference is greater than zero given the data we observe. We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis. We see that there is no overlap between the 95% credible interval the ROPE.</p>
+<p>The output shows the posterior median sales difference (row <code>beta (1 - 4)</code>) between high and low performing salespeople is approximately 156.42, with a 95% credible interval provided. This allows us to say that there is a 95% probability that the difference in sales between low and high performing sales people is within this range given the data that we observe. The <code>pd</code> column provides a ‘probability of direction’. Using this column, we can explicitly say that there is a 0.98 probability that the sales difference is greater than zero given the data we observe<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis. We see that there is no overlap between the 95% credible interval the ROPE.</p>
 <p>One visual way of representing both the posterior distribution and its summary statistics is to use a <em>halfeye plot</em> (via the <code>ggdist</code> package), as in <a href="#fig-bayes-ttest-halfeye" class="quarto-xref">Figure&nbsp;<span>12.8</span></a>. A halfeye plot combines a density plot of the posterior distribution with a point and interval summary of the distribution. By default, the point estimate is the median (this can be adjusted to mean and mode using he <code>point_interval</code> argument), and the intervals are the 66% credible interval and the 95% credible interval (these can be adjusted using the <code>.width</code> argument).</p>
 <div id="fig-bayes-ttest-halfeye" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -831,19 +831,36 @@ Figure&nbsp;12.8: Halfeye plot of posterior distribution of sales difference bet
 </figcaption>
 </figure>
 </div>
+<p>To adapt the <code>ttestBF()</code> function to do a one-tailed test, you can use the <code>nullInterval</code> argument to specify the direction of the test. For example, if you want to test if high performing salespeople have higher sales than low performing salespeople (and noting that the default of the test is to test performance group 1 minus performance group 4), you can set <code>nullInterval = c(0, Inf)</code> to associate your null hypothesis with lower performers obtaining greater sales than higher performers. This will test the Alternative Hypothesis that the mean sales of high performing salespeople is greater than that of low performing salespeople.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a one-tailed Bayesian t-test</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ttestBF</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> df_sales, <span class="at">nullInterval =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">Inf</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bayes factor analysis
+--------------
+[1] Alt., r=0.707 0&lt;d&lt;Inf    : 0.1474422 ±0%
+[2] Alt., r=0.707 !(0&lt;d&lt;Inf) : 6.34199   ±0%
+
+Against denominator:
+  Null, mu1-mu2 = 0 
+---
+Bayes factor type: BFindepSample, JZS</code></pre>
+</div>
+</div>
+<p>We can see that, when our Alternative Hypothesis is that high performing salespeople have higher sales than low performing salespeople (the second hypothesis presented), the Bayes Factor <span class="math inline">\(BF_{10}\)</span> is just over 6, indicating the data moderately supports this hypothesis. The opposite hypothesis (that low performing salespeople have higher sales than high performing salespeople) has a correspondingly low Bayes Factor, indicating the data provides moderate evidence against this hypothesis.</p>
 </section>
 <section id="bayesian-test-for-non-zero-correlation" class="level3" data-number="12.3.2">
 <h3 data-number="12.3.2" class="anchored" data-anchor-id="bayesian-test-for-non-zero-correlation"><span class="header-section-number">12.3.2</span> Bayesian test for non-zero correlation</h3>
 <p>Next, let’s take a look at whether there is a non-zero correlation between sales and average customer rating. As before, we will take a random sample of 10 salespeople from our data set for this test, and assume this is the only data we have available.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 10 salespeople</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>sample_salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">10</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 10 salespeople</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>sample_salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">10</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First, we will run a Bayesian correlation test to assess the evidence for a non-zero correlation between sales and average customer rating. Our Null Hypothesis (<span class="math inline">\(H_0\)</span>) is that there is no correlation between sales and average customer rating, while our Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) is that there is a non-zero correlation between the two variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a Bayesian correlation test</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a Bayesian correlation test</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayes factor analysis
 --------------
@@ -860,28 +877,28 @@ Bayes factor type: BFcorrelation, Jeffreys-beta*</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian correlation test and extract posterior samples over 10000 simulations</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>bf_corr_result <span class="ot">&lt;-</span> <span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>posterior_corr_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_corr_result, <span class="at">iterations =</span> <span class="dv">10000</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>posterior_corr_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">correlation =</span> <span class="fu">as.vector</span>(posterior_corr_samples[ ,<span class="st">"rho"</span>])</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create a halfeye plot of posterior distribution of correlation coefficient</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_corr_df, <span class="fu">aes</span>(<span class="at">x =</span> correlation)) <span class="sc">+</span></span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"pink"</span>,</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Correlation Coefficient"</span>,</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian correlation test and extract posterior samples over 10000 simulations</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>bf_corr_result <span class="ot">&lt;-</span> <span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>posterior_corr_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_corr_result, <span class="at">iterations =</span> <span class="dv">10000</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>posterior_corr_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">correlation =</span> <span class="fu">as.vector</span>(posterior_corr_samples[ ,<span class="st">"rho"</span>])</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create a halfeye plot of posterior distribution of correlation coefficient</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_corr_df, <span class="fu">aes</span>(<span class="at">x =</span> correlation)) <span class="sc">+</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"pink"</span>,</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Correlation Coefficient"</span>,</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -894,7 +911,7 @@ Figure&nbsp;12.9: Posterior distribution of correlation coefficient between sale
 </div>
 <p>And, like before, we can view summary statistics and credible intervals for the posterior distribution of the correlation coefficient.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe_posterior</span>(posterior_corr_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe_posterior</span>(posterior_corr_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Summary of Posterior Distribution
 
@@ -910,21 +927,21 @@ zeta      |   0.72 | [0.17, 1.31] | 100% | [-0.10, 0.10] |        0%</code></pre
 <h3 data-number="12.3.3" class="anchored" data-anchor-id="bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups"><span class="header-section-number">12.3.3</span> Bayesian chi-square test (Test for difference in frequency distribution between groups)</h3>
 <p>Finally, let’s look at categorical data. We will test if there is a difference in likelihood of promotion between the performance categories of salespeople. Again we will take a random sample of 20 salespeople in each performance category (1 to 4) from our data set making a total sample of 80 salespeople, and we assume this is the only data we have available.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people from each performance rating group</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>sample_data <span class="ot">=</span> <span class="fu">data.frame</span>()</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  perf_group <span class="ot">&lt;-</span> salespeople[salespeople<span class="sc">$</span>performance <span class="sc">==</span> i, ]</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  sample_group <span class="ot">&lt;-</span> perf_group[<span class="fu">sample</span>(<span class="fu">nrow</span>(perf_group), <span class="dv">20</span>), ]</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  sample_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sample_data, sample_group)</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people from each performance rating group</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>sample_data <span class="ot">=</span> <span class="fu">data.frame</span>()</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  perf_group <span class="ot">&lt;-</span> salespeople[salespeople<span class="sc">$</span>performance <span class="sc">==</span> i, ]</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  sample_group <span class="ot">&lt;-</span> perf_group[<span class="fu">sample</span>(<span class="fu">nrow</span>(perf_group), <span class="dv">20</span>), ]</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  sample_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sample_data, sample_group)</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In the Bayesian framework, we test whether promotion likelihood is independent from performance category using a contingency table Bayes Factor. First we create our contingency table of promoted vs performance for our sample of 40 salespeople.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table of promoted vs performance</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>(contingency <span class="ot">&lt;-</span> <span class="fu">table</span>(sample_data<span class="sc">$</span>promoted, sample_data<span class="sc">$</span>performance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table of promoted vs performance</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>(contingency <span class="ot">&lt;-</span> <span class="fu">table</span>(sample_data<span class="sc">$</span>promoted, sample_data<span class="sc">$</span>performance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   
      1  2  3  4
@@ -941,8 +958,8 @@ zeta      |   0.72 | [0.17, 1.31] | 100% | [-0.10, 0.10] |        0%</code></pre
 </ol>
 <p>The choice you make for your sampling method requires a knowledge of the processes behind your data. In our case, we will use <code>jointMulti</code>, as we have a fixed total number of salespeople in our data, but we assume that promotion rate and performance ratings are not strictly controlled and can vary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Bayesian Contingency Table Test</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Bayesian Contingency Table Test</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayes factor analysis
 --------------
@@ -959,41 +976,41 @@ Bayes factor type: BFcontingencyTable, joint multinomial</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-chi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian contingency table test and extract posterior samples over 10000 simulations</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>bf_contingency_result <span class="ot">&lt;-</span> <span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>posterior_contingency_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_contingency_result, <span class="at">iterations =</span> <span class="dv">10000</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate relative promotion rates within each performance category</span></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi["</span>, i, <span class="st">"]"</span>)] <span class="ot">&lt;-</span> posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[2,"</span>, i, <span class="st">"]"</span>)] <span class="sc">/</span> </span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    (posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[1,"</span>, i, <span class="st">"]"</span>)] <span class="sc">+</span> posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[2,"</span>, i, <span class="st">"]"</span>)])</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create data frame for halfeye plot</span></span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>posterior_contingency_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">promotion_rate =</span> <span class="fu">c</span>(<span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[1]"</span>]),</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[2]"</span>]),</span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[3]"</span>]),</span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[4]"</span>])),</span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">performance_rating =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">each =</span> <span class="fu">nrow</span>(posterior_contingency_samples))</span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a><span class="co"># plot posterior distributions of promotion rates using halfeye plot</span></span>
-<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_contingency_df, <span class="fu">aes</span>(<span class="at">x =</span> promotion_rate, <span class="at">y =</span> <span class="fu">as.factor</span>(performance_rating))) <span class="sc">+</span></span>
-<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
-<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"lightblue"</span>,</span>
-<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
-<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Promotion Rate"</span>,</span>
-<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Performance Rating"</span>) <span class="sc">+</span></span>
-<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian contingency table test and extract posterior samples over 10000 simulations</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>bf_contingency_result <span class="ot">&lt;-</span> <span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>posterior_contingency_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_contingency_result, <span class="at">iterations =</span> <span class="dv">10000</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate relative promotion rates within each performance category</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi["</span>, i, <span class="st">"]"</span>)] <span class="ot">&lt;-</span> posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[2,"</span>, i, <span class="st">"]"</span>)] <span class="sc">/</span> </span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    (posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[1,"</span>, i, <span class="st">"]"</span>)] <span class="sc">+</span> posterior_contingency_samples[, <span class="fu">paste0</span>(<span class="st">"pi[2,"</span>, i, <span class="st">"]"</span>)])</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create data frame for halfeye plot</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>posterior_contingency_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">promotion_rate =</span> <span class="fu">c</span>(<span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[1]"</span>]),</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[2]"</span>]),</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[3]"</span>]),</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">as.vector</span>(posterior_contingency_samples[, <span class="st">"pi[4]"</span>])),</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">performance_rating =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">each =</span> <span class="fu">nrow</span>(posterior_contingency_samples))</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a><span class="co"># plot posterior distributions of promotion rates using halfeye plot</span></span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(posterior_contingency_df, <span class="fu">aes</span>(<span class="at">x =</span> promotion_rate, <span class="at">y =</span> <span class="fu">as.factor</span>(performance_rating))) <span class="sc">+</span></span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Promotion Rate"</span>,</span>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Performance Rating"</span>) <span class="sc">+</span></span>
+<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1026,18 +1043,18 @@ Figure&nbsp;12.10: Posterior distributions of promotion rates for each performan
 </section>
 <section id="data-exercises" class="level3" data-number="12.4.2">
 <h3 data-number="12.4.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">12.4.2</span> Data exercises</h3>
-<p>Load the <code>ugtests</code> data set which we used in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a> via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Remind yourself of what this data set contains.</p>
+<p>Load the <code>ugtests</code> data set which we used in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a> via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Remind yourself of what this data set contains.</p>
 <p>For questions 1 to 5, focus on the Year 1 examination scores. Take a random sample of 20 students from the data set to use as your first set of observed data, and remove these from the full data. Then take another random sample of 30 students from the remaining data set to use as your second set of observed data for Bayesian updating.</p>
 <ol type="1">
-<li><p>The academic administrator informs you a score of 40 represents a Pass. It is their belief that ‘somewhere around 7 in 10’ students will pass the Year 1 examination. Simulate an informative prior distribution for the pass rate based on this belief. Plot the prior distribution.</p></li>
-<li><p>Using your first set of observed data, simulate the likelihood function for the pass rate.</p></li>
-<li><p>Use your work from questions 1 and 2 to calculate the posterior distribution for the Year 1 pass rate. Plot the prior, likelihood and posterior together on a standardized plot to compare them.</p></li>
-<li><p>Using the posterior distribution from question 3 as your new prior, and using your second set of observed data, calculate the updated posterior distribution for the Year 1 pass rate. Plot the updated posterior distribution.</p></li>
+<li><p>The academic administrator informs you that a minimum score of 40 represents a Pass. It is their belief that ‘somewhere around 7 in 10’ students will pass the Year 1 examination. Simulate an informative prior distribution for the pass rate based on this belief. Plot the prior distribution.</p></li>
+<li><p>Using your first set of observed data, simulate the likelihood function for the pass rate given the data in your first sample.</p></li>
+<li><p>Use your work from questions 1 and 2 to calculate the posterior distribution for the Year 1 pass rate given the data in your first sample. Plot the prior, likelihood and posterior together on a standardized plot to compare them.</p></li>
+<li><p>Using the posterior distribution from question 3 as your new prior, and using your second sample of observed data, calculate the updated posterior distribution for the Year 1 pass rate. Plot the updated posterior distribution.</p></li>
 <li><p>Calculate summary statistics (mean, median, mode) and a 95% credible interval for the updated posterior distribution from Question 4.</p></li>
 </ol>
 <p>For questions 6 to 10, take a random sample of 50 rows from the full <code>ugtests</code> data set and treat this as your observed data.</p>
 <ol start="6" type="1">
-<li><p>Test the hypothesis that there is a difference in Year 2 score between top quartile students and bottom quartile students from Year 1. Use a Bayesian t-test to perform this test. Report and interpret the Bayes Factor.</p></li>
+<li><p>Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers. Use a Bayesian t-test to perform this test. Report and interpret the Bayes Factor.</p></li>
 <li><p>Visualize the posterior distribution of the difference in means between the two groups using a halfeye plot.</p></li>
 <li><p>Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in scores between the two groups.</p></li>
 <li><p>Test the hypothesis that there is a non-zero correlation between Year 2 and Final Year examination scores using a Bayesian correlation test. Report and interpret the Bayes Factor.</p></li>
@@ -1065,9 +1082,10 @@ McElreath, Richard. 2020. <em>Statistical Rethinking: A Bayesian Course with Exa
 <hr>
 <ol>
 <li id="fn1"><p>Note that this is a continuous PDF and therefore does not plot the specific probabilities for <span class="math inline">\(\theta\)</span>. One way to interpret the density function is that if <span class="math inline">\(\theta_1\)</span> has a density of 1 and <span class="math inline">\(\theta_2\)</span> has a density of 2, then <span class="math inline">\(\theta_2\)</span> is twice as likely to occur compared to <span class="math inline">\(\theta_1\)</span>. If we wished, we could normalize this simulated density to provide specific probabilities by dividing each our 1000 values by their total sum, but this would make no difference to the output of Bayes’ Theorem, If you are unconvinced by this, try rerunning everything with a normalized PDF as a prior.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>In fact, because the Beta distribution is a <em>conjugate prior</em> for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations. The posterior distribution will also be a Beta distribution with updated shape parameters <span class="math inline">\(\alpha + x\)</span> and <span class="math inline">\(\beta + n - x\)</span> where <span class="math inline">\(x\)</span> is the number of success and <span class="math inline">\(n-x\)</span> is the number fo failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In fact, because the Beta distribution is a <em>conjugate prior</em> for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations. The posterior distribution will also be a Beta distribution with updated shape parameters <span class="math inline">\(\alpha + x\)</span> and <span class="math inline">\(\beta + n - x\)</span> where <span class="math inline">\(x\)</span> is the number of success and <span class="math inline">\(n-x\)</span> is the number of failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Named after the mathematician Stanislaw Ulam, who was one of the inventors of the Monte Carlo method.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>http://peopleanalytics-regression-book.org/data/ugtests.csv<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The output here is agnostic to direction, and will always return the probability of the most likely direction, akin to a one-tailed test without a specified direction.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>http://peopleanalytics-regression-book.org/data/ugtests.csv<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

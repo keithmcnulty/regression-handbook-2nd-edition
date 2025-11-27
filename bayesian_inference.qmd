@@ -10,7 +10,8 @@ The critical theorem from probability theory that underpins this approach is *Ba
 
 Bayesian inference has become increasingly popular in recent years.  This was not always so, because the techniques used in Bayesian inference require simulation of data, which can require substantially more computational resources compared to classical approaches. Only in the past two decades has widespread computational power become available that has made it more feasible to apply Bayesian methods to large datasets.  As a result, Bayesian approaches are now widely used in fields such as machine learning, epidemiology, ecology and social sciences, to name but a small few.  All of the methods that we have learned so far using classical statistics have Bayesian counterparts.  
 
-In People Analytics, Bayesian methods can be particularly useful when dealing with small sample sizes, when incorporating prior knowledge about employee behavior or organizational context, or when making probabilistic predictions about future outcomes.  It is fair to say that not all individuals working in this field will need to have a knowledge of Bayesian inference, as classical approaches will often yield similar conclusions especially when sample sizes are larger and prior beliefs are limited. However, having a basic grasp of Bayesian methods can provide an analyst with a greater depth of understanding on how the processes they are trying to model play out statistically.  For this reason, readers should regard this and subsequent chapters as optional, advanced material.  
+In People Analytics, Bayesian methods can be particularly useful when dealing with small sample sizes, when incorporating prior knowledge about employee behavior or organizational context, or when making probabilistic predictions about future outcomes.  It is fair to say that not all individuals working in this field will need to have a knowledge of Bayesian inference, as classical approaches will often yield similar conclusions especially when sample sizes are larger and prior beliefs are limited. However, having a basic grasp of Bayesian methods can provide an analyst with a greater depth of understanding on how the processes they are trying to model play out statistically.  For this reason, readers should regard this and subsequent chapters as optional, advanced material.
+
 In this chapter we will explore the fundamental mechanics of how Bayesian inference works via Bayes' Theorem, we will introduce how hypothesis testing can be done within the Bayesian framework, and we will outline some important concepts that we can take forward into subsequent chapters.  For a more in depth treatment of Bayesian inference, @gelman is highly recommended for theory and examples while @mcelreath is an excellent practical resource which includes R code.
 
 ## Bayes' Theorem and the mechanics of Bayesian Inference
@@ -42,7 +43,7 @@ You have been asked to help a group of learning experts at a technology company 
 
 In Bayesian inference, we start by defining our *prior* belief about the parameter of interest before observing any data.  In this case, our parameter of interest is the pass rate for the certification exam among engineers who complete the training program.  Since our parameter involves a specified proportion of passes and fails in the certification exam, we can use a *Beta distribution* to represent our prior belief.  A Beta distribution is a continuous probability distribution defined on the interval [0, 1], which makes it suitable for modeling proportions and probabilities.
 
-If we call our pass rate parameter $\theta$, where $0 \leq \theta \leq 1$, we can define our prior belief about $\theta$ using a Beta distribution with shape parameters $\alpha$ and $\beta$, where $\alpha$ and $\beta$ represent the number of passes and fails respectively.  Therefore or prior belief can be expressed as the following distribution:
+If we call our pass rate parameter $\theta$, where $0 \leq \theta \leq 1$, we can define our prior belief about $\theta$ using a Beta distribution with shape parameters $\alpha$ and $\beta$, where $\alpha$ and $\beta$ represent the number of passes and fails respectively.  Therefore our prior belief can be expressed as the following distribution:
 
 $$
 \theta \sim \text{Beta}(\alpha, \beta)
@@ -191,7 +192,7 @@ ggplot(posterior_df, aes(x = theta, y = density)) +
 Posterior distribution of pass rate ($\theta$) after observing the data.
 :::
 
-From the posterior distribution plot, we can see how our beliefs about the pass rate $\theta$ have been updated after observing the data, and we now expect our pass rate to most likely be lower than the prior distribution might suggest.  The posterior distribution reflects both our prior beliefs and the evidence provided by the observed data.  We can use this posterior distribution to make direct probabilistic statements about the pass rate.  If we plot our prior, likelihood and posterior together on a scaled plot so that probabilities are standardized and comparable, we can see that the most likely (modal) posterior outcome (the peak of the distribution) is a pass rate of `r round(posterior_df$theta[which.max(posterior_distribution)], 2)`, which is a compromise between our prior belief (`r round(prior_df$theta[which.max(prior_distribution)], 2)`) and what the data tells us (`r round(likelihood_df$theta[which.max(likelihood_function)], 2)`), as seen in @fig-pass-all^[In fact, because the Beta distribution is a *conjugate prior* for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations.  The posterior distribution will also be a Beta distribution with updated shape parameters $\alpha + x$ and $\beta + n - x$ where $x$ is the number of success and $n-x$ is the number fo failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).].
+From the posterior distribution plot, we can see how our beliefs about the pass rate $\theta$ have been updated after observing the data, and we now expect our pass rate to most likely be lower than the prior distribution might suggest.  The posterior distribution reflects both our prior beliefs and the evidence provided by the observed data.  We can use this posterior distribution to make direct probabilistic statements about the pass rate.  If we plot our prior, likelihood and posterior together on a scaled plot so that probabilities are standardized and comparable, we can see that the most likely (modal) posterior outcome (the peak of the distribution) is a pass rate of `r round(posterior_df$theta[which.max(posterior_distribution)], 2)`, which is a compromise between our prior belief (`r round(prior_df$theta[which.max(prior_distribution)], 2)`) and what the data tells us (`r round(likelihood_df$theta[which.max(likelihood_function)], 2)`), as seen in @fig-pass-all^[In fact, because the Beta distribution is a *conjugate prior* for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations.  The posterior distribution will also be a Beta distribution with updated shape parameters $\alpha + x$ and $\beta + n - x$ where $x$ is the number of success and $n-x$ is the number of failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).].
 
 ::: {#fig-pass-all}
 ```{r}
@@ -433,7 +434,7 @@ library(bayestestR)
 (posterior_summary <- describe_posterior(-posterior_samples))
 ```
 
-The output shows the posterior median sales difference (row `beta (1 - 4)`) between high and low performing salespeople is approximately `r round(posterior_summary$Median[2], 2)`, with a 95% credible interval provided.  This allows us to say that there is a 95% probability that the difference in sales between low and high performing sales people is within this range given the data that we observe.   Using the `pd` column, we can explicitly say that there is a `r round(posterior_summary$pd[2], 2)` probability that the sales difference is greater than zero given the data we observe.  We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis.  We see that there is no overlap between the 95% credible interval the ROPE.
+The output shows the posterior median sales difference (row `beta (1 - 4)`) between high and low performing salespeople is approximately `r round(posterior_summary$Median[2], 2)`, with a 95% credible interval provided.  This allows us to say that there is a 95% probability that the difference in sales between low and high performing sales people is within this range given the data that we observe.   The `pd` column provides a 'probability of direction'.  Using this column, we can explicitly say that there is a `r round(posterior_summary$pd[2], 2)` probability that the sales difference is greater than zero given the data we observe^[The output here is agnostic to direction, and will always return the probability of the most likely direction, akin to a one-tailed test without a specified direction.].  We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis.  We see that there is no overlap between the 95% credible interval the ROPE.
 
 One visual way of representing both the posterior distribution and its summary statistics is to use a *halfeye plot* (via the `ggdist` package), as in @fig-bayes-ttest-halfeye.  A halfeye plot combines a density plot of the posterior distribution with a point and interval summary of the distribution.  By default, the point estimate is the median (this can be adjusted to mean and mode using he `point_interval` argument), and the intervals are the 66% credible interval and the 95% credible interval (these can be adjusted using the `.width` argument).  
 
@@ -455,6 +456,15 @@ ggplot(posterior_df, aes(x = sales_diff)) +
 
 Halfeye plot of posterior distribution of sales difference between high and low performing salespeople.
 :::
+
+To adapt the `ttestBF()` function to do a one-tailed test, you can use the `nullInterval` argument to specify the direction of the test.  For example, if you want to test if high performing salespeople have higher sales than low performing salespeople (and noting that the default of the test is to test performance group 1 minus performance group 4), you can set `nullInterval = c(0, Inf)` to associate your null hypothesis with lower performers obtaining greater sales than higher performers.  This will test the Alternative Hypothesis that the mean sales of high performing salespeople is greater than that of low performing salespeople.
+
+```{r}
+# run a one-tailed Bayesian t-test
+ttestBF(formula = sales ~ performance, data = df_sales, nullInterval = c(0, Inf))
+```
+
+We can see that, when our Alternative Hypothesis is that high performing salespeople have higher sales than low performing salespeople (the second hypothesis presented), the Bayes Factor $BF_{10}$ is just over 6, indicating the data moderately supports this hypothesis.  The opposite hypothesis (that low performing salespeople have higher sales than high performing salespeople) has a correspondingly low Bayes Factor, indicating the data provides moderate evidence against this hypothesis.
 
 ### Bayesian test for non-zero correlation
 
@@ -618,19 +628,19 @@ Load the `ugtests` data set which we used in @sec-linear-reg-ols via the `people
 
 For questions 1 to 5, focus on the Year 1 examination scores.  Take a random sample of 20 students from the data set to use as your first set of observed data, and remove these from the full data.  Then take another random sample of 30 students from the remaining data set to use as your second set of observed data for Bayesian updating.  
 
-1.  The academic administrator informs you a score of 40 represents a Pass.  It is their belief that 'somewhere around 7 in 10' students will pass the Year 1 examination.  Simulate an informative prior distribution for the pass rate based on this belief.  Plot the prior distribution.
+1.  The academic administrator informs you that a minimum score of 40 represents a Pass.  It is their belief that 'somewhere around 7 in 10' students will pass the Year 1 examination.  Simulate an informative prior distribution for the pass rate based on this belief.  Plot the prior distribution.
 
-2.  Using your first set of observed data, simulate the likelihood function for the pass rate.  
+2.  Using your first set of observed data, simulate the likelihood function for the pass rate given the data in your first sample.  
 
-3.  Use your work from questions 1 and 2 to calculate the posterior distribution for the Year 1 pass rate.  Plot the prior, likelihood and posterior together on a standardized plot to compare them.
+3.  Use your work from questions 1 and 2 to calculate the posterior distribution for the Year 1 pass rate given the data in your first sample.  Plot the prior, likelihood and posterior together on a standardized plot to compare them.
 
-4.  Using the posterior distribution from question 3 as your new prior, and using your second set of observed data, calculate the updated posterior distribution for the Year 1 pass rate.  Plot the updated posterior distribution.
+4.  Using the posterior distribution from question 3 as your new prior, and using your second sample of observed data, calculate the updated posterior distribution for the Year 1 pass rate.  Plot the updated posterior distribution.
 
 5.  Calculate summary statistics (mean, median, mode) and a 95% credible interval for the updated posterior distribution from Question 4.
 
 For questions 6 to 10, take a random sample of 50 rows from the full `ugtests` data set and treat this as your observed data.  
 
-6.  Test the hypothesis that there is a difference in Year 2 score between top quartile students and bottom quartile students from Year 1.  Use a Bayesian t-test to perform this test.  Report and interpret the Bayes Factor.  
+6.  Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers.  Use a Bayesian t-test to perform this test.  Report and interpret the Bayes Factor.  
 
 7.  Visualize the posterior distribution of the difference in means between the two groups using a halfeye plot.  
 
