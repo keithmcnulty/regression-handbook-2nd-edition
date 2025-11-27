@@ -194,7 +194,7 @@ As we outlined in @sec-theory-modeling, when we build a model we are using a set
 When we describe variables as random, we are assuming that they take a form which is *independent and identically distributed*.  Using our `salespeople` data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set.  In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book.  However, it is good to recognize that there are scenarios where this assumption cannot be made.  For example, if the salespeople worked together in serving the same customers on the same products, and each individual's sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed.  In this case, we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.      
 
 
-Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  @fig-sales-sample shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` data set and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) lead to a more normal distribution curve and larger sample sizes (across the columns) lead to a 'spikier' distribution with a smaller standard deviation.
+Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  @fig-sales-sample shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` data set and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) lead to a more normal frequency distribution curve and larger sample sizes (across the columns) lead to a 'spikier' frequency distribution with a smaller standard deviation.
 
 ::: {#fig-sales-sample}
 ```{r}
@@ -261,7 +261,7 @@ Histogram and density of mean `sales` from the `salespeople` data set based on s
 ### Standard errors, the $t$-distribution and confidence intervals
 
 
-One consequence of the observations in @fig-sales-sample is that the summary statistics calculated from larger sample sizes fall into distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
+One consequence of the observations in @fig-sales-sample is that the summary statistics calculated from larger sample sizes fall into frequency distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
 
 $$
 SE = \frac{\sigma}{\sqrt{n}}
@@ -291,10 +291,9 @@ We can calculate the mean of the sample and the standard error of the mean.
 ```
 
 
-Because the normal distribution is a frequency (or probability) distribution, we can interpret the standard error as a fundamental unit of 'sensitivity' around the sample mean.  For greater multiples of standard errors around the sample mean, we can have greater certainty that the range contains the true population mean. 
+Because the normal distribution is a frequency distribution, we can interpret the standard error as a fundamental unit of 'sensitivity' around the sample mean.  If we take ranges of values associated with greater multiples of standard errors around the sample mean, we can be confident that, over repeated samples, these ranges will contain the population mean with greater and greater frequency.  For example, if we take a range of plus or minus one standard error around the sample mean, we can be confident that over repeated samples, this range will contain the true population mean approximately 68% of the time.  
 
-
-To calculate how many standard errors we would need around the sample mean to have a 95% probability of including the true population mean, we need to use the $t$-distribution.  The $t$-distribution is essentially an approximation of the normal distribution acknowledging that we only have a sample estimate of the true population standard deviation in how we calculate the standard error.  In this case where we are dealing with a single sample mean, we use the $t$-distribution with $n-1$ degrees of freedom. We can use the `qt()` function in R to find the standard error multiple associated with the level of certainty we need.  In this case, we are looking for our true population mean to be outside the top 2.5% or bottom 2.5% of the distribution^[As sample sizes increase and sample statistics get very close to population statistics, whether we use a $t$-distribution or a $z$-distribution (normal distribution) for determining confidence intervals or p-values becomes less important as they become almost identical on large samples.  The output of some later models will refer to $t$-statistics and others to $z$-statistics, but the difference is only likely to matter in small samples of less than 50 or so observations.  In this chapter we will use the $t$-distribution as it is a better choice for all sample sizes.].
+To calculate how many standard errors we would need around our sample mean to have 95% frequency of including the population mean, we need to use the $t$-distribution.  The $t$-distribution is essentially an approximation of the normal distribution acknowledging that we only have a sample estimate of the true population standard deviation in how we calculate the standard error.  In this case where we are dealing with a single sample mean, we use the $t$-distribution with $n-1$ degrees of freedom. We can use the `qt()` function in R to find the standard error multiple associated with the range of frequency we need.  In this case, we are looking for our true population mean to be outside the top 2.5% or bottom 2.5% of the distribution^[As sample sizes increase and sample statistics get very close to population statistics, whether we use a $t$-distribution or a $z$-distribution (normal distribution) for determining confidence intervals or p-values becomes less important as they become almost identical on large samples.  The output of some later models will refer to $t$-statistics and others to $z$-statistics, but the difference is only likely to matter in small samples of less than 50 or so observations.  In this chapter we will use the $t$-distribution as it is a better choice for all sample sizes.].
 
 ```{r}
 # get se multiple for 0.975
@@ -302,7 +301,7 @@ To calculate how many standard errors we would need around the sample mean to ha
 ```
 
 
-We see that approximately `{r} round(t, 2)` standard errors on either side of our sample mean will give us 95% confidence that our range contains the true population mean.  This is called the *95% confidence interval*^[Often we can use a rough estimate for larger samples that the 95% confidence interval is 2 standard errors either side of the sample mean.].
+We see that taking a range associated with approximately `{r} round(t, 2)` standard errors on either side of our sample mean will ensure that our range will contain the population mean 95% of the time.  This is called the *95% confidence interval*^[Note that our 'confidence' is based on the frequency with which our process, when done with repeated random samplng, will result in what we want.  It is not based on a direct measurement of the likelihood that our interval will contain the population mean.  This is why this statistical philosophy is often labelled as 'frequentist'.  Later, in @sec-bayes-intro, we will introduce an alternative philosopy which does allow us to make precise statements about the likelihood of our interval containing the population mean.].  Often practitioners will use a rough estimate for larger samples that the 95% confidence interval is 2 standard errors either side of the sample mean.
 
 ```{r}
 # 95% confidence interval lower and upper bounds
@@ -315,13 +314,11 @@ cat(paste0('[', lower_bound, ', ', upper_bound, ']'))
 
 ## Hypothesis testing {#sec-hyp-tests}
 
-
-
 Observations about the distribution of statistics on samples of random variables allow us to construct tests for hypotheses of difference or similarity.  Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not.  Before we go through some technical examples of hypothesis testing, let's overview the logic and intuition for how hypothesis testing works.
 
-The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of difference in a population based on the properties of a sample.  Consistent with a high burden of proof, we start from the hypothesis that there is no difference, called the *null hypothesis*.  We only reject the null hypothesis if the statistical properties of the sample data render it very unlikely, in which case we confirm the *alternative hypothesis* that a statistical difference does exist in the population.  
+The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of difference in a population based on the properties of a sample.  Consistent with a high burden of proof, we start from the hypothesis that there is no difference, called the *null hypothesis*.  We only reject the null hypothesis if the statistical properties of the sample data render it very unlikely to have occurred if the null hypothesis were true for the population, in which case we can consider the *alternative hypothesis* that a statistical difference does exist in the population.  
 
-Most hypothesis tests can return a p-value, which is the maximum probability of finding the sample results (or results that are more extreme or unusual than the sample results) when the null hypothesis is true for the population. The analyst must decide on the level of p-value needed to reject the null hypothesis. This threshold is referred to as the significance level $\alpha$ (alpha). A common standard is to set $\alpha$ at 0.05.  That is, we reject the null hypothesis if the p-value that we find for our sample results is less than 0.05. If we reject the null hypothesis at $\alpha = 0.05$, this means that the results we observe in the sample are so extreme or unusual that they would only occur by chance at most 1 in 20 times if the null hypothesis were true. An alpha of 0.05 is not the only standard of certainty used in research and practice, and in some fields of study smaller alphas are the norm, particularly if erroneous conclusions might have very serious consequences.
+Most hypothesis tests can return a p-value, which is the maximum frequency of occurrence of the sample results (or results that are more extreme or unusual than the sample results) when the null hypothesis is true for the population. The analyst must decide on the level of p-value needed to reject the null hypothesis. This threshold is referred to as the significance level $\alpha$ (alpha). A common standard is to set $\alpha$ at 0.05.  That is, we reject the null hypothesis if the p-value that we find for our sample results is less than 0.05. If we reject the null hypothesis at $\alpha = 0.05$, this means that the results we observe in the sample are so extreme or unusual that they would only occur in repeated random sampling at most 1 in 20 times if the null hypothesis were true. An alpha of 0.05 is not the only standard used in research and practice, and in some fields of study smaller alphas are the norm, particularly if erroneous conclusions might have very serious consequences.
 
 Three of the most common types of hypothesis tests are^[We go through these three examples both because they are relatively common and to illustrate the details of the logic behind hypothesis testing.  By understanding how hypothesis tests work, this will allow the reader to grasp the meaning of other such tests like the F-test or the Wald test, which we will refer to in later chapters of this book]:
 
@@ -329,7 +326,7 @@ Three of the most common types of hypothesis tests are^[We go through these thre
 2. Testing for a non-zero correlation between two variables
 3. Testing for a difference in frequency distributions between different categories  
 
-We will go through an example of each of these.  In each case, you will see a three-step process.  First, we calculate a test statistic.  Second, we determine an expected distribution for that test statistic.  Finally, we determine where our calculated statistic falls in that distribution in order to assess the likelihood of our sample occurring if the null hypothesis is true.  During these examples, we will go through all the logic and calculation steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R.  Readers don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
+We will go through an example of each of these.  In each case, you will see a three-step process.  First, we calculate a test statistic.  Second, we determine an expected frequency distribution for that test statistic.  Finally, we determine where our calculated statistic falls in that distribution in order to assess the frequency of our sample occurring if the null hypothesis is true.  During these examples, we will go through all the logic and calculation steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R.  Readers don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
 
 ### Testing for a difference in means (Welch's $t$-test) {#sec-means-sig}
 
@@ -393,7 +390,7 @@ t <- qt(p = 0.975, df = 100.98)
 (0 <= upper_bound) & (0 >= lower_bound)
 ```
 
-Since this has returned `FALSE`, we conclude that a mean difference of zero is outside the 95% confidence interval of our sample mean difference, and so we cannot have 95% certainty that the difference in population means is zero. We reject the null hypothesis that the mean sales of both performance levels are the same.
+Since this has returned `FALSE`, we conclude that a mean difference of zero is outside the 95% confidence interval of our sample mean difference. We therefore reject the null hypothesis that the mean sales of both performance levels are the same.
 
 Looking at this graphically, we are assuming a $t$-distribution of the mean difference, and we are determining where zero sits in that distribution, as in @fig-norm-dist.
 
@@ -413,7 +410,7 @@ ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
 $t$-distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red dashed lines) and a zero difference (blue dot-dash line)
 :::
 
-The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 probability for the true population mean.  So we can see that the position of the blue dot-dashed line can correspond to a *maximum probability* that the population mean difference is zero.  This is the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two-tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  *One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically 'less than zero' or 'greater than zero'&zwj;.  In the `t.test()` function in R, you can specify this in the arguments.].
+The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 frequency for the true population value under repeated random sampling.  So we can see that the position of the blue dot-dashed line can correspond to a *maximum frequency* that the population mean difference is zero.  This is the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two-tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  *One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically 'less than zero' or 'greater than zero'&zwj;.  In the `t.test()` function in R, you can specify this in the arguments.].
 
 The p-value can be derived by calculating the standard error multiple associated with zero in the $t$-distribution (called the *$t$-statistic* or *$t$-value*), by applying the conversion function `pt()` to obtain the upper tail probability and then multiplying by 2 to get the probability associated with both tails of the distribution.    
 
@@ -432,11 +429,11 @@ Nowadays, it is never necessary to do these manual calculations ourselves becaus
 t.test(perf4$sales, perf1$sales)
 ```
 
-Because our p-value is less than our alpha of 0.05, we reject the null hypothesis in favor of the alternative hypothesis. The standard $\alpha = 0.05$ is associated with the term *statistically significant*.  Therefore we could say here that the two performance groups have a statistically significant difference in mean sales.  
+Because our p-value is less than our alpha of 0.05, we reject the null hypothesis. The standard $\alpha = 0.05$ is associated with the term *statistically significant*.  Therefore we could say here that there is statistically significant evidence of a difference in mean sales.  
 
 In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty.  While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example, some medical fields).  Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with 'indications' from the data.  In many statistical software packages, including those that we will see in this book, tests that meet an $\alpha = 0.1$ standard are usually marked with period(`.`), those that meet $\alpha = 0.05$ with an asterisk(`*`), $\alpha = 0.01$ a double asterisk(`**`) and $\alpha = 0.001$ a triple asterisk(`***`).
 
-Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards---a process known as 'p-hacking'---has been of increasing concern recently.  See @sec-power-tests for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
+Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards---a process known as 'p-hacking'---has been of increasing concern recently.  See @sec-power-tests for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing, and see @sec-bayes-intro for an alternative statistical philosophy that avoids some of the pitfalls of p-values.  
 
 ### Testing for a non-zero correlation between two variables ($t$-test for correlation) {#sec-t-test-cor}
 
@@ -468,7 +465,7 @@ Again, there is a useful function in R to cut out the need for all our manual ca
 cor.test(salespeople$sales, salespeople$customer_rate)
 ```
 
-This confirms our manual calculations, and we see the null hypothesis has been rejected and we can conclude that there is a significant correlation between sales and customer rating.
+This confirms our manual calculations, and we see the null hypothesis has been rejected and we can conclude that there is statistically significant evidence of a correlation between sales and customer rating.
 
 ### Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)
 
@@ -511,7 +508,7 @@ notpromoted <- sum((expected_notpromoted - contingency[1, ])^2/
 (chi_sq_stat <- notpromoted + promoted)
 ```
 
-The $\chi^2$ statistic has an expected distribution that can be used to determine the p-value associated with this statistic.  As with the $t$-distribution, the $\chi^2$-distribution depends on the degrees of freedom.  This is calculated by subtracting one from the number of rows and from the number of columns in the contingency table and multiplying them together.  In this case we have 2 rows and 4 columns, which calculates to 3 degrees of freedom.  Armed with our $\chi^2$ statistic and our degrees of freedom, we can now calculate the p-value for the hypothesis test using the `pchisq()` function.  
+The $\chi^2$ statistic has an expected frequency distribution that can be used to determine the p-value associated with this statistic.  As with the $t$-distribution, the $\chi^2$-distribution depends on the degrees of freedom.  This is calculated by subtracting one from the number of rows and from the number of columns in the contingency table and multiplying them together.  In this case we have 2 rows and 4 columns, which calculates to 3 degrees of freedom.  Armed with our $\chi^2$ statistic and our degrees of freedom, we can now calculate the p-value for the hypothesis test using the `pchisq()` function.  
 
 ```{r}
 # calculate p-value from chi_squared stat
@@ -524,7 +521,7 @@ The `chisq.test()` function in R performs all the steps involved in a chi-square
 chisq.test(contingency)
 ```
 
-Again, we can reject the null hypothesis and confirm the alternative hypothesis that there is a difference in the distribution of promoted/not promoted individuals between the four performance categories.
+Again, we can reject the null hypothesis and say that there is statistically significant evidence of a difference in the distribution of promoted/not promoted individuals between the four performance categories.
 
 ## Foundational statistics in Python
 

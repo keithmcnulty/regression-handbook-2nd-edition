@@ -1,4 +1,4 @@
-# Bayesian Inference - A Modern Alternative to Classical Statistical Methods
+# Bayesian Inference - A Modern Alternative to Classical Statistical Methods {#sec-bayes-intro}
 
 All of the methods and approaches we have seen in this book so far are based on a philosophy that repeated sampling from a population will yield information about that population. For example, in @sec-found-stats, we discussed how to use sample data to estimate population parameters such as means and correlation coefficients, how to construct confidence intervals around those parameter estimates and how to test hypotheses about our population parameters.  In later chapters we learned how to do the same with model coefficients, allowing us to extract meaningful information from our models to help us with real-life problems.  
 
@@ -11,8 +11,7 @@ The critical theorem from probability theory that underpins this approach is *Ba
 Bayesian inference has become increasingly popular in recent years.  This was not always so, because the techniques used in Bayesian inference require simulation of data, which can require substantially more computational resources compared to classical approaches. Only in the past two decades has widespread computational power become available that has made it more feasible to apply Bayesian methods to large datasets.  As a result, Bayesian approaches are now widely used in fields such as machine learning, epidemiology, ecology and social sciences, to name but a small few.  All of the methods that we have learned so far using classical statistics have Bayesian counterparts.  
 
 In People Analytics, Bayesian methods can be particularly useful when dealing with small sample sizes, when incorporating prior knowledge about employee behavior or organizational context, or when making probabilistic predictions about future outcomes.  It is fair to say that not all individuals working in this field will need to have a knowledge of Bayesian inference, as classical approaches will often yield similar conclusions especially when sample sizes are larger and prior beliefs are limited. However, having a basic grasp of Bayesian methods can provide an analyst with a greater depth of understanding on how the processes they are trying to model play out statistically.  For this reason, readers should regard this and subsequent chapters as optional, advanced material.  
-
-In this chapter we will explore the fundamental mechanics of how Bayesian inference works via Bayes' Theorem, we will introduce how hypothesis testing can be done within the Bayesian framework, and we will introduce some important concepts that we can take forward into subsequent chapters.  
+In this chapter we will explore the fundamental mechanics of how Bayesian inference works via Bayes' Theorem, we will introduce how hypothesis testing can be done within the Bayesian framework, and we will outline some important concepts that we can take forward into subsequent chapters.  For a more in depth treatment of Bayesian inference, @gelman is highly recommended for theory and examples while @mcelreath is an excellent practical resource which includes R code.
 
 ## Bayes' Theorem and the mechanics of Bayesian Inference
 
@@ -224,7 +223,7 @@ Prior, Likelihood and Posterior probabilities of pass rate ($\theta$) plotted an
 
 ### Bayesian Updating
 
-One of the powerful features of Bayesian inference is the ability to continuously update our beliefs about a parameter as new data becomes available.  In our example, suppose that after some time, an additional 30 engineers complete the training program, and of those, 25 pass the certification exam while 5 fail.  We can use our current posterior distribution as the new prior distribution and incorporate this new data to update our beliefs about the pass rate $\theta$.  A common saying in Bayesian statistics is that *today's posterior is tomorrow's prior*.
+One of the powerful features of Bayesian inference is the ability to continuously update our beliefs about a parameter as new data becomes available.  In our example, suppose that after some time, an additional 30 engineers complete the training program, and of those, 25 pass the certification exam while 5 fail.  We can use our current posterior distribution as the new prior distribution and incorporate this new data to update our beliefs about the pass rate $\theta$.  A common saying in Bayesian statistics is that *today's posterior is tomorrow's prior* (@lindley).
 
 To perform this Bayesian updating, we can follow the same steps as before.  First, we will define our new prior distribution using the current posterior distribution.  Then, we will define the likelihood of the new observed data using a Binomial distribution.  Finally, we will calculate the new posterior distribution by combining the new prior and the new likelihood using Bayes' Theorem, as in @fig-post-update.
 

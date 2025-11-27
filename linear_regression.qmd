@@ -338,7 +338,7 @@ In the case of our `ugtests` data set, we can say the following:
 
 ### Coefficient confidence
 
-Intuitively, these coefficients appear too precise for comfort.  After all, we are attempting to estimate a relationship based on a limited set of data.  In particular, looking at the `Yr1` coefficient, it seems to be very close to zero, implying that there is a possibility that the Year 1 examination score has no impact on the final examination score.  Like in any statistical estimation, the coefficients calculated for our model have a margin of error.  Typically, in any such situation, we seek to know a 95% confidence interval to set a standard of certainty around the values we are interpreting.   
+Intuitively, these coefficients appear too precise for comfort.  After all, we are attempting to estimate a relationship based on a limited set of data.  In particular, looking at the `Yr1` coefficient, it seems to be very close to zero, implying that there is a possibility that the Year 1 examination score has no impact on the final examination score.  Like in any statistical estimation, the coefficients calculated for our model have a margin of error.  Typically, in any such situation, we seek to know a 95% confidence interval around the values we are interpreting.   
 The `summary()` function is a useful way to gather critical information in your model, including important statistics on your coefficients:
 
 ```{r}
