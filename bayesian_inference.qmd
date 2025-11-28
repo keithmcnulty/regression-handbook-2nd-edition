@@ -18,7 +18,7 @@ In this chapter we will explore the fundamental mechanics of how Bayesian infere
 
 Recall that in earlier chapters we adopted a frequentist approach to statistical inference, where we treated our data as random and our parameters as fixed but unknown.  In effect, this approach asks the question: *Given a fixed but unknown parameter (such as a population mean), what is the probability of observing the sample data that we have collected?*.  Using probability notation, if we call our parameter $\theta$ and our observed data $D$, we can express this question as $P(D \mid \theta)$, which is known as the *likelihood* of the data given the parameter.   
 
-In Bayesian inference, we reverse this question to ask: *Given the fixed data that we have observed, what are the possible values of the parameter we are interested in?*  That is, we are interested in $P(\theta \mid D)$, which we call the *posterior* probability of the parameter given the data.  Bayes' Theorem provides us with a way to calculate this posterior probability by combining our prior beliefs about the parameter with the likelihood of the observed data.  Bayes' Theorem is expressed mathematically as follows:
+In Bayesian inference, we reverse this question to ask: *Given the fixed data that we have observed, what is the probability that the parameter we are interested in has a certain value?*  That is, we are interested in $P(\theta \mid D)$, which we call the *posterior* probability of the parameter given the data.  Bayes' Theorem provides us with a way to calculate this posterior probability by combining our prior beliefs about the parameter with the likelihood of the observed data.  Bayes' Theorem is expressed mathematically as follows:
 
 $$P(\theta \mid D) = \frac{P(D \mid \theta) P(\theta)}{P(D)}$$
 
@@ -43,7 +43,7 @@ You have been asked to help a group of learning experts at a technology company 
 
 In Bayesian inference, we start by defining our *prior* belief about the parameter of interest before observing any data.  In this case, our parameter of interest is the pass rate for the certification exam among engineers who complete the training program.  Since our parameter involves a specified proportion of passes and fails in the certification exam, we can use a *Beta distribution* to represent our prior belief.  A Beta distribution is a continuous probability distribution defined on the interval [0, 1], which makes it suitable for modeling proportions and probabilities.
 
-If we call our pass rate parameter $\theta$, where $0 \leq \theta \leq 1$, we can define our prior belief about $\theta$ using a Beta distribution with shape parameters $\alpha$ and $\beta$, where $\alpha$ and $\beta$ represent the number of passes and fails respectively.  Therefore our prior belief can be expressed as the following distribution:
+If we call our pass rate parameter $\theta$, where $0 \leq \theta \leq 1$, we can define our prior belief about $\theta$ using a Beta distribution with shape parameters $\alpha$ and $\beta$, where $\alpha$ and $\beta$ represent the number of passes and fails respectively.  That is:
 
 $$
 \theta \sim \text{Beta}(\alpha, \beta)
@@ -75,7 +75,7 @@ ggplot(prior_df, aes(x = theta_values, y = prior_distribution)) +
 
 ```
 
-Non-informative Beta (1, 1) (uniform) prior on distribution of pass rate ($\theta$) before observing any data.
+Non-informative Beta(1, 1) (uniform) prior on the distribution of the pass rate ($\theta$) before observing any data.
 
 :::
 
@@ -97,10 +97,10 @@ set.seed(42)
 theta_values <- seq(0, 1, length.out = 1000)
 
 # simulate the prior distribution using a Beta distribution with alpha = 8 and beta = 2
-prior_distribution <- dbeta(theta_values, shape1 = 8, shape2 = 2)
+unnormalized_prior <- dbeta(theta_values, shape1 = 8, shape2 = 2)
 ```
 
-This has provided us with the probability density function (PDF) across our 1000 values of $\theta$^[Note that this is a continuous PDF and therefore does not plot the specific probabilities for $\theta$.  One way to interpret the density function is that if $\theta_1$ has a density of 1 and $\theta_2$ has a density of 2, then $\theta_2$ is twice as likely to occur compared to $\theta_1$.  If we wished, we could normalize this simulated density to provide specific probabilities by dividing each our 1000 values by their total sum, but this would make no difference to the output of Bayes' Theorem,  If you are unconvinced by this, try rerunning everything with a normalized PDF as a prior.].  Let's now plot our simulated prior distribution to visualize our initial beliefs about the pass rate before observing any data, as in @fig-pass-prior.
+This has provided us with the probability density function (PDF) values across our 1000 values of $\theta$.  Let's now plot our simulated prior distribution to visualize our initial beliefs about the pass rate before observing any data, as in @fig-pass-prior.
 
 ::: {#fig-pass-prior}
 
@@ -109,7 +109,7 @@ This has provided us with the probability density function (PDF) across our 1000
 library(ggplot2)
 
 # create a data frame for plotting
-prior_df <- data.frame(theta = theta_values, density = prior_distribution)
+prior_df <- data.frame(theta = theta_values, density = unnormalized_prior)
 
 # plot the prior distribution
 ggplot(prior_df, aes(x = theta, y = density)) +
@@ -125,6 +125,21 @@ Informative prior distribution of pass rate ($\theta$) before observing any data
 :::
 
 Comparing to the non-informative prior in @fig-pass-noninform, we can see that the area has shifted significantly to the right, indicating our prior belief that pass rates are likely to be high.
+
+Now, before we proceed, let's ensure we understand an important property about probability distributions and how we sample from them.  There are two main types of probability distributions:  
+
+1. **Probability Mass Functions (PMFs)**: These are used for discrete random variables, where the variable can only take on specific, distinct values.  The PMF gives the probability of the variable taking on each specific value.  In this case, the probabilities for all possible values must sum to 1.  The Binomial distribution that we saw in @sec-bin-log-reg is an example of a PMF.
+
+2. **Probability Density Functions (PDFs)**: These are used for continuous random variables, where the variable can take on any value within a range.  The PDF describes the relative likelihood of the variable taking on a specific value.  However, because there are infinitely many possible values in a continuous range, the probability of the variable taking on any specific value is technically zero.  Instead, we can calculate the probability of the variable falling within a certain interval by integrating the PDF over that interval.  The total area under the PDF curve across all possible values must equal 1, but this is calculated using an integral rather than a discrete sum.
+
+When we sample from a PDF, we are taking discrete values, and hence we are effectively creating a PMF from the PDF.  This means that if we want to have explicit probabilities for each value, we need to ensure that the sampled values sum to 1.  In our case, since we are simulating the prior distribution using a continuous Beta distribution (which is a PDF), we can treat the simulated values as a PMF by normalizing them if needed.  It is very simple to normalize a set of sampled values from a PDF---you just divide each value by the total sum of all values. Normalizing does not change the relative shape of the distribution, it just changes the scale to ensure that everything sums to 1. 
+
+Normalizing your samples from a PDF is not absolutely necessary for the purposes of Bayes' Theorem.  We can always work directly with the density values as they are, since we will be normalizing the posterior distribution later in any case using $P(D)$.  Nevertheless, it is quite common to normalize these values so that the explicit probabilities sum to 1, and this can help with interpretation and later comparison of distributions.  For this reason, we will normalize our prior distribution.  
+
+```{r}
+# normalize the prior distribution to ensure it sums to 1
+prior_distribution <- unnormalized_prior/sum(unnormalized_prior)
+```
 
 ### Defining the likelihood $P(D \mid \theta)$
 
@@ -192,7 +207,7 @@ ggplot(posterior_df, aes(x = theta, y = density)) +
 Posterior distribution of pass rate ($\theta$) after observing the data.
 :::
 
-From the posterior distribution plot, we can see how our beliefs about the pass rate $\theta$ have been updated after observing the data, and we now expect our pass rate to most likely be lower than the prior distribution might suggest.  The posterior distribution reflects both our prior beliefs and the evidence provided by the observed data.  We can use this posterior distribution to make direct probabilistic statements about the pass rate.  If we plot our prior, likelihood and posterior together on a scaled plot so that probabilities are standardized and comparable, we can see that the most likely (modal) posterior outcome (the peak of the distribution) is a pass rate of `r round(posterior_df$theta[which.max(posterior_distribution)], 2)`, which is a compromise between our prior belief (`r round(prior_df$theta[which.max(prior_distribution)], 2)`) and what the data tells us (`r round(likelihood_df$theta[which.max(likelihood_function)], 2)`), as seen in @fig-pass-all^[In fact, because the Beta distribution is a *conjugate prior* for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations.  The posterior distribution will also be a Beta distribution with updated shape parameters $\alpha + x$ and $\beta + n - x$ where $x$ is the number of success and $n-x$ is the number of failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).].
+From the posterior distribution plot, we can see how our beliefs about the pass rate $\theta$ have been updated after observing the data, and we now expect our pass rate to most likely be lower than the prior distribution might suggest.  The posterior distribution reflects both our prior beliefs and the evidence provided by the observed data.  We can use this posterior distribution to make direct probabilistic statements about the pass rate given the observed data.  If we normalize the likelihood function and plot our prior, likelihood and posterior together, we can see that the most likely (modal) posterior outcome (the peak of the distribution) is a pass rate of `r round(posterior_df$theta[which.max(posterior_distribution)], 2)`, which is a compromise between our most likely prior belief about the pass rate (`r round(prior_df$theta[which.max(prior_distribution)], 2)`) and what the data tells us is the most likely pass rate (`r round(likelihood_df$theta[which.max(likelihood_function)], 2)`), as seen in @fig-pass-all^[In fact, because the Beta distribution is a *conjugate prior* for the Binomial likelihood, we can derive the posterior distribution mathematically without needing to perform simulations.  The posterior distribution will also be a Beta distribution with updated shape parameters $\alpha + x$ and $\beta + n - x$ where $x$ is the number of success and $n-x$ is the number of failures in the data. I leave it to the reader to verify independently that our simulated posterior closely resembles Beta(20, 10).].
 
 ::: {#fig-pass-all}
 ```{r}
@@ -201,8 +216,8 @@ From the posterior distribution plot, we can see how our beliefs about the pass 
 # combine prior, likelihood and posterior into a single data frame for plotting
 combined_df <- data.frame(
   theta = rep(theta_values, 3),
-  density = c(prior_distribution/sum(prior_distribution), likelihood_function / sum(likelihood_function), posterior_distribution),
-  Type = rep(c("Prior Distribution", "Likelihood Function", "Posterior Distribution"), each = length(theta_values))
+  density = c(prior_distribution, likelihood_function / sum(likelihood_function), posterior_distribution),
+  Type = rep(c("Prior", "Normalized Likelihood", "Posterior"), each = length(theta_values))
 )
 
 # plot prior, likelihood and posterior together in scaled density plot
@@ -212,13 +227,13 @@ ggplot(combined_df, aes(x = theta, y = density, color = Type, fill = Type)) +
   scale_color_manual(values = c("blue", "red", "darkgreen")) +
   scale_fill_manual(values = c("blue", "red", "darkgreen")) +
   labs(x = "Pass Rate (θ)",
-       y = "Standardized Probability",
+       y = "Probability",
        fill = "Type") +
   theme_minimal() +
   guides(color = "none")
 ```
 
-Prior, Likelihood and Posterior probabilities of pass rate ($\theta$) plotted and standardized for comparison
+Prior, Normalized Likelihood and Posterior probabilities of pass rate ($\theta$)
 :::
 
 
@@ -277,7 +292,7 @@ We can calculate summary statistics of our posterior distribution to better stat
 (mode_posterior <- theta_values[which.max(new_posterior_distribution)])
 ```
 
-Aditionally, given that we have determined a specific distribution for our parameter of interest (the pass rate $\theta$), we can also calculate *credible intervals* to express the uncertainty around our estimate.  A credible interval is an interval within which the parameter is believed to lie with a certain probability, based on the posterior distribution.  For example, a 95% credible interval for the pass rate $\theta$ would indicate that there is a 95% probability that the true pass rate lies within this interval, given the observed data.  We can calculate the 95% credible interval for our updated posterior distribution using the `quantile()` function in R:
+Additionally, given that we have determined a specific distribution for the pass rate $\theta$, we can calculate *credible intervals* to express the uncertainty around our estimate.  A credible interval is an interval within which the parameter is believed to lie with a certain probability, based on the posterior distribution.  For example, a 95% credible interval for the pass rate $\theta$ would indicate that there is a 95% probability that the true pass rate lies within this interval, given the observed data.  We can calculate the 95% credible interval for our updated posterior distribution using the `quantile()` function in R:
 
 
 ```{r}
@@ -304,7 +319,7 @@ In practice, calculating posterior distributions analytically can be challenging
 
 ## Bayesian hypothesis testing
 
-In classical statistics, we rely heavily on the $p$-value to test hypotheses. We set up a null hypothesis (usually that there is no effect or no difference) and an alternative hypothesis. If the $p$-value falls below a defined $\alpha$ (usually 0.05), we reject the null hypothesis. However, as we discussed in previous chapters, the $p$-value is often misunderstood. It tells us the probability of observing data at least as extreme as ours, *assuming the null hypothesis is true*, that is $P(D \mid H_0)$. It does **not** tell us the probability that the hypothesis itself is true.
+In classical statistics, we rely heavily on the $p$-value to test hypotheses. We set up a null hypothesis (usually that there is no effect or no difference) and an alternative hypothesis. If the $p$-value falls below a defined $\alpha$ (usually 0.05), we reject the null hypothesis. However, as we discussed in previous chapters, the $p$-value is often misunderstood. It tells us the frequency of observing data at least as extreme as ours over many random repeated samples, *assuming the null hypothesis is true*, that is $P(D \mid H_0)$. It does **not** tell us the probability that the hypothesis itself is true.
 
 Using a Bayesian approach, we can calculate the probability of our hypotheses being true given the data we observe, that is $P(H \mid D)$. This allows us to test any defined hypothesis $H$ against our data $D$ and make direct statements about the probability that $H$ is true.
 
@@ -315,10 +330,11 @@ P(H \mid D) = \frac{P(D \mid H) P(H)}{P(D)}
 $$
 
 Where:
-- $P(H \mid D)$ is the *posterior* probability of the hypothesis $H$ given the data $D$.
-- $P(D \mid H)$ is the *likelihood* of the data $D$ given the hypothesis $H$.
-- $P(H)$ is the *prior* probability of the hypothesis $H$ before observing the data.
-- $P(D)$ is the *marginal likelihood* or *evidence*, which is the total probability of observing the data $D$ under all possible hypotheses---a normalizing denominator as before.
+
+* $P(H \mid D)$ is the *posterior* probability of the hypothesis $H$ given the data $D$.
+* $P(D \mid H)$ is the *likelihood* of the data $D$ given the hypothesis $H$.
+* $P(H)$ is the *prior* probability of the hypothesis $H$ before observing the data.
+* $P(D)$ is the *marginal likelihood* or *evidence*, which is the total probability of observing the data $D$ under all possible hypotheses---a normalizing denominator as before.
 
 Now let's assume we have two competing hypotheses: the Null Hypothesis ($H_0$) and the Alternative Hypothesis ($H_1$).  We want to compare these two hypotheses given our observed data $D$.  If we apply Bayes' Theorem to both and find their quotient, we arrive at the following:
 
@@ -347,7 +363,7 @@ A common rule of thumb (see @jeffreys) for interpreting Bayes Factors which favo
 *   **10-30**: Strong evidence
 *   **>30**: Very strong evidence
 
-To implement Bayesian hypothesis tests in R, we will utilize the `BayesFactor` package. This package allows us to perform statistical hypothesis tests within a Bayesian framework without needing to write complex custom simulations from scratch.  To illustrate these tests, we will use the same examples of hypothesis tests on our `salespeople` data set as we used in @sec-found-stats for classical statistics, but now using smaller subsets of this data and a Bayesian approach. Let's download that set first.
+To implement Bayesian hypothesis tests in R, we will utilize the `BayesFactor` package. This package allows us to perform statistical hypothesis tests within a Bayesian framework without needing to write complex custom simulations from scratch.  These tests use standard minimally informed priors for the specific tests being used.  To illustrate these Bayesian tests, we will use the same examples of hypothesis tests on our `salespeople` data set as we used in @sec-found-stats for classical statistics, but now using smaller subsets of this data. Let's download that set first.
 
 ```{r}
 # if needed, use online url to download salespeople data
@@ -388,12 +404,12 @@ library(BayesFactor)
 ttestBF(formula = sales ~ performance, data = df_sales)
 ```
 
-We see that the Bayes Factor $BF_{10}$ is over just over 3, indicating that the data would approximately triple any prior belief we have about the likelihood of the alternative hypothesis.  This is moderate evidence in favor of the data supporting the Alternative Hypothesis ($H_1$) that there is a difference in mean sales between high and low performing salespeople.  
+We see that the Bayes Factor $BF_{10}$ is just over 3, indicating that the data would approximately triple any prior belief we have about the likelihood of the alternative hypothesis^[Note that the output also tell us about the standard prior distribution being used - in this case the JZS (Jeffreys-Zellner-Siow) distribution].  This is moderate evidence in favor of the data supporting the Alternative Hypothesis ($H_1$) that there is a difference in mean sales between high and low performing salespeople.  
 
-Note that because of the Bayes Factor, we did not even have to look at the posterior distributions of the difference in means to make this conclusion.  However, we can still plot these posterior distributions to visualize the difference in means between the two groups, as in @fig-bayes-ttest.
+Note that because of the Bayes Factor, we did not even have to look at the posterior distributions of the difference in means to make this conclusion.  However, we can still simulate the posterior distributions to visualize the difference in means between the two groups.
 
 ```{r}
-# run Bayesian t-test and extract posterior samples over 10000 simulations
+# run Bayesian t-test and simulate posterior samples over 10000 points
 bf_result <- ttestBF(formula = sales ~ performance, data = df_sales)
 posterior_samples <- posterior(bf_result, iterations = 10000)
 ```
@@ -427,16 +443,16 @@ Posterior distribution of sales difference between high and low performing sales
 :::
 
 
-We can also calculate summary statistics and credible intervals for the posterior distribution of the sales difference between high and low performing salespeople, using the convenient `describe_posterior()` function§ from the `bayestestR` package.
+We can also calculate summary statistics and credible intervals for the posterior distribution of the sales difference between high and low performing salespeople, using the convenient `describe_posterior()` function from the `bayestestR` package.
 
 ```{r}
 library(bayestestR)
 (posterior_summary <- describe_posterior(-posterior_samples))
 ```
 
-The output shows the posterior median sales difference (row `beta (1 - 4)`) between high and low performing salespeople is approximately `r round(posterior_summary$Median[2], 2)`, with a 95% credible interval provided.  This allows us to say that there is a 95% probability that the difference in sales between low and high performing sales people is within this range given the data that we observe.   The `pd` column provides a 'probability of direction'.  Using this column, we can explicitly say that there is a `r round(posterior_summary$pd[2], 2)` probability that the sales difference is greater than zero given the data we observe^[The output here is agnostic to direction, and will always return the probability of the most likely direction, akin to a one-tailed test without a specified direction.].  We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis.  We see that there is no overlap between the 95% credible interval the ROPE.
+The output shows the posterior median sales difference (row `beta (1 - 4)`) between high and low performing salespeople is approximately `r round(posterior_summary$Median[2], 2)`, with a 95% credible interval provided.  This allows us to say that there is a 95% probability that the difference in sales between high and low performing salespeople is within this range given the data that we observe.   The `pd` column provides a 'probability of direction'.  Using this column, we can explicitly say that there is a `r round(posterior_summary$pd[2], 2)` probability that the sales difference is greater than zero given the data we observe^[The output here is agnostic to direction, and will always return the probability of the most likely direction, akin to a one-tailed test without a specified direction.].  We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis.  We see that there is no overlap between the 95% credible interval and the ROPE.
 
-One visual way of representing both the posterior distribution and its summary statistics is to use a *halfeye plot* (via the `ggdist` package), as in @fig-bayes-ttest-halfeye.  A halfeye plot combines a density plot of the posterior distribution with a point and interval summary of the distribution.  By default, the point estimate is the median (this can be adjusted to mean and mode using he `point_interval` argument), and the intervals are the 66% credible interval and the 95% credible interval (these can be adjusted using the `.width` argument).  
+One visual way of representing both the posterior distribution and its summary statistics is to use a *halfeye plot* (via the `ggdist` package), as in @fig-bayes-ttest-halfeye.  A halfeye plot combines a density plot of the posterior distribution with a point and interval summary of the distribution.  By default, the point estimate is the median (this can be adjusted to mean and mode using the `point_interval` argument), and the intervals are the 66% credible interval and the 95% credible interval (these can be adjusted using the `.width` argument).  
 
 ::: {#fig-bayes-ttest-halfeye}
 ```{r}
@@ -516,7 +532,7 @@ And, like before, we can view summary statistics and credible intervals for the 
 describe_posterior(posterior_corr_samples)
 ```
 
-Therefore we can say that there is a probability of 1 `r round(describe_posterior(posterior_corr_samples)$pd[1], 2)` that the correlation between sales and average customer rating is greater than zero given the data we observe.  We see that the 95% credible interval hs no overlap with the ROPE, further supporting our Alternative Hypothesis^[As before, we can explicitly calculate the one-tailed Bayes Factor for a *positive* correlation by using `nullInterval = c(-1, 0)` in our test function].
+Therefore we can say that there is a probability of `r round(describe_posterior(posterior_corr_samples)$pd[1], 2)` that the correlation between sales and average customer rating is greater than zero given the data we observe.  We see that the 95% credible interval hs no overlap with the ROPE, further supporting our Alternative Hypothesis^[As before, we can explicitly calculate the one-tailed Bayes Factor for a *positive* correlation by using `nullInterval = c(-1, 0)` in our test function].
 
 ### Bayesian chi-square test (Test for difference in frequency distribution between groups)
 
@@ -542,7 +558,7 @@ In the Bayesian framework, we test whether promotion likelihood is independent f
 (contingency <- table(sample_data$promoted, sample_data$performance))
 ```
 
-Now we can apply the hypothesis, but before we do so we need to define the sampling method in order to inform the simulation.  For this we have four choices:
+Now we can apply the hypothesis test, but before we do so we need to define the sampling method in order to determine the appropriate prior for the test to use.  For this we have four choices:
 
 1. `jointMulti`: Joint multinomial sampling.  This means that the total sample size is fixed, but the row and column totals are free to vary.  In our case this means that the total number of salespeople is fixed, but the number of promoted vs not promoted and the number of salespeople in each performance category are free to vary.
 2. `indepMulti`: Independent multinomial sampling.  This means that the row totals are fixed, but the column totals are free to vary.  In our case this means that the number of promoted vs not promoted salespeople is fixed, but the number of salespeople in each performance category are free to vary.
@@ -556,7 +572,7 @@ The choice you make for your sampling method requires a knowledge of the process
 contingencyTableBF(contingency, sampleType = "jointMulti")
 ```
 
-Here we see a Bayes Factor $BF_{10}$ which indicates very strong evidence from the data in favor of the Alternative Hypothesis ($H_1$) that the categories are not independent and there is a difference in promotion rates between performance rating groups.  We can visualize the posterior distributions of the promotion rates for using a halfeye plot, as in @fig-bayes-chi.  This requires some manipulation of the data that is produced when our posterior is simulated.
+Here we see a Bayes Factor $BF_{10}$ which indicates very strong evidence from the data in favor of the Alternative Hypothesis ($H_1$) that the categories are not independent and there is a difference in promotion rates between performance rating groups.  We can visualize the posterior distributions of the promotion rates using a halfeye plot, as in @fig-bayes-chi.  This requires some manipulation of the data that is produced when our posterior is simulated.
 
 ::: {#fig-bayes-chi}
 ```{r}

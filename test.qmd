@@ -1,0 +1,434 @@
+---
+title: "Estimating Pi with Bayesian Grid Approximation"
+format: 
+  html:
+    code-fold: false
+    theme: cosmo
+    toc: true
+editor: visual
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(patchwork)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+## 1. Introduction
+
+In this experiment, we will estimate the value of $\pi$ using **Bayesian Grid Approximation**. 
+
+Our strategy relies on a Monte Carlo simulation:
+1. We inscribe a circle (radius $r$) inside a square (side $2r$).
+2. Area of Circle = $\pi r^2$.
+3. Area of Square = $4 r^2$.
+4. The probability ($p$) of a random dart thrown at the square landing inside the circle is $\frac{\pi r^2}{4 r^2} = \frac{\pi}{4}$.
+5. Therefore, $\pi = 4p$.
+
+We will define a **Prior** belief about $\pi$, collect data by throwing virtual darts, and update our belief to form a **Posterior**.
+
+## 2. The Prior: Children's Drawings
+
+Before we throw any darts, we have some prior information. Imagine we asked a classroom of children to draw circles, measure the circumference and diameter, and calculate $\pi$. Children are messy measurers, so their estimates are noisy and perhaps slightly biased.
+
+Let's generate this "historical" data to build our Prior distribution.
+
+```{r}
+set.seed(42)
+
+# Synthetic data: 20 children estimate pi
+# They tend to estimate around 3.2 with a standard deviation of 0.4
+kids_guesses <- rnorm(n = 20, mean = 3.2, sd = 0.1)
+
+# Summary stats for the prior
+prior_mean <- mean(kids_guesses)
+prior_sd   <- sd(kids_guesses)
+
+print(paste("Prior Mean:", round(prior_mean, 3)))
+print(paste("Prior SD:", round(prior_sd, 3)))
+```
+
+### Setting up the Grid
+
+In grid approximation, we discretize the continuous range of possible values for $\pi$. Since we know $\pi$ must be between 0 and 4 (based on the geometry of a circle inside a square), we will create a grid of valid $\pi$ values.
+
+```{r}
+# Create a grid of 1000 possible values for Pi
+# Limiting range to 2.0 - 4.5 for better visualization focus
+grid_size <- 100000
+pi_grid <- seq(from = 3, to = 3.5, length.out = grid_size)
+
+# Calculate Prior Probability for each grid point based on the kids' data
+# We use dnorm to get the density height
+prior_prob <- dnorm(pi_grid, mean = prior_mean, sd = prior_sd)
+
+# Normalize so the sum of probabilities equals 1
+prior_prob <- prior_prob / sum(prior_prob)
+
+# Store in a data frame
+df_grid <- data.frame(pi_val = pi_grid, prior = prior_prob)
+
+ggplot(df_grid, aes(x = pi_val, y = prior)) +
+  geom_line(color = "blue", size = 1) +
+  geom_vline(xintercept = 3.14159, linetype = "dashed", alpha = 0.5) +
+  labs(title = "Prior Distribution of Pi",
+       subtitle = "Based on children's measurements",
+       x = "Value of Pi", y = "Probability") +
+  theme_minimal()
+```
+
+## 3. The Experiment: Throwing Darts
+
+Now we generate "objective" data. We will simulate throwing `N` darts at a square defined by $x \in [-1, 1]$ and $y \in [-1, 1]$. A hit counts if $x^2 + y^2 \le 1$.
+
+```{r}
+simulate_darts <- function(n) {
+  x <- runif(n, -1, 1)
+  y <- runif(n, -1, 1)
+  inside <- (x^2 + y^2) <= 1
+  return(list(total = n, hits = sum(inside)))
+}
+
+# Let's visualize one small experiment of 200 throws
+set.seed(101)
+demo_n <- 200
+x <- runif(demo_n, -1, 1)
+y <- runif(demo_n, -1, 1)
+inside <- (x^2 + y^2) <= 1
+
+tibble(x, y, inside) %>%
+  ggplot(aes(x, y, color = inside)) +
+  geom_point(alpha = 0.6) +
+  coord_fixed() +
+  ggtitle(paste("Visualizing", demo_n, "Dart Throws")) +
+  theme_minimal()
+```
+
+## 4. Bayesian Updating
+
+We calculate the **Posterior** using Bayes' Rule:
+
+$$ Posterior \propto Likelihood \times Prior $$
+
+1.  **Likelihood:** The probability of getting $k$ hits out of $N$ throws given a specific value of $\pi$. Since $\pi = 4p$, the probability of a hit is $p = \pi/4$. This is a Binomial process.
+2.  **Grid Approximation:** We calculate this likelihood for every value in our `pi_grid`.
+
+We will run the experiment 4 times with increasing sample sizes (cumulative) to see how the posterior converges.
+
+```{r}
+N <- 10  # Total number of dart throws per experiment
+# Define steps for the experiment (Cumulative throws)
+steps <- c(10, 50, 200, 1000)
+set.seed(999) # Ensure reproducibility
+
+# Initialize storage for plotting later
+results_list <- list()
+
+
+  
+# 1. Run Experiment
+data <- simulate_darts(N)
+k <- data$hits
+
+# 2. Calculate Likelihood for each grid point
+# The probability of success for a given grid point is (pi_val / 4)
+likelihood <- dbinom(x = k, size = N, prob = pi_grid / 4)
+
+# 3. Calculate Unstandardized Posterior
+unstd_posterior <- likelihood * prior_prob
+
+# 4. Normalize Posterior
+posterior <- unstd_posterior / sum(unstd_posterior)
+
+# Store results
+# We normalize likelihood purely for visualization comparison (so it fits on plot)
+norm_likelihood <- likelihood / sum(likelihood)
+
+results_list[[paste0("N_", N)]] <- data.frame(
+  pi_val = pi_grid,
+  Prior = prior_prob,
+  Likelihood = norm_likelihood,
+  Posterior = posterior,
+  Num = rep(N, length(pi_grid))
+)
+```
+
+```{r}
+N <- 50  # Total number of dart throws per experiment
+# Define steps for the experiment (Cumulative throws)
+steps <- c(10, 50, 200, 1000)
+set.seed(999) # Ensure reproducibility
+
+  
+# 1. Run Experiment
+data <- simulate_darts(N)
+k <- data$hits
+prior_prob <- results_list[["N_10"]]$Posterior
+
+
+# 2. Calculate Likelihood for each grid point
+# The probability of success for a given grid point is (pi_val / 4)
+likelihood <- dbinom(x = k, size = N, prob = pi_grid / 4)
+
+# 3. Calculate Unstandardized Posterior
+unstd_posterior <- likelihood * prior_prob
+
+# 4. Normalize Posterior
+posterior <- unstd_posterior / sum(unstd_posterior)
+
+# Store results
+# We normalize likelihood purely for visualization comparison (so it fits on plot)
+norm_likelihood <- likelihood / sum(likelihood)
+
+results_list[[paste0("N_", N)]] <- data.frame(
+  pi_val = pi_grid,
+  Prior = prior_prob,
+  Likelihood = norm_likelihood,
+  Posterior = posterior,
+  Num = rep(N, length(pi_grid))
+)
+
+```
+
+
+```{r}
+N <- 100  # Total number of dart throws per experiment
+# Define steps for the experiment (Cumulative throws)
+steps <- c(10, 50, 200, 1000)
+set.seed(999) # Ensure reproducibility
+
+  
+# 1. Run Experiment
+data <- simulate_darts(N)
+k <- data$hits
+prior_prob <- results_list[["N_50"]]$Posterior
+
+
+# 2. Calculate Likelihood for each grid point
+# The probability of success for a given grid point is (pi_val / 4)
+likelihood <- dbinom(x = k, size = N, prob = pi_grid / 4)
+
+# 3. Calculate Unstandardized Posterior
+unstd_posterior <- likelihood * prior_prob
+
+# 4. Normalize Posterior
+posterior <- unstd_posterior / sum(unstd_posterior)
+
+# Store results
+# We normalize likelihood purely for visualization comparison (so it fits on plot)
+norm_likelihood <- likelihood / sum(likelihood)
+
+results_list[[paste0("N_", N)]] <- data.frame(
+  pi_val = pi_grid,
+  Prior = prior_prob,
+  Likelihood = norm_likelihood,
+  Posterior = posterior,
+  Num = rep(N, length(pi_grid))
+)
+
+```
+
+```{r}
+N <- 500  # Total number of dart throws per experiment
+# Define steps for the experiment (Cumulative throws)
+steps <- c(10, 50, 200, 1000)
+set.seed(999) # Ensure reproducibility
+
+  
+# 1. Run Experiment
+data <- simulate_darts(N)
+k <- data$hits
+prior_prob <- results_list[["N_100"]]$Posterior
+
+
+# 2. Calculate Likelihood for each grid point
+# The probability of success for a given grid point is (pi_val / 4)
+likelihood <- dbinom(x = k, size = N, prob = pi_grid / 4)
+
+# 3. Calculate Unstandardized Posterior
+unstd_posterior <- likelihood * prior_prob
+
+# 4. Normalize Posterior
+posterior <- unstd_posterior / sum(unstd_posterior)
+
+# Store results
+# We normalize likelihood purely for visualization comparison (so it fits on plot)
+norm_likelihood <- likelihood / sum(likelihood)
+
+results_list[[paste0("N_", N)]] <- data.frame(
+  pi_val = pi_grid,
+  Prior = prior_prob,
+  Likelihood = norm_likelihood,
+  Posterior = posterior,
+  Num = rep(N, length(pi_grid))
+)
+
+```
+
+```{r}
+N <- 1000  # Total number of dart throws per experiment
+# Define steps for the experiment (Cumulative throws)
+steps <- c(10, 50, 200, 1000)
+set.seed(999) # Ensure reproducibility
+
+  
+# 1. Run Experiment
+data <- simulate_darts(N)
+k <- data$hits
+prior_prob <- results_list[["N_500"]]$Posterior
+
+
+# 2. Calculate Likelihood for each grid point
+# The probability of success for a given grid point is (pi_val / 4)
+likelihood <- dbinom(x = k, size = N, prob = pi_grid / 4)
+
+# 3. Calculate Unstandardized Posterior
+unstd_posterior <- likelihood * prior_prob
+
+# 4. Normalize Posterior
+posterior <- unstd_posterior / sum(unstd_posterior)
+
+# Store results
+# We normalize likelihood purely for visualization comparison (so it fits on plot)
+norm_likelihood <- likelihood / sum(likelihood)
+
+results_list[[paste0("N_", N)]] <- data.frame(
+  pi_val = pi_grid,
+  Prior = prior_prob,
+  Likelihood = norm_likelihood,
+  Posterior = posterior,
+  Num = rep(N, length(pi_grid))
+)
+
+```
+
+```{r}
+N <- 10000  # Total number of dart throws per experiment
+# Define steps for the experiment (Cumulative throws)
+steps <- c(10, 50, 200, 1000)
+set.seed(999) # Ensure reproducibility
+
+  
+# 1. Run Experiment
+data <- simulate_darts(N)
+k <- data$hits
+prior_prob <- results_list[["N_1000"]]$Posterior
+
+
+# 2. Calculate Likelihood for each grid point
+# The probability of success for a given grid point is (pi_val / 4)
+likelihood <- dbinom(x = k, size = N, prob = pi_grid / 4)
+
+# 3. Calculate Unstandardized Posterior
+unstd_posterior <- likelihood * prior_prob
+
+# 4. Normalize Posterior
+posterior <- unstd_posterior / sum(unstd_posterior)
+
+# Store results
+# We normalize likelihood purely for visualization comparison (so it fits on plot)
+norm_likelihood <- likelihood / sum(likelihood)
+
+results_list[[paste0("N_", N)]] <- data.frame(
+  pi_val = pi_grid,
+  Prior = prior_prob,
+  Likelihood = norm_likelihood,
+  Posterior = posterior,
+  Num = rep(N, length(pi_grid))
+)
+
+```
+
+
+```{r}
+N <- 100000  # Total number of dart throws per experiment
+# Define steps for the experiment (Cumulative throws)
+steps <- c(10, 50, 200, 1000)
+set.seed(999) # Ensure reproducibility
+
+  
+# 1. Run Experiment
+data <- simulate_darts(N)
+k <- data$hits
+prior_prob <- results_list[["N_10000"]]$Posterior
+
+
+# 2. Calculate Likelihood for each grid point
+# The probability of success for a given grid point is (pi_val / 4)
+likelihood <- dbinom(x = k, size = N, prob = pi_grid / 4)
+
+# 3. Calculate Unstandardized Posterior
+unstd_posterior <- likelihood * prior_prob
+
+# 4. Normalize Posterior
+posterior <- unstd_posterior / sum(unstd_posterior)
+
+# Store results
+# We normalize likelihood purely for visualization comparison (so it fits on plot)
+norm_likelihood <- likelihood / sum(likelihood)
+
+results_list[[paste0("N_", N)]] <- data.frame(
+  pi_val = pi_grid,
+  Prior = prior_prob,
+  Likelihood = norm_likelihood,
+  Posterior = posterior,
+  Num = rep(N, length(pi_grid))
+)
+```
+
+
+```{r}
+# Combine all results into one dataframe
+all_results <- bind_rows(results_list) %>%
+  pivot_longer(cols = c("Prior", "Likelihood", "Posterior"), 
+               names_to = "Type", values_to = "Probability")
+```
+
+## 5. Visualizing Convergence
+
+The plots below show how our belief about $\pi$ changes as we gather more data.
+
+*   **Blue (Prior):** What the children told us (stays constant in this view).
+*   **Green (Likelihood):** What the dart data alone tells us.
+*   **Red (Posterior):** The compromise between the Prior and the Likelihood.
+
+```{r}
+#| fig-height: 8
+#| fig-width: 10
+
+true_pi <- 3.14159
+
+ggplot(all_results, aes(x = pi_val, y = Probability, color = Type)) +
+  geom_line(size = 1) +
+  geom_vline(xintercept = true_pi, linetype = "dashed", color = "black") +
+  facet_wrap(~Num, scales = "free_y", labeller = label_both) +
+  scale_color_manual(values = c("Likelihood" = "darkgreen", 
+                                "Posterior" = "firebrick", 
+                                "Prior" = "steelblue")) +
+  labs(title = "Bayesian Updating of Pi Estimate",
+       subtitle = "Dashed black line indicates true Pi",
+       x = "Value of Pi",
+       y = "Probability Density (Grid Normalized)") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+### Observations
+
+1.  **N = 10:** The Likelihood is very wide (the data is scarce). The Posterior mostly hugs the Prior because the Prior is more confident than the few data points we have.
+2.  **N = 50:** The Likelihood begins to sharpen. The Posterior shifts away from the children's biased guess (approx 3.2) toward the data.
+3.  **N = 1000:** The Likelihood is now very narrow and sharp. The data overwhelms the Prior. The Posterior is almost identical to the Likelihood, centered tightly near the true value of $\pi$ (3.14).
+
+### Final Estimate
+
+Based on our final simulation of 1,000 throws, the grid point with the highest posterior probability (MAP estimate) is:
+
+```{r}
+final_step <- results_list[["N_1e+05"]]
+map_estimate <- final_step$pi_val[which.max(final_step$Posterior)]
+
+print(paste("True Pi:", true_pi))
+print(paste("MAP Estimate:", round(map_estimate, 4)))
+```
+
+

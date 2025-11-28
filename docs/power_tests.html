@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>11&nbsp; Power Analysis to Estimate Required Sample Sizes for Modeling – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>11&nbsp; Power Analysis for Estimating Required Sample Sizes for Modeling – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,7 +168,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./power_tests.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./power_tests.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis for Estimating Required Sample Sizes for Modeling</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -282,7 +282,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./power_tests.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis for Estimating Required Sample Sizes for Modeling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -327,7 +327,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-power-tests" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis to Estimate Required Sample Sizes for Modeling</span></span></h1>
+<h1 class="title"><span id="sec-power-tests" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis for Estimating Required Sample Sizes for Modeling</span></span></h1>
 </div>
 
 
@@ -344,8 +344,8 @@ window.Quarto = {
 </header>
 
 
-<p>In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available. At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference. Whether that difference is visible depends on the statistical properties of the samples used. Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.</p>
-<p>This suggests that a conscientious analyst would be well advised to do some up-front work to determine if their samples have a chance of yielding results that are of some inferential value. In a practical context, however, this is only partly true (and that is an important reason why this chapter has been left towards the end of this book). Estimating required sample sizes is an imprecise science. Although the mathematics suggest that in theory it should be precise, in reality we are guessing most of the inputs to the mathematics. In many cases we are so clueless about those inputs that we move into the realms of pure speculation and produce ranges of required sample sizes that are so wide as to be fairly meaningless in practice.</p>
+<p>In the vast majority of situations in People Analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available. At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference. Whether that difference is visible depends on the statistical properties of the samples used. Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.</p>
+<p>This suggests that a conscientious analyst using classical statistical methods would be well advised to do some up-front work to determine if their samples have a chance of yielding results that are of some inferential value. In a practical context, however, this is only partly true. Estimating required sample sizes is an imprecise science. Although the mathematical theory suggests that it should be precise, in reality we are guessing most of the inputs to the mathematics. In many cases we are so clueless about those inputs that we move into the realms of pure speculation and then produce ranges of required sample sizes that are so wide as to be fairly meaningless in practice.</p>
 <p>That said, there are situations where conducting <em>power analysis</em>—that is, analysis of the required statistical properties of samples in order to have a certain minimum probability of observing a true difference—makes sense. Power analysis is an important element of experimental design. Experiments in people analytics usually take one of two forms:</p>
 <ol type="1">
 <li><p><em>Prospective experiments</em> involve running some sort of test or pilot on populations to determine if a certain measure has a hypothesized effect. For example, introducing a certain new employee benefit for a specific subset of the company for a limited period of time, and determining if there was a difference in the impact on employee satisfaction compared to those who did not receive the benefit.</p></li>
@@ -379,7 +379,7 @@ window.Quarto = {
 &amp;=  1 - \Phi(-d\sqrt{n} + z_{\alpha})
 \end{aligned}
 \]</span></p>
-<p>where <span class="math inline">\(\Phi\)</span> is the cumulative normal probability distribution function, and <span class="math inline">\(d = \frac{\mu_1 - \mu_0}{\sigma}\)</span> is known as <em>Cohen’s effect size</em>. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen’s <span class="math inline">\(d\)</span>) the significance level <span class="math inline">\(\alpha\)</span> and the sample size <span class="math inline">\(n\)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>where <span class="math inline">\(\Phi\)</span> is the cumulative normal probability distribution function, and <span class="math inline">\(d = \frac{\mu_1 - \mu_0}{\sigma}\)</span> is known as <em>Cohen’s effect size</em>. Therefore, we can see that power depends on a measure of the observed effect size <span class="math inline">\(d\)</span> between our two samples, the significance level <span class="math inline">\(\alpha\)</span> and the sample size <span class="math inline">\(n\)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis. We can assert a minimum level of statistical power that we would wish for—usually this is somewhere between 0.8 and 0.9. We can also assert our <span class="math inline">\(\alpha\)</span>. But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size). This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Practically speaking, looking at ranges of values will be common in power analysis.</p>
 </section>
 <section id="sec-simple-stats" class="level2" data-number="11.2">
@@ -621,7 +621,7 @@ Demidenko, Eugene. 2007. <span>“Sample Size Determination for Logistic Regress
 <hr>
 <ol>
 <li id="fn1"><p>We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>In reality there are more unknowns that this math would imply, due to the imperfection of what we are trying to measure. For example measurement error and reliability will often be an unmeasurable unknown. For this reason you will often need a larger sample size than that indicated by power tests.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In reality there are more unknowns than the mathematics would imply, due to the imperfection of what we are trying to measure—for example, measurement error and reliability will often be an unmeasurable unknown. For this reason you will often need a larger sample size than that indicated by power tests.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Cohen’s rule of thumb for correlation coefficients is Weak: 0.1, Moderate: 0.3 and Strong: 0.5.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Cohen’s rule of thumb for <span class="math inline">\(f^2\)</span> effect sizes is Small: 0.02, Medium: 0.15, Large: 0.35.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>

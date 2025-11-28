@@ -137,6 +137,30 @@
       "Maintainer": "Richard D. Morey <richarddmorey@gmail.com>",
       "Repository": "CRAN"
     },
+    "Brobdingnag": {
+      "Package": "Brobdingnag",
+      "Version": "1.2-9",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Very Large Numbers in R",
+      "Authors@R": "person(given=c(\"Robin\", \"K. S.\"), family=\"Hankin\", role = c(\"aut\",\"cre\"), email=\"hankin.robin@gmail.com\", comment = c(ORCID = \"0000-0001-5982-0415\"))",
+      "Maintainer": "Robin K. S. Hankin <hankin.robin@gmail.com>",
+      "Depends": [
+        "R (>= 2.13.0)",
+        "methods",
+        "Matrix (>= 1.5-0)"
+      ],
+      "Description": "Very large numbers in R.  Real numbers are held using their natural logarithms, plus a logical flag indicating sign.  Functionality for complex numbers is also provided.  The package includes a vignette that gives a step-by-step introduction to using S4 methods.",
+      "Suggests": [
+        "cubature",
+        "testthat"
+      ],
+      "License": "GPL",
+      "Repository": "CRAN",
+      "URL": "https://github.com/RobinHankin/Brobdingnag",
+      "NeedsCompilation": "no",
+      "Author": "Robin K. S. Hankin [aut, cre] (<https://orcid.org/0000-0001-5982-0415>)"
+    },
     "DBI": {
       "Package": "DBI",
       "Version": "1.2.3",
@@ -1518,6 +1542,57 @@
       ],
       "URL": "https://benjaminschlegel.ch/r/brant/",
       "NeedsCompilation": "no",
+      "Repository": "CRAN"
+    },
+    "bridgesampling": {
+      "Package": "bridgesampling",
+      "Version": "1.2-1",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Bridge Sampling for Marginal Likelihoods and Bayes Factors",
+      "Authors@R": "c(person(given=\"Quentin F.\", family=\"Gronau\", role=c(\"aut\", \"cre\"), email=\"Quentin.F.Gronau@gmail.com\", comment=c(ORCID=\"0000-0001-5510-6943\")), person(given=\"Henrik\", family=\"Singmann\", role=\"aut\", comment=c(ORCID=\"0000-0002-4842-3657\")), person(given=\"Jonathan J.\", family=\"Forster\", role=\"ctb\"), person(given=\"Eric-Jan\", family=\"Wagenmakers\", role=\"ths\"), person(family=\"The JASP Team\", role=\"ctb\"), person(\"Jiqiang\", \"Guo\", role = \"ctb\"), person(\"Jonah\", \"Gabry\", role = \"ctb\"), person(\"Ben\", \"Goodrich\", role = c(\"ctb\")), person(\"Kees\", \"Mulder\", role = c(\"ctb\")), person(\"Perry\", \"de Valpine\", role = c(\"ctb\")), person(given=\"Aki\", family=\"Vehtari\", role = c(\"ctb\")), person(given=\"Giorgio\", family=\"Micaletto\", role = c(\"ctb\")) )",
+      "Depends": [
+        "R (>= 3.0.0)"
+      ],
+      "Imports": [
+        "mvtnorm",
+        "Matrix",
+        "Brobdingnag",
+        "stringr",
+        "coda",
+        "parallel",
+        "scales",
+        "utils",
+        "methods"
+      ],
+      "Suggests": [
+        "testthat",
+        "Rcpp",
+        "RcppEigen",
+        "R2jags",
+        "rjags",
+        "runjags",
+        "knitr",
+        "rmarkdown",
+        "R.rsp",
+        "BayesFactor",
+        "rstan",
+        "rstanarm",
+        "nimble",
+        "MCMCpack",
+        "cmdstanr (>= 0.6.0)"
+      ],
+      "Description": "Provides functions for estimating marginal likelihoods, Bayes factors, posterior model probabilities, and normalizing constants in general, via different versions of bridge sampling (Meng & Wong, 1996,  <https://www3.stat.sinica.edu.tw/statistica/j6n4/j6n43/j6n43.htm>). Gronau, Singmann, & Wagenmakers (2020) <doi:10.18637/jss.v092.i10>.",
+      "Additional_repositories": "https://stan-dev.r-universe.dev/",
+      "License": "GPL (>= 2)",
+      "LazyData": "true",
+      "RoxygenNote": "7.3.3",
+      "Encoding": "UTF-8",
+      "VignetteBuilder": "knitr, R.rsp",
+      "URL": "https://github.com/quentingronau/bridgesampling",
+      "NeedsCompilation": "no",
+      "Author": "Quentin F. Gronau [aut, cre] (ORCID: <https://orcid.org/0000-0001-5510-6943>), Henrik Singmann [aut] (ORCID: <https://orcid.org/0000-0002-4842-3657>), Jonathan J. Forster [ctb], Eric-Jan Wagenmakers [ths], The JASP Team [ctb], Jiqiang Guo [ctb], Jonah Gabry [ctb], Ben Goodrich [ctb], Kees Mulder [ctb], Perry de Valpine [ctb], Aki Vehtari [ctb], Giorgio Micaletto [ctb]",
+      "Maintainer": "Quentin F. Gronau <Quentin.F.Gronau@gmail.com>",
       "Repository": "CRAN"
     },
     "broom": {
