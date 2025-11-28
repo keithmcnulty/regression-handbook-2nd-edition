@@ -28,3 +28,4 @@ renv/
 /env/
 /.quarto/
 docs/CNAME
+test*

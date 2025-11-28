@@ -404,9 +404,9 @@ library(BayesFactor)
 ttestBF(formula = sales ~ performance, data = df_sales)
 ```
 
-We see that the Bayes Factor $BF_{10}$ is just over 3, indicating that the data would approximately triple any prior belief we have about the likelihood of the alternative hypothesis^[Note that the output also tell us about the standard prior distribution being used - in this case the JZS (Jeffreys-Zellner-Siow) distribution].  This is moderate evidence in favor of the data supporting the Alternative Hypothesis ($H_1$) that there is a difference in mean sales between high and low performing salespeople.  
+We see that the Bayes Factor $BF_{10}$ is just over 3, indicating that the data would approximately triple any prior belief we have about the likelihood of the alternative hypothesis^[Note that the output also tell us about the standard prior distribution being used - in this case the JZS (Jeffreys-Zellner-Siow) distribution.].  This is moderate evidence in favor of the data supporting the Alternative Hypothesis ($H_1$) that there is a difference in mean sales between high and low performing salespeople.  
 
-Note that because of the Bayes Factor, we did not even have to look at the posterior distributions of the difference in means to make this conclusion.  However, we can still simulate the posterior distributions to visualize the difference in means between the two groups.
+Note that because of the Bayes Factor, we did not even have to look at the posterior distributions of the difference in means to make this conclusion.  However, we can still simulate the posterior distribution to visualize the difference in means between the two groups.
 
 ```{r}
 # run Bayesian t-test and simulate posterior samples over 10000 points
@@ -420,7 +420,7 @@ We can view the first few rows of the posterior samples to see the estimated dif
 head(posterior_samples)
 ```
 
-The key column we are interested in is the `beta (1 - 4)` column, which represents the difference in sales between low performing (performance = 1) and high performing (performance = 4) salespeople for each sample iteration.  A negative value indicates that high performing salespeople have higher sales than low performing salespeople.  We can use this data to plot our posterior as in @fig-bayes-ttest, negating our data to show a more intuitive difference between high performing and low performing salespeople.
+The key column we are interested in is the `beta (1 - 4)` column, which represents the difference in sales between low performing (`performance = 1`) and high performing (`performance = 4`) salespeople for each sample iteration.  A negative value indicates that high performing salespeople have higher sales than low performing salespeople.  We can use this data to plot our posterior as in @fig-bayes-ttest, negating our data to show a more intuitive difference between high performing and low performing salespeople.
 
 
 ::: {#fig-bayes-ttest}
