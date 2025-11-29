@@ -86,7 +86,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./further.html" rel="next">
+<link href="./bayesian_linear_regression.html" rel="next">
 <link href="./power_tests.html" rel="prev">
 <link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -293,8 +293,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./bayesian_linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Linear Regression Using Bayesian Inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./further.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -323,7 +329,7 @@ window.Quarto = {
   <li><a href="#summary-statistics-and-credible-intervals-of-the-posterior-distribution" id="toc-summary-statistics-and-credible-intervals-of-the-posterior-distribution" class="nav-link" data-scroll-target="#summary-statistics-and-credible-intervals-of-the-posterior-distribution"><span class="header-section-number">12.2.5</span> Summary statistics and credible intervals of the posterior distribution</a></li>
   <li><a href="#computational-methods-for-bayesian-inference" id="toc-computational-methods-for-bayesian-inference" class="nav-link" data-scroll-target="#computational-methods-for-bayesian-inference"><span class="header-section-number">12.2.6</span> Computational Methods for Bayesian Inference</a></li>
   </ul></li>
-  <li><a href="#bayesian-hypothesis-testing" id="toc-bayesian-hypothesis-testing" class="nav-link" data-scroll-target="#bayesian-hypothesis-testing"><span class="header-section-number">12.3</span> Bayesian hypothesis testing</a>
+  <li><a href="#sec-bayes-hyp-test" id="toc-sec-bayes-hyp-test" class="nav-link" data-scroll-target="#sec-bayes-hyp-test"><span class="header-section-number">12.3</span> Bayesian hypothesis testing</a>
   <ul class="collapse">
   <li><a href="#asec-bayes-ttest" id="toc-asec-bayes-ttest" class="nav-link" data-scroll-target="#asec-bayes-ttest"><span class="header-section-number">12.3.1</span> Bayesian t-test for difference in means between two independent groups</a></li>
   <li><a href="#bayesian-test-for-non-zero-correlation" id="toc-bayesian-test-for-non-zero-correlation" class="nav-link" data-scroll-target="#bayesian-test-for-non-zero-correlation"><span class="header-section-number">12.3.2</span> Bayesian test for non-zero correlation</a></li>
@@ -665,8 +671,8 @@ Figure&nbsp;12.6: Posterior distribution of pass rate (<span class="math inline"
 <p>In practice, calculating posterior distributions analytically can be challenging, especially for complex models or large datasets. As a result, Bayesian inference often relies on computational methods such as Markov Chain Monte Carlo (MCMC) to approximate posterior distributions. MCMC methods generate samples from the posterior distribution by constructing a Markov chain that converges to the target distribution over time. These samples can then be used to estimate summary statistics and credible intervals for the parameters of interest. There are several software packages available for performing Bayesian inference using MCMC methods. These packages provide user-friendly interfaces for specifying Bayesian models and running MCMC simulations, making it easier for practitioners to apply Bayesian methods to real-world problems. We will use the <code>stan</code> software package<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> to perform Bayesian inference in this and subsequent chapters, often via the <code>rstanarm</code> package and other common R packages.</p>
 </section>
 </section>
-<section id="bayesian-hypothesis-testing" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="bayesian-hypothesis-testing"><span class="header-section-number">12.3</span> Bayesian hypothesis testing</h2>
+<section id="sec-bayes-hyp-test" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="sec-bayes-hyp-test"><span class="header-section-number">12.3</span> Bayesian hypothesis testing</h2>
 <p>In classical statistics, we rely heavily on the <span class="math inline">\(p\)</span>-value to test hypotheses. We set up a null hypothesis (usually that there is no effect or no difference) and an alternative hypothesis. If the <span class="math inline">\(p\)</span>-value falls below a defined <span class="math inline">\(\alpha\)</span> (usually 0.05), we reject the null hypothesis. However, as we discussed in previous chapters, the <span class="math inline">\(p\)</span>-value is often misunderstood. It tells us the frequency of observing data at least as extreme as ours over many random repeated samples, <em>assuming the null hypothesis is true</em>, that is <span class="math inline">\(P(D \mid H_0)\)</span>. It does <strong>not</strong> tell us the probability that the hypothesis itself is true.</p>
 <p>Using a Bayesian approach, we can calculate the probability of our hypotheses being true given the data we observe, that is <span class="math inline">\(P(H \mid D)\)</span>. This allows us to test any defined hypothesis <span class="math inline">\(H\)</span> against our data <span class="math inline">\(D\)</span> and make direct statements about the probability that <span class="math inline">\(H\)</span> is true.</p>
 <p>Using Bayes’ theorem again, we can express this as:</p>
@@ -1514,8 +1520,8 @@ McElreath, Richard. 2020. <em>Statistical Rethinking: A Bayesian Course with Exa
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./further.html" class="pagination-link" aria-label="Further Exercises for Practice">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./bayesian_linear_regression.html" class="pagination-link" aria-label="Linear Regression Using Bayesian Inference">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Linear Regression Using Bayesian Inference</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

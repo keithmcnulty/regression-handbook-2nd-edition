@@ -774,7 +774,7 @@ ugtests_model = model.fit()
 print(ugtests_model.summary())
 ```
 
-## Learning exercises
+## Learning exercises {#sec-lin-reg-ols-exercises}
 
 ### Discussion questions
 

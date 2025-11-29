@@ -37,6 +37,7 @@ book:
     - survival_analysis.qmd
     - power_tests.qmd
     - bayesian_inference.qmd
+    - bayesian_linear_regression.qmd
     - further.qmd
     - bibliography.qmd
 
