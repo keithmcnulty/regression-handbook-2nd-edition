@@ -391,7 +391,7 @@ window.Quarto = {
 <p>where</p>
 <ul>
 <li><span class="math inline">\(\beta_0\)</span> is the intercept coefficient</li>
-<li><span class="math inline">\(\beta_1, \beta_2, \dots, \beta_k\)</span> are the coefficients for each input variable</li>
+<li><span class="math inline">\(\beta_1, \beta_2, \dots, \beta_k\)</span> are the ‘slope’ coefficients for each input variable</li>
 <li><span class="math inline">\(\epsilon_i\)</span> is the error term for observation <span class="math inline">\(i\)</span>, assumed to be normally distributed with mean 0 and variance <span class="math inline">\(\sigma^2\)</span>, that is <span class="math inline">\(\epsilon_i \sim N(0, \sigma^2)\)</span>.</li>
 </ul>
 <p>In the classical (frequentist) framework, our goal is to find the point estimates for the <span class="math inline">\(\beta\)</span> coefficients that minimize the sum of squared errors. We assume there is one true line that best fits the data, and we calculate standard errors to construct confidence intervals around that line.</p>
@@ -504,16 +504,16 @@ For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure
 <ol type="1">
 <li><p>The <code>mean</code> column provides the means of the posterior distributions for each parameter. In this case:</p>
 <ul>
-<li><code>(Intercept)</code>: The mean estimate is approximately 8.56. This is the posterior mean of the final year score assuming there was a score of zero in all of the previous years.</li>
-<li><code>Yr1</code>: The mean estimate is approximately 0.49. This is the posterior mean increase in Final year score associated with a one point increase in Year 1 score, assuming no change in the other input variables.</li>
-<li><code>Yr2</code>: The mean estimate is approximately 0.35. This is the posterior mean increase in Final year score associated with a one point increase in Year 2 score, assuming no change in the other input variables.</li>
-<li><code>Yr3</code>: The mean estimate is approximately 0.76. This is the posterior mean increase in Final year score associated with a one point increase in Year 3 score, assuming no change in the other input variables.</li>
+<li><code>(Intercept)</code>: This is the posterior mean of the final year score assuming there was a score of zero in all of the previous years.</li>
+<li><code>Yr1</code>: This is the posterior mean increase in Final year score associated with a one point increase in Year 1 score, assuming no change in the other input variables.</li>
+<li><code>Yr2</code>: This is the posterior mean increase in Final year score associated with a one point increase in Year 2 score, assuming no change in the other input variables.</li>
+<li><code>Yr3</code>: This is the posterior mean increase in Final year score associated with a one point increase in Year 3 score, assuming no change in the other input variables.</li>
 <li><code>sigma</code>: This is the posterior mean of the standard deviation of the residuals (the noise in the data not explained by the model).</li>
 </ul></li>
-<li><p>THe <code>sd</code> column is the standard deviation of the posterior distributions. It represents the uncertainty of our estimates.</p></li>
-<li><p>THe <code>10%</code>, <code>50%</code> and <code>90%</code> columns provide median values and 80% credible intervals for the parameters.</p></li>
-<li><p>THe <code>mean_PPD</code> row provides the mean of the Posterior Predictive Distribution (PPD) for each parameter, as well as describing the uncertainty around the mean. This is the expected value of the outcome variable given the model and data.</p></li>
-<li><p>THe <code>MCMC diagnostics</code> section provides information about the MCMC simulation. In particular:</p>
+<li><p>The <code>sd</code> column is the standard deviation of the posterior distributions. It represents the uncertainty of our estimates.</p></li>
+<li><p>The <code>10%</code>, <code>50%</code> and <code>90%</code> columns provide median values and 80% credible intervals for the parameters.</p></li>
+<li><p>The <code>mean_PPD</code> row provides the mean of the Posterior Predictive Distribution (PPD) for each parameter, as well as describing the uncertainty around the mean. This is the expected value of the outcome variable given the model and data.</p></li>
+<li><p>The <code>MCMC diagnostics</code> section provides information about the MCMC simulation. In particular:</p>
 <ul>
 <li><code>mcse</code>: The Monte Carlo Standard Error. This indicates the variability in the estimate due to the finite number of MCMC samples. This should be considered as a proportion of the standard deviation of the posterior. Smaller values (&lt; 5% of the standard deviation) are better.</li>
 <li><code>Rhat</code>: The potential scale reduction factor. Values close to 1 indicate good convergence of the chains. Values significantly greater than 1 suggest that the chains have not converged well.</li>

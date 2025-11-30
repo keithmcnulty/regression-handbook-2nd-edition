@@ -17,7 +17,7 @@ $$y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_k x_{ik} + \epsilon_i$$
 where 
 
 * $\beta_0$ is the intercept coefficient
-* $\beta_1, \beta_2, \dots, \beta_k$ are the coefficients for each input variable
+* $\beta_1, \beta_2, \dots, \beta_k$ are the 'slope' coefficients for each input variable
 * $\epsilon_i$ is the error term for observation $i$, assumed to be normally distributed with mean 0 and variance $\sigma^2$, that is $\epsilon_i \sim N(0, \sigma^2)$.
 
 In the classical (frequentist) framework, our goal is to find the point estimates for the $\beta$ coefficients that minimize the sum of squared errors. We assume there is one true line that best fits the data, and we calculate standard errors to construct confidence intervals around that line.
@@ -108,19 +108,19 @@ summary(weakinf_model, digits = 3)
 We can understand the basic summary output of estimates in a very similar way to OLS regression:
 
 1.  The `mean` column provides the means of the posterior distributions for each parameter.  In this case: 
-    *   `(Intercept)`: The mean estimate is approximately `r round(coef(weakinf_model)["(Intercept)"], 2)`. This is the posterior mean of the final year score assuming there was a score of zero in all of the previous years.
-    *   `Yr1`: The mean estimate is approximately `r round(coef(weakinf_model)["Yr1"], 2)`. This is the posterior mean increase in Final year score associated with a one point increase in Year 1 score, assuming no change in the other input variables.
-    *   `Yr2`: The mean estimate is approximately `r round(coef(weakinf_model)["Yr2"], 2)`. This is the posterior mean increase in Final year score associated with a one point increase in Year 2 score, assuming no change in the other input variables.
-    *  `Yr3`: The mean estimate is approximately `r round(coef(weakinf_model)["Yr3"], 2)`. This is the posterior mean increase in Final year score associated with a one point increase in Year 3 score, assuming no change in the other input variables.
+    *   `(Intercept)`: This is the posterior mean of the final year score assuming there was a score of zero in all of the previous years.
+    *   `Yr1`: This is the posterior mean increase in Final year score associated with a one point increase in Year 1 score, assuming no change in the other input variables.
+    *   `Yr2`: This is the posterior mean increase in Final year score associated with a one point increase in Year 2 score, assuming no change in the other input variables.
+    *  `Yr3`: This is the posterior mean increase in Final year score associated with a one point increase in Year 3 score, assuming no change in the other input variables.
     * `sigma`: This is the posterior mean of the standard deviation of the residuals (the noise in the data not explained by the model).
     
-2.  THe `sd` column is the standard deviation of the posterior distributions. It represents the uncertainty of our estimates. 
+2.  The `sd` column is the standard deviation of the posterior distributions. It represents the uncertainty of our estimates. 
 
-3.  THe `10%`, `50%` and `90%` columns provide median values and 80% credible intervals for the parameters. 
+3.  The `10%`, `50%` and `90%` columns provide median values and 80% credible intervals for the parameters. 
 
-4.  THe `mean_PPD` row provides the mean of the Posterior Predictive Distribution (PPD) for each parameter, as well as describing the uncertainty around the mean. This is the expected value of the outcome variable given the model and data.
+4.  The `mean_PPD` row provides the mean of the Posterior Predictive Distribution (PPD) for each parameter, as well as describing the uncertainty around the mean. This is the expected value of the outcome variable given the model and data.
 
-5.  THe `MCMC diagnostics` section provides information about the MCMC simulation.  In particular:
+5.  The `MCMC diagnostics` section provides information about the MCMC simulation.  In particular:
     *   `mcse`: The Monte Carlo Standard Error. This indicates the variability in the estimate due to the finite number of MCMC samples. This should be considered as a proportion of the standard deviation of the posterior.  Smaller values (< 5% of the standard deviation) are better.
     *   `Rhat`: The potential scale reduction factor. Values close to 1 indicate good convergence of the chains. Values significantly greater than 1 suggest that the chains have not converged well.
     *   `n_eff`: The effective sample size (ESS). This indicates how many independent samples the MCMC simulation effectively produced. Higher values are better, with at least 1000 considered sufficient.  This ensures that the are sufficient samples representing random variables that are independent and identically distributed (i.i.d.).
