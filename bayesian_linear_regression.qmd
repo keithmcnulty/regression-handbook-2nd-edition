@@ -417,7 +417,7 @@ prob_Yr3_greater_Yr2 <- mean(posterior_samples$Yr3 > 2*posterior_samples$Yr2)
 round(prob_Yr3_greater_Yr2, 2)
 ```
 
-This allows us to say that there is a `r `round(prob_Yr3_greater_Yr2*100)`% probability that the effect of `Yr3` is more than double that of `Yr2`, given our priors and data.
+This allows us to say that there is a `r round(prob_Yr3_greater_Yr2*100)`% probability that the effect of `Yr3` is more than double that of `Yr2`, given our priors and data.
 
 
 ## Model Diagnostics and Validation
