@@ -137,43 +137,29 @@
       "Maintainer": "Richard D. Morey <richarddmorey@gmail.com>",
       "Repository": "CRAN"
     },
-    "DT": {
-      "Package": "DT",
-      "Version": "0.34.0",
+    "Brobdingnag": {
+      "Package": "Brobdingnag",
+      "Version": "1.2-9",
       "Source": "Repository",
       "Type": "Package",
-      "Title": "A Wrapper of the JavaScript Library 'DataTables'",
-      "Authors@R": "c( person(\"Yihui\", \"Xie\", role = \"aut\"), person(\"Joe\", \"Cheng\", , \"joe@posit.co\", role = \"aut\"), person(\"Xianying\", \"Tan\", role = \"aut\"), person(\"Garrick\", \"Aden-Buie\", , \"garrick@posit.co\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0002-7111-0077\")), person(\"JJ\", \"Allaire\", role = \"ctb\"), person(\"Maximilian\", \"Girlich\", role = \"ctb\"), person(\"Greg\", \"Freedman Ellis\", role = \"ctb\"), person(\"Johannes\", \"Rauh\", role = \"ctb\"), person(\"SpryMedia Limited\", role = c(\"ctb\", \"cph\"), comment = \"DataTables in htmlwidgets/lib\"), person(\"Brian\", \"Reavis\", role = c(\"ctb\", \"cph\"), comment = \"selectize.js in htmlwidgets/lib\"), person(\"Leon\", \"Gersen\", role = c(\"ctb\", \"cph\"), comment = \"noUiSlider in htmlwidgets/lib\"), person(\"Bartek\", \"Szopka\", role = c(\"ctb\", \"cph\"), comment = \"jquery.highlight.js in htmlwidgets/lib\"), person(\"Alex\", \"Pickering\", role = \"ctb\"), person(\"William\", \"Holmes\", role = \"ctb\"), person(\"Mikko\", \"Marttila\", role = \"ctb\"), person(\"Andres\", \"Quintero\", role = \"ctb\"), person(\"Stéphane\", \"Laurent\", role = \"ctb\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
-      "Description": "Data objects in R can be rendered as HTML tables using the JavaScript library 'DataTables' (typically via R Markdown or Shiny). The 'DataTables' library has been included in this R package. The package name 'DT' is an abbreviation of 'DataTables'.",
-      "License": "MIT + file LICENSE",
-      "URL": "https://github.com/rstudio/DT",
-      "BugReports": "https://github.com/rstudio/DT/issues",
-      "Imports": [
-        "crosstalk",
-        "htmltools (>= 0.3.6)",
-        "htmlwidgets (>= 1.3)",
-        "jquerylib",
-        "jsonlite (>= 0.9.16)",
-        "magrittr",
-        "promises"
+      "Title": "Very Large Numbers in R",
+      "Authors@R": "person(given=c(\"Robin\", \"K. S.\"), family=\"Hankin\", role = c(\"aut\",\"cre\"), email=\"hankin.robin@gmail.com\", comment = c(ORCID = \"0000-0001-5982-0415\"))",
+      "Maintainer": "Robin K. S. Hankin <hankin.robin@gmail.com>",
+      "Depends": [
+        "R (>= 2.13.0)",
+        "methods",
+        "Matrix (>= 1.5-0)"
       ],
+      "Description": "Very large numbers in R.  Real numbers are held using their natural logarithms, plus a logical flag indicating sign.  Functionality for complex numbers is also provided.  The package includes a vignette that gives a step-by-step introduction to using S4 methods.",
       "Suggests": [
-        "bslib",
-        "future",
-        "httpuv",
-        "knitr (>= 1.8)",
-        "rmarkdown",
-        "shiny (>= 1.6)",
-        "testit",
-        "tibble"
+        "cubature",
+        "testthat"
       ],
-      "VignetteBuilder": "knitr",
-      "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
+      "License": "GPL",
+      "Repository": "CRAN",
+      "URL": "https://github.com/RobinHankin/Brobdingnag",
       "NeedsCompilation": "no",
-      "Author": "Yihui Xie [aut], Joe Cheng [aut], Xianying Tan [aut], Garrick Aden-Buie [aut, cre] (ORCID: <https://orcid.org/0000-0002-7111-0077>), JJ Allaire [ctb], Maximilian Girlich [ctb], Greg Freedman Ellis [ctb], Johannes Rauh [ctb], SpryMedia Limited [ctb, cph] (DataTables in htmlwidgets/lib), Brian Reavis [ctb, cph] (selectize.js in htmlwidgets/lib), Leon Gersen [ctb, cph] (noUiSlider in htmlwidgets/lib), Bartek Szopka [ctb, cph] (jquery.highlight.js in htmlwidgets/lib), Alex Pickering [ctb], William Holmes [ctb], Mikko Marttila [ctb], Andres Quintero [ctb], Stéphane Laurent [ctb], Posit Software, PBC [cph, fnd]",
-      "Maintainer": "Garrick Aden-Buie <garrick@posit.co>",
-      "Repository": "CRAN"
+      "Author": "Robin K. S. Hankin [aut, cre] (<https://orcid.org/0000-0001-5982-0415>)"
     },
     "Deriv": {
       "Package": "Deriv",
@@ -1440,6 +1426,143 @@
       "NeedsCompilation": "no",
       "Repository": "CRAN"
     },
+    "bridgesampling": {
+      "Package": "bridgesampling",
+      "Version": "1.2-1",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Bridge Sampling for Marginal Likelihoods and Bayes Factors",
+      "Authors@R": "c(person(given=\"Quentin F.\", family=\"Gronau\", role=c(\"aut\", \"cre\"), email=\"Quentin.F.Gronau@gmail.com\", comment=c(ORCID=\"0000-0001-5510-6943\")), person(given=\"Henrik\", family=\"Singmann\", role=\"aut\", comment=c(ORCID=\"0000-0002-4842-3657\")), person(given=\"Jonathan J.\", family=\"Forster\", role=\"ctb\"), person(given=\"Eric-Jan\", family=\"Wagenmakers\", role=\"ths\"), person(family=\"The JASP Team\", role=\"ctb\"), person(\"Jiqiang\", \"Guo\", role = \"ctb\"), person(\"Jonah\", \"Gabry\", role = \"ctb\"), person(\"Ben\", \"Goodrich\", role = c(\"ctb\")), person(\"Kees\", \"Mulder\", role = c(\"ctb\")), person(\"Perry\", \"de Valpine\", role = c(\"ctb\")), person(given=\"Aki\", family=\"Vehtari\", role = c(\"ctb\")), person(given=\"Giorgio\", family=\"Micaletto\", role = c(\"ctb\")) )",
+      "Depends": [
+        "R (>= 3.0.0)"
+      ],
+      "Imports": [
+        "mvtnorm",
+        "Matrix",
+        "Brobdingnag",
+        "stringr",
+        "coda",
+        "parallel",
+        "scales",
+        "utils",
+        "methods"
+      ],
+      "Suggests": [
+        "testthat",
+        "Rcpp",
+        "RcppEigen",
+        "R2jags",
+        "rjags",
+        "runjags",
+        "knitr",
+        "rmarkdown",
+        "R.rsp",
+        "BayesFactor",
+        "rstan",
+        "rstanarm",
+        "nimble",
+        "MCMCpack",
+        "cmdstanr (>= 0.6.0)"
+      ],
+      "Description": "Provides functions for estimating marginal likelihoods, Bayes factors, posterior model probabilities, and normalizing constants in general, via different versions of bridge sampling (Meng & Wong, 1996,  <https://www3.stat.sinica.edu.tw/statistica/j6n4/j6n43/j6n43.htm>). Gronau, Singmann, & Wagenmakers (2020) <doi:10.18637/jss.v092.i10>.",
+      "Additional_repositories": "https://stan-dev.r-universe.dev/",
+      "License": "GPL (>= 2)",
+      "LazyData": "true",
+      "RoxygenNote": "7.3.3",
+      "Encoding": "UTF-8",
+      "VignetteBuilder": "knitr, R.rsp",
+      "URL": "https://github.com/quentingronau/bridgesampling",
+      "NeedsCompilation": "no",
+      "Author": "Quentin F. Gronau [aut, cre] (ORCID: <https://orcid.org/0000-0001-5510-6943>), Henrik Singmann [aut] (ORCID: <https://orcid.org/0000-0002-4842-3657>), Jonathan J. Forster [ctb], Eric-Jan Wagenmakers [ths], The JASP Team [ctb], Jiqiang Guo [ctb], Jonah Gabry [ctb], Ben Goodrich [ctb], Kees Mulder [ctb], Perry de Valpine [ctb], Aki Vehtari [ctb], Giorgio Micaletto [ctb]",
+      "Maintainer": "Quentin F. Gronau <Quentin.F.Gronau@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "brms": {
+      "Package": "brms",
+      "Version": "2.23.0",
+      "Source": "Repository",
+      "Encoding": "UTF-8",
+      "Type": "Package",
+      "Title": "Bayesian Regression Models using 'Stan'",
+      "Date": "2025-09-08",
+      "Authors@R": "c(person(\"Paul-Christian\", \"Bürkner\", email = \"paul.buerkner@gmail.com\", role = c(\"aut\", \"cre\")), person(\"Jonah\", \"Gabry\", role = c(\"ctb\")), person(\"Sebastian\", \"Weber\", role = c(\"ctb\")), person(\"Andrew\", \"Johnson\", role = c(\"ctb\")), person(\"Martin\", \"Modrak\", role = c(\"ctb\")), person(\"Hamada S.\", \"Badr\", role = c(\"ctb\")), person(\"Frank\", \"Weber\", role = c(\"ctb\")), person(\"Aki\", \"Vehtari\", role = c(\"ctb\")), person(\"Mattan S.\", \"Ben-Shachar\", role = c(\"ctb\")), person(\"Hayden\", \"Rabel\", role = c(\"ctb\")), person(\"Simon C.\", \"Mills\", role = c(\"ctb\")), person(\"Stephen\", \"Wild\", role = c(\"ctb\")), person(\"Ven\", \"Popov\", role = c(\"ctb\")), person(\"Ioannis\", \"Kosmidis\", role = c(\"ctb\")), person(\"Ben\", \"Schneider\", role = c(\"ctb\")), person(\"Noa\", \"Kallioinen\", role = c(\"ctb\")), person(\"Wellington J.\", \"Silva\", role = c(\"ctb\")), person(\"Luiz\", \"Carvalho\", role = c(\"ctb\")), person(\"Sermet\", \"Pekin\", role = c(\"ctb\")))",
+      "Depends": [
+        "R (>= 3.6.0)",
+        "Rcpp (>= 0.12.0)",
+        "methods"
+      ],
+      "Imports": [
+        "rstan (>= 2.29.0)",
+        "ggplot2 (>= 2.0.0)",
+        "loo (>= 2.8.0)",
+        "posterior (>= 1.6.0)",
+        "Matrix (>= 1.1.1)",
+        "mgcv (>= 1.8-13)",
+        "rstantools (>= 2.1.1)",
+        "bayesplot (>= 1.5.0)",
+        "bridgesampling (>= 0.3-0)",
+        "glue (>= 1.3.0)",
+        "rlang (>= 1.0.0)",
+        "future (>= 1.19.0)",
+        "future.apply (>= 1.0.0)",
+        "matrixStats",
+        "nleqslv",
+        "nlme",
+        "coda",
+        "abind",
+        "stats",
+        "utils",
+        "parallel",
+        "grDevices",
+        "backports"
+      ],
+      "Suggests": [
+        "testthat (>= 3.1.9)",
+        "emmeans (>= 1.4.2)",
+        "cmdstanr (>= 0.5.0)",
+        "projpred (>= 2.0.0)",
+        "priorsense (>= 1.0.0)",
+        "shinystan (>= 2.4.0)",
+        "splines2 (>= 0.5.0)",
+        "RWiener",
+        "rtdists",
+        "extraDistr",
+        "processx",
+        "mice",
+        "spdep",
+        "mnormt",
+        "lme4",
+        "MCMCglmm",
+        "ape",
+        "arm",
+        "statmod",
+        "digest",
+        "diffobj",
+        "betareg",
+        "R.rsp",
+        "gtable",
+        "shiny",
+        "knitr",
+        "rmarkdown",
+        "ragg",
+        "colorspace",
+        "mirai",
+        "future.mirai"
+      ],
+      "Description": "Fit Bayesian generalized (non-)linear multivariate multilevel models using 'Stan' for full Bayesian inference. A wide range of distributions and link functions are supported, allowing users to fit -- among others -- linear, robust linear, count data, survival, response times, ordinal, zero-inflated, hurdle, and even self-defined mixture models all in a multilevel context. Further modeling options include both theory-driven and data-driven non-linear terms, auto-correlation structures, censoring and  truncation, meta-analytic standard errors, and quite a few more.  In addition, all parameters of the response distribution can be predicted  in order to perform distributional regression. Prior specifications are  flexible and explicitly encourage users to apply prior distributions that actually reflect their prior knowledge. Models can easily be evaluated and compared using several methods assessing posterior or prior predictions.  References: Bürkner (2017) <doi:10.18637/jss.v080.i01>;  Bürkner (2018) <doi:10.32614/RJ-2018-017>; Bürkner (2021) <doi:10.18637/jss.v100.i05>; Carpenter et al. (2017) <doi:10.18637/jss.v076.i01>.",
+      "LazyData": "true",
+      "NeedsCompilation": "no",
+      "License": "GPL-2",
+      "URL": "https://github.com/paul-buerkner/brms, https://discourse.mc-stan.org/, https://paulbuerkner.com/brms/",
+      "BugReports": "https://github.com/paul-buerkner/brms/issues",
+      "Additional_repositories": "https://stan-dev.r-universe.dev/",
+      "SystemRequirements": "pngquant",
+      "VignetteBuilder": "knitr, R.rsp",
+      "RoxygenNote": "7.3.2",
+      "Author": "Paul-Christian Bürkner [aut, cre], Jonah Gabry [ctb], Sebastian Weber [ctb], Andrew Johnson [ctb], Martin Modrak [ctb], Hamada S. Badr [ctb], Frank Weber [ctb], Aki Vehtari [ctb], Mattan S. Ben-Shachar [ctb], Hayden Rabel [ctb], Simon C. Mills [ctb], Stephen Wild [ctb], Ven Popov [ctb], Ioannis Kosmidis [ctb], Ben Schneider [ctb], Noa Kallioinen [ctb], Wellington J. Silva [ctb], Luiz Carvalho [ctb], Sermet Pekin [ctb]",
+      "Maintainer": "Paul-Christian Bürkner <paul.buerkner@gmail.com>",
+      "Repository": "CRAN"
+    },
     "broom": {
       "Package": "broom",
       "Version": "1.0.10",
@@ -2001,6 +2124,23 @@
       "Maintainer": "Martyn Plummer <martyn.plummer@gmail.com>",
       "Repository": "CRAN"
     },
+    "codetools": {
+      "Package": "codetools",
+      "Version": "0.2-18",
+      "Source": "Repository",
+      "Priority": "recommended",
+      "Author": "Luke Tierney <luke-tierney@uiowa.edu>",
+      "Description": "Code analysis tools for R.",
+      "Title": "Code Analysis Tools for R",
+      "Depends": [
+        "R (>= 2.1)"
+      ],
+      "Maintainer": "Luke Tierney <luke-tierney@uiowa.edu>",
+      "URL": "https://gitlab.com/luke-tierney/codetools",
+      "License": "GPL",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN"
+    },
     "colorspace": {
       "Package": "colorspace",
       "Version": "2.1-2",
@@ -2053,42 +2193,6 @@
       "NeedsCompilation": "yes",
       "Author": "Ross Ihaka [aut], Paul Murrell [aut] (ORCID: <https://orcid.org/0000-0002-3224-8858>), Kurt Hornik [aut] (ORCID: <https://orcid.org/0000-0003-4198-9911>), Jason C. Fisher [aut] (ORCID: <https://orcid.org/0000-0001-9032-8912>), Reto Stauffer [aut] (ORCID: <https://orcid.org/0000-0002-3798-5507>), Claus O. Wilke [aut] (ORCID: <https://orcid.org/0000-0002-7470-9261>), Claire D. McWhite [aut] (ORCID: <https://orcid.org/0000-0001-7346-3047>), Achim Zeileis [aut, cre] (ORCID: <https://orcid.org/0000-0003-0918-3766>)",
       "Maintainer": "Achim Zeileis <Achim.Zeileis@R-project.org>",
-      "Repository": "CRAN"
-    },
-    "colourpicker": {
-      "Package": "colourpicker",
-      "Version": "1.3.0",
-      "Source": "Repository",
-      "Title": "A Colour Picker Tool for Shiny and for Selecting Colours in Plots",
-      "Authors@R": "c( person(\"Dean\", \"Attali\",  email = \"daattali@gmail.com\", role = c(\"aut\", \"cre\"), comment= c(ORCID=\"0000-0002-5645-3493\")), person(\"David\", \"Griswold\", email=\"novachild@gmail.com\", role = \"ctb\") )",
-      "Description": "A colour picker that can be used as an input in 'Shiny' apps or Rmarkdown documents. The colour picker supports alpha opacity, custom colour palettes, and many more options. A Plot Colour Helper tool is available as an 'RStudio' Addin, which helps you pick colours to use in your plots. A more generic Colour Picker 'RStudio' Addin is also provided to let  you select colours to use in your R code.",
-      "URL": "https://github.com/daattali/colourpicker, https://daattali.com/shiny/colourInput/",
-      "BugReports": "https://github.com/daattali/colourpicker/issues",
-      "Depends": [
-        "R (>= 3.1.0)"
-      ],
-      "Imports": [
-        "ggplot2",
-        "htmltools",
-        "htmlwidgets (>= 0.7)",
-        "jsonlite",
-        "miniUI (>= 0.1.1)",
-        "shiny (>= 0.11.1)",
-        "shinyjs (>= 2.0.0)",
-        "utils"
-      ],
-      "Suggests": [
-        "knitr (>= 1.7)",
-        "rmarkdown",
-        "rstudioapi (>= 0.5)",
-        "shinydisconnect"
-      ],
-      "License": "MIT + file LICENSE",
-      "Encoding": "UTF-8",
-      "RoxygenNote": "7.2.3",
-      "NeedsCompilation": "no",
-      "Author": "Dean Attali [aut, cre] (<https://orcid.org/0000-0002-5645-3493>), David Griswold [ctb]",
-      "Maintainer": "Dean Attali <daattali@gmail.com>",
       "Repository": "CRAN"
     },
     "commonmark": {
@@ -2715,40 +2819,6 @@
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
       "Repository": "CRAN"
     },
-    "dygraphs": {
-      "Package": "dygraphs",
-      "Version": "1.1.1.6",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Interface to 'Dygraphs' Interactive Time Series Charting Library",
-      "Authors@R": "c( person(\"Dan\", \"Vanderkam\", role = c(\"aut\", \"cph\"), comment = \"dygraphs library in htmlwidgets/lib, http://dygraphs.com/\"), person(\"Petr\", \"Shevtsov\", role = c(\"cre\", \"cph\"), email = \"petr.shevtsov@gmail.com\"), person(\"JJ\", \"Allaire\", role = c(\"aut\")), person(family = \"RStudio\", role = \"cph\"), person(\"Jonathan\", \"Owen\", role = c(\"aut\", \"cph\")), person(\"Daniel\", \"Gromer\", role = c(\"aut\", \"cph\")), person(\"Benoit\", \"Thieurmel\", role = c(\"aut\", \"cph\")), person(\"Kent\", \"Laukhuf\", role = \"ctb\"), person(family = \"jQuery Foundation\", role = \"cph\", comment = \"jQuery library\"), person(family = \"jQuery contributors\", role = c(\"ctb\", \"cph\"), comment = \"jQuery library; authors listed in inst/htmlwidgets/lib/jquery/AUTHORS.txt\") )",
-      "URL": "https://github.com/rstudio/dygraphs",
-      "BugReports": "https://github.com/rstudio/dygraphs/issues",
-      "Description": "An R interface to the 'dygraphs' JavaScript charting library (a copy of which is included in the package). Provides rich facilities for charting time-series data in R, including highly configurable series- and axis-display and interactive features like zoom/pan and series/point highlighting.",
-      "License": "MIT + file LICENSE",
-      "Depends": [
-        "R (>= 3.0)"
-      ],
-      "Imports": [
-        "magrittr",
-        "htmlwidgets (>= 0.6)",
-        "htmltools (>= 0.3.5)",
-        "zoo (>= 1.7-10)",
-        "xts (>= 0.9-7)"
-      ],
-      "Suggests": [
-        "testthat"
-      ],
-      "Enhances": [
-        "rmarkdown (>= 0.3.3)",
-        "shiny (>= 0.10.2.1)"
-      ],
-      "RoxygenNote": "6.0.1",
-      "NeedsCompilation": "no",
-      "Author": "Dan Vanderkam [aut, cph] (dygraphs library in htmlwidgets/lib, http://dygraphs.com/), Petr Shevtsov [cre, cph], JJ Allaire [aut], RStudio [cph], Jonathan Owen [aut, cph], Daniel Gromer [aut, cph], Benoit Thieurmel [aut, cph], Kent Laukhuf [ctb], jQuery Foundation [cph] (jQuery library), jQuery contributors [ctb, cph] (jQuery library; authors listed in inst/htmlwidgets/lib/jquery/AUTHORS.txt)",
-      "Maintainer": "Petr Shevtsov <petr.shevtsov@gmail.com>",
-      "Repository": "CRAN"
-    },
     "e1071": {
       "Package": "e1071",
       "Version": "1.7-16",
@@ -3158,6 +3228,82 @@
       "NeedsCompilation": "yes",
       "Author": "Jim Hester [aut], Hadley Wickham [aut], Gábor Csárdi [aut, cre], libuv project contributors [cph] (libuv library), Joyent, Inc. and other Node contributors [cph] (libuv library), Posit Software, PBC [cph, fnd]",
       "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "future": {
+      "Package": "future",
+      "Version": "1.67.0",
+      "Source": "Repository",
+      "Title": "Unified Parallel and Distributed Processing in R for Everyone",
+      "Depends": [
+        "R (>= 3.2.0)"
+      ],
+      "Imports": [
+        "digest",
+        "globals (>= 0.18.0)",
+        "listenv (>= 0.8.0)",
+        "parallel",
+        "parallelly (>= 1.44.0)",
+        "utils"
+      ],
+      "Suggests": [
+        "methods",
+        "RhpcBLASctl",
+        "R.rsp",
+        "markdown"
+      ],
+      "VignetteBuilder": "R.rsp",
+      "Authors@R": "c(person(\"Henrik\", \"Bengtsson\", role = c(\"aut\", \"cre\", \"cph\"), email = \"henrikb@braju.com\", comment = c(ORCID = \"0000-0002-7579-5165\")))",
+      "Description": "The purpose of this package is to provide a lightweight and unified Future API for sequential and parallel processing of R expression via futures.  The simplest way to evaluate an expression in parallel is to use `x %<-% { expression }` with `plan(multisession)`. This package implements sequential, multicore, multisession, and cluster futures.  With these, R expressions can be evaluated on the local machine, in parallel a set of local machines, or distributed on a mix of local and remote machines. Extensions to this package implement additional backends for processing futures via compute cluster schedulers, etc. Because of its unified API, there is no need to modify any code in order switch from sequential on the local machine to, say, distributed processing on a remote compute cluster. Another strength of this package is that global variables and functions are automatically identified and exported as needed, making it straightforward to tweak existing code to make use of futures.",
+      "License": "LGPL (>= 2.1)",
+      "LazyLoad": "TRUE",
+      "ByteCompile": "TRUE",
+      "URL": "https://future.futureverse.org, https://github.com/futureverse/future",
+      "BugReports": "https://github.com/futureverse/future/issues",
+      "Language": "en-US",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "Collate": "'000.bquote.R' '000.import.R' '000.re-exports.R' '010.tweakable.R' '010.utils-parallelly.R' 'backend_api-01-FutureBackend-class.R' 'backend_api-03.MultiprocessFutureBackend-class.R' 'backend_api-11.ClusterFutureBackend-class.R' 'backend_api-11.MulticoreFutureBackend-class.R' 'backend_api-11.SequentialFutureBackend-class.R' 'backend_api-13.MultisessionFutureBackend-class.R' 'backend_api-ConstantFuture-class.R' 'backend_api-Future-class.R' 'backend_api-FutureRegistry.R' 'backend_api-UniprocessFuture-class.R' 'backend_api-evalFuture.R' 'core_api-cancel.R' 'core_api-future.R' 'core_api-reset.R' 'core_api-resolved.R' 'core_api-value.R' 'delayed_api-futureAssign.R' 'delayed_api-futureOf.R' 'demo_api-mandelbrot.R' 'infix_api-01-futureAssign_OP.R' 'infix_api-02-globals_OP.R' 'infix_api-03-seed_OP.R' 'infix_api-04-stdout_OP.R' 'infix_api-05-conditions_OP.R' 'infix_api-06-lazy_OP.R' 'infix_api-07-label_OP.R' 'infix_api-08-plan_OP.R' 'infix_api-09-tweak_OP.R' 'protected_api-FutureCondition-class.R' 'protected_api-FutureGlobals-class.R' 'protected_api-FutureResult-class.R' 'protected_api-futures.R' 'protected_api-globals.R' 'protected_api-journal.R' 'protected_api-resolve.R' 'protected_api-signalConditions.R' 'testme.R' 'utils-basic.R' 'utils-conditions.R' 'utils-connections.R' 'utils-debug.R' 'utils-immediateCondition.R' 'utils-marshalling.R' 'utils-objectSize.R' 'utils-options.R' 'utils-prune_pkg_code.R' 'utils-registerClusterTypes.R' 'utils-rng_utils.R' 'utils-signalEarly.R' 'utils-stealth_sample.R' 'utils-sticky_globals.R' 'utils-tweakExpression.R' 'utils-uuid.R' 'utils-whichIndex.R' 'utils_api-backtrace.R' 'utils_api-capture_journals.R' 'utils_api-futureCall.R' 'utils_api-futureSessionInfo.R' 'utils_api-makeClusterFuture.R' 'utils_api-minifuture.R' 'utils_api-nbrOfWorkers.R' 'utils_api-plan.R' 'utils_api-plan-with.R' 'utils_api-sessionDetails.R' 'utils_api-tweak.R' 'zzz.R'",
+      "NeedsCompilation": "no",
+      "Author": "Henrik Bengtsson [aut, cre, cph] (ORCID: <https://orcid.org/0000-0002-7579-5165>)",
+      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
+      "Repository": "CRAN"
+    },
+    "future.apply": {
+      "Package": "future.apply",
+      "Version": "1.20.0",
+      "Source": "Repository",
+      "Title": "Apply Function to Elements in Parallel using Futures",
+      "Depends": [
+        "R (>= 3.2.0)",
+        "future (>= 1.49.0)"
+      ],
+      "Imports": [
+        "globals",
+        "parallel",
+        "utils"
+      ],
+      "Suggests": [
+        "datasets",
+        "stats",
+        "tools",
+        "listenv",
+        "R.rsp",
+        "markdown"
+      ],
+      "VignetteBuilder": "R.rsp",
+      "Authors@R": "c(person(\"Henrik\", \"Bengtsson\", role = c(\"aut\", \"cre\", \"cph\"), email = \"henrikb@braju.com\", comment = c(ORCID = \"0000-0002-7579-5165\")), person(\"R Core Team\", role = c(\"cph\", \"ctb\")))",
+      "Description": "Implementations of apply(), by(), eapply(), lapply(), Map(), .mapply(), mapply(), replicate(), sapply(), tapply(), and vapply() that can be resolved using any future-supported backend, e.g. parallel on the local machine or distributed on a compute cluster. These future_*apply() functions come with the same pros and cons as the corresponding base-R *apply() functions but with the additional feature of being able to be processed via the future framework <doi:10.32614/RJ-2021-048>.",
+      "License": "GPL (>= 2)",
+      "LazyLoad": "TRUE",
+      "URL": "https://future.apply.futureverse.org, https://github.com/futureverse/future.apply",
+      "BugReports": "https://github.com/futureverse/future.apply/issues",
+      "Language": "en-US",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "no",
+      "Author": "Henrik Bengtsson [aut, cre, cph] (ORCID: <https://orcid.org/0000-0002-7579-5165>), R Core Team [cph, ctb]",
+      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
       "Repository": "CRAN"
     },
     "generalhoslem": {
@@ -3692,6 +3838,32 @@
       "NeedsCompilation": "yes",
       "Author": "Robert King [aut, cre] (ORCID: <https://orcid.org/0000-0001-7495-6599>), Benjamin Dean [aut], Sigbert Klinke [aut], Paul van Staden [aut] (ORCID: <https://orcid.org/0000-0002-5710-5984>)",
       "Maintainer": "Robert King <Robert.King.Newcastle@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "globals": {
+      "Package": "globals",
+      "Version": "0.18.0",
+      "Source": "Repository",
+      "Depends": [
+        "R (>= 3.1.2)"
+      ],
+      "Imports": [
+        "codetools"
+      ],
+      "Title": "Identify Global Objects in R Expressions",
+      "Authors@R": "c( person(\"Henrik\", \"Bengtsson\", role=c(\"aut\", \"cre\", \"cph\"), email=\"henrikb@braju.com\"), person(\"Davis\",\"Vaughan\", role=\"ctb\", email=\"davis@posit.co\"))",
+      "Description": "Identifies global (\"unknown\" or \"free\") objects in R expressions by code inspection using various strategies (ordered, liberal, conservative, or deep-first search). The objective of this package is to make it as simple as possible to identify global objects for the purpose of exporting them in parallel, distributed compute environments.",
+      "License": "LGPL (>= 2.1)",
+      "LazyLoad": "TRUE",
+      "ByteCompile": "TRUE",
+      "Language": "en-US",
+      "Encoding": "UTF-8",
+      "URL": "https://globals.futureverse.org, https://github.com/futureverse/globals",
+      "BugReports": "https://github.com/futureverse/globals/issues",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "no",
+      "Author": "Henrik Bengtsson [aut, cre, cph], Davis Vaughan [ctb]",
+      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
       "Repository": "CRAN"
     },
     "glue": {
@@ -4948,6 +5120,32 @@
       "NeedsCompilation": "no",
       "Repository": "CRAN"
     },
+    "listenv": {
+      "Package": "listenv",
+      "Version": "0.10.0",
+      "Source": "Repository",
+      "Depends": [
+        "R (>= 3.1.2)"
+      ],
+      "Suggests": [
+        "R.utils",
+        "R.rsp",
+        "markdown"
+      ],
+      "VignetteBuilder": "R.rsp",
+      "Title": "Environments Behaving (Almost) as Lists",
+      "Authors@R": "c(person(\"Henrik\", \"Bengtsson\", role=c(\"aut\", \"cre\", \"cph\"), email = \"henrikb@braju.com\"))",
+      "Description": "List environments are environments that have list-like properties.  For instance, the elements of a list environment are ordered and can be accessed and iterated over using index subsetting, e.g. 'x <- listenv(a = 1, b = 2); for (i in seq_along(x)) x[[i]] <- x[[i]] ^ 2; y <- as.list(x)'.",
+      "License": "LGPL (>= 2.1)",
+      "LazyLoad": "TRUE",
+      "URL": "https://listenv.futureverse.org, https://github.com/futureverse/listenv",
+      "BugReports": "https://github.com/futureverse/listenv/issues",
+      "RoxygenNote": "7.3.3",
+      "NeedsCompilation": "no",
+      "Author": "Henrik Bengtsson [aut, cre, cph]",
+      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
+      "Repository": "CRAN"
+    },
     "litedown": {
       "Package": "litedown",
       "Version": "0.8",
@@ -5481,29 +5679,6 @@
       "Maintainer": "Yihui Xie <xie@yihui.name>",
       "Repository": "CRAN"
     },
-    "miniUI": {
-      "Package": "miniUI",
-      "Version": "0.1.2",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Shiny UI Widgets for Small Screens",
-      "Authors@R": "c( person(\"Joe\", \"Cheng\", role = c(\"cre\", \"aut\"), email = \"joe@posit.co\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"), comment = c(ROR = \"03wc8by49\")) )",
-      "Description": "Provides UI widget and layout functions for writing Shiny apps that work well on small screens.",
-      "License": "GPL-3",
-      "URL": "https://github.com/rstudio/miniUI",
-      "BugReports": "https://github.com/rstudio/miniUI/issues",
-      "Imports": [
-        "shiny (>= 0.13)",
-        "htmltools (>= 0.3)",
-        "utils"
-      ],
-      "RoxygenNote": "7.3.2",
-      "Encoding": "UTF-8",
-      "NeedsCompilation": "no",
-      "Author": "Joe Cheng [cre, aut], Posit Software, PBC [cph, fnd] (03wc8by49)",
-      "Maintainer": "Joe Cheng <joe@posit.co>",
-      "Repository": "CRAN"
-    },
     "minqa": {
       "Package": "minqa",
       "Version": "1.2.8",
@@ -5606,6 +5781,19 @@
       "NeedsCompilation": "yes",
       "Author": "Alan Genz [aut], Frank Bretz [aut], Tetsuhisa Miwa [aut], Xuefei Mi [aut], Friedrich Leisch [ctb], Fabian Scheipl [ctb], Bjoern Bornkamp [ctb] (<https://orcid.org/0000-0002-6294-8185>), Martin Maechler [ctb] (<https://orcid.org/0000-0002-8685-9910>), Torsten Hothorn [aut, cre] (<https://orcid.org/0000-0001-8301-0471>)",
       "Maintainer": "Torsten Hothorn <Torsten.Hothorn@R-project.org>",
+      "Repository": "CRAN"
+    },
+    "nleqslv": {
+      "Package": "nleqslv",
+      "Version": "3.3.5",
+      "Source": "Repository",
+      "Title": "Solve Systems of Nonlinear Equations",
+      "Date": "2023-11-25",
+      "Author": "Berend Hasselman",
+      "Maintainer": "Berend Hasselman <bhh@xs4all.nl>",
+      "Description": "Solve a system of nonlinear equations using a Broyden or a Newton method with a choice of global strategies such as line search and trust region. There are options for using a numerical or user supplied Jacobian, for specifying a banded numerical Jacobian and for allowing a singular or ill-conditioned Jacobian.",
+      "License": "GPL (>= 2)",
+      "NeedsCompilation": "yes",
       "Repository": "CRAN"
     },
     "nlme": {
@@ -5826,6 +6014,36 @@
       "NeedsCompilation": "no",
       "Author": "Gábor Csárdi [aut, cre]",
       "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "parallelly": {
+      "Package": "parallelly",
+      "Version": "1.45.1",
+      "Source": "Repository",
+      "Title": "Enhancing the 'parallel' Package",
+      "Imports": [
+        "parallel",
+        "tools",
+        "utils"
+      ],
+      "Suggests": [
+        "commonmark",
+        "base64enc"
+      ],
+      "VignetteBuilder": "parallelly",
+      "Authors@R": "c( person(\"Henrik\", \"Bengtsson\", role = c(\"aut\", \"cre\", \"cph\"), email = \"henrikb@braju.com\", comment = c(ORCID = \"0000-0002-7579-5165\")), person(\"Mike\", \"Cheng\", role = c(\"ctb\"), email = \"mikefc@coolbutuseless.com\") )",
+      "Description": "Utility functions that enhance the 'parallel' package and support the built-in parallel backends of the 'future' package.  For example, availableCores() gives the number of CPU cores available to your R process as given by the operating system, 'cgroups' and Linux containers, R options, and environment variables, including those set by job schedulers on high-performance compute clusters. If none is set, it will fall back to parallel::detectCores(). Another example is makeClusterPSOCK(), which is backward compatible with parallel::makePSOCKcluster() while doing a better job in setting up remote cluster workers without the need for configuring the firewall to do port-forwarding to your local computer.",
+      "License": "LGPL (>= 2.1)",
+      "LazyLoad": "TRUE",
+      "ByteCompile": "TRUE",
+      "URL": "https://parallelly.futureverse.org, https://github.com/futureverse/parallelly",
+      "BugReports": "https://github.com/futureverse/parallelly/issues",
+      "Language": "en-US",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "yes",
+      "Author": "Henrik Bengtsson [aut, cre, cph] (ORCID: <https://orcid.org/0000-0002-7579-5165>), Mike Cheng [ctb]",
+      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
       "Repository": "CRAN"
     },
     "patchwork": {
@@ -7433,77 +7651,6 @@
       "Maintainer": "Ben Goodrich <benjamin.goodrich@columbia.edu>",
       "Repository": "CRAN"
     },
-    "rstanarm": {
-      "Package": "rstanarm",
-      "Version": "2.32.2",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Bayesian Applied Regression Modeling via Stan",
-      "Date": "2025-09-29",
-      "Encoding": "UTF-8",
-      "Authors@R": "c(person(\"Jonah\", \"Gabry\", email = \"jsg2201@columbia.edu\", role = \"aut\"), person(\"Imad\", \"Ali\", role = \"ctb\"), person(\"Sam\", \"Brilleman\", role = \"ctb\"), person(given = \"Jacqueline Buros\", family = \"Novik\", role = \"ctb\", comment = \"R/stan_jm.R\"), person(\"AstraZeneca\", role = \"ctb\", comment = \"R/stan_jm.R\"), person(\"Trustees of\", \"Columbia University\", role = \"cph\"), person(\"Simon\", \"Wood\", role = \"cph\", comment = \"R/stan_gamm4.R\"), person(\"R Core\", \"Deveopment Team\", role = \"cph\", comment = \"R/stan_aov.R\"), person(\"Douglas\", \"Bates\", role = \"cph\", comment = \"R/pp_data.R\"), person(\"Martin\", \"Maechler\", role = \"cph\", comment = \"R/pp_data.R\"), person(\"Ben\", \"Bolker\", role = \"cph\", comment = \"R/pp_data.R\"), person(\"Steve\", \"Walker\", role = \"cph\", comment = \"R/pp_data.R\"), person(\"Brian\", \"Ripley\", role = \"cph\", comment = \"R/stan_aov.R, R/stan_polr.R\"), person(\"William\", \"Venables\", role = \"cph\", comment = \"R/stan_polr.R\"), person(\"Paul-Christian\", \"Burkner\", email = \"paul.buerkner@gmail.com\", role = \"cph\", comment = \"R/misc.R\"), person(\"Ben\", \"Goodrich\", email = \"benjamin.goodrich@columbia.edu\", role = c(\"cre\", \"aut\")))",
-      "Description": "Estimates previously compiled regression models using the 'rstan' package, which provides the R interface to the Stan C++ library for Bayesian estimation. Users specify models via the customary R syntax with a formula and data.frame plus some additional arguments for priors.",
-      "License": "GPL (>= 3)",
-      "Depends": [
-        "R (>= 3.4.0)",
-        "Rcpp (>= 0.12.0)",
-        "methods"
-      ],
-      "Imports": [
-        "bayesplot (>= 1.7.0)",
-        "ggplot2 (>= 2.2.1)",
-        "lme4 (>= 1.1-8)",
-        "loo (>= 2.1.0)",
-        "Matrix (>= 1.2-13)",
-        "nlme (>= 3.1-124)",
-        "posterior",
-        "rstan (>= 2.32.0)",
-        "rstantools (>= 2.1.0)",
-        "shinystan (>= 2.3.0)",
-        "stats",
-        "survival (>= 2.40.1)",
-        "RcppParallel (>= 5.0.1)",
-        "utils",
-        "reformulas"
-      ],
-      "Suggests": [
-        "biglm",
-        "betareg",
-        "data.table (>= 1.10.0)",
-        "digest",
-        "gridExtra",
-        "HSAUR3",
-        "knitr (>= 1.15.1)",
-        "MASS",
-        "mgcv (>= 1.8-13)",
-        "rmarkdown",
-        "roxygen2",
-        "StanHeaders (>= 2.21.0)",
-        "testthat (>= 1.0.2)",
-        "gamm4",
-        "shiny",
-        "V8"
-      ],
-      "LinkingTo": [
-        "StanHeaders (>= 2.32.0)",
-        "rstan (>= 2.32.0)",
-        "BH (>= 1.72.0-2)",
-        "Rcpp (>= 0.12.0)",
-        "RcppEigen (>= 0.3.3.3.0)",
-        "RcppParallel (>= 5.0.1)"
-      ],
-      "SystemRequirements": "GNU make, pandoc (>= 1.12.3), pandoc-citeproc",
-      "VignetteBuilder": "knitr",
-      "LazyData": "true",
-      "UseLTO": "true",
-      "NeedsCompilation": "yes",
-      "URL": "https://mc-stan.org/rstanarm/, https://discourse.mc-stan.org",
-      "BugReports": "https://github.com/stan-dev/rstanarm/issues",
-      "RoxygenNote": "7.3.3",
-      "Author": "Jonah Gabry [aut], Imad Ali [ctb], Sam Brilleman [ctb], Jacqueline Buros Novik [ctb] (R/stan_jm.R), AstraZeneca [ctb] (R/stan_jm.R), Trustees of Columbia University [cph], Simon Wood [cph] (R/stan_gamm4.R), R Core Deveopment Team [cph] (R/stan_aov.R), Douglas Bates [cph] (R/pp_data.R), Martin Maechler [cph] (R/pp_data.R), Ben Bolker [cph] (R/pp_data.R), Steve Walker [cph] (R/pp_data.R), Brian Ripley [cph] (R/stan_aov.R, R/stan_polr.R), William Venables [cph] (R/stan_polr.R), Paul-Christian Burkner [cph] (R/misc.R), Ben Goodrich [cre, aut]",
-      "Maintainer": "Ben Goodrich <benjamin.goodrich@columbia.edu>",
-      "Repository": "CRAN"
-    },
     "rstantools": {
       "Package": "rstantools",
       "Version": "2.5.0",
@@ -7878,116 +8025,6 @@
       "Maintainer": "Winston Chang <winston@posit.co>",
       "Repository": "CRAN"
     },
-    "shinyjs": {
-      "Package": "shinyjs",
-      "Version": "2.1.0",
-      "Source": "Repository",
-      "Title": "Easily Improve the User Experience of Your Shiny Apps in Seconds",
-      "Authors@R": "person(\"Dean\", \"Attali\",  email = \"daattali@gmail.com\", role = c(\"aut\", \"cre\"), comment= c(ORCID=\"0000-0002-5645-3493\"))",
-      "Description": "Perform common useful JavaScript operations in Shiny apps that will greatly improve your apps without having to know any JavaScript. Examples include: hiding an element, disabling an input, resetting an input back to its original value, delaying code execution by a few seconds, and many more useful functions for both the end user and the developer. 'shinyjs' can also be used to easily call your own custom JavaScript functions from R.",
-      "URL": "https://deanattali.com/shinyjs/",
-      "BugReports": "https://github.com/daattali/shinyjs/issues",
-      "Depends": [
-        "R (>= 3.1.0)"
-      ],
-      "Imports": [
-        "digest (>= 0.6.8)",
-        "jsonlite",
-        "shiny (>= 1.0.0)"
-      ],
-      "Suggests": [
-        "htmltools (>= 0.2.9)",
-        "knitr (>= 1.7)",
-        "rmarkdown",
-        "shinyAce",
-        "shinydisconnect",
-        "testthat (>= 0.9.1)"
-      ],
-      "License": "MIT + file LICENSE",
-      "VignetteBuilder": "knitr",
-      "RoxygenNote": "7.1.1",
-      "Encoding": "UTF-8",
-      "NeedsCompilation": "no",
-      "Author": "Dean Attali [aut, cre] (<https://orcid.org/0000-0002-5645-3493>)",
-      "Maintainer": "Dean Attali <daattali@gmail.com>",
-      "Repository": "CRAN"
-    },
-    "shinystan": {
-      "Package": "shinystan",
-      "Version": "2.6.0",
-      "Source": "Repository",
-      "Title": "Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models",
-      "Date": "2022-03-02",
-      "Authors@R": "c(person(\"Jonah\", \"Gabry\", role = c(\"aut\", \"cre\"), email = \"jsg2201@columbia.edu\"), person(\"Duco\", \"Veen\", role = \"aut\"), person(family = \"Stan Development Team\", role = \"ctb\"), person(\"Michael\", \"Andreae\", role = \"ctb\"), person(\"Michael\", \"Betancourt\", role = \"ctb\"), person(\"Bob\", \"Carpenter\", role = \"ctb\"), person(\"Yuanjun\", \"Gao\", role = \"ctb\"), person(\"Andrew\", \"Gelman\", role = \"ctb\"), person(\"Ben\", \"Goodrich\", role = \"ctb\"), person(\"Daniel\", \"Lee\", role = \"ctb\"), person(\"Dongying\", \"Song\", role = \"ctb\"), person(\"Rob\", \"Trangucci\", role = \"ctb\"))",
-      "Maintainer": "Jonah Gabry <jsg2201@columbia.edu>",
-      "Description": "A graphical user interface for interactive Markov chain Monte Carlo (MCMC) diagnostics and plots and tables helpful for analyzing a posterior sample. The interface is powered by the 'Shiny' web application framework from 'RStudio' and works with the output of MCMC  programs written in any programming language (and has extended  functionality for 'Stan' models fit using the 'rstan' and 'rstanarm'  packages).",
-      "URL": "https://mc-stan.org/shinystan/, https://discourse.mc-stan.org",
-      "BugReports": "https://github.com/stan-dev/shinystan/issues/",
-      "License": "GPL (>= 3)",
-      "Depends": [
-        "R (>= 3.1.0)",
-        "shiny (>= 1.0.3)"
-      ],
-      "Imports": [
-        "bayesplot (>= 1.5.0)",
-        "colourpicker",
-        "DT (>= 0.2)",
-        "dygraphs (>= 1.1.1.2)",
-        "ggplot2 (>= 2.1.1)",
-        "gridExtra",
-        "gtools",
-        "markdown (>= 0.7.4)",
-        "methods",
-        "reshape2",
-        "rstan (>= 2.17.1)",
-        "stats",
-        "shinyjs (>= 0.6.0)",
-        "shinythemes (>= 1.0.1)",
-        "threejs (>= 0.2.1)",
-        "utils",
-        "xtable",
-        "xts (>= 0.9-7)"
-      ],
-      "Suggests": [
-        "cmdstanr (>= 0.4.0)",
-        "coda",
-        "knitr (>= 1.9)",
-        "posterior (>= 1.0.0)",
-        "rmarkdown (>= 0.8.1)",
-        "rsconnect (>= 0.4.2)",
-        "rstanarm (>= 2.17.4)",
-        "testthat"
-      ],
-      "Additional_repositories": "https://mc-stan.org/r-packages/",
-      "LazyData": "true",
-      "Encoding": "UTF-8",
-      "VignetteBuilder": "knitr",
-      "RoxygenNote": "7.1.2",
-      "NeedsCompilation": "no",
-      "Author": "Jonah Gabry [aut, cre], Duco Veen [aut], Stan Development Team [ctb], Michael Andreae [ctb], Michael Betancourt [ctb], Bob Carpenter [ctb], Yuanjun Gao [ctb], Andrew Gelman [ctb], Ben Goodrich [ctb], Daniel Lee [ctb], Dongying Song [ctb], Rob Trangucci [ctb]",
-      "Repository": "CRAN"
-    },
-    "shinythemes": {
-      "Package": "shinythemes",
-      "Version": "1.2.0",
-      "Source": "Repository",
-      "Title": "Themes for Shiny",
-      "Authors@R": "c( person(\"Winston\", \"Chang\", role = c(\"aut\", \"cre\"), email = \"winston@rstudio.com\"), person(family = \"RStudio\", role = \"cph\"), person(\"Thomas\", \"Park\", role = c(\"ctb\", \"cph\"), comment = \"Bootswatch themes\"), person(\"Lukasz\", \"Dziedzic\", role = c(\"ctb\", \"cph\"), comment = \"Lato font\"), person(\"Nathan\", \"Willis\", role = c(\"ctb\", \"cph\"), comment = \"News Cycle font\"), person(family = \"Google Corporation\", role = c(\"ctb\", \"cph\"), comment = \"Open Sans and Roboto fonts\"), person(\"Matt\", \"McInerney\", role = c(\"ctb\", \"cph\"), comment = \"Raleway font\"), person(family = \"Adobe Systems Incorporated\", role = c(\"ctb\", \"cph\"), comment = \"Source Sans Pro font\"), person(family = \"Canonical Ltd\", role = c(\"ctb\", \"cph\"), comment = \"Ubuntu font\") )",
-      "Description": "Themes for use with Shiny. Includes several Bootstrap themes from <https://bootswatch.com/>, which are packaged for use with Shiny applications.",
-      "Depends": [
-        "R (>= 3.0.0)"
-      ],
-      "Imports": [
-        "shiny (>= 0.11)"
-      ],
-      "URL": "https://rstudio.github.io/shinythemes/",
-      "License": "GPL-3 | file LICENSE",
-      "RoxygenNote": "7.1.1",
-      "NeedsCompilation": "no",
-      "Author": "Winston Chang [aut, cre], RStudio [cph], Thomas Park [ctb, cph] (Bootswatch themes), Lukasz Dziedzic [ctb, cph] (Lato font), Nathan Willis [ctb, cph] (News Cycle font), Google Corporation [ctb, cph] (Open Sans and Roboto fonts), Matt McInerney [ctb, cph] (Raleway font), Adobe Systems Incorporated [ctb, cph] (Source Sans Pro font), Canonical Ltd [ctb, cph] (Ubuntu font)",
-      "Maintainer": "Winston Chang <winston@rstudio.com>",
-      "Repository": "CRAN"
-    },
     "sourcetools": {
       "Package": "sourcetools",
       "Version": "0.1.7-1",
@@ -8287,43 +8324,6 @@
       "License": "GPL (>= 2)",
       "URL": "http://www.stat.boogaart.de/tensorA/",
       "NeedsCompilation": "yes",
-      "Repository": "CRAN"
-    },
-    "threejs": {
-      "Package": "threejs",
-      "Version": "0.3.4",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Interactive 3D Scatter Plots, Networks and Globes",
-      "Description": "Create interactive 3D scatter plots, network plots, and globes using the 'three.js' visualization library (<https://threejs.org>).",
-      "Date": "2025-04-19",
-      "Authors@R": "c( person(\"B. W.\", \"Lewis\", role=c(\"aut\",\"cre\",\"cph\"), email=\"blewis@illposed.net\"), person(given=\"Three.js authors\", role=\"cph\", comment=\"three.js library\"), person(given=\"jQuery Foundation\", role=\"cph\", comment=\"jQuery library\"), person(\"Alexey\", \"Stukalov\", role=(\"ctb\"), email=\"astukalov@gmail.com\"), person(\"Yihui\",\"Xie\", role=(\"ctb\"), email=\"xie@yihui.name\"), person(\"Andreas\", \"Briese\", role=(\"ctb\"), email=\"ab@edutoolbox.de\"), person(\"B.\", \"Thieurmel\", role=(\"ctb\"), email=\"bthieurmel@gmail.com\") )",
-      "URL": "https://bwlewis.github.io/rthreejs/",
-      "BugReports": "https://github.com/bwlewis/rthreejs/issues",
-      "License": "MIT + file LICENSE",
-      "Depends": [
-        "R (>= 3.0.0)",
-        "igraph (>= 1.0.0)"
-      ],
-      "Imports": [
-        "htmlwidgets (>= 0.3.2)",
-        "base64enc",
-        "crosstalk",
-        "methods",
-        "stats"
-      ],
-      "Suggests": [
-        "maps"
-      ],
-      "Enhances": [
-        "knitr",
-        "shiny"
-      ],
-      "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
-      "NeedsCompilation": "no",
-      "Author": "B. W. Lewis [aut, cre, cph], Three.js authors [cph] (three.js library), jQuery Foundation [cph] (jQuery library), Alexey Stukalov [ctb], Yihui Xie [ctb], Andreas Briese [ctb], B. Thieurmel [ctb]",
-      "Maintainer": "B. W. Lewis <blewis@illposed.net>",
       "Repository": "CRAN"
     },
     "tibble": {
@@ -8868,41 +8868,6 @@
       "Repository": "CRAN",
       "NeedsCompilation": "no",
       "Author": "David B. Dahl [aut], David Scott [aut, cre], Charles Roosen [aut], Arni Magnusson [aut], Jonathan Swinton [aut], Ajay Shah [ctb], Arne Henningsen [ctb], Benno Puetz [ctb], Bernhard Pfaff [ctb], Claudio Agostinelli [ctb], Claudius Loehnert [ctb], David Mitchell [ctb], David Whiting [ctb], Fernando da Rosa [ctb], Guido Gay [ctb], Guido Schulz [ctb], Ian Fellows [ctb], Jeff Laake [ctb], John Walker [ctb], Jun Yan [ctb], Liviu Andronic [ctb], Markus Loecher [ctb], Martin Gubri [ctb], Matthieu Stigler [ctb], Robert Castelo [ctb], Seth Falcon [ctb], Stefan Edwards [ctb], Sven Garbade [ctb], Uwe Ligges [ctb]"
-    },
-    "xts": {
-      "Package": "xts",
-      "Version": "0.14.1",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "eXtensible Time Series",
-      "Authors@R": "c( person(given=c(\"Jeffrey\",\"A.\"), family=\"Ryan\", role=c(\"aut\",\"cph\")), person(given=c(\"Joshua\",\"M.\"), family=\"Ulrich\", role=c(\"cre\",\"aut\"), email=\"josh.m.ulrich@gmail.com\"), person(given=\"Ross\", family=\"Bennett\", role=\"ctb\"), person(given=\"Corwin\", family=\"Joy\", role=\"ctb\") )",
-      "Depends": [
-        "R (>= 3.6.0)",
-        "zoo (>= 1.7-12)"
-      ],
-      "Imports": [
-        "methods"
-      ],
-      "LinkingTo": [
-        "zoo"
-      ],
-      "Suggests": [
-        "timeSeries",
-        "timeDate",
-        "tseries",
-        "chron",
-        "tinytest"
-      ],
-      "LazyLoad": "yes",
-      "Description": "Provide for uniform handling of R's different time-based data classes by extending zoo, maximizing native format information preservation and allowing for user level customization and extension, while simplifying cross-class interoperability.",
-      "License": "GPL (>= 2)",
-      "URL": "https://joshuaulrich.github.io/xts/, https://github.com/joshuaulrich/xts",
-      "BugReports": "https://github.com/joshuaulrich/xts/issues",
-      "Encoding": "UTF-8",
-      "NeedsCompilation": "yes",
-      "Author": "Jeffrey A. Ryan [aut, cph], Joshua M. Ulrich [cre, aut], Ross Bennett [ctb], Corwin Joy [ctb]",
-      "Maintainer": "Joshua M. Ulrich <josh.m.ulrich@gmail.com>",
-      "Repository": "CRAN"
     },
     "yaml": {
       "Package": "yaml",
