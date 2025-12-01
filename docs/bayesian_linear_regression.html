@@ -428,7 +428,7 @@ P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 <section id="specifying-the-model" class="level3" data-number="13.2.1">
 <h3 data-number="13.2.1" class="anchored" data-anchor-id="specifying-the-model"><span class="header-section-number">13.2.1</span> Specifying the Model</h3>
 <p>In <code>brms</code>, we use <code>brm()</code> with the <code>family = gaussian()</code> argument to fit a Bayesian linear regression model. The syntax is very similar to <code>lm()</code> and <code>glm()</code> for our previous chapters, but with a few extra arguments regarding the Bayesian specifics. If <code>brm()</code> is not given any priors, it will use a set of default priors which assume we have no ingoing beliefs about any of our parameters.</p>
-<p>Let’s first fit a multiple linear regression model, accepting the default priors.</p>
+<p>Let’s first fit a multiple linear regression model, accepting the default priors. You may find that the MCMC simulations in <code>brms</code> models take some time to run, depending on the processing power and memory you have available as well as the choices you make about the scale of your simulation.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a weakly informed Bayesian Linear Regression Model</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>

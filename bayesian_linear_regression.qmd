@@ -626,5 +626,5 @@ Use the `sociological_data` set from the exercises in @sec-lin-reg-ols-exercises
 
 13. Create a hypothetical individual profile (a new dataframe) representing a skilled worker with high education and a large family.  Using your updated model, generate the Posterior Predictive Distribution for this individual's income. Plot the distribution.
 
-16. Report the 90% Prediction Interval for this individual. Explain, in plain language, what this interval represents regarding the uncertainty of your prediction.
+14. Report the 90% Prediction Interval for this individual. Explain, in plain language, what this interval represents regarding the uncertainty of your prediction.
 
