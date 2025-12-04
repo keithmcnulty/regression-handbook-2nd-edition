@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Keith McNulty">
+
+<title>14&nbsp; Fitting Other Regression Models Using Bayesian Inference – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./further.html" rel="next">
+<link href="./bayesian_linear_regression.html" rel="prev">
+<link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-809cd4ad8465a863d451ae2f0a07b33b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./other_bayesian_regression.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Fitting Other Regression Models Using Bayesian Inference</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Handbook of Regression Modeling in People Analytics (2nd edition)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./foreword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword by Alexis Fink</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Importance of Regression in People Analytics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basic_r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Basics of the R Programming Language</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./primer_stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Foundations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Regression for Continuous Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./binomial_logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Binomial Logistic Regression for Binary Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./multinomial_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Multinomial Logistic Regression for Nominal Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ordinal_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Odds Logistic Regression for Ordered Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poisson_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson, Quasi-Poisson and Negative Binomial Regression for Count Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./power_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis for Estimating Required Sample Sizes for Modeling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian Inference - A Modern Alternative to Classical Statistical Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Linear Regression Using Bayesian Inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./other_bayesian_regression.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Fitting Other Regression Models Using Bayesian Inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./further.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#bayesian-binomial-logistic-regression" id="toc-bayesian-binomial-logistic-regression" class="nav-link active" data-scroll-target="#bayesian-binomial-logistic-regression"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</a></li>
+  <li><a href="#bayesian-multinomial-logistic-regression" id="toc-bayesian-multinomial-logistic-regression" class="nav-link" data-scroll-target="#bayesian-multinomial-logistic-regression"><span class="header-section-number">14.2</span> Bayesian Multinomial Logistic Regression</a>
+  <ul class="collapse">
+  <li><a href="#bayesian-ordinal-logistic-regression" id="toc-bayesian-ordinal-logistic-regression" class="nav-link" data-scroll-target="#bayesian-ordinal-logistic-regression"><span class="header-section-number">14.2.1</span> Bayesian Ordinal Logistic Regression</a></li>
+  </ul></li>
+  <li><a href="#bayesian-poisson-and-negative-binomial-regression" id="toc-bayesian-poisson-and-negative-binomial-regression" class="nav-link" data-scroll-target="#bayesian-poisson-and-negative-binomial-regression"><span class="header-section-number">14.3</span> Bayesian Poisson and Negative Binomial Regression</a></li>
+  <li><a href="#bayesian-mixed-effects-models" id="toc-bayesian-mixed-effects-models" class="nav-link" data-scroll-target="#bayesian-mixed-effects-models"><span class="header-section-number">14.4</span> Bayesian Mixed Effects Models</a></li>
+  <li><a href="#bayesian-cox-proportional-hazards-models" id="toc-bayesian-cox-proportional-hazards-models" class="nav-link" data-scroll-target="#bayesian-cox-proportional-hazards-models"><span class="header-section-number">14.5</span> Bayesian Cox Proportional Hazards Models</a></li>
+  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">14.6</span> Learning exercises</a>
+  <ul class="collapse">
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">14.6.1</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">14.6.2</span> Data exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/other_bayesian_regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Fitting Other Regression Models Using Bayesian Inference</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In the earlier chapters of this book, we dedicated significant attention to each variety of regression model, explaining the specifics of their formulation, estimation, and interpretation. Moving forward, we should not need to do this for the Bayesian versions of these techniques. Given that we understand the underlying frequentist models from our earlier chapters, and now that we have a solid grasp of the principles and mechanics of Bayesian inference from the last two chapters, we can now focus on how to implement these models in a Bayesian framework without delving too deeply into the foundational details again.</p>
+<p>In this chapter, we will explore how to fit several other types of regression models using Bayesian methods. We will mainly focus on the mechanics of how to implement the models, and touch on any matters specific to the model type that are relevant in a Bayesian context. We will start with Binomial Logistic Regression, then move on to the other common logistic regression models, Poisson Regression, Negative Binomial Regression and finally we will touch on mixed effects models. For each model type, we will provide code examples using the <code>brms</code> package in R, which allows for flexible Bayesian modeling using <code>stan</code> as the backend.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set a random seed for this chapter to ensure reproducibility</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="bayesian-binomial-logistic-regression" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="bayesian-binomial-logistic-regression"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</h2>
+<p>As we have seen in <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>, Binomial Logistic Regression is used when the each observation of our outcome is a random binary variable that can take a value of 1 (e.g., ‘success’) with probability <span class="math inline">\(p_i\)</span> and a value of 0 (e.g., ‘failure’) with probability <span class="math inline">\(1-p_i\)</span>, known as a Bernoulli random variable. That is</p>
+<p><span class="math display">\[
+y_i \sim \text{Bernoulli}(p_i)
+\]</span></p>
+<p>Recall also that we model the log-odds of success as a linear function of our input variables, that is:</p>
+<p><span class="math display">\[
+\log\left(\frac{P(y_i = 1)}{P(y_i = 0)}\right) =  \log\left(\frac{p_i}{1-p_i}\right) =  \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + ... + \beta_k x_{ik}
+\]</span></p>
+<p>This means that our slope coefficients must be interpreted in terms of changes in the log-odds of success for a one unit increase in the corresponding input variable, assuming no change in the other input variables. We learned that by exponentiating the coefficients, we can interpret them in terms of odds ratios instead, which is more intuitive.</p>
+<p>In a Bayesian framework, we can fit a binomial logistic regression model using the <code>brms</code> package in R in a similar way to how we fit a linear regression model. The syntax is similar to that of frequentist logistic regression, but we specify the family as <code>bernoulli()</code> to explicitly indicate that each observation of our outcome is Bernoulli random variable.</p>
+<p>To illustrate, let’s use a random sample from our <code>salespeople</code> dataset from <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the salespeople dataset</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a random sample of 100 observations</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>salespeople_bayes <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">100</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We are interested in how the sales, customer ratings and performance ratings of our 100 sales people affect their likelihood of promotion. We will fit a Bayesian binomial logistic regression model to this subset of data using the default flat priors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Binomial Logistic Regression model</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>noninf_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> promoted <span class="sc">~</span> sales <span class="sc">+</span> customer_rate <span class="sc">+</span> performance,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> salespeople_bayes,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="co"># for binary outcome variable (logistic function is default link)</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After fitting the model, we can examine the summary of the posterior distributions of the coefficients, which will represent log-odds coefficients.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(noninf_binomial_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: bernoulli 
+  Links: mu = logit 
+Formula: promoted ~ sales + customer_rate + performance 
+   Data: salespeople_bayes (Number of observations: 100) 
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Regression Coefficients:
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept       -28.46      8.57   -47.80   -14.72 1.00     9353    10017
+sales             0.06      0.02     0.03     0.09 1.00     7849     8679
+customer_rate    -1.89      1.26    -4.69     0.32 1.00     9187     9452
+performance       1.39      0.79    -0.01     3.09 1.00    10597    10482
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>And we can transform these to posterior distributions of the odds ratios.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(odds_ratio_summary <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">fixef</span>(noninf_binomial_model)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Estimate   Est.Error         Q2.5        Q97.5
+Intercept     4.346569e-13 5293.112601 1.743190e-21 4.063232e-07
+sales         1.057379e+00    1.017289 1.029179e+00 1.099548e+00
+customer_rate 1.503689e-01    3.511444 9.223477e-03 1.371100e+00
+performance   4.017503e+00    2.213168 9.853649e-01 2.201084e+01</code></pre>
+</div>
+</div>
+<p>We can also visualize the posterior distributions of the odds ratios using the <code>mcmc_areas</code> function from the <code>bayesplot</code> package. An example for the <code>sales</code> coefficient is shown in <a href="#fig-sales-or" class="quarto-xref">Figure&nbsp;<span>14.1</span></a>, indicating the posterior distribution of the multiple of the odds of promotion associated with an extra thousand dollars in sales.</p>
+<div id="fig-sales-or" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sales-or-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">as.matrix</span>(noninf_binomial_model, <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_sales"</span>))),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.66</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob_outer =</span> <span class="fl">0.95</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sales-or-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.1: Posterior distribution of the odds ratio for the <code>sales</code> coefficient in the Bayesian Binomial Logistic Regression model.
+</figcaption>
+</figure>
+</div>
+<p>Posterior predictive checks on a Bernoulli distributed outcome are not particularly intuitive unless converted into a summary statistic, such as the proportion of successes. We can do this using the <code>pp_check</code> function as before, but specifying the <code>stat</code> argument to indicate that we want to compare the proportion of successes in the observed data to that in the posterior predictive simulations. As can be seen in <a href="#fig-binom-ppc" class="quarto-xref">Figure&nbsp;<span>14.2</span></a>, the model appears to fit the data reasonably well.</p>
+<div id="fig-binom-ppc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-binom-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(noninf_binomial_model, <span class="at">type =</span> <span class="st">"stat"</span>, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-binom-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.2: Posterior predictive check comparing the proportion of successes in the observed data to that in the posterior predictive simulations for the Bayesian Binomial Logistic Regression model.
+</figcaption>
+</figure>
+</div>
+<p>For a new data point, we can obtain the posterior predictive probability of success using the <code>posterior_predict</code> function, which runs draws of our posterior parameters and predicts a success or failure for each draw based on our new data. For example, for a sales person with 50k in sales, a customer rating of 4 and a performance rating of 3, we can determine the posterior predictive probability of promotion as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># determine posterior probability of promotion for new data point</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sales =</span> <span class="dv">575</span>, <span class="at">customer_rate =</span> <span class="fl">3.9</span>, <span class="at">performance =</span> <span class="dv">3</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>posterior_preds<span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(noninf_binomial_model, <span class="at">newdata =</span> new_data, <span class="at">ndraws =</span> <span class="dv">10000</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to probability</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(posterior_preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5791</code></pre>
+</div>
+</div>
+</section>
+<section id="bayesian-multinomial-logistic-regression" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="bayesian-multinomial-logistic-regression"><span class="header-section-number">14.2</span> Bayesian Multinomial Logistic Regression</h2>
+<p>In <a href="multinomial_regression.html" class="quarto-xref"><span>Chapter 6</span></a>, we learned that Multinomial Logistic Regression is used when the outcome variable is categorical with more than two categories that do not have a natural ordering. In this case, we model the log-odds of each category relative to a reference category as a linear function of our input variables. In a Bayesian framework, we can fit a multinomial logistic regression model using the <code>brms</code> package in R by specifying the family as <code>categorical()</code>. As usual we will take a sample from our <code>health_insurance</code> dataset from <a href="multinomial_regression.html" class="quarto-xref"><span>Chapter 6</span></a> to illustrate.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the health insurance dataset</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>health_insurance_bayes <span class="ot">&lt;-</span> health_insurance[<span class="fu">sample</span>(<span class="fu">nrow</span>(health_insurance), <span class="dv">100</span>), ]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Multinomial Logistic Regression model with flat priors</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>noninf_multinom_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> position_level <span class="sc">+</span> gender <span class="sc">+</span> absent,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance_bayes,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">categorical</span>(), <span class="co"># for multinomial outcome variable</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can view our results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(noninf_multinom_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: categorical 
+  Links: muB = logit; muC = logit 
+Formula: product ~ age + household + position_level + gender + absent 
+   Data: health_insurance_bayes (Number of observations: 100) 
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Regression Coefficients:
+                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+muB_Intercept         -5.77      2.30   -10.61    -1.55 1.00    10408    11108
+muC_Intercept        -13.65      3.03   -20.08    -8.20 1.00    12824    12785
+muB_age                0.30      0.07     0.17     0.45 1.00     9117     9986
+muB_household         -1.78      0.44    -2.72    -1.00 1.00    13413    12604
+muB_position_level    -0.30      0.43    -1.15     0.53 1.00    18491    14432
+muB_genderMale        -5.08      1.51    -8.27    -2.35 1.00    15339    14913
+muB_absent             0.12      0.06     0.01     0.24 1.00    16075    13197
+muC_age                0.32      0.07     0.20     0.47 1.00     9814    10319
+muC_household          0.30      0.24    -0.14     0.78 1.00    17933    14760
+muC_position_level    -0.20      0.35    -0.91     0.47 1.00    18364    14922
+muC_genderMale         0.08      0.87    -1.64     1.76 1.00    22707    14952
+muC_absent             0.07      0.06    -0.04     0.20 1.00    16585    13249
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>Here we can see two sets of posterior coefficient distributions, one giving the log odds of a choice of product B over product A (beginning <code>muB</code>), and the other giving the log odds of a choice of product C over product A (beginning <code>muC</code>. As before, we can exponentiate these coefficients to obtain ppc_histodds ratios.</p>
+<p>Our posterior predictions will be in the form of integers representing the three product categories (by default this will be A=1, B=2, C=3. To do a posterior predictive check, we can use the <code>pp_bars()</code> function to view the proportion of each product choice in the observed data compared to that in the posterior predictive simulations, as shown in <a href="#fig-multinom-ppc" class="quarto-xref">Figure&nbsp;<span>14.3</span></a>.</p>
+<div id="fig-multinom-ppc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-multinom-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert observations to numeric</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y_observed <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(health_insurance_bayes<span class="sc">$</span>product))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get 1000 posterior predictions</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>y_sim <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(noninf_multinom_model, <span class="at">ndraws =</span> <span class="dv">1000</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior predictive check with x scale as product A, B, C</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ppc_bars</span>(y_observed, y_sim) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>)) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multinom-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.3: Posterior predictive check comparing the proportion of each product choice in the observed data to that in the posterior predictive simulations for the Bayesian Multinomial Logistic Regression model.
+</figcaption>
+</figure>
+</div>
+<p>We see that the model fits the data very well, with the median predictions matching the observed data almost perfectly.</p>
+<p>Given new data for an individual, we can calculate the probability of the choice of each product using our posteior draws.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new data point</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="dv">35</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">household =</span> <span class="dv">3</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">position_level =</span> <span class="dv">3</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">gender =</span> <span class="st">"Male"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">absent =</span> <span class="dv">2</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior predictions for new data point</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>posterior_preds <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(noninf_multinom_model, <span class="at">newdata =</span> new_data, <span class="at">ndraws =</span> <span class="dv">10000</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">factor</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>))</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to probabilities of each product choice</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>(product_probs <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(posterior_preds)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>posterior_preds
+     A      B      C 
+0.8163 0.0047 0.1790 </code></pre>
+</div>
+</div>
+<p>Since this is our first appearance of categorical input variables in the Bayesian modeling framework, it is worth making a note that <code>brms</code> will automatically create dummies for these variables, just as we saw in the <code>lm()</code> and <code>glm()</code> functions for frequentist regression models. If we wish to set an informed prior for the coefficient of a specific categorical input variable, we will need to specify the dummy variable associated with our prior. To determine the correct way to specify the prior, we can first look at all our priors in the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_prior</span>(noninf_multinom_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                prior     class           coef group resp dpar nlpar lb ub tag
+               (flat)         b                            muB                
+               (flat)         b         absent             muB                
+               (flat)         b            age             muB                
+               (flat)         b     genderMale             muB                
+               (flat)         b      household             muB                
+               (flat)         b position_level             muB                
+ student_t(3, 0, 2.5) Intercept                            muB                
+               (flat)         b                            muC                
+               (flat)         b         absent             muC                
+               (flat)         b            age             muC                
+               (flat)         b     genderMale             muC                
+               (flat)         b      household             muC                
+               (flat)         b position_level             muC                
+ student_t(3, 0, 2.5) Intercept                            muC                
+       source
+      default
+ (vectorized)
+ (vectorized)
+ (vectorized)
+ (vectorized)
+ (vectorized)
+      default
+      default
+ (vectorized)
+ (vectorized)
+ (vectorized)
+ (vectorized)
+ (vectorized)
+      default</code></pre>
+</div>
+</div>
+<p>WE can use this syntax to specify our prior. As an example, if we had information that being Male is associated with a 20% increase in the odds of choosing product B over product A, we would set a prior for the <code>b</code> coefficient of <code>genderMale</code> in the <code>muB</code> set of parameters as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set a prior for the effect of being male on the odds of choosing product B over product A</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mean odds ratio of 1.2, with a tight sd on the odds ratio to indicate strong belief</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># take logs of mean and sd to get priors on log-odds scale</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fu">log</span>(<span class="fl">1.2</span>), <span class="fu">log</span>(<span class="fl">0.1</span>)), <span class="at">class =</span> <span class="st">"b"</span>, <span class="at">coef =</span> <span class="st">"genderMale"</span>, <span class="at">dpar =</span> <span class="st">"muB"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We could then refit the model with this prior specified using the <code>prior</code> argument in the <code>brm()</code> function.</p>
+<section id="bayesian-ordinal-logistic-regression" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="bayesian-ordinal-logistic-regression"><span class="header-section-number">14.2.1</span> Bayesian Ordinal Logistic Regression</h3>
+<p>In <a href="ordinal_regression.html" class="quarto-xref"><span>Chapter 7</span></a>, we learned that Ordinal Logistic Regression is used when the outcome variable is categorical with more than two categories that have a natural ordering. In this case, we model the log-odds of being in a category less than or equal to a certain level as a linear function of our input variables. In particular, we focused on the proportional odds model, which assumes that the effect of each input variable is the same across all thresholds of the outcome variable, allowing us to have a single coefficient for each input variable to indicate the strength of effect on the log-odds of being in a higher category in general. We also learned that it is essential to check the proportional odds assumption when fitting a proportional odds logistic regression model, as violation of this assumption can lead to false inferences from the model.</p>
+<p>In a Bayesian framework, we can fit a proportional odds logistic regression model using the <code>brms</code> package in R by specifying the family as <code>cumulative()</code>, representing a cumulative logistic model. As usual we will take a sample from our <code>soccer</code> dataset from <a href="ordinal_regression.html" class="quarto-xref"><span>Chapter 7</span></a> to illustrate. We are aiming to estimate the effect of numerous factors on the discliplinary record of a player in a game - a three level ordinal outcome: “None” for no discipline, “Yellow” for formal warning and “Red” for a sending-off. As with the <code>polr()</code> function for the frequentist proportional odds logistic regression model, <code>brms</code> will expect is to ensure our outcome variable is an ordinal factor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the soccer dataset</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/soccer.csv"</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>soccer <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>soccer_bayes <span class="ot">&lt;-</span> soccer[<span class="fu">sample</span>(<span class="fu">nrow</span>(soccer), <span class="dv">100</span>), ]</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># convert discipline to an ordered factor</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>soccer_bayes<span class="sc">$</span>discipline <span class="ot">&lt;-</span> <span class="fu">ordered</span>(</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  soccer_bayes<span class="sc">$</span>discipline,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"None"</span>, <span class="st">"Yellow"</span>, <span class="st">"Red"</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian proportional odds Logistic Regression model with flat priors</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>noninf_polr_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> discipline <span class="sc">~</span> .,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> soccer_bayes,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">cumulative</span>(), <span class="co"># for ordinal outcome variable</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can view our results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(noninf_polr_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: cumulative 
+  Links: mu = logit 
+Formula: discipline ~ n_yellow_25 + n_red_25 + position + result + country + level 
+   Data: soccer_bayes (Number of observations: 100) 
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Regression Coefficients:
+               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept[1]       1.74      1.04    -0.26     3.80 1.00    30445    15572
+Intercept[2]       3.62      1.11     1.50     5.82 1.00    28890    16029
+n_yellow_25        0.28      0.15    -0.01     0.58 1.00    27039    15367
+n_red_25           0.33      0.19    -0.03     0.69 1.00    28224    15348
+positionM          0.16      0.57    -0.94     1.30 1.00    22257    17039
+positionS         -0.64      0.74    -2.10     0.79 1.00    20315    16083
+resultL            0.53      0.50    -0.44     1.52 1.00    25912    16624
+resultW           -0.64      0.58    -1.79     0.49 1.00    25547    16140
+countryGermany    -0.18      0.45    -1.06     0.69 1.00    32566    16069
+level             -0.02      0.46    -0.92     0.87 1.00    29133    15605
+
+Further Distributional Parameters:
+     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+disc     1.00      0.00     1.00     1.00   NA       NA       NA
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of being in a higher discipline category.</p>
+<p>In a Bayesian regression framework, an effective way to test the proportional odds assumption is to run an alternative model that does not assume proportional odds, and then compare the two models using information criteria such as from Leave-One-Out Cross-Validation (LOO-CV) . If the non-proportional odds model has a significantly better fit according to these criteria, it suggests that the proportional odds assumption may be violated. Here is how we can fit a adjacent category ordinal model in <code>brms</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian adjacent category Logistic Regression model with flat priors</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>noninf_acat_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> discipline <span class="sc">~</span> .,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> soccer_bayes,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">acat</span>(), <span class="co"># for adjacent category ordinal outcome variable</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can compare the fit using LOO:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare LOO for both models</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>loo_polr <span class="ot">&lt;-</span> <span class="fu">loo</span>(noninf_polr_model)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>loo_acat <span class="ot">&lt;-</span> <span class="fu">loo</span>(noninf_acat_model)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_polr, loo_acat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  elpd_diff se_diff
+noninf_polr_model  0.0       0.0   
+noninf_acat_model -1.9       1.0   </code></pre>
+</div>
+</div>
+<p>The LOO comparison suggests that there is no meaningful difference between the models, so we can be reasonably confident that the proportional odds assumption holds in this case.</p>
+</section>
+</section>
+<section id="bayesian-poisson-and-negative-binomial-regression" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="bayesian-poisson-and-negative-binomial-regression"><span class="header-section-number">14.3</span> Bayesian Poisson and Negative Binomial Regression</h2>
+<p>In <a href="poisson_nb.html" class="quarto-xref"><span>Chapter 8</span></a>, we learned that Poisson Regression is used when the outcome variable is a count of events that occur in a fixed period of time or space. We model the log of the expected count as a linear function of our input variables, to ensure that the count outcomes are always non-negative. This means that when we exponentiate the coefficients of our model, we see that the effects of the input variables are multiplicative on the count outcome. We also learned that Poisson regression assumes that the mean and variance of the outcome variable are equal, which may not hold in practice. When the variance exceeds the mean, we have overdispersion, which can lead to underestimated standard errors and misleading inferences from the model. In such cases, Negative Binomial Regression can be used as an alternative, as it includes an additional shape parameter <span class="math inline">\(\theta\)</span> to account for overdispersion.</p>
+<p>In a Bayesian framework, we can fit a Poisson regression model using the <code>brms</code> package in R by specifying the family as <code>poisson()</code>. As usual we will take a sample from our <code>absenteeism</code> dataset from <a href="poisson_nb.html" class="quarto-xref"><span>Chapter 8</span></a> to illustrate.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the absenteeism dataset</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/absenteeism.csv"</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>absenteeism <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>absenteeism_bayes <span class="ot">&lt;-</span> absenteeism[<span class="fu">sample</span>(<span class="fu">nrow</span>(absenteeism), <span class="dv">100</span>), ]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Poisson Regression model with flat priors</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>noninf_poisson_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism_bayes,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="co"># for count outcome variable</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now inspect the model results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(noninf_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: poisson 
+  Links: mu = log 
+Formula: days_absent ~ tenure + is_manager + performance_rating 
+   Data: absenteeism_bayes (Number of observations: 100) 
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Regression Coefficients:
+                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept              1.98      0.16     1.65     2.29 1.00    19013    15552
+tenure                 0.05      0.00     0.04     0.05 1.00    18104    16259
+is_manager            -0.14      0.08    -0.30     0.02 1.00    17936    14162
+performance_rating    -0.13      0.04    -0.21    -0.04 1.00    18130    15723
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log of the expected count of days absent. By exponentiating these coefficients distributions, we can interpret them as multiplicative effects on the expected count.</p>
+<p>We can do a posterior predictive check in the usual way as in <a href="#fig-poisson-pp" class="quarto-xref">Figure&nbsp;<span>14.4</span></a>.</p>
+<div id="fig-poisson-pp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-poisson-pp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(noninf_poisson_model, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-poisson-pp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.4: Posterior predictive check for the Bayesian Poisson Regression model.
+</figcaption>
+</figure>
+</div>
+<p>We can see some issues with our predictive fit. This suggests that we may have overdispersion in our data. We can address this by fitting a Negative Binomial regression model instead, which we can do in <code>brms</code> by specifying the family as <code>negbinomial()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Negative Binomial Regression model with flat priors</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>noninf_negbin_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism_bayes,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">negbinomial</span>(), <span class="co"># for count outcome variable with overdispersion</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now inspect the model results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(noninf_negbin_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: negbinomial 
+  Links: mu = log 
+Formula: days_absent ~ tenure + is_manager + performance_rating 
+   Data: absenteeism_bayes (Number of observations: 100) 
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Regression Coefficients:
+                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept              2.01      0.41     1.22     2.81 1.00    24732    15749
+tenure                 0.05      0.01     0.03     0.07 1.00    24715    14819
+is_manager            -0.12      0.21    -0.54     0.31 1.00    23469    14012
+performance_rating    -0.14      0.11    -0.36     0.08 1.00    23878    15372
+
+Further Distributional Parameters:
+      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+shape     1.93      0.34     1.35     2.68 1.00    21881    15468
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>We can see that our estimated errors have increased, leading to more conservative inferences, and we see a posterior distribution for the shape parameter <span class="math inline">\(\theta\)</span>, with the low values indicating substantial overdispersion. We can do another posterior predictive check to verify if the model fits the data better as in <a href="#fig-negbin-pp" class="quarto-xref">Figure&nbsp;<span>14.5</span></a>.</p>
+<div id="fig-negbin-pp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-negbin-pp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(noninf_negbin_model, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">50</span>) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-negbin-pp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.5: Posterior predictive check for the Bayesian Negative Binomial Regression model.
+</figcaption>
+</figure>
+</div>
+<p>Finally, we can also use LOO-CV to formally compare the fit of the two models, which establishes a substantially superior fit for the negative binomial model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare LOO for both models</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>loo_poisson <span class="ot">&lt;-</span> <span class="fu">loo</span>(noninf_poisson_model)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>loo_negbin <span class="ot">&lt;-</span> <span class="fu">loo</span>(noninf_negbin_model)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_poisson, loo_negbin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     elpd_diff se_diff
+noninf_negbin_model     0.0       0.0 
+noninf_poisson_model -155.0      39.7 </code></pre>
+</div>
+</div>
+<p>Note that zero-inflated versions of both Poisson and Negative Binomial regression models can also be fit in <code>brms</code> by specifying the families as <code>zero_inflated_poisson()</code> and <code>zero_inflated_negbinomial()</code> respectively. These models will generate the posterior of an additional zero-inflation parameter <code>zi</code> representing the probability that a zero observation is an “excess zero”.</p>
+</section>
+<section id="bayesian-mixed-effects-models" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="bayesian-mixed-effects-models"><span class="header-section-number">14.4</span> Bayesian Mixed Effects Models</h2>
+<p>In <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a>, we learned that mixed effects models (also known as multilevel or hierarchical models) are used when our data has a hierarchical structure, such as students nested within schools or employees nested within departments. These models allow us to account for the non-independence of observations within groups by including random effects that capture the variability between groups. In a Bayesian framework, we can fit mixed effects models using the <code>brms</code> package in R by specifying random effects in the model formula using the <code>(1 | group_variable)</code> syntax which we learned in <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a>. There is no need to specify a different family for mixed effects models in <code>bems</code>; we simply include the random effects in the formula and apply the appropriate model family for the outcome variable type.</p>
+<p>To illustrate, let’s use a random sample from our <code>speed_dating</code> dataset from <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a> and run a Bayesian binomial mixed effects model to understand how the various factors considered by individuals over multiple speed dates relate to the overall binary decision they made about their dates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the speed dating dataset</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> speed_dating[<span class="fu">complete.cases</span>(speed_dating), ]</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 1000 observations</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>speed_dating_bayes <span class="ot">&lt;-</span> speed_dating[<span class="fu">sample</span>(<span class="fu">nrow</span>(speed_dating), <span class="dv">1000</span>), ]</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Binomial Logistic Mixed Effects model with flat priors</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>noninf_mixed_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> speed_dating_bayes,</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="co"># for binary outcome variable</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>, <span class="at">group =</span> <span class="cn">TRUE</span>) <span class="co"># save group-level parameters</span></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can view our results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(noninf_mixed_binomial_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: bernoulli 
+  Links: mu = logit 
+Formula: dec ~ agediff + samerace + attr + intel + prob + (1 | iid) 
+   Data: speed_dating_bayes (Number of observations: 1000) 
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Multilevel Hyperparameters:
+~iid (Number of levels: 450) 
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     1.98      0.29     1.45     2.58 1.00     3583     6495
+
+Regression Coefficients:
+          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept    -9.20      1.13   -11.55    -7.15 1.00     5787     8292
+agediff      -0.06      0.04    -0.13     0.02 1.00    16936    13953
+samerace      0.28      0.23    -0.18     0.74 1.00    16731    15872
+attr          0.99      0.11     0.79     1.21 1.00     6779    11333
+intel        -0.02      0.09    -0.19     0.15 1.00    16837    15133
+prob          0.54      0.08     0.40     0.71 1.00     7008    10953
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>Here we can see the posterior coefficient distributions for each fixed effect input variable, representing the effect of a unit change in that variable on the log-odds of a positive decision about a date. We can also see the estimated standard deviation of the random intercepts for each individual under the Multilevel Hyperparameters, which captures the variability in baseline log-odds of a positive decision across individuals. A posterior predictive check can be done in the same way as for a standard Bayesian binomial logistic regression model.</p>
+</section>
+<section id="bayesian-cox-proportional-hazards-models" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="bayesian-cox-proportional-hazards-models"><span class="header-section-number">14.5</span> Bayesian Cox Proportional Hazards Models</h2>
+<p>In <a href="survival_analysis.html" class="quarto-xref"><span>Chapter 10</span></a>, we learned that Cox Proportional Hazards Models are used in survival analysis to model the time until an event occurs, such as employee turnover or customer churn. These models estimate the hazard function, which represents the instantaneous risk of the event occurring at a given time, conditional on survival up to that time. The Cox model assumes that the hazard ratios between individuals are proportional over time, allowing us to estimate the effect of input variables on the hazard function without specifying the baseline hazard function.</p>
+<p>In a Bayesian framework, we can fit Cox Proportional Hazards Models using the <code>brms</code> package in R by specifying the family as <code>cox()</code>. If your data contains censored observations, the model formula should take the general form <code>time | cens(1 - event) ~ x1 + x2 + ...</code>, where <code>time</code> is the variable indicating the time of the observation and <code>event</code> is the binary variable indicating if the event had occurred. As usual we will take a sample from our <code>job_retention</code> dataset from <a href="survival_analysis.html" class="quarto-xref"><span>Chapter 10</span></a> to illustrate.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the job retention dataset</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/job_retention.csv"</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>job_retention <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 1000 observations</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>job_retention_bayes <span class="ot">&lt;-</span> job_retention[<span class="fu">sample</span>(<span class="fu">nrow</span>(job_retention), <span class="dv">1000</span>), ]</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Cox Proportional Hazards model with flat priors</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>noninf_cox_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> month <span class="sc">|</span> <span class="fu">cens</span>(<span class="dv">1</span> <span class="sc">-</span> left) <span class="sc">~</span> gender <span class="sc">+</span> </span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    field <span class="sc">+</span> level <span class="sc">+</span> sentiment,</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention_bayes,</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">cox</span>(), <span class="co"># for survival outcome variable</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now inspect the model results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(noninf_cox_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: cox 
+  Links: mu = log 
+Formula: month | cens(1 - left) ~ gender + field + level + sentiment 
+   Data: job_retention_bayes (Number of observations: 1000) 
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Regression Coefficients:
+                       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
+Intercept                  0.39      0.40    -0.31     1.27 1.00     5397
+genderM                    0.05      0.12    -0.18     0.28 1.00    21476
+fieldFinance               0.25      0.13    -0.02     0.51 1.00    14382
+fieldHealth                0.41      0.25    -0.09     0.88 1.00    18135
+fieldLaw                  -0.10      0.32    -0.77     0.50 1.00    16534
+fieldPublicDGovernment     0.02      0.18    -0.34     0.38 1.00    14574
+fieldSalesDMarketing       0.01      0.19    -0.37     0.38 1.00    15019
+levelLow                   0.02      0.16    -0.30     0.34 1.00    14521
+levelMedium               -0.04      0.19    -0.41     0.34 1.00    14390
+sentiment                 -0.14      0.03    -0.19    -0.08 1.00    19744
+                       Tail_ESS
+Intercept                  2965
+genderM                   14195
+fieldFinance              14572
+fieldHealth               13883
+fieldLaw                  12834
+fieldPublicDGovernment    14335
+fieldSalesDMarketing      13917
+levelLow                  14131
+levelMedium               13655
+sentiment                 12580
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of employee attrition. By exponentiating these coefficient distributions, we can interpret them as adds ratios describing the multiple on the attrition hazard associated with a unit change in the input variable.</p>
+</section>
+<section id="learning-exercises" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">14.6</span> Learning exercises</h2>
+<section id="discussion-questions" class="level3" data-number="14.6.1">
+<h3 data-number="14.6.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">14.6.1</span> Discussion questions</h3>
+<ol type="1">
+<li>What is the correct family to specify in <code>brms</code> for fitting a Bayesian binomial logistic regression model with a binary outcome variable?</li>
+<li>What statistic is most appropriate for a posterior predictive check for a Bayesian binomial logistic regression model?</li>
+<li>What is the most appropriate way to do a posterior predictive check for a Bayesian multinomial logistic regression model?</li>
+<li>What is the correct family to specify for fitting a Bayesian proportional odds logistic regression model in <code>brms</code>?</li>
+<li>How can we test the proportional odds assumption in a Bayesian proportional odds logistic regression model using <code>brms</code>?</li>
+<li>Describe some ways of diagnosing overdispersion in a when fitting a Bayesian Poisson regression model.</li>
+<li>Describe how to set informed priors for categorical input variables in a Bayesian regression model in <code>brms</code>.</li>
+<li>If you are modeling a survival outcome using a Bayesian Cox Proportional Hazards model in <code>brms</code>, how would you write the outcome variable in your model formula?</li>
+</ol>
+</section>
+<section id="data-exercises" class="level3" data-number="14.6.2">
+<h3 data-number="14.6.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">14.6.2</span> Data exercises</h3>
+<p>For each of the earlier (frequentist) chapters on the methods outlined in this chapter, use the problem and dataset provided in the exercises at the end of each chapter.</p>
+<ol type="1">
+<li><p>Generate two smaller versions of the dataset by taking random samples of the rows - aim for around 10-20% of the original observations in each dataset. Don’t forget to remove your first sample before taking the second sample.</p></li>
+<li><p>Fit a Bayesian version of the appropriate regression model using the first dataset using flat priors.</p></li>
+<li><p>Visualize and examine the posterior distributions of the coefficients and interpret them in the context of the problem.</p></li>
+<li><p>For each model, conduct appropriate posterior predictive checks to assess the fit of the model to the data. Comment on the results. Are you comfortable that the model is a good fit?</p></li>
+<li><p>If you are concerned about the fit, experiment with alternative model specifications to improve the fit. Justify your choices and comment on the results.</p></li>
+<li><p>Ensure you check any underlying assumtions of your model type (eg proportional odds for ordinal logistic regression, equidispersion for Poisson regression) and take appropriate action if any assumptions are violated.</p></li>
+<li><p>Experment with setting informed priors for one or two coefficients. Refit the model with these priors and compare the results to the model with flat priors.</p></li>
+<li><p>Experiment with generating posterior predictions for new data points. Comment on the results.</p></li>
+<li><p>Using the approach described in <a href="bayesian_linear_regression.html#sec-bayes-reg-updating" class="quarto-xref"><span>Section 13.6</span></a>, update your model with the second dataset.</p></li>
+<li><p>Examine the updated posteriors and perform an updated posterior predictive check to assess the fit of the updated model to the new data. Comment on the results.</p></li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book-2nd-edition\.org\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./bayesian_linear_regression.html" class="pagination-link" aria-label="Linear Regression Using Bayesian Inference">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Linear Regression Using Bayesian Inference</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./further.html" class="pagination-link" aria-label="Further Exercises for Practice">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/other_bayesian_regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

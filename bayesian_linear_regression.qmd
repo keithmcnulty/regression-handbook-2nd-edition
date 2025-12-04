@@ -3,6 +3,8 @@
 ```{r}
 #| echo: false
 options(buildtools.check = function(action) TRUE)
+options(brms.cores = parallel::detectCores())
+options(rstan.backend = "cmdstanr")
 ```
 
 In the previous chapter, we introduced the fundamental philosophy of Bayesian inference. We learned to view population parameters not as fixed, unknown constants to be estimated, but as random variables described by probability distributions. We explored how to combine prior beliefs with observed data to form posterior beliefs, and we applied this logic to basic hypothesis testing.
@@ -43,7 +45,13 @@ $$
 
 This means that the output of a Bayesian regression is not a single line or hyperplane that best fits the data, but a probability distribution of *all possible lines or hyperplanes* that are consistent with our data and our priors.  We are simulating posteriors for multiple parameters, and as you can imagine, this will need some computational horsepower.
 
-Calculating the posterior distribution for complex models with multiple parameters is mathematically impossible to do using simple algebra. To solve this, we will need to employ Markov Chain Monte Carlo (MCMC) simulation.  MCMC is a class of algorithms used to sample from complex probability distributions. MCMC algorithms work by constructing Markov chains (sequences of random steps whose long-run behavior mimics the target distribution). A Markov chain starts from an initial point in the parameter space, and then proposes moves to new points, accepting or rejecting them according to rules that ensure the chain will eventually sample in proportion to the desired distribution. Over many iterations, the collected samples approximate the underlying distribution, enabling estimation of quantities like means, variances, and credible intervals even in high-dimensional problems.
+Calculating the posterior distribution for complex models with multiple parameters is mathematically impossible to do using simple algebra. To solve this, we will need to employ Markov Chain Monte Carlo (MCMC) simulation.  MCMC is a class of algorithms used to sample from complex probability distributions. MCMC algorithms work by constructing Markov chains (sequences of random steps whose long-run behavior mimics the target distribution). A Markov chain starts from an initial point in the parameter space, and then proposes moves to new points, accepting or rejecting them according to rules that ensure the chain will eventually sample in proportion to the desired distribution. Over many iterations, the collected samples approximate the underlying distribution, enabling estimation of quantities like means, variances, and credible intervals even in high-dimensional problems.  
+
+As we will be running a lot of simulations in the chapter, we will set a random seed to ensure the calculations are reproducible.
+
+```{r}
+set.seed(123)
+```
 
 ## Running a Bayesian linear regression model
 
@@ -61,7 +69,6 @@ url <- "http://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests <- read.csv(url)
 
 # take a random sample of 100 rows
-set.seed(123)
 sample_1 <- sample(nrow(ugtests), 100)
 ugtests_bayes <- ugtests[sample_1, ]
 ```
@@ -74,8 +81,9 @@ Let's first fit a multiple linear regression model, accepting the default priors
 
 
 ```{r}
+#| label: first-model
 # Fit a weakly informed Bayesian Linear Regression Model
-set.seed(123)
+
 noninf_model <- brm(
   formula = Final ~ Yr1 + Yr2 + Yr3,
   data = ugtests_bayes,
@@ -151,13 +159,14 @@ To assign a prior to a specific parameter in the `prior()` function, we use the 
 
 
 ```{r}
+#| label: second-model
 # Define informative priors on the Yr1 coefficient
 priors <- c(
   prior(normal(0, 0.05), class = b, coef = Yr1)
 )
 
 # run an informed model with this prior
-set.seed(123)
+
 inf_model <- brm(
   formula = Final ~ Yr1 + Yr2 + Yr3,
   data = ugtests_bayes,
@@ -274,8 +283,9 @@ This interval tells us that, given our model and data, there is a 95% probabilit
 Let's create a simple uninformed Bayesian linear regression model using just `Yr2` as an input variable, so we can compare it to our full uninformed and informed models.
 
 ```{r}
+#| label: third-model
 # Fit a simpler Bayesian Linear Regression Model
-set.seed(123)
+
 simple_model <- brm(
   formula = Final ~ Yr2,
   data = ugtests_bayes,
@@ -338,7 +348,7 @@ We can test the hypothesis that a model is a better fit than another using the B
 
 ```{r}
 # Compute Bayes Factor for model comparison
-set.seed(123)
+
 bayes_factor(inf_model, simple_model)
 ```
 We can see that the Bayes Factor very strongly supports the informed full model over the simple model.  Bayes Factor tests can be highly unreliable unless there has been extensive MCMC simulations performed during model fitting. It is recommended that at least 40,000 iterations are performed in model fitting to allow reliable Bayes Factor estimates.  If you are unsure about the stability of your Bayes Factor estimates, you can rerun the model fitting with a higher number of iterations and see if the Bayes Factor changes significantly. 
@@ -362,19 +372,20 @@ ugtests_bayes_std <- ugtests_bayes |>
 Now we can rerun our informed model on the scaled data:
 
 ```{r}
+#| label: fourth-model
 # Fit the Bayesian Linear Regression Model on standardized data
 priors_std <- c(
   prior(normal(0, 0.05), class = b, coef = Yr1)
 )
 
-set.seed(123)
+
 inf_model_std <- brm(
   formula = Final ~ Yr1 + Yr2 + Yr3,
   data = ugtests_bayes_std,
   family = gaussian(),
   prior = priors_std,
   chains = 4,
-  iter = 40000,
+  iter = 10000,
   refresh = 0,
   silent = 1,
   save_pars = save_pars('all')
@@ -411,7 +422,7 @@ The `hypothesis()` function can provide statistics related to a directional alte
 
 ```{r}
 # test alternative hypothesis that slope coefficients are greater than zero
-set.seed(123)
+
 hypothesis(inf_model_std, hypothesis = c("Yr1 > 0", "Yr2 > 0", "Yr3 > 0"), class = "b")
 ```
 
@@ -436,7 +447,7 @@ round(prob_Yr3_greater_Yr2, 2)
 
 This allows us to say that there is a `r round(prob_Yr3_greater_Yr2*100)`% probability that the effect of `Yr3` is more than double that of `Yr2`, given our priors and data.  Note that we can only make this statement because we are working with a model fitted to standardized data.
 
-## Bayesian updating of regression models
+## Bayesian updating of regression models {#sec-bayes-reg-updating}
 
 Recall from @sec-bayes-updating that Bayesian inference allows us to update our beliefs as new data becomes available.  In the context of a regression model, we can use the posterior distributions from an initial model as the priors for a new model fitted on additional data.  This is particularly useful in situations where data arrives sequentially or in batches.  Let's say we have a new batch of data for another 100 students.  We can fit a new model using the posterior distributions from our informed model as priors.
 
@@ -445,7 +456,7 @@ Recall from @sec-bayes-updating that Bayesian inference allows us to update our 
 ugtests_rm <- ugtests[-sample_1, ]
 
 # take a new samplw of 100 rows from remaining data
-set.seed(123)
+
 sample_2 <- sample(nrow(ugtests_rm), 100)
 ugtests_bayes_update <- ugtests_rm[sample_2, ]
 ```
@@ -469,8 +480,9 @@ new_priors
 Now we can utilize these as priors in our new model with updated new data:
 
 ```{r}
+#| label: fifth-model
 # Fit updated model with new data and previous posteriors as priors
-set.seed(123)
+
 updated_model <- brm(
   formula = Final ~ Yr1 + Yr2 + Yr3,
   data = ugtests_bayes_update,

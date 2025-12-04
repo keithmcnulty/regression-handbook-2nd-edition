@@ -38,6 +38,7 @@ book:
     - power_tests.qmd
     - bayesian_inference.qmd
     - bayesian_linear_regression.qmd
+    - other_bayesian_regression.qmd
     - further.qmd
     - bibliography.qmd
 
