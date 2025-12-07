@@ -556,7 +556,7 @@ A Posterior Predictive Check (PPC) is used to determine if the data predicted by
 
 ::: {#fig-pp-check}
 ```{r}
-# Posterior predictive check using 100 posterior draws
+# Posterior predictive check using 1000 posterior draws
 pp_check(updated_model, ndraws = 1000) +
   theme_minimal()
 ```
