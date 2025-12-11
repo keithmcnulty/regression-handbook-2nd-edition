@@ -2,7 +2,7 @@
 
 This book is about statistics, and over many previous chapters we have covered numerous classical and modern approaches to explanatory statistical modeling.  Historically, statisticians have been careful to view such models as descriptive tools for summarizing associations in data, rather than as tools for making causal claims. In our previous sections on interpreting the output of models, our language has been very intentional in relation to this.  We have used phrases like 'a change in x *is associated with* a change in y', and we have deliberately avoided phrases like 'a change in x *causes* a change in y' or 'a change in x *leads to* a change in y'. This caution reflects a long-standing principle in statistics, and one which has become a very popular refrain over the years: correlation (or association) does not imply causation.
 
-In reality, however, most of us who practice statistics do not employ our toolkit and skillset to simply describe associations.  We want to understand the dynamics of the problem we are interested on, and often that means we want to understand whether causal relationships exist.  For example, we may want to know if a new employee benefit has caused an increase in employee satisfaction, or if a change in the structure of an education program has caused better learning outcomes.  Moreover, when our leaders and clients want us to help them make decisions, they often have questions like *'Why is this happening?'* or *'What would happen if...?'*.  Answering questions like these requires inferring causality.  Realistically, if an analyst is simply not willing to have an opinion on questions of causality, their skills may be of limited value to decision-makers.
+In reality, however, most of us who practice statistics do not employ our toolkit and skillset to simply describe associations.  We want to understand the dynamics of the problem we are interested in, and often that means we want to understand whether causal relationships exist.  For example, we may want to know if a new employee benefit has caused an increase in employee satisfaction, or if a change in the structure of an education program has caused better learning outcomes.  Moreover, when our leaders and clients want us to help them make decisions, they often have questions like *'Why is this happening?'* or *'What would happen if...?'*.  Answering questions like these requires inferring causality.  Realistically, if an analyst is simply not willing to have an opinion on questions of causality, their skills may be of limited value to decision-makers.
 
 But inferring causality is hard and requires a lot of intellectual discipline.  In the modeling examples and exercises in previous chapters of this book, we did not have this discipline in mind.  Our focus was on the theory, execution and direct interpretation of statistical methods.  In our quest for associations, we threw many variables into models without much thought about the role each variable might play in the causal mechanics of the problem we were trying to solve. As we will learn in this chapter, this is not a good practice when our goal is to infer causality.  Causal inference requires careful thinking about the data generating process, the role of confounding variables, and the assumptions we are making when we use statistical models to find evidence to support or disregard a causal hypothesis.
 
@@ -378,7 +378,7 @@ Let's use our selection process example from @sec-backdoor as a walkthrough exam
 
 ### Walkthrough example
 
-The `selection` data set contains data related to the hiring process for 200 candidates in a graduate hiring program. The data contains the following variables:
+The `selection` data set contains data related to the hiring process for 70 candidates in a graduate hiring program. The data contains the following variables:
 
 * `Hire`: A binary variable indicating whether the candidate was hired (1) or not (0).
 * `Test`: The candidate's score out of a maximum of 15 on a written test.
@@ -397,7 +397,52 @@ selection <- read.csv(url)
 head(selection)
 ```
 
-We have a hypothesized causal model for how these variables relate to each other, as shown earlier in @fig-dagcomplex. We want to estimate the causal effect of `Test` on `Hire`. According to our earlier backdoor analysis, we should be able to do this by controlling for either `GPA` alone, or both `Int` and `Pres`.
+Before we define a causal model to work with, let's look at what a 'naive' analysis would look like.  We can run a simple Bayesian logistic regression predicting `Hire` from `Test` alone.
+
+```{r}
+#| results: false
+library(brms)
+
+# run simple Bayesian logistic regression
+naive_model <- brm(
+  formula = Hire ~ Test,
+  data = selection,
+  family = bernoulli(),
+  chains = 4,
+  iter = 10000,
+  seed = 123,
+  save_pars = save_pars('all')
+)
+```
+
+We can now take a look at our posterior odds ratio for `Test`, as in @fig-naiveposterior.
+
+::: {#fig-naiveposterior}
+
+```{r}
+library(bayesplot)
+
+# view posterior for Test coefficient
+mcmc_areas(
+  exp(as.matrix(naive_model)),
+  pars = "b_Test",
+  prob = 0.95
+) +
+  theme_minimal()
+```
+Posterior distribution of the odds ratio for `Test` from a naive Bayesian logistic regression predicting `Hire` from `Test` alone.
+:::
+
+```{r}
+#| echo: false
+# calculate probability that coefficient is positive
+posterior_samples_naive <- as.data.frame(naive_model)
+prob_positive_naive <- mean(posterior_samples_naive$b_Test > 0)
+```
+
+This naive model suggests a very high probability (`r round(prob_positive_naive*100, 1)`%) that the test has a positive effect on the odds of being hired.  However, we have no idea if this is a causal effect.  There may be confounding variables biasing this estimate.  To determine what variables to control for, we need to define our causal model using a DAG.
+
+We have a hypothesized causal model for how these variables relate to each other, as shown earlier in @fig-dagcomplex. We want to estimate the causal effect of `Test` on `Hire`. According to our earlier manual backdoor analysis, we should find that we are able to do this by controlling for either `GPA` alone, or for both `Int` and `Pres`.
 
 ### Specifying and visualizing the DAG
 
@@ -563,9 +608,6 @@ First, we can test our conditional independencies implied by our DAG using regre
 
 ```{r}
 #| results: false
-# load the brms package
-library(brms)
-
 # fit a Bayesian binomial regression model
 model_ci <- brm(
   formula = Hire ~ GPA + Int + Pres + Test,
@@ -585,7 +627,6 @@ We can now examine the posterior distribution of the GPA coefficient.
 
 ```{r}
 # visualize the posterior coefficients
-library(bayesplot)
 mcmc_areas(
   as.matrix(model_ci),
   pars = c("b_GPA"),
@@ -597,7 +638,7 @@ mcmc_areas(
 Posterior distribution of the GPA coefficient from the Bayesian regression model testing the conditional independence implied by the DAG.
 :::
 
-@fig-selection-ci shows the posterior distribution of the GPA coefficient.  The 95% credible interval includes zero, suggesting that after controlling for `Int`, `Pres` and `Test`, `GPA` there is limited evidence for a significant effect on the hiring decision. This supports the conditional independence implied by our DAG.
+@fig-selection-ci shows the posterior distribution of the GPA coefficient.  The 95% credible interval includes zero, suggesting that after controlling for `Int`, `Pres` and `Test`, `GPA` there is insufficient evidence for a significant effect on the hiring decision. This supports the conditional independence implied by our DAG.
 
 Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of `Test` on `Hire` using any of the two adjustment sets we identified earlier. In this case, we will control for `GPA` alone.
 
@@ -639,7 +680,15 @@ We can also view the 95% credible interval for the odds ratio of `Test` on `Hire
 (ci <- posterior_summary(exp(as.matrix(model_causal)), probs = c(0.025, 0.975))["b_Test", c("Q2.5", "Q97.5")])
 ```
 
-This suggests that, under the assumptions of our causal model, there is a 95% probability that a one-point increase in the test score increases the odds of being hired by between `round((ci["Q2.5"] -1)*100)`% and `round((ci["Q97.5"] -1)*100)`%.
+This suggests that, under the assumptions of our causal model, we cannot rule out that the test has no causal effect on the odds of being hired.  We can determine the probability that the effect of the test score is positive by calculating the proportion of posterior samples where the coefficient for `Test` is greater than zero.
+
+```{r}
+# calculate the probability that the effect of Test is positive
+posterior_samples_causal <- as.matrix(model_causal)
+(prob_positive <- mean(posterior_samples_causal[,"b_Test"] > 0))
+```
+
+This indicates that there is a `r round(prob_positive*100, 1)`% probability that the test score has a positive causal effect on the odds of being hired.  This is a big difference from our naive estimation, suggesting that controlling for our confounder `GPA` has had a major impact on our estimate.
 
 ## Learning exercises
 
@@ -668,7 +717,7 @@ This suggests that, under the assumptions of our causal model, there is a 95% pr
 
 ### Data exercises
 
-For our data exercises in this chapter, we will return to the `sociological_data` dataset in @sec-lin-reg-ols-exercises.  For this exercise, our aim will be to determine the causal effect of `education_months` on `annual_income_ppp`.  We will assume that we have the following causal model in mind:
+For our data exercises in this chapter, we will return to the `sociological_data` dataset in @sec-lin-reg-ols-exercises.  Take a random sample of about 20% of the observations and assume that this is the only data you have available.  For this exercise, our aim will be to determine the causal effect of `education_months` on `annual_income_ppp`.  We will assume that we have the following causal model in mind:
 
 * `education_months`, `average_wk_hrs`, `job_type` and `gender` all have direct causal effects on `annual_income_ppp`.
 * `education_months`, `languages`, `gender` and `region` has a direct causal effect on `job_type`
@@ -676,9 +725,9 @@ For our data exercises in this chapter, we will return to the `sociological_data
 * `work_distance` has a direct causal effect on `average_wk_hrs`
 * There are no other causal effects between variables.
 
-1.  Using the `dagitty` or `ggdag` package in R, specify the DAG representing the causal model described above.
+1.  Using a naive Bayesian regression model, estimate the effect of `education_months` on `annual_income_ppp` without controlling for any other variables.  Visualize the posterior distribution of the effect estimate and interpret the results.
 
-2.  Visualize the DAG using `ggdag`. Make sure to label the nodes clearly.
+2.  Using the `dagitty` or `ggdag` package in R, specify the DAG representing the causal model described above.
 
 3.  Experiment with adjusting your visualization.  Try changing the layout, colors, and sizes to improve clarity.
 
@@ -690,7 +739,7 @@ For our data exercises in this chapter, we will return to the `sociological_data
 
 7.  Finally, estimate the causal effect of `education_months` on `annual_income_ppp` using a Bayesian regression model that controls for the variables in your adjustment set.  
 
-8.  Visualize the posterior distribution of the causal effect estimate and interpret the results.  Give the 95% credible interval for the causal effect estimate.
+8.  Visualize the posterior distribution of the causal effect estimate and interpret the results.  Give the 95% credible interval for the causal effect estimate. How has your estimate changed compared to the naive model in Question 1?
 
 9.  Experiment with adjusting the causal model above.  Suggest two alternative models that might also be plausible.  If you wish, use checks of the conditional independencies of the original model to guide your modifications.
 

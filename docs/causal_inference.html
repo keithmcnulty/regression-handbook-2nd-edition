@@ -384,7 +384,7 @@ window.Quarto = {
 
 
 <p>This book is about statistics, and over many previous chapters we have covered numerous classical and modern approaches to explanatory statistical modeling. Historically, statisticians have been careful to view such models as descriptive tools for summarizing associations in data, rather than as tools for making causal claims. In our previous sections on interpreting the output of models, our language has been very intentional in relation to this. We have used phrases like ‘a change in x <em>is associated with</em> a change in y’, and we have deliberately avoided phrases like ‘a change in x <em>causes</em> a change in y’ or ‘a change in x <em>leads to</em> a change in y’. This caution reflects a long-standing principle in statistics, and one which has become a very popular refrain over the years: correlation (or association) does not imply causation.</p>
-<p>In reality, however, most of us who practice statistics do not employ our toolkit and skillset to simply describe associations. We want to understand the dynamics of the problem we are interested on, and often that means we want to understand whether causal relationships exist. For example, we may want to know if a new employee benefit has caused an increase in employee satisfaction, or if a change in the structure of an education program has caused better learning outcomes. Moreover, when our leaders and clients want us to help them make decisions, they often have questions like <em>‘Why is this happening?’</em> or <em>‘What would happen if…?’</em>. Answering questions like these requires inferring causality. Realistically, if an analyst is simply not willing to have an opinion on questions of causality, their skills may be of limited value to decision-makers.</p>
+<p>In reality, however, most of us who practice statistics do not employ our toolkit and skillset to simply describe associations. We want to understand the dynamics of the problem we are interested in, and often that means we want to understand whether causal relationships exist. For example, we may want to know if a new employee benefit has caused an increase in employee satisfaction, or if a change in the structure of an education program has caused better learning outcomes. Moreover, when our leaders and clients want us to help them make decisions, they often have questions like <em>‘Why is this happening?’</em> or <em>‘What would happen if…?’</em>. Answering questions like these requires inferring causality. Realistically, if an analyst is simply not willing to have an opinion on questions of causality, their skills may be of limited value to decision-makers.</p>
 <p>But inferring causality is hard and requires a lot of intellectual discipline. In the modeling examples and exercises in previous chapters of this book, we did not have this discipline in mind. Our focus was on the theory, execution and direct interpretation of statistical methods. In our quest for associations, we threw many variables into models without much thought about the role each variable might play in the causal mechanics of the problem we were trying to solve. As we will learn in this chapter, this is not a good practice when our goal is to infer causality. Causal inference requires careful thinking about the data generating process, the role of confounding variables, and the assumptions we are making when we use statistical models to find evidence to support or disregard a causal hypothesis.</p>
 <p>Over the last few decades there has been a growing body of work in statistics, psychology, clinical medicine and related fields that has developed rigorous frameworks and methods for causal inference. This chapter introduces some of these key concepts and methods with a focus on how they can be applied in practice. We will spend the first part of the chapter introducing the fundamental theories underlying causal inference, and then we will look at the toolkit of methods that can be used to infer causality from data. Finally, we will use a walkthrough example to illustrate how this toolkit can be applied in practice.</p>
 <section id="underlying-theoretical-frameworks-for-causal-inference" class="level2" data-number="15.1">
@@ -661,7 +661,7 @@ Figure&nbsp;15.3: DAG representing beliefs about causal relationships between a 
 <p>Let’s use our selection process example from <a href="#sec-backdoor" class="quarto-xref"><span>Section 15.3.3</span></a> as a walkthrough example to illustrate how to do causal inference in R using the <code>dagitty</code> and <code>ggdag</code> packages.</p>
 <section id="walkthrough-example" class="level3" data-number="15.4.1">
 <h3 data-number="15.4.1" class="anchored" data-anchor-id="walkthrough-example"><span class="header-section-number">15.4.1</span> Walkthrough example</h3>
-<p>The <code>selection</code> data set contains data related to the hiring process for 200 candidates in a graduate hiring program. The data contains the following variables:</p>
+<p>The <code>selection</code> data set contains data related to the hiring process for 70 candidates in a graduate hiring program. The data contains the following variables:</p>
 <ul>
 <li><code>Hire</code>: A binary variable indicating whether the candidate was hired (1) or not (0).</li>
 <li><code>Test</code>: The candidate’s score out of a maximum of 15 on a written test.</li>
@@ -679,52 +679,96 @@ Figure&nbsp;15.3: DAG representing beliefs about causal relationships between a 
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  GPA Test Pres Int Hire
-1 3.0    7  3.6   3    1
-2 3.1    8  3.1   4    0
-3 2.3    6  2.0   2    1
-4 2.9    8  2.3   2    0
-5 3.1    9  3.1   4    1
-6 2.4    9  2.8   3    1</code></pre>
+1 3.3   10  3.6   3    1
+2 2.6    8  3.9   2    1
+3 3.0    9  3.1   4    1
+4 3.6    9  2.5   4    1
+5 3.1    9  3.6   3    1
+6 3.5   13  2.8   3    0</code></pre>
 </div>
 </div>
-<p>We have a hypothesized causal model for how these variables relate to each other, as shown earlier in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>. We want to estimate the causal effect of <code>Test</code> on <code>Hire</code>. According to our earlier backdoor analysis, we should be able to do this by controlling for either <code>GPA</code> alone, or both <code>Int</code> and <code>Pres</code>.</p>
+<p>Before we define a causal model to work with, let’s look at what a ‘naive’ analysis would look like. We can run a simple Bayesian logistic regression predicting <code>Hire</code> from <code>Test</code> alone.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># run simple Bayesian logistic regression</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>naive_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Hire <span class="sc">~</span> Test,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> selection,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now take a look at our posterior odds ratio for <code>Test</code>, as in <a href="#fig-naiveposterior" class="quarto-xref">Figure&nbsp;<span>15.4</span></a>.</p>
+<div id="fig-naiveposterior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-naiveposterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># view posterior for Test coefficient</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">as.matrix</span>(naive_model)),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="st">"b_Test"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.95</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_inference_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-naiveposterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.4: Posterior distribution of the odds ratio for <code>Test</code> from a naive Bayesian logistic regression predicting <code>Hire</code> from <code>Test</code> alone.
+</figcaption>
+</figure>
+</div>
+<p>This naive model suggests a very high probability (86.9%) that the test has a positive effect on the odds of being hired. However, we have no idea if this is a causal effect. There may be confounding variables biasing this estimate. To determine what variables to control for, we need to define our causal model using a DAG.</p>
+<p>We have a hypothesized causal model for how these variables relate to each other, as shown earlier in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>. We want to estimate the causal effect of <code>Test</code> on <code>Hire</code>. According to our earlier manual backdoor analysis, we should find that we are able to do this by controlling for either <code>GPA</code> alone, or for both <code>Int</code> and <code>Pres</code>.</p>
 </section>
 <section id="specifying-and-visualizing-the-dag" class="level3" data-number="15.4.2">
 <h3 data-number="15.4.2" class="anchored" data-anchor-id="specifying-and-visualizing-the-dag"><span class="header-section-number">15.4.2</span> Specifying and visualizing the DAG</h3>
 <p>The syntax for defining a DAG using <code>dagitty</code> is straightforward. We define the nodes and edges in a string format. The treatment (exposure) and outcome variables can be specified using special tags.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the selection DAG</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>selection_dag_string <span class="ot">&lt;-</span> <span class="st">"dag {</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">  GPA</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">  Hire [Outcone]</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">  Pres</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">  Int</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">  Test [Exposure]</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">  Hire &lt;- Pres</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">  Hire &lt;- Int</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">  Hire &lt;- Test</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="st">  Int &lt;- Pres</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="st">  Pres &lt;- GPA</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="st">  Int &lt;- GPA</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="st">  Test &lt;- GPA</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="st">}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the selection DAG</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>selection_dag_string <span class="ot">&lt;-</span> <span class="st">"dag {</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">  GPA</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">  Hire [Outcone]</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">  Pres</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">  Int</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">  Test [Exposure]</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">  Hire &lt;- Pres</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">  Hire &lt;- Int</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">  Hire &lt;- Test</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">  Int &lt;- Pres</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">  Pres &lt;- GPA</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="st">  Int &lt;- GPA</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="st">  Test &lt;- GPA</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="st">}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Alternatively, we can use the <code>dagify</code> function from <code>ggdag</code> to create the same DAG string using a formula syntax.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define using dagify</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdag)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>(selection_dag <span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  Hire <span class="sc">~</span> Pres <span class="sc">+</span> Int <span class="sc">+</span> Test,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  Int <span class="sc">~</span> Pres <span class="sc">+</span> GPA,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  Pres <span class="sc">~</span> GPA,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  Test <span class="sc">~</span> GPA,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Hire =</span> <span class="st">"Hire"</span>, <span class="at">Pres =</span> <span class="st">"Pres"</span>, <span class="at">Int =</span> <span class="st">"Int"</span>, <span class="at">Test =</span> <span class="st">"Test"</span>, <span class="at">GPA =</span> <span class="st">"GPA"</span>),</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"Test"</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"Hire"</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define using dagify</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>(selection_dag <span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  Hire <span class="sc">~</span> Pres <span class="sc">+</span> Int <span class="sc">+</span> Test,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  Int <span class="sc">~</span> Pres <span class="sc">+</span> GPA,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  Pres <span class="sc">~</span> GPA,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  Test <span class="sc">~</span> GPA,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Hire =</span> <span class="st">"Hire"</span>, <span class="at">Pres =</span> <span class="st">"Pres"</span>, <span class="at">Int =</span> <span class="st">"Int"</span>, <span class="at">Test =</span> <span class="st">"Test"</span>, <span class="at">GPA =</span> <span class="st">"GPA"</span>),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"Test"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"Hire"</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>dag {
 GPA
@@ -742,43 +786,43 @@ Test -&gt; Hire
 }</code></pre>
 </div>
 </div>
-<p>The <code>ggdag</code> package makes plotting this DAG very easy, as in <a href="#fig-dagplot" class="quarto-xref">Figure&nbsp;<span>15.4</span></a>.</p>
+<p>The <code>ggdag</code> package makes plotting this DAG very easy, as in <a href="#fig-dagplot" class="quarto-xref">Figure&nbsp;<span>15.5</span></a>.</p>
 <div id="fig-dagplot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dagplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag</span>(selection_dag) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag</span>(selection_dag) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="causal_inference_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="causal_inference_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.4: DAG representing beliefs about causal relationships between a Hiring Decision, Test Score, Interview Score, Presentation Score, and GPA.
+Figure&nbsp;15.5: DAG representing beliefs about causal relationships between a Hiring Decision, Test Score, Interview Score, Presentation Score, and GPA.
 </figcaption>
 </figure>
 </div>
 <p>To control the positioning of the nodes, we can specify relative coordinates in the DAG string or use the <code>coords</code> argument in <code>dagify</code>. For example, to replicate the positioning as in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>, we can do the following:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(selection_dag <span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  Hire <span class="sc">~</span> Pres <span class="sc">+</span> Int <span class="sc">+</span> Test,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  Int <span class="sc">~</span> Pres <span class="sc">+</span> GPA,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  Pres <span class="sc">~</span> GPA,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  Test <span class="sc">~</span> GPA,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Hire =</span> <span class="st">"Hire"</span>, <span class="at">Pres =</span> <span class="st">"Pres"</span>, <span class="at">Int =</span> <span class="st">"Int"</span>, <span class="at">Test =</span> <span class="st">"Test"</span>, <span class="at">GPA =</span> <span class="st">"GPA"</span>),</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"Test"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"Hire"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">coords =</span> <span class="fu">list</span>(</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">c</span>(<span class="at">Hire =</span> <span class="dv">0</span>, <span class="at">Pres =</span> <span class="dv">2</span>, <span class="at">Int =</span> <span class="dv">1</span>, <span class="at">Test =</span> <span class="dv">0</span>, <span class="at">GPA =</span> <span class="dv">2</span>),</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="at">Hire =</span> <span class="dv">0</span>, <span class="at">Pres =</span> <span class="dv">0</span>, <span class="at">Int =</span> <span class="dv">1</span>, <span class="at">Test =</span> <span class="dv">2</span>, <span class="at">GPA =</span> <span class="dv">2</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(selection_dag <span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  Hire <span class="sc">~</span> Pres <span class="sc">+</span> Int <span class="sc">+</span> Test,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  Int <span class="sc">~</span> Pres <span class="sc">+</span> GPA,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  Pres <span class="sc">~</span> GPA,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  Test <span class="sc">~</span> GPA,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Hire =</span> <span class="st">"Hire"</span>, <span class="at">Pres =</span> <span class="st">"Pres"</span>, <span class="at">Int =</span> <span class="st">"Int"</span>, <span class="at">Test =</span> <span class="st">"Test"</span>, <span class="at">GPA =</span> <span class="st">"GPA"</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"Test"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"Hire"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">coords =</span> <span class="fu">list</span>(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">c</span>(<span class="at">Hire =</span> <span class="dv">0</span>, <span class="at">Pres =</span> <span class="dv">2</span>, <span class="at">Int =</span> <span class="dv">1</span>, <span class="at">Test =</span> <span class="dv">0</span>, <span class="at">GPA =</span> <span class="dv">2</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="at">Hire =</span> <span class="dv">0</span>, <span class="at">Pres =</span> <span class="dv">0</span>, <span class="at">Int =</span> <span class="dv">1</span>, <span class="at">Test =</span> <span class="dv">2</span>, <span class="at">GPA =</span> <span class="dv">2</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>dag {
 GPA [pos="2.000,2.000"]
@@ -798,7 +842,7 @@ Test -&gt; Hire
 </div>
 <p>We can convert our <code>dagitty</code> object into a tidy data format.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(selection_dag_tidy <span class="ot">&lt;-</span> ggdag<span class="sc">::</span><span class="fu">tidy_dagitty</span>(selection_dag))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(selection_dag_tidy <span class="ot">&lt;-</span> ggdag<span class="sc">::</span><span class="fu">tidy_dagitty</span>(selection_dag))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A DAG with 5 nodes and 7 edges
 #
@@ -818,40 +862,40 @@ Test -&gt; Hire
 8 Test      0     2 -&gt;        Hire      0     0 FALSE    Test </code></pre>
 </div>
 </div>
-<p>This can make it easier to add customizations to our graph visualization using <code>ggplot2</code>. For example we can color code the nodes based on their roles (exposure, outcome, confounder) as in <a href="#fig-dagcustom" class="quarto-xref">Figure&nbsp;<span>15.5</span></a>.</p>
+<p>This can make it easier to add customizations to our graph visualization using <code>ggplot2</code>. For example we can color code the nodes based on their roles (exposure, outcome, confounder) as in <a href="#fig-dagcustom" class="quarto-xref">Figure&nbsp;<span>15.6</span></a>.</p>
 <div id="fig-dagcustom" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dagcustom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># add a role column to the tidy dag</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>selection_dag_tidy <span class="ot">&lt;-</span> selection_dag_tidy <span class="sc">|&gt;</span> </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">role =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">==</span> <span class="st">"Test"</span> <span class="sc">~</span> <span class="st">"Exposure"</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">==</span> <span class="st">"Hire"</span> <span class="sc">~</span> <span class="st">"Outcome"</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Other"</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># plot with custom colors in ggdag</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag</span>(selection_dag_tidy, <span class="at">stylized =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dag_node</span>(<span class="fu">aes</span>(<span class="at">color =</span> role), <span class="at">size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dag_text</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># add a role column to the tidy dag</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>selection_dag_tidy <span class="ot">&lt;-</span> selection_dag_tidy <span class="sc">|&gt;</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">role =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">==</span> <span class="st">"Test"</span> <span class="sc">~</span> <span class="st">"Exposure"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">==</span> <span class="st">"Hire"</span> <span class="sc">~</span> <span class="st">"Outcome"</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Other"</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># plot with custom colors in ggdag</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag</span>(selection_dag_tidy, <span class="at">stylized =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dag_node</span>(<span class="fu">aes</span>(<span class="at">color =</span> role), <span class="at">size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dag_text</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="causal_inference_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="causal_inference_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagcustom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.5: DAG with custom coloring of nodes based on their roles (exposure, outcome, other).
+Figure&nbsp;15.6: DAG with custom coloring of nodes based on their roles (exposure, outcome, other).
 </figcaption>
 </figure>
 </div>
@@ -860,37 +904,37 @@ Figure&nbsp;15.5: DAG with custom coloring of nodes based on their roles (exposu
 <h3 data-number="15.4.3" class="anchored" data-anchor-id="deriving-information-from-the-dag"><span class="header-section-number">15.4.3</span> Deriving information from the DAG</h3>
 <p>We can ask <code>dagitty</code> what to find our adjustment sets based on our exposure and outcome variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the adjustment set for the effect of Test on Hire</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(selection_dag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the adjustment set for the effect of Test on Hire</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(selection_dag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{ Int, Pres }
 { GPA }</code></pre>
 </div>
 </div>
-<p>This confirms the adjustments sets which we derived manually earlier in <a href="#sec-backdoor" class="quarto-xref"><span>Section 15.3.3</span></a>. We can also view the adjustment sets using <code>ggdag</code>, as in <a href="#fig-dagadjust" class="quarto-xref">Figure&nbsp;<span>15.6</span></a>.</p>
+<p>This confirms the adjustments sets which we derived manually earlier in <a href="#sec-backdoor" class="quarto-xref"><span>Section 15.3.3</span></a>. We can also view the adjustment sets using <code>ggdag</code>, as in <a href="#fig-dagadjust" class="quarto-xref">Figure&nbsp;<span>15.7</span></a>.</p>
 <div id="fig-dagadjust" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dagadjust-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_adjustment_set</span>(selection_dag) <span class="sc">+</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_adjustment_set</span>(selection_dag) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="causal_inference_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="causal_inference_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagadjust-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.6: Adjustment sets for estimating the causal effect of <code>Test</code> on <code>Hire</code>.
+Figure&nbsp;15.7: Adjustment sets for estimating the causal effect of <code>Test</code> on <code>Hire</code>.
 </figcaption>
 </figure>
 </div>
 <p>We can also ask <code>dagitty</code> to show us the paths between the exposure and outcome variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paths</span>(selection_dag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paths</span>(selection_dag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$paths
 [1] "Test -&gt; Hire"                       "Test &lt;- GPA -&gt; Int -&gt; Hire"        
@@ -901,30 +945,30 @@ $open
 [1]  TRUE  TRUE FALSE  TRUE  TRUE</code></pre>
 </div>
 </div>
-<p>We can see that 5 paths have been identified, four of which are open paths. One of these is the direct causal path and the other three are backdoor paths. These open paths can be visualized using <code>ggdag</code>, as in <a href="#fig-dagpaths" class="quarto-xref">Figure&nbsp;<span>15.7</span></a>.</p>
+<p>We can see that 5 paths have been identified, four of which are open paths. One of these is the direct causal path and the other three are backdoor paths. These open paths can be visualized using <code>ggdag</code>, as in <a href="#fig-dagpaths" class="quarto-xref">Figure&nbsp;<span>15.8</span></a>.</p>
 <div id="fig-dagpaths" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dagpaths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_paths_fan</span>(selection_dag) <span class="sc">+</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_paths_fan</span>(selection_dag) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="causal_inference_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="causal_inference_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagpaths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.7: Open paths between <code>Test</code> and <code>Hire</code> in the DAG.
+Figure&nbsp;15.8: Open paths between <code>Test</code> and <code>Hire</code> in the DAG.
 </figcaption>
 </figure>
 </div>
 <p>Another powerful feature of <code>dagitty</code> is its ability to list the <em>testable implications</em> of our hypothesized causal model. If our model is true, it often implies that certain variables should be independent of each other (d-separated), conditional on other variables. These are the conditional independencies predicted by the d-separation rules, and we can verify if they are supported by the data. If they are not, it suggests our DAG is incorrect and needs to be revised.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">impliedConditionalIndependencies</span>(selection_dag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">impliedConditionalIndependencies</span>(selection_dag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>GPA _||_ Hire | Int, Pres, Test
 Int _||_ Test | GPA
@@ -938,54 +982,9 @@ Pres _||_ Test | GPA</code></pre>
 <p>Now that we have identified our adjustment sets and implied conditional independencies, we can use them to guide our regression analyses in determining the causal effect of the test performance on the hiring decision. Although we can use DAGs alongside classical (frequentist) regression models, it is more common nowadays to use them with Bayesian regression models. Bayesian models provide a more intuitive framework for causal inference, allowing us to directly estimate the posterior distribution of causal effects and incorporate prior knowledge into our analyses.</p>
 <p>First, we can test our conditional independencies implied by our DAG using regression models. We can test the first conditional independence statement: <code>GPA</code> is independent of <code>Hire</code> when conditioned on <code>Int</code>, <code>Pres</code> and <code>Test</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the brms package</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a Bayesian binomial regression model</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>model_ci <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Hire <span class="sc">~</span> GPA <span class="sc">+</span> Int <span class="sc">+</span> Pres <span class="sc">+</span> Test,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> selection,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(),</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span>,</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>We can now examine the posterior distribution of the GPA coefficient.</p>
-<div id="fig-selection-ci" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-selection-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the posterior coefficients</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(model_ci),</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_GPA"</span>),</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.95</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="causal_inference_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selection-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.8: Posterior distribution of the GPA coefficient from the Bayesian regression model testing the conditional independence implied by the DAG.
-</figcaption>
-</figure>
-</div>
-<p><a href="#fig-selection-ci" class="quarto-xref">Figure&nbsp;<span>15.8</span></a> shows the posterior distribution of the GPA coefficient. The 95% credible interval includes zero, suggesting that after controlling for <code>Int</code>, <code>Pres</code> and <code>Test</code>, <code>GPA</code> there is limited evidence for a significant effect on the hiring decision. This supports the conditional independence implied by our DAG.</p>
-<p>Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of <code>Test</code> on <code>Hire</code> using any of the two adjustment sets we identified earlier. In this case, we will control for <code>GPA</code> alone.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a Bayesian binomial regression model to estimate the causal effect of Test on Hire</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>model_causal <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Hire <span class="sc">~</span> Test <span class="sc">+</span> GPA,</span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a Bayesian binomial regression model</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>model_ci <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Hire <span class="sc">~</span> GPA <span class="sc">+</span> Int <span class="sc">+</span> Pres <span class="sc">+</span> Test,</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> selection,</span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(),</span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
@@ -995,42 +994,92 @@ Figure&nbsp;15.8: Posterior distribution of the GPA coefficient from the Bayesia
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
 <span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can visualize our causal effect estimate for <code>Test</code> on the odds of being hired, as in <a href="#fig-selection-causal" class="quarto-xref">Figure&nbsp;<span>15.9</span></a>.</p>
-<div id="fig-selection-causal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>We can now examine the posterior distribution of the GPA coefficient.</p>
+<div id="fig-selection-ci" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-selection-causal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-selection-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the posterior coefficient for Test as odds ratio</span></span>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the posterior coefficients</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">as.matrix</span>(model_causal)),</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_Test"</span>),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(model_ci),</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_GPA"</span>),</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.95</span></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="causal_inference_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="causal_inference_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selection-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.9: Posterior distribution of the GPA coefficient from the Bayesian regression model testing the conditional independence implied by the DAG.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-selection-ci" class="quarto-xref">Figure&nbsp;<span>15.9</span></a> shows the posterior distribution of the GPA coefficient. The 95% credible interval includes zero, suggesting that after controlling for <code>Int</code>, <code>Pres</code> and <code>Test</code>, <code>GPA</code> there is insufficient evidence for a significant effect on the hiring decision. This supports the conditional independence implied by our DAG.</p>
+<p>Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of <code>Test</code> on <code>Hire</code> using any of the two adjustment sets we identified earlier. In this case, we will control for <code>GPA</code> alone.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a Bayesian binomial regression model to estimate the causal effect of Test on Hire</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>model_causal <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Hire <span class="sc">~</span> Test <span class="sc">+</span> GPA,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> selection,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can visualize our causal effect estimate for <code>Test</code> on the odds of being hired, as in <a href="#fig-selection-causal" class="quarto-xref">Figure&nbsp;<span>15.10</span></a>.</p>
+<div id="fig-selection-causal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-selection-causal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the posterior coefficient for Test as odds ratio</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">as.matrix</span>(model_causal)),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_Test"</span>),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.95</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_inference_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selection-causal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.9: Posterior distribution of the causal effect of Test on Hire, expressed as an odds ratio.
+Figure&nbsp;15.10: Posterior distribution of the causal effect of Test on Hire, expressed as an odds ratio.
 </figcaption>
 </figure>
 </div>
 <p>We can also view the 95% credible interval for the odds ratio of <code>Test</code> on <code>Hire</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get 95% credible interval for the odds ratio of Test</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>(ci <span class="ot">&lt;-</span> <span class="fu">posterior_summary</span>(<span class="fu">exp</span>(<span class="fu">as.matrix</span>(model_causal)), <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))[<span class="st">"b_Test"</span>, <span class="fu">c</span>(<span class="st">"Q2.5"</span>, <span class="st">"Q97.5"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get 95% credible interval for the odds ratio of Test</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>(ci <span class="ot">&lt;-</span> <span class="fu">posterior_summary</span>(<span class="fu">exp</span>(<span class="fu">as.matrix</span>(model_causal)), <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))[<span class="st">"b_Test"</span>, <span class="fu">c</span>(<span class="st">"Q2.5"</span>, <span class="st">"Q97.5"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Q2.5     Q97.5 
-0.9442271 1.4048473 </code></pre>
+0.7400622 1.5576160 </code></pre>
 </div>
 </div>
-<p>This suggests that, under the assumptions of our causal model, there is a 95% probability that a one-point increase in the test score increases the odds of being hired by between <code>round((ci["Q2.5"] -1)*100)</code>% and <code>round((ci["Q97.5"] -1)*100)</code>%.</p>
+<p>This suggests that, under the assumptions of our causal model, we cannot rule out that the test has no causal effect on the odds of being hired. We can determine the probability that the effect of the test score is positive by calculating the proportion of posterior samples where the coefficient for <code>Test</code> is greater than zero.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the probability that the effect of Test is positive</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>posterior_samples_causal <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(model_causal)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>(prob_positive <span class="ot">&lt;-</span> <span class="fu">mean</span>(posterior_samples_causal[,<span class="st">"b_Test"</span>] <span class="sc">&gt;</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6265</code></pre>
+</div>
+</div>
+<p>This indicates that there is a 62.6% probability that the test score has a positive causal effect on the odds of being hired. This is a big difference from our naive estimation, suggesting that controlling for our confounder <code>GPA</code> has had a major impact on our estimate.</p>
 </section>
 </section>
 <section id="learning-exercises" class="level2" data-number="15.5">
@@ -1052,7 +1101,7 @@ Figure&nbsp;15.9: Posterior distribution of the causal effect of Test on Hire, e
 </section>
 <section id="data-exercises" class="level3" data-number="15.5.2">
 <h3 data-number="15.5.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">15.5.2</span> Data exercises</h3>
-<p>For our data exercises in this chapter, we will return to the <code>sociological_data</code> dataset in <a href="linear_regression.html#sec-lin-reg-ols-exercises" class="quarto-xref"><span>Section 4.8</span></a>. For this exercise, our aim will be to determine the causal effect of <code>education_months</code> on <code>annual_income_ppp</code>. We will assume that we have the following causal model in mind:</p>
+<p>For our data exercises in this chapter, we will return to the <code>sociological_data</code> dataset in <a href="linear_regression.html#sec-lin-reg-ols-exercises" class="quarto-xref"><span>Section 4.8</span></a>. Take a random sample of about 20% of the observations and assume that this is the only data you have available. For this exercise, our aim will be to determine the causal effect of <code>education_months</code> on <code>annual_income_ppp</code>. We will assume that we have the following causal model in mind:</p>
 <ul>
 <li><code>education_months</code>, <code>average_wk_hrs</code>, <code>job_type</code> and <code>gender</code> all have direct causal effects on <code>annual_income_ppp</code>.</li>
 <li><code>education_months</code>, <code>languages</code>, <code>gender</code> and <code>region</code> has a direct causal effect on <code>job_type</code></li>
@@ -1061,14 +1110,14 @@ Figure&nbsp;15.9: Posterior distribution of the causal effect of Test on Hire, e
 <li>There are no other causal effects between variables.</li>
 </ul>
 <ol type="1">
+<li><p>Using a naive Bayesian regression model, estimate the effect of <code>education_months</code> on <code>annual_income_ppp</code> without controlling for any other variables. Visualize the posterior distribution of the effect estimate and interpret the results.</p></li>
 <li><p>Using the <code>dagitty</code> or <code>ggdag</code> package in R, specify the DAG representing the causal model described above.</p></li>
-<li><p>Visualize the DAG using <code>ggdag</code>. Make sure to label the nodes clearly.</p></li>
 <li><p>Experiment with adjusting your visualization. Try changing the layout, colors, and sizes to improve clarity.</p></li>
 <li><p>Identify all the paths between <code>education_months</code> and <code>annual_income_ppp</code>. Classify each path as either a causal path or a backdoor path.</p></li>
 <li><p>Using the backdoor criterion, determine a sufficient adjustment set for estimating the causal effect of <code>education_months</code> on <code>annual_income_ppp</code>. Try to do this manually first, then verify your answer using the appropriate function in <code>dagitty</code> or <code>ggdag</code>.</p></li>
 <li><p>List the conditional independencies implied by your DAG. Using regression models, test at least two of these conditional independencies using the <code>sociological_data</code> dataset.</p></li>
 <li><p>Finally, estimate the causal effect of <code>education_months</code> on <code>annual_income_ppp</code> using a Bayesian regression model that controls for the variables in your adjustment set.</p></li>
-<li><p>Visualize the posterior distribution of the causal effect estimate and interpret the results. Give the 95% credible interval for the causal effect estimate.</p></li>
+<li><p>Visualize the posterior distribution of the causal effect estimate and interpret the results. Give the 95% credible interval for the causal effect estimate. How has your estimate changed compared to the naive model in Question 1?</p></li>
 <li><p>Experiment with adjusting the causal model above. Suggest two alternative models that might also be plausible. If you wish, use checks of the conditional independencies of the original model to guide your modifications.</p></li>
 <li><p>For each alternative model, repeat steps 1-7 and compare the causal effect estimates you obtain. How sensitive are your results to changes in the causal model?</p></li>
 </ol>
