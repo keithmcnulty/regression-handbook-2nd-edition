@@ -4,6 +4,7 @@ project:
   resources:
   - CNAME
   - .nojekyll
+  - data/*
 
 execute:
   warning: false

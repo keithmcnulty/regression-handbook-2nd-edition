@@ -30,3 +30,4 @@ renv/
 docs/CNAME
 test*
 Rplot*
+/docs/env/

@@ -582,14 +582,14 @@ Figure&nbsp;15.1: DAG representing the causal relationships between Motivation, 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagstructures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.2: The three fundamental structures in DAGs: Chain (Mediation), Fork (Confounding), and Collider (Selection Bias). In each diagram, A and B are the variables for which we are estimating the effect. In the chain, M is the mediator. In the fork, C is the common cause (confounder). In the collider, D is the collider and C is a descendent collider.
+Figure&nbsp;15.2: The three fundamental structures in DAGs: Chain (Mediation), Fork (Confounding), and Collider (Selection Bias). In each diagram, A and B are the variables for which we are estimating the effect. In the chain, M is the mediator. In the fork, C is the common cause (confounder). In the collider, D is the collider and E is a descendent collider.
 </figcaption>
 </figure>
 </div>
 <ul>
 <li><p>Mediation is represented by a ‘chain’ structure of the form <code>A -&gt; M -&gt; B</code>. This means A causes M, and M causes B. M is a mediator variable. In a chain, there is a clear causal path from A to B. Therefore, A and B will be statistically associated, but if we condition on the mediator M, we <em>block</em> the flow of association between A and B. For example, if we believe <code>Motivation -&gt; Job Satisfaction -&gt; Job Performance</code>, then if we try to estimate the effect of <code>Motivation</code> on <code>Job Performance</code> we should not include <code>Job Satisfaction</code> in our statistical model. If we do, we will have a biased estimate.</p></li>
 <li><p>Confounding is represented by a ‘fork’ structure of the form <code>A &lt;- C -&gt; B</code>. This means C is a common cause of both A and B. In a fork, there is no causal path from A to B. However, because they share a common cause, information flows from C to A and from C to B, creating a spurious (non-causal) association between A and B. If we were to naively correlate A and B, we would find an association, not because A causes B, but because C causes both. The non-causal path from A to B is called a ‘backdoor’ path, because A has an edge going into it rather than coming out of it. To block this backdoor path, we must condition on the common cause, C. For example, if we believe <code>Training &lt;- Motivation -&gt; Sales</code>, then to estimate the causal effect of <code>Training</code> on <code>Sales</code>, we must include <code>Motivation</code> in our model. If we leave it out, we will have a biased estimate.</p></li>
-<li><p>Selection bias is represented by a ‘collider’ structure of the form <code>A -&gt; D &lt;- B</code>. This means A and B are both independent causes of a third variable, D. The arrows “collide” at D. In a collider structure, if A and B are independent to begin with, there is no open path between them. The collider D <em>naturally blocks</em> the flow of association. However, if we condition on the collider, D, we <em>open the path</em> and create a spurious association between A and B where none existed before. For example, if we believe <code>Knowledge -&gt; Being Hired &lt;- Interpersonal Skills</code>, then in the general population, <code>Knowledge</code> and <code>Interpersonal Skills</code> are uncorrelated. But if we look only at only those who were hired, then within that selected group, <code>Knowledge</code> and <code>Interpersonal Skills</code> can become negatively correlated. Conditioning on the common effect (the collider) induces an association. Moreover, if a variable is a descendant of a collider (i.e., it is on a chain emanating from the collider), conditioning on that descendant also opens the path.</p></li>
+<li><p>Selection bias is represented by a ‘collider’ structure of the form <code>A -&gt; D &lt;- B</code>. This means A and B are both independent causes of a third variable, D. The arrows “collide” at D. In a collider structure, if A and B are independent to begin with, there is no open path between them. The collider D <em>naturally blocks</em> the flow of association. However, if we condition on the collider, D, we <em>open the path</em> and create a spurious association between A and B where none existed before. For example, if we believe <code>Knowledge -&gt; Being Hired &lt;- Interpersonal Skills</code>, then in the general population, <code>Knowledge</code> and <code>Interpersonal Skills</code> are uncorrelated. But if we look only at only those who were hired, then within that selected group, <code>Knowledge</code> and <code>Interpersonal Skills</code> can become negatively correlated. Conditioning on the common effect (the collider) induces an association. Moreover, if a variable is a descendant of a collider (i.e., it is on a chain emanating from the collider, such as our variable <code>E</code> in <a href="#fig-dagstructures" class="quarto-xref">Figure&nbsp;<span>15.2</span></a>), conditioning on that descendant also opens the path.</p></li>
 </ul>
 <p>This leaves us with three critical rules for how associations (paths) flow through a DAG.</p>
 <ol type="1">
@@ -664,7 +664,7 @@ Figure&nbsp;15.3: DAG representing beliefs about causal relationships between a 
 <p>The <code>selection</code> data set contains data related to the hiring process for 200 candidates in a graduate hiring program. The data contains the following variables:</p>
 <ul>
 <li><code>Hire</code>: A binary variable indicating whether the candidate was hired (1) or not (0).</li>
-<li><code>Test</code>: The candidate’s score out of 100 on a written test.</li>
+<li><code>Test</code>: The candidate’s score out of a maximum of 15 on a written test.</li>
 <li><code>Int</code>: The candidate’s rating from a one-on-one interview, on an integer scale from 1 (Low) to 5 (High).</li>
 <li><code>Pres</code>: The candidate’s average rating from a presentation to a panel, on an scale from 1 (Low) to 5 (High).</li>
 <li><code>GPA</code>: The candidate’s undergraduate Grade Point Average (GPA), on a scale from 1.0 to 5.0.</li>
@@ -679,12 +679,12 @@ Figure&nbsp;15.3: DAG representing beliefs about causal relationships between a 
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  GPA Test Pres Int Hire
-1 2.8   71  3.2   3    1
-2 2.7   70  3.5   3    1
-3 3.9   65  3.4   3    0
-4 3.4   66  3.6   3    1
-5 2.8   56  2.7   3    0
-6 3.2   72  3.5   3    1</code></pre>
+1 3.0    7  3.6   3    1
+2 3.1    8  3.1   4    0
+3 2.3    6  2.0   2    1
+4 2.9    8  2.3   2    0
+5 3.1    9  3.1   4    1
+6 2.4    9  2.8   3    1</code></pre>
 </div>
 </div>
 <p>We have a hypothesized causal model for how these variables relate to each other, as shown earlier in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>. We want to estimate the causal effect of <code>Test</code> on <code>Hire</code>. According to our earlier backdoor analysis, we should be able to do this by controlling for either <code>GPA</code> alone, or both <code>Int</code> and <code>Pres</code>.</p>
@@ -980,7 +980,7 @@ Figure&nbsp;15.8: Posterior distribution of the GPA coefficient from the Bayesia
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-selection-ci" class="quarto-xref">Figure&nbsp;<span>15.8</span></a> shows the posterior distribution of the GPA coefficient. The 95% credible interval includes zero, suggesting that after controlling for <code>Int</code>, <code>Pres</code> and <code>Test</code>, <code>GPA</code> does not have a significant effect on the hiring decision. This supports the conditional independence implied by our DAG.</p>
+<p><a href="#fig-selection-ci" class="quarto-xref">Figure&nbsp;<span>15.8</span></a> shows the posterior distribution of the GPA coefficient. The 95% credible interval includes zero, suggesting that after controlling for <code>Int</code>, <code>Pres</code> and <code>Test</code>, <code>GPA</code> there is limited evidence for a significant effect on the hiring decision. This supports the conditional independence implied by our DAG.</p>
 <p>Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of <code>Test</code> on <code>Hire</code> using any of the two adjustment sets we identified earlier. In this case, we will control for <code>GPA</code> alone.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a Bayesian binomial regression model to estimate the causal effect of Test on Hire</span></span>
@@ -1024,13 +1024,13 @@ Figure&nbsp;15.9: Posterior distribution of the causal effect of Test on Hire, e
 <p>We can also view the 95% credible interval for the odds ratio of <code>Test</code> on <code>Hire</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get 95% credible interval for the odds ratio of Test</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(<span class="fu">exp</span>(<span class="fu">as.matrix</span>(model_causal)), <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))[<span class="st">"b_Test"</span>, <span class="fu">c</span>(<span class="st">"Q2.5"</span>, <span class="st">"Q97.5"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>(ci <span class="ot">&lt;-</span> <span class="fu">posterior_summary</span>(<span class="fu">exp</span>(<span class="fu">as.matrix</span>(model_causal)), <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))[<span class="st">"b_Test"</span>, <span class="fu">c</span>(<span class="st">"Q2.5"</span>, <span class="st">"Q97.5"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    Q2.5    Q97.5 
-1.006147 1.042458 </code></pre>
+<pre><code>     Q2.5     Q97.5 
+0.9442271 1.4048473 </code></pre>
 </div>
 </div>
-<p>This suggests that, under the assumptions of our causal model, there is a 95% probability that a one-point increase in the test score increases the odds of being hired by between 0.6% and 4.2%.</p>
+<p>This suggests that, under the assumptions of our causal model, there is a 95% probability that a one-point increase in the test score increases the odds of being hired by between <code>round((ci["Q2.5"] -1)*100)</code>% and <code>round((ci["Q97.5"] -1)*100)</code>%.</p>
 </section>
 </section>
 <section id="learning-exercises" class="level2" data-number="15.5">
@@ -1052,6 +1052,26 @@ Figure&nbsp;15.9: Posterior distribution of the causal effect of Test on Hire, e
 </section>
 <section id="data-exercises" class="level3" data-number="15.5.2">
 <h3 data-number="15.5.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">15.5.2</span> Data exercises</h3>
+<p>For our data exercises in this chapter, we will return to the <code>sociological_data</code> dataset in <a href="linear_regression.html#sec-lin-reg-ols-exercises" class="quarto-xref"><span>Section 4.8</span></a>. For this exercise, our aim will be to determine the causal effect of <code>education_months</code> on <code>annual_income_ppp</code>. We will assume that we have the following causal model in mind:</p>
+<ul>
+<li><code>education_months</code>, <code>average_wk_hrs</code>, <code>job_type</code> and <code>gender</code> all have direct causal effects on <code>annual_income_ppp</code>.</li>
+<li><code>education_months</code>, <code>languages</code>, <code>gender</code> and <code>region</code> has a direct causal effect on <code>job_type</code></li>
+<li><code>gender</code>, <code>region</code> and <code>family_size</code> have direct causal effects on <code>education_months</code></li>
+<li><code>work_distance</code> has a direct causal effect on <code>average_wk_hrs</code></li>
+<li>There are no other causal effects between variables.</li>
+</ul>
+<ol type="1">
+<li><p>Using the <code>dagitty</code> or <code>ggdag</code> package in R, specify the DAG representing the causal model described above.</p></li>
+<li><p>Visualize the DAG using <code>ggdag</code>. Make sure to label the nodes clearly.</p></li>
+<li><p>Experiment with adjusting your visualization. Try changing the layout, colors, and sizes to improve clarity.</p></li>
+<li><p>Identify all the paths between <code>education_months</code> and <code>annual_income_ppp</code>. Classify each path as either a causal path or a backdoor path.</p></li>
+<li><p>Using the backdoor criterion, determine a sufficient adjustment set for estimating the causal effect of <code>education_months</code> on <code>annual_income_ppp</code>. Try to do this manually first, then verify your answer using the appropriate function in <code>dagitty</code> or <code>ggdag</code>.</p></li>
+<li><p>List the conditional independencies implied by your DAG. Using regression models, test at least two of these conditional independencies using the <code>sociological_data</code> dataset.</p></li>
+<li><p>Finally, estimate the causal effect of <code>education_months</code> on <code>annual_income_ppp</code> using a Bayesian regression model that controls for the variables in your adjustment set.</p></li>
+<li><p>Visualize the posterior distribution of the causal effect estimate and interpret the results. Give the 95% credible interval for the causal effect estimate.</p></li>
+<li><p>Experiment with adjusting the causal model above. Suggest two alternative models that might also be plausible. If you wish, use checks of the conditional independencies of the original model to guide your modifications.</p></li>
+<li><p>For each alternative model, repeat steps 1-7 and compare the causal effect estimates you obtain. How sensitive are your results to changes in the causal model?</p></li>
+</ol>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">

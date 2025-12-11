@@ -240,13 +240,13 @@ fork_dag <- dagify(
 collider_dag <- dagify(
   D ~ A,
   D ~ B,
-  C ~ D,
-  labels = c(A = "A", B = "B", D = "D"),
+  E ~ D,
+  labels = c(A = "A", B = "B", D = "D", E = "E"),
   exposure = "A",
   outcome = "B",
   coords = list(
-    x = c(A = 1, B = 3, D = 2, C = 2),
-    y = c(A = 1, B = 1, D = 1, C = 0)
+    x = c(A = 1, B = 3, D = 2, E = 2),
+    y = c(A = 1, B = 1, D = 1, E = 0)
   )
 )
 
@@ -279,7 +279,7 @@ collider_plot <- ggdag(collider_dag, stylized = TRUE) +
 chain_plot + fork_plot + collider_plot
 ```
 
-The three fundamental structures in DAGs: Chain (Mediation), Fork (Confounding), and Collider (Selection Bias). In each diagram, A and B are the variables for which we are estimating the effect.  In the chain, M is the mediator. In the fork, C is the common cause (confounder). In the collider, D is the collider and C is a descendent collider.
+The three fundamental structures in DAGs: Chain (Mediation), Fork (Confounding), and Collider (Selection Bias). In each diagram, A and B are the variables for which we are estimating the effect.  In the chain, M is the mediator. In the fork, C is the common cause (confounder). In the collider, D is the collider and E is a descendent collider.
 :::
 
 
@@ -288,7 +288,7 @@ The three fundamental structures in DAGs: Chain (Mediation), Fork (Confounding),
 
 * Confounding is represented by a 'fork' structure of the form `A <- C -> B`.  This means C is a common cause of both A and B. In a fork, there is no causal path from A to B. However, because they share a common cause, information flows from C to A and from C to B, creating a spurious (non-causal) association between A and B. If we were to naively correlate A and B, we would find an association, not because A causes B, but because C causes both. The non-causal path from A to B is called a 'backdoor' path, because A has an edge going into it rather than coming out of it. To block this backdoor path, we must condition on the common cause, C. For example, if we believe `Training <- Motivation -> Sales`, then to estimate the causal effect of `Training` on `Sales`, we must include `Motivation` in our model.  If we leave it out, we will have a biased estimate.
 
-* Selection bias is represented by a 'collider' structure of the form `A -> D <- B`.  This means A and B are both independent causes of a third variable, D. The arrows "collide" at D. In a collider structure, if A and B are independent to begin with, there is no open path between them. The collider D *naturally blocks* the flow of association. However, if we condition on the collider, D, we *open the path* and create a spurious association between A and B where none existed before. For example, if we believe `Knowledge -> Being Hired <- Interpersonal Skills`, then in the general population, `Knowledge` and `Interpersonal Skills` are uncorrelated. But if we look only at only those who were hired, then within that selected group, `Knowledge` and `Interpersonal Skills` can become negatively correlated. Conditioning on the common effect (the collider) induces an association.  Moreover, if a variable is a descendant of a collider (i.e., it is on a chain emanating from the collider), conditioning on that descendant also opens the path.
+* Selection bias is represented by a 'collider' structure of the form `A -> D <- B`.  This means A and B are both independent causes of a third variable, D. The arrows "collide" at D. In a collider structure, if A and B are independent to begin with, there is no open path between them. The collider D *naturally blocks* the flow of association. However, if we condition on the collider, D, we *open the path* and create a spurious association between A and B where none existed before. For example, if we believe `Knowledge -> Being Hired <- Interpersonal Skills`, then in the general population, `Knowledge` and `Interpersonal Skills` are uncorrelated. But if we look only at only those who were hired, then within that selected group, `Knowledge` and `Interpersonal Skills` can become negatively correlated. Conditioning on the common effect (the collider) induces an association.  Moreover, if a variable is a descendant of a collider (i.e., it is on a chain emanating from the collider, such as our variable `E` in @fig-dagstructures), conditioning on that descendant also opens the path.
 
 This leaves us with three critical rules for how associations (paths) flow through a DAG.
 
@@ -381,7 +381,7 @@ Let's use our selection process example from @sec-backdoor as a walkthrough exam
 The `selection` data set contains data related to the hiring process for 200 candidates in a graduate hiring program. The data contains the following variables:
 
 * `Hire`: A binary variable indicating whether the candidate was hired (1) or not (0).
-* `Test`: The candidate's score out of 100 on a written test.
+* `Test`: The candidate's score out of a maximum of 15 on a written test.
 * `Int`: The candidate's rating from a one-on-one interview, on an integer scale from 1 (Low) to 5 (High).
 * `Pres`: The candidate's average rating from a presentation to a panel, on an scale from 1 (Low) to 5 (High).
 * `GPA`: The candidate's undergraduate Grade Point Average (GPA), on a scale from 1.0 to 5.0.
@@ -597,7 +597,7 @@ mcmc_areas(
 Posterior distribution of the GPA coefficient from the Bayesian regression model testing the conditional independence implied by the DAG.
 :::
 
-@fig-selection-ci shows the posterior distribution of the GPA coefficient.  The 95% credible interval includes zero, suggesting that after controlling for `Int`, `Pres` and `Test`, `GPA` does not have a significant effect on the hiring decision. This supports the conditional independence implied by our DAG.
+@fig-selection-ci shows the posterior distribution of the GPA coefficient.  The 95% credible interval includes zero, suggesting that after controlling for `Int`, `Pres` and `Test`, `GPA` there is limited evidence for a significant effect on the hiring decision. This supports the conditional independence implied by our DAG.
 
 Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of `Test` on `Hire` using any of the two adjustment sets we identified earlier. In this case, we will control for `GPA` alone.
 
@@ -636,10 +636,10 @@ We can also view the 95% credible interval for the odds ratio of `Test` on `Hire
 
 ```{r}
 # get 95% credible interval for the odds ratio of Test
-posterior_summary(exp(as.matrix(model_causal)), probs = c(0.025, 0.975))["b_Test", c("Q2.5", "Q97.5")]
+(ci <- posterior_summary(exp(as.matrix(model_causal)), probs = c(0.025, 0.975))["b_Test", c("Q2.5", "Q97.5")])
 ```
 
-This suggests that, under the assumptions of our causal model, there is a 95% probability that a one-point increase in the test score increases the odds of being hired by between 0.6% and 4.2%.
+This suggests that, under the assumptions of our causal model, there is a 95% probability that a one-point increase in the test score increases the odds of being hired by between `round((ci["Q2.5"] -1)*100)`% and `round((ci["Q97.5"] -1)*100)`%.
 
 ## Learning exercises
 
@@ -668,3 +668,30 @@ This suggests that, under the assumptions of our causal model, there is a 95% pr
 
 ### Data exercises
 
+For our data exercises in this chapter, we will return to the `sociological_data` dataset in @sec-lin-reg-ols-exercises.  For this exercise, our aim will be to determine the causal effect of `education_months` on `annual_income_ppp`.  We will assume that we have the following causal model in mind:
+
+* `education_months`, `average_wk_hrs`, `job_type` and `gender` all have direct causal effects on `annual_income_ppp`.
+* `education_months`, `languages`, `gender` and `region` has a direct causal effect on `job_type`
+* `gender`, `region` and `family_size` have direct causal effects on `education_months`
+* `work_distance` has a direct causal effect on `average_wk_hrs`
+* There are no other causal effects between variables.
+
+1.  Using the `dagitty` or `ggdag` package in R, specify the DAG representing the causal model described above.
+
+2.  Visualize the DAG using `ggdag`. Make sure to label the nodes clearly.
+
+3.  Experiment with adjusting your visualization.  Try changing the layout, colors, and sizes to improve clarity.
+
+4.  Identify all the paths between `education_months` and `annual_income_ppp`. Classify each path as either a causal path or a backdoor path.
+
+5.  Using the backdoor criterion, determine a sufficient adjustment set for estimating the causal effect of `education_months` on `annual_income_ppp`.  Try to do this manually first, then verify your answer using the appropriate function in `dagitty` or `ggdag`.
+
+6.  List the conditional independencies implied by your DAG.  Using regression models, test at least two of these conditional independencies using the `sociological_data` dataset.
+
+7.  Finally, estimate the causal effect of `education_months` on `annual_income_ppp` using a Bayesian regression model that controls for the variables in your adjustment set.  
+
+8.  Visualize the posterior distribution of the causal effect estimate and interpret the results.  Give the 95% credible interval for the causal effect estimate.
+
+9.  Experiment with adjusting the causal model above.  Suggest two alternative models that might also be plausible.  If you wish, use checks of the conditional independencies of the original model to guide your modifications.
+
+10.  For each alternative model, repeat steps 1-7 and compare the causal effect estimates you obtain.  How sensitive are your results to changes in the causal model?
