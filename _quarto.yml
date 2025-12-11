@@ -40,6 +40,7 @@ book:
     - bayesian_inference.qmd
     - bayesian_linear_regression.qmd
     - other_bayesian_regression.qmd
+    - causal_inference.qmd
     - further.qmd
     - bibliography.qmd
 

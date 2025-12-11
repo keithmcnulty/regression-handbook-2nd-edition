@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>15&nbsp; Further Exercises for Practice – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>16&nbsp; Further Exercises for Practice – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,7 +32,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./bibliography.html" rel="next">
-<link href="./other_bayesian_regression.html" rel="prev">
+<link href="./causal_inference.html" rel="prev">
 <link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -84,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./further.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./further.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -221,8 +221,14 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./causal_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Causal Inference - Moving From Association to Causation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./further.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -241,35 +247,35 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#analyzing-graduate-salaries" id="toc-analyzing-graduate-salaries" class="nav-link active" data-scroll-target="#analyzing-graduate-salaries"><span class="header-section-number">15.1</span> Analyzing graduate salaries</a>
+  <li><a href="#analyzing-graduate-salaries" id="toc-analyzing-graduate-salaries" class="nav-link active" data-scroll-target="#analyzing-graduate-salaries"><span class="header-section-number">16.1</span> Analyzing graduate salaries</a>
   <ul class="collapse">
-  <li><a href="#the-graduates-data-set" id="toc-the-graduates-data-set" class="nav-link" data-scroll-target="#the-graduates-data-set"><span class="header-section-number">15.1.1</span> The <code>graduates</code> data set</a></li>
-  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">15.1.2</span> Discussion questions</a></li>
-  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">15.1.3</span> Data exercises</a></li>
+  <li><a href="#the-graduates-data-set" id="toc-the-graduates-data-set" class="nav-link" data-scroll-target="#the-graduates-data-set"><span class="header-section-number">16.1.1</span> The <code>graduates</code> data set</a></li>
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">16.1.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">16.1.3</span> Data exercises</a></li>
   </ul></li>
-  <li><a href="#analyzing-a-recruiting-process" id="toc-analyzing-a-recruiting-process" class="nav-link" data-scroll-target="#analyzing-a-recruiting-process"><span class="header-section-number">15.2</span> Analyzing a recruiting process</a>
+  <li><a href="#analyzing-a-recruiting-process" id="toc-analyzing-a-recruiting-process" class="nav-link" data-scroll-target="#analyzing-a-recruiting-process"><span class="header-section-number">16.2</span> Analyzing a recruiting process</a>
   <ul class="collapse">
-  <li><a href="#the-recruiting-data-set" id="toc-the-recruiting-data-set" class="nav-link" data-scroll-target="#the-recruiting-data-set"><span class="header-section-number">15.2.1</span> The <code>recruiting</code> data set</a></li>
-  <li><a href="#discussion-questions-1" id="toc-discussion-questions-1" class="nav-link" data-scroll-target="#discussion-questions-1"><span class="header-section-number">15.2.2</span> Discussion questions</a></li>
-  <li><a href="#data-exercises-1" id="toc-data-exercises-1" class="nav-link" data-scroll-target="#data-exercises-1"><span class="header-section-number">15.2.3</span> Data exercises</a></li>
+  <li><a href="#the-recruiting-data-set" id="toc-the-recruiting-data-set" class="nav-link" data-scroll-target="#the-recruiting-data-set"><span class="header-section-number">16.2.1</span> The <code>recruiting</code> data set</a></li>
+  <li><a href="#discussion-questions-1" id="toc-discussion-questions-1" class="nav-link" data-scroll-target="#discussion-questions-1"><span class="header-section-number">16.2.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises-1" id="toc-data-exercises-1" class="nav-link" data-scroll-target="#data-exercises-1"><span class="header-section-number">16.2.3</span> Data exercises</a></li>
   </ul></li>
-  <li><a href="#analyzing-the-drivers-of-performance-ratings" id="toc-analyzing-the-drivers-of-performance-ratings" class="nav-link" data-scroll-target="#analyzing-the-drivers-of-performance-ratings"><span class="header-section-number">15.3</span> Analyzing the drivers of performance ratings</a>
+  <li><a href="#analyzing-the-drivers-of-performance-ratings" id="toc-analyzing-the-drivers-of-performance-ratings" class="nav-link" data-scroll-target="#analyzing-the-drivers-of-performance-ratings"><span class="header-section-number">16.3</span> Analyzing the drivers of performance ratings</a>
   <ul class="collapse">
-  <li><a href="#the-employee_performance-data-set" id="toc-the-employee_performance-data-set" class="nav-link" data-scroll-target="#the-employee_performance-data-set"><span class="header-section-number">15.3.1</span> The <code>employee_performance</code> data set</a></li>
-  <li><a href="#discussion-questions-2" id="toc-discussion-questions-2" class="nav-link" data-scroll-target="#discussion-questions-2"><span class="header-section-number">15.3.2</span> Discussion questions</a></li>
-  <li><a href="#data-exercises-2" id="toc-data-exercises-2" class="nav-link" data-scroll-target="#data-exercises-2"><span class="header-section-number">15.3.3</span> Data exercises</a></li>
+  <li><a href="#the-employee_performance-data-set" id="toc-the-employee_performance-data-set" class="nav-link" data-scroll-target="#the-employee_performance-data-set"><span class="header-section-number">16.3.1</span> The <code>employee_performance</code> data set</a></li>
+  <li><a href="#discussion-questions-2" id="toc-discussion-questions-2" class="nav-link" data-scroll-target="#discussion-questions-2"><span class="header-section-number">16.3.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises-2" id="toc-data-exercises-2" class="nav-link" data-scroll-target="#data-exercises-2"><span class="header-section-number">16.3.3</span> Data exercises</a></li>
   </ul></li>
-  <li><a href="#analyzing-promotion-differences-between-groups" id="toc-analyzing-promotion-differences-between-groups" class="nav-link" data-scroll-target="#analyzing-promotion-differences-between-groups"><span class="header-section-number">15.4</span> Analyzing promotion differences between groups</a>
+  <li><a href="#analyzing-promotion-differences-between-groups" id="toc-analyzing-promotion-differences-between-groups" class="nav-link" data-scroll-target="#analyzing-promotion-differences-between-groups"><span class="header-section-number">16.4</span> Analyzing promotion differences between groups</a>
   <ul class="collapse">
-  <li><a href="#the-promotion-data-set" id="toc-the-promotion-data-set" class="nav-link" data-scroll-target="#the-promotion-data-set"><span class="header-section-number">15.4.1</span> The <code>promotion</code> data set</a></li>
-  <li><a href="#discussion-questions-3" id="toc-discussion-questions-3" class="nav-link" data-scroll-target="#discussion-questions-3"><span class="header-section-number">15.4.2</span> Discussion questions</a></li>
-  <li><a href="#data-exercises-3" id="toc-data-exercises-3" class="nav-link" data-scroll-target="#data-exercises-3"><span class="header-section-number">15.4.3</span> Data exercises</a></li>
+  <li><a href="#the-promotion-data-set" id="toc-the-promotion-data-set" class="nav-link" data-scroll-target="#the-promotion-data-set"><span class="header-section-number">16.4.1</span> The <code>promotion</code> data set</a></li>
+  <li><a href="#discussion-questions-3" id="toc-discussion-questions-3" class="nav-link" data-scroll-target="#discussion-questions-3"><span class="header-section-number">16.4.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises-3" id="toc-data-exercises-3" class="nav-link" data-scroll-target="#data-exercises-3"><span class="header-section-number">16.4.3</span> Data exercises</a></li>
   </ul></li>
-  <li><a href="#analyzing-feedback-on-learning-programs" id="toc-analyzing-feedback-on-learning-programs" class="nav-link" data-scroll-target="#analyzing-feedback-on-learning-programs"><span class="header-section-number">15.5</span> Analyzing feedback on learning programs</a>
+  <li><a href="#analyzing-feedback-on-learning-programs" id="toc-analyzing-feedback-on-learning-programs" class="nav-link" data-scroll-target="#analyzing-feedback-on-learning-programs"><span class="header-section-number">16.5</span> Analyzing feedback on learning programs</a>
   <ul class="collapse">
-  <li><a href="#the-learning-data-set" id="toc-the-learning-data-set" class="nav-link" data-scroll-target="#the-learning-data-set"><span class="header-section-number">15.5.1</span> The <code>learning</code> data set</a></li>
-  <li><a href="#discussion-questions-4" id="toc-discussion-questions-4" class="nav-link" data-scroll-target="#discussion-questions-4"><span class="header-section-number">15.5.2</span> Discussion questions</a></li>
-  <li><a href="#data-exercises-4" id="toc-data-exercises-4" class="nav-link" data-scroll-target="#data-exercises-4"><span class="header-section-number">15.5.3</span> Data exercises</a></li>
+  <li><a href="#the-learning-data-set" id="toc-the-learning-data-set" class="nav-link" data-scroll-target="#the-learning-data-set"><span class="header-section-number">16.5.1</span> The <code>learning</code> data set</a></li>
+  <li><a href="#discussion-questions-4" id="toc-discussion-questions-4" class="nav-link" data-scroll-target="#discussion-questions-4"><span class="header-section-number">16.5.2</span> Discussion questions</a></li>
+  <li><a href="#data-exercises-4" id="toc-data-exercises-4" class="nav-link" data-scroll-target="#data-exercises-4"><span class="header-section-number">16.5.3</span> Data exercises</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/further.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -279,7 +285,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-practice" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></h1>
+<h1 class="title"><span id="sec-practice" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></h1>
 </div>
 
 
@@ -298,12 +304,12 @@ ul.task-list li input[type="checkbox"] {
 
 <p>This final chapter contains a set of scenarios and exercises that will allow you to put into further practice some of the techniques you have learned in this book, and are supplementary to the exercises provided at the end of each of the earlier chapters. All the exercises are based on data that is available in the <code>peopleanalyticsdata</code> package in R, or alternatively can be downloaded from the internet. While the scenarios are fictitious, they are intended to represent typical questions and situations that arise when doing statistical modeling in people analytics.</p>
 <p>As you work through these scenarios, I encourage you to document your work using either an R Markdown document or a Jupyter Notebook if you prefer. This will help you keep a record of your method, approach and code in case you need to put it into practice again in the future. It will also make it easy for you to share your work with others (for example by putting it in a Github repository), which will allow you to collaborate, discuss and open your work to critique. If you are starting out on your analytics journey, exposing your work to others is one of the best ways to learn. If you are more experienced, then there are others that will undoubtedly benefit from seeing how you went about solving these problems.</p>
-<section id="analyzing-graduate-salaries" class="level2" data-number="15.1">
-<h2 data-number="15.1" class="anchored" data-anchor-id="analyzing-graduate-salaries"><span class="header-section-number">15.1</span> Analyzing graduate salaries</h2>
+<section id="analyzing-graduate-salaries" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="analyzing-graduate-salaries"><span class="header-section-number">16.1</span> Analyzing graduate salaries</h2>
 <p>Graduate salary levels are important economic indicators of the value of tertiary education. They can provide important insight about the value of education to employers or to the economy as a whole. When studied in detail they can highlight which particular disciplines have higher or lower levels of demand for graduates, and they can be important factors in determining what subjects or majors students choose to specialize in.</p>
 <p>Government agencies and educational institutions will analyze graduate salaries regularly to help critique or validate policy or strategy. Employers will also regularly study publicly available graduate salary information to help them benchmark their compensation and benefits against the external market for graduates.</p>
-<section id="the-graduates-data-set" class="level3" data-number="15.1.1">
-<h3 data-number="15.1.1" class="anchored" data-anchor-id="the-graduates-data-set"><span class="header-section-number">15.1.1</span> The <code>graduates</code> data set</h3>
+<section id="the-graduates-data-set" class="level3" data-number="16.1.1">
+<h3 data-number="16.1.1" class="anchored" data-anchor-id="the-graduates-data-set"><span class="header-section-number">16.1.1</span> The <code>graduates</code> data set</h3>
 <p>The <code>graduates</code> data set contains information on graduates currently in the United States across 173 specific subject majors grouped into 16 disciplines of study. This data set is sourced from the <em>FiveThirtyEight</em> data repository<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>Load the <code>graduates</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The fields in the <code>graduate</code> data set are as follows:</p>
 <ul>
@@ -314,8 +320,8 @@ ul.task-list li input[type="checkbox"] {
 <li><code>Median_salary</code> is the current median salary of those employed in US dollars.</li>
 </ul>
 </section>
-<section id="discussion-questions" class="level3" data-number="15.1.2">
-<h3 data-number="15.1.2" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">15.1.2</span> Discussion questions</h3>
+<section id="discussion-questions" class="level3" data-number="16.1.2">
+<h3 data-number="16.1.2" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">16.1.2</span> Discussion questions</h3>
 <ol type="1">
 <li>What kind of outcome is the <code>Median_salary</code> column?</li>
 <li>Which of the variables in the data set would you be interested in using to explain the <code>Median_salary</code> outcome? Why?</li>
@@ -324,8 +330,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Describe the data type of each of the input variables. How would you interpret the coefficients of the model for each of these data types?</li>
 </ol>
 </section>
-<section id="data-exercises" class="level3" data-number="15.1.3">
-<h3 data-number="15.1.3" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">15.1.3</span> Data exercises</h3>
+<section id="data-exercises" class="level3" data-number="16.1.3">
+<h3 data-number="16.1.3" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">16.1.3</span> Data exercises</h3>
 <ol type="1">
 <li>Perform an exploratory data analysis on the data set. Do you see any interesting patterns?</li>
 <li>Conduct appropriate hypothesis tests on any of the input variables that interest you to determine if they relate to statistically significant differences in the <code>Median_salary</code> outcome.</li>
@@ -335,13 +341,13 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 </section>
 </section>
-<section id="analyzing-a-recruiting-process" class="level2" data-number="15.2">
-<h2 data-number="15.2" class="anchored" data-anchor-id="analyzing-a-recruiting-process"><span class="header-section-number">15.2</span> Analyzing a recruiting process</h2>
+<section id="analyzing-a-recruiting-process" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="analyzing-a-recruiting-process"><span class="header-section-number">16.2</span> Analyzing a recruiting process</h2>
 <p>Organizations are often very interested in analyzing data from recruiting processes, usually with a couple of goals in mind. Firstly, there is an interest in whether the process is efficient and effective. Secondly, there is an interest in whether the process is fair to different groups and a foundation for the recruiting of a sufficiently diverse set of employees.</p>
 <p>The efficiency and effectiveness of a recruiting process can depend heavily on how it is organized, what methods are used and whether those methods are helpful in determining hiring decisions. Statistics from individual elements of the process such as interviews or assessments are often studied. Models can be built to determine which elements influence the decision to hire or not to hire. In an ideal world, some sort of future job performance outcome would be particularly useful in studying the efficiency and effectiveness of a recruiting process, but often this is a very difficult thing to do, especially if the process is very selective. Hiring only a small proportion of applicants usually results in a statistical phenomenon known as <em>range restriction</em>, where the statistics of those hired fall in a very narrow range that makes useful analysis extremely challenging. For this reason, many organizations focus primarily on the final hiring decision as an outcome of interest.</p>
 <p>Understanding fairness in a recruiting process usually involves studying how the statistics of that process differ between subgroups of interest and whether any of the differences are significant enough to infer potential bias. Understanding whether these differences are attributable to a particular element of the process, whether it be a test or the rating behaviors of interviewers, is also important in determining whether specific action can be taken to remedy the situation.</p>
-<section id="the-recruiting-data-set" class="level3" data-number="15.2.1">
-<h3 data-number="15.2.1" class="anchored" data-anchor-id="the-recruiting-data-set"><span class="header-section-number">15.2.1</span> The <code>recruiting</code> data set</h3>
+<section id="the-recruiting-data-set" class="level3" data-number="16.2.1">
+<h3 data-number="16.2.1" class="anchored" data-anchor-id="the-recruiting-data-set"><span class="header-section-number">16.2.1</span> The <code>recruiting</code> data set</h3>
 <p>The <code>recruiting</code> data set contains information on 966 applicants who went through the final stages of a recruiting process for graduate positions at a large international financial services company. The recruiting process operates as follows:</p>
 <ol type="1">
 <li>Applications are screened according to a number of criteria, including their SAT scores and their undergraduate GPA as well as an online aptitude test they are requested to take and numerous other judgments made by the individuals screening the applications.</li>
@@ -360,8 +366,8 @@ ul.task-list li input[type="checkbox"] {
 <li><code>hired</code> is a binary indicator of whether a decision was made to hire the applicant.</li>
 </ul>
 </section>
-<section id="discussion-questions-1" class="level3" data-number="15.2.2">
-<h3 data-number="15.2.2" class="anchored" data-anchor-id="discussion-questions-1"><span class="header-section-number">15.2.2</span> Discussion questions</h3>
+<section id="discussion-questions-1" class="level3" data-number="16.2.2">
+<h3 data-number="16.2.2" class="anchored" data-anchor-id="discussion-questions-1"><span class="header-section-number">16.2.2</span> Discussion questions</h3>
 <ol type="1">
 <li>Considering the way the recruiting process works, what kinds of inferential analysis or modeling would you be interested in applying to help understand its efficiency and effectiveness?</li>
 <li>What kind of model is most appropriate for explaining the <code>hired</code> outcome?</li>
@@ -372,8 +378,8 @@ ul.task-list li input[type="checkbox"] {
 <li>How would you go about determining if any gender difference in the hiring outcome can be attributed to a specific part of the process?</li>
 </ol>
 </section>
-<section id="data-exercises-1" class="level3" data-number="15.2.3">
-<h3 data-number="15.2.3" class="anchored" data-anchor-id="data-exercises-1"><span class="header-section-number">15.2.3</span> Data exercises</h3>
+<section id="data-exercises-1" class="level3" data-number="16.2.3">
+<h3 data-number="16.2.3" class="anchored" data-anchor-id="data-exercises-1"><span class="header-section-number">16.2.3</span> Data exercises</h3>
 <ol type="1">
 <li>Perform an exploratory data analysis on the <code>recruiting</code> data set. Be sure to convert data to the best type for your purposes.</li>
 <li>Develop a model to test how the aptitude test results are explained by an applicant’s SAT and GPA. What can you conclude from this? Have you considered possible collinearity in this model?</li>
@@ -383,12 +389,12 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 </section>
 </section>
-<section id="analyzing-the-drivers-of-performance-ratings" class="level2" data-number="15.3">
-<h2 data-number="15.3" class="anchored" data-anchor-id="analyzing-the-drivers-of-performance-ratings"><span class="header-section-number">15.3</span> Analyzing the drivers of performance ratings</h2>
+<section id="analyzing-the-drivers-of-performance-ratings" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="analyzing-the-drivers-of-performance-ratings"><span class="header-section-number">16.3</span> Analyzing the drivers of performance ratings</h2>
 <p>In many organizations and for many job types, promotion and performance ratings are the primary indicators of the success of employees. However, promotion is not always available to employees and can be very dependent on role and timing. Since performance ratings are usually generated on a regular basis, it is usually these that garner the most attention in the analysis of success.</p>
 <p>However, performance ratings are not perfect indicators of reality. They are usually the result of some judgment from one or more evaluators. Part of that judgment will be informed by data and part will be informed by contextual considerations or personal preferences outside of the data. Therefore it is frequently of interest to analyze performance ratings as the outcome of a decision making process. Such analysis can inform us as to what parts of the evaluation process are operating as intended and what parts are not. Multivariate models around performance can help us understand the degree to which the evaluation process is data driven, the degree to which unfairness might exist in some evaluation decisions and what might be the source of that unfairness.</p>
-<section id="the-employee_performance-data-set" class="level3" data-number="15.3.1">
-<h3 data-number="15.3.1" class="anchored" data-anchor-id="the-employee_performance-data-set"><span class="header-section-number">15.3.1</span> The <code>employee_performance</code> data set</h3>
+<section id="the-employee_performance-data-set" class="level3" data-number="16.3.1">
+<h3 data-number="16.3.1" class="anchored" data-anchor-id="the-employee_performance-data-set"><span class="header-section-number">16.3.1</span> The <code>employee_performance</code> data set</h3>
 <p>The <code>employee_performance</code> data set contains data on the most recent performance evaluations of 366 salespeople in a technology company. Each employee is evaluated by their manager, who considers certain performance indicators together with their own judgment and awards a performance rating from 1 to 3, where 1 means ‘Needs improvement’, 2 means ‘Performing well’ and 3 means ‘Outstanding’.</p>
 <p>Load the <code>employee_performance</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. The fields in the <code>employee_performance</code> data set are as follows:</p>
 <ul>
@@ -399,8 +405,8 @@ ul.task-list li input[type="checkbox"] {
 <li><code>rating</code>: The performance rating awarded by the manager</li>
 </ul>
 </section>
-<section id="discussion-questions-2" class="level3" data-number="15.3.2">
-<h3 data-number="15.3.2" class="anchored" data-anchor-id="discussion-questions-2"><span class="header-section-number">15.3.2</span> Discussion questions</h3>
+<section id="discussion-questions-2" class="level3" data-number="16.3.2">
+<h3 data-number="16.3.2" class="anchored" data-anchor-id="discussion-questions-2"><span class="header-section-number">16.3.2</span> Discussion questions</h3>
 <ol type="1">
 <li>What hypothesis test should be used to determine if there is a significant relationship between sales and performance rating?</li>
 <li>What hypothesis test should be used to determine if there is a similar distribution of performance ratings between the four regions?</li>
@@ -409,8 +415,8 @@ ul.task-list li input[type="checkbox"] {
 <li>What assumptions would you need to check after you have run your model to have confidence that you can trust your inferences?</li>
 </ol>
 </section>
-<section id="data-exercises-2" class="level3" data-number="15.3.3">
-<h3 data-number="15.3.3" class="anchored" data-anchor-id="data-exercises-2"><span class="header-section-number">15.3.3</span> Data exercises</h3>
+<section id="data-exercises-2" class="level3" data-number="16.3.3">
+<h3 data-number="16.3.3" class="anchored" data-anchor-id="data-exercises-2"><span class="header-section-number">16.3.3</span> Data exercises</h3>
 <ol type="1">
 <li>Run separate and appropriate hypothesis tests on each of the input variables to determine if they have a significant effect on the performance outcome.</li>
 <li>Prepare your data for running an appropriate multivariate model to explain the performance outcome. Be sure to convert to appropriate data types.</li>
@@ -420,12 +426,12 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 </section>
 </section>
-<section id="analyzing-promotion-differences-between-groups" class="level2" data-number="15.4">
-<h2 data-number="15.4" class="anchored" data-anchor-id="analyzing-promotion-differences-between-groups"><span class="header-section-number">15.4</span> Analyzing promotion differences between groups</h2>
+<section id="analyzing-promotion-differences-between-groups" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="analyzing-promotion-differences-between-groups"><span class="header-section-number">16.4</span> Analyzing promotion differences between groups</h2>
 <p>As mentioned in the previous section, promotion is a more challenging outcome to analyze because it can happen at different times for different people or groups. Nevertheless, over certain time periods—usually several years—organizations will be interested in understanding what affects the likelihood of promotion among their employees.</p>
 <p>It is particularly interesting to compare subgroups of employees that have common characteristics to see if there is a difference in their likelihood of promotion over a specified time period. This is highly analogous to the study of retention or attrition in that promotion can be considered a singular event that can happen to different individuals at different points in time. Like retention or attrition, we are not only interested in whether this event occurred as at the end of a period of time, we are also interested in when it occurred throughout the period.</p>
-<section id="the-promotion-data-set" class="level3" data-number="15.4.1">
-<h3 data-number="15.4.1" class="anchored" data-anchor-id="the-promotion-data-set"><span class="header-section-number">15.4.1</span> The <code>promotion</code> data set</h3>
+<section id="the-promotion-data-set" class="level3" data-number="16.4.1">
+<h3 data-number="16.4.1" class="anchored" data-anchor-id="the-promotion-data-set"><span class="header-section-number">16.4.1</span> The <code>promotion</code> data set</h3>
 <p>The <code>promotion</code> data set contains data on 1134 individuals who joined a retailer in an entry-level job, and tracks them for up to eight subsequent years post joining. For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0. Once promotion occurs, an individual is no longer tracked. If an individual was not promoted, then the year in which the last record occurred is captured.</p>
 <p>Load the <code>promotion</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. The fields in the data are as follows:</p>
 <ul>
@@ -436,8 +442,8 @@ ul.task-list li input[type="checkbox"] {
 <li><code>year</code> indicates the year in which the last record was made of the individual.</li>
 </ul>
 </section>
-<section id="discussion-questions-3" class="level3" data-number="15.4.2">
-<h3 data-number="15.4.2" class="anchored" data-anchor-id="discussion-questions-3"><span class="header-section-number">15.4.2</span> Discussion questions</h3>
+<section id="discussion-questions-3" class="level3" data-number="16.4.2">
+<h3 data-number="16.4.2" class="anchored" data-anchor-id="discussion-questions-3"><span class="header-section-number">16.4.2</span> Discussion questions</h3>
 <ol type="1">
 <li>What type of analysis is most appropriate to understand if there is a difference in promotion likelihood for employees who are on flexible hours, in diversity programs or who work in-store?</li>
 <li>What type of illustration would you use to show whether each of these three factors individually have an effect on promotion likelihood?</li>
@@ -446,8 +452,8 @@ ul.task-list li input[type="checkbox"] {
 <li>What assumptions would you need to check to validate that your analysis is trustworthy?</li>
 </ol>
 </section>
-<section id="data-exercises-3" class="level3" data-number="15.4.3">
-<h3 data-number="15.4.3" class="anchored" data-anchor-id="data-exercises-3"><span class="header-section-number">15.4.3</span> Data exercises</h3>
+<section id="data-exercises-3" class="level3" data-number="16.4.3">
+<h3 data-number="16.4.3" class="anchored" data-anchor-id="data-exercises-3"><span class="header-section-number">16.4.3</span> Data exercises</h3>
 <ol type="1">
 <li>Run an exploratory data analysis to understand any general patterns of interest in the data.</li>
 <li>Perform an analysis and generate an appropriate graph to illustrate the impact of flexible working on the likelihood of promotion. Determine if there is a statistically significant effect.</li>
@@ -457,12 +463,12 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 </section>
 </section>
-<section id="analyzing-feedback-on-learning-programs" class="level2" data-number="15.5">
-<h2 data-number="15.5" class="anchored" data-anchor-id="analyzing-feedback-on-learning-programs"><span class="header-section-number">15.5</span> Analyzing feedback on learning programs</h2>
+<section id="analyzing-feedback-on-learning-programs" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="analyzing-feedback-on-learning-programs"><span class="header-section-number">16.5</span> Analyzing feedback on learning programs</h2>
 <p>Assessing the effectiveness of learning programs remains one of the most challenging problems in people analytics. As with many challenging analytics problems, measurement is the key issue. It is exceptionally difficult to track and measure the impact of learning on the future day-to-day success of the individuals who have had access to it. While it makes sense to try to understand the influence of learning on important outcomes like employment, promotion or attrition, these outcomes can often be too distant, too generic in nature and too influenced by context and other factors to expect specific learning participation to show any meaningful influence on them.</p>
 <p>Because of the challenges in objectively measuring the impact of learning, analysts often rely on the reaction and feedback of learning participants as an important measure of the success of learning programs. If the content of the program is known to be important to future work and related to future success, and if the participants report that the program was effective for them, then this can create a compelling argument for the success of the program.</p>
-<section id="the-learning-data-set" class="level3" data-number="15.5.1">
-<h3 data-number="15.5.1" class="anchored" data-anchor-id="the-learning-data-set"><span class="header-section-number">15.5.1</span> The <code>learning</code> data set</h3>
+<section id="the-learning-data-set" class="level3" data-number="16.5.1">
+<h3 data-number="16.5.1" class="anchored" data-anchor-id="the-learning-data-set"><span class="header-section-number">16.5.1</span> The <code>learning</code> data set</h3>
 <p>The <code>learning</code> data set contains 4974 instances of feedback from 326 different participants in a range of learning programs offered by an executive education provider. Each row of data represents the feedback of a specific participant on a specific program that they participated in. Participants were not required to respond to all feedback questions and any question where no response was given is indicated as <code>NA</code>.</p>
 <p>Load the <code>learning</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. The fields in the <code>learning</code> data set are as follows:</p>
 <ul>
@@ -476,8 +482,8 @@ ul.task-list li input[type="checkbox"] {
 <li><code>fac</code> is a rating from the participant on the quality of the program faculty and instructors, where 1 is Very Low and 5 is Very High.</li>
 </ul>
 </section>
-<section id="discussion-questions-4" class="level3" data-number="15.5.2">
-<h3 data-number="15.5.2" class="anchored" data-anchor-id="discussion-questions-4"><span class="header-section-number">15.5.2</span> Discussion questions</h3>
+<section id="discussion-questions-4" class="level3" data-number="16.5.2">
+<h3 data-number="16.5.2" class="anchored" data-anchor-id="discussion-questions-4"><span class="header-section-number">16.5.2</span> Discussion questions</h3>
 <ol type="1">
 <li>What kind of outcome is the <code>rec</code> column and which kind of model best suits this outcome type?</li>
 <li>Describe the nature of the hierarchy in this data set.</li>
@@ -487,8 +493,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Describe what you would expect to see in the output of a model that considered the hierarchy in modeling what influences <code>rec</code>.</li>
 </ol>
 </section>
-<section id="data-exercises-4" class="level3" data-number="15.5.3">
-<h3 data-number="15.5.3" class="anchored" data-anchor-id="data-exercises-4"><span class="header-section-number">15.5.3</span> Data exercises</h3>
+<section id="data-exercises-4" class="level3" data-number="16.5.3">
+<h3 data-number="16.5.3" class="anchored" data-anchor-id="data-exercises-4"><span class="header-section-number">16.5.3</span> Data exercises</h3>
 <ol type="1">
 <li>Prepare and run a model to determine which elements of feedback influence whether or not the program will be recommended to others.</li>
 <li>Prepare and run a separate model to determine which elements of feedback <em>influence a participant</em> in deciding if they would recommend a program to others.</li>
@@ -914,8 +920,8 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./other_bayesian_regression.html" class="pagination-link" aria-label="Fitting Other Regression Models Using Bayesian Inference">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Fitting Other Regression Models Using Bayesian Inference</span></span>
+      <a href="./causal_inference.html" class="pagination-link" aria-label="Causal Inference - Moving From Association to Causation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Causal Inference - Moving From Association to Causation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
