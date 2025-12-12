@@ -631,7 +631,7 @@ We can now examine the posterior distribution of the GPA coefficient.
 mcmc_areas(
   as.matrix(model_ci),
   pars = c("b_GPA"),
-  prob = 0.66
+  prob = 0.95
 ) + 
   theme_minimal()
 ```
@@ -639,7 +639,7 @@ mcmc_areas(
 Posterior distribution of the GPA coefficient from the Bayesian regression model testing the conditional independence implied by the DAG.
 :::
 
-@fig-selection-ci shows the posterior distribution of the GPA coefficient, with a 66% credible interval shaded, and even this narrow credible interval contains zero.  Based on this, we can determine a level of comfort that our DAG supported by our observed data.  
+@fig-selection-ci shows the posterior distribution of the GPA coefficient, with a coefficient of zero comfortably within the range of credible probability.  Based on this, we can determine a level of comfort that our DAG is supported by our observed data.  
 
 Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of `Test` on `Hire` using any of the two adjustment sets we identified earlier. In this case, we will control for `GPA` alone.
 
@@ -663,7 +663,7 @@ We can visualize our causal effect estimate for `Test`, as in @fig-selection-cau
 ::: {#fig-selection-causal}
 
 ```{r}
-# visualize the posterior coefficient for Test as odds ratio
+# visualize the posterior coefficient for Test
 mcmc_areas(
   as.matrix(model_causal),
   pars = c("b_Test"),

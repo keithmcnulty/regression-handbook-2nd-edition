@@ -1006,7 +1006,7 @@ Pres _||_ Test | GPA</code></pre>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(model_ci),</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_GPA"</span>),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.66</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.95</span></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1023,7 +1023,7 @@ Figure&nbsp;15.9: Posterior distribution of the GPA coefficient from the Bayesia
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-selection-ci" class="quarto-xref">Figure&nbsp;<span>15.9</span></a> shows the posterior distribution of the GPA coefficient, with a 66% credible interval shaded, and even this narrow credible interval contains zero. Based on this, we can determine a level of comfort that our DAG supported by our observed data.</p>
+<p><a href="#fig-selection-ci" class="quarto-xref">Figure&nbsp;<span>15.9</span></a> shows the posterior distribution of the GPA coefficient, with a coefficient of zero comfortably within the range of credible probability. Based on this, we can determine a level of comfort that our DAG is supported by our observed data.</p>
 <p>Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of <code>Test</code> on <code>Hire</code> using any of the two adjustment sets we identified earlier. In this case, we will control for <code>GPA</code> alone.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a Bayesian binomial regression model to estimate the causal effect of Test on Hire</span></span>
@@ -1043,7 +1043,7 @@ Figure&nbsp;15.9: Posterior distribution of the GPA coefficient from the Bayesia
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-selection-causal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the posterior coefficient for Test as odds ratio</span></span>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the posterior coefficient for Test</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(model_causal),</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_Test"</span>),</span>
