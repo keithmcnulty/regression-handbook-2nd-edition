@@ -31,3 +31,5 @@ docs/CNAME
 test*
 Rplot*
 /docs/env/
+**/*.quarto_ipynb
+/models/

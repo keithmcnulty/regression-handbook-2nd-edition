@@ -14,6 +14,19 @@ Before we proceed, let's review a few technical tips to help ensure good perform
 
 * Your choice of backend for `brms` can have a significant impact on model fitting time.  The backend is the R package which 'translates' your specified model into instructions that `stan` will undersand.  The default backend is `rstan`, which is generally reliable for most models but not very fast.  Using the `cmdstanr` backend can lead to faster fitting times.  To use `cmdstanr`, you will need to install the `cmdstanr` package and set it up according to the instructions in the package documentation.  Once set up, you can specify the backend in `brms` using the `backend = "cmdstanr"` argument in the `brm()` function or by setting the option `options(brms.backend = "cmdstanr")` before fitting your model.
 
+In preparation for fitting a variety of models in this chapter, we will set some default options for `brms` to save having to specify these in every model run.
+
+```{r}
+# set default options for brms
+library(brms)
+options(
+  brms.iter = 10000, # number of iterations
+  brms.chains = 4,   # number of chains
+  brms.refresh = 0,  # suppress output during fitting
+  brms.seed = 123,    # set seed for reproducibility
+  brms.save_pars = save_pars('all') # save all parameters
+)
+```
 
 ## Bayesian Binomial Logistic Regression 
 
@@ -52,21 +65,21 @@ We are interested in how the sales, customer ratings and performance ratings of 
 
 ```{r}
 #| label: bayes-binomial-logistic
-#| results: false
+#| eval: false
 # Fit Bayesian Binomial Logistic Regression model
 library(brms)
-library(ggplot2)
 
 uninf_binomial_model <- brm(
   formula = promoted ~ sales + customer_rate + performance,
   data = salespeople_bayes,
-  family = bernoulli(), # for binary outcome variable (logistic function is default link)
-  iter = 10000,
-  chains = 4,
-  refresh = 0,
-  save_pars = save_pars('all'),
-  seed = 123
+  family = bernoulli() # for binary outcome variable (logistic function is default link)
 )
+```
+
+```{r}
+#| echo: false
+# load the model from saved file
+uninf_binomial_model <- readRDS("models/other/uninf_binomial_model.RDS")
 ```
 
 
@@ -92,6 +105,7 @@ We can also visualize the posterior distributions of the odds ratios using the `
 
 ```{r}
 library(bayesplot)
+library(ggplot2)
 
 mcmc_areas(
   exp(as.matrix(uninf_binomial_model, pars = c("b_sales"))),
@@ -137,7 +151,7 @@ In @sec-multinom, we learned that multinomial logistic regression is used when t
 
 ```{r}
 #| label: bayes-multinomial-logistic
-#| results: false
+#| eval: false
 # Load the health insurance dataset
 url <- "https://peopleanalytics-regression-book.org/data/health_insurance.csv"
 health_insurance <- read.csv(url)
@@ -150,13 +164,21 @@ health_insurance_bayes <- health_insurance[sample(nrow(health_insurance), 100), 
 uninf_multinom_model <- brm(
   formula = product ~ age + household + position_level + gender + absent,
   data = health_insurance_bayes,
-  family = categorical(), # for multinomial outcome variable
-  iter = 10000,
-  chains = 4,
-  refresh = 0,
-  save_pars = save_pars('all'),
-  seed = 123
+  family = categorical() # for multinomial outcome variable
 )
+```
+
+```{r}
+#| echo: false
+url <- "https://peopleanalytics-regression-book.org/data/health_insurance.csv"
+health_insurance <- read.csv(url)
+
+# take a sample of 100 observations
+set.seed(123)
+health_insurance_bayes <- health_insurance[sample(nrow(health_insurance), 100), ]
+
+# load the model from saved file
+uninf_multinom_model <- readRDS("models/other/uninf_multinom_model.RDS")
 ```
 
 Now we can view our summary.
@@ -238,7 +260,7 @@ In a Bayesian framework, we can fit a proportional odds logistic regression mode
 
 ```{r}
 #| label: bayes-ordinal-logistic
-#| results: false
+#| eval: false
 # load the soccer dataset
 url <- "https://peopleanalytics-regression-book.org/data/soccer.csv"
 soccer <- read.csv(url)
@@ -257,13 +279,14 @@ soccer_bayes$discipline <- ordered(
 uninf_polr_model <- brm(
   formula = discipline ~ .,
   data = soccer_bayes,
-  family = cumulative(), # for ordinal outcome variable
-  iter = 10000,
-  chains = 4,
-  refresh = 0,
-  save_pars = save_pars('all'),
-  seed = 123
+  family = cumulative() # for ordinal outcome variable
 )
+```
+
+```{r}
+#| echo: false
+# load the model from saved file
+uninf_polr_model <- readRDS("models/other/uninf_polr_model.RDS")
 ```
 
 Now we can view our summary.
@@ -279,18 +302,19 @@ In a Bayesian regression framework, an effective way to test the proportional od
 
 ```{r}
 #| label: bayes-adjacent-category-logistic
-#| results: false
+#| eval: false
 # Fit Bayesian adjacent category Logistic Regression model with flat priors
 uninf_acat_model <- brm(
   formula = discipline ~ .,
   data = soccer_bayes,
-  family = acat(), # for adjacent category ordinal outcome variable
-  iter = 10000,
-  chains = 4,
-  refresh = 0,
-  save_pars = save_pars('all'),
-  seed = 123
+  family = acat() # for adjacent category ordinal outcome variable
 )
+```
+
+```{r}
+#| echo: false
+# load the model from saved file
+uninf_acat_model <- readRDS("models/other/uninf_acat_model.RDS")
 ```
 
 Now we can compare the fit using LOO:
@@ -313,7 +337,7 @@ In a Bayesian framework, we can fit a Poisson regression model using the `brms` 
 
 ```{r}
 #| label: bayes-poisson
-#| results: false
+#| eval: false
 # Load the absenteeism dataset
 url <- "https://peopleanalytics-regression-book.org/data/absenteeism.csv"
 absenteeism <- read.csv(url)
@@ -326,13 +350,14 @@ absenteeism_bayes <- absenteeism[sample(nrow(absenteeism), 100), ]
 uninf_poisson_model <- brm(
   formula = days_absent ~ tenure + is_manager + performance_rating,
   data = absenteeism_bayes,
-  family = poisson(), # for count outcome variable
-  iter = 10000,
-  chains = 4,
-  refresh = 0,
-  save_pars = save_pars('all'),
-  seed = 123
+  family = poisson() # for count outcome variable
 )
+```
+
+```{r}
+#| echo: false
+# load the model from saved file
+uninf_poisson_model <- readRDS("models/other/uninf_poisson_model.RDS")
 ```
 
 We can now inspect the model summary.
@@ -359,18 +384,19 @@ We can see some issues with our predictive fit.  This suggests that we may have 
 
 ```{r}
 #| label: bayes-negative-binomial
-#| results: false
+#| eval: false
 # Fit Bayesian Negative Binomial Regression model with flat priors
 uninf_negbin_model <- brm(
   formula = days_absent ~ tenure + is_manager + performance_rating,
   data = absenteeism_bayes,
-  family = negbinomial(), # for count outcome variable with overdispersion
-  iter = 10000,
-  chains = 4,
-  refresh = 0,
-  save_pars = save_pars('all'),
-  seed = 123
+  family = negbinomial() # for count outcome variable with overdispersion
 )
+```
+
+```{r}
+#| echo: false
+# load the model from saved file
+uninf_negbin_model <- readRDS("models/other/uninf_negbin_model.RDS")
 ```
 
 We can now inspect the model summary.
@@ -413,7 +439,7 @@ To illustrate, let's use a random sample from our `speed_dating` dataset from @s
 
 ```{r}
 #| label: bayes-mixed-binomial
-#| results: false
+#| eval: false
 # Load the speed dating dataset
 url <- "https://peopleanalytics-regression-book.org/data/speed_dating.csv"
 speed_dating <- read.csv(url)
@@ -431,13 +457,14 @@ uninf_mixed_binomial_model <- brm(
   formula = dec ~ agediff + samerace + attr + intel + prob + (1 | iid),
   data = speed_dating_bayes,
   family = bernoulli(), # for binary outcome variable
-  iter = 10000,
-  chains = 4,
-  refresh = 0,
-  save_pars = save_pars('all', group = TRUE), # save group-level parameters
-  seed = 123
+  save_pars = save_pars('all', group = TRUE) # save group-level parameters
 )
+```
 
+```{r}
+#| echo: false
+# load the model from saved file
+uninf_mixed_binomial_model <- readRDS("models/other/uninf_mixed_binomial_model.RDS")
 ```
 
 Now we can view our summary.
@@ -456,7 +483,7 @@ In a Bayesian framework, we can fit Cox proportional hazards models using the `b
 
 ```{r}
 #| label: bayes-cox-ph
-#| results: false
+#| eval: false
 # Load the job retention dataset
 url <- "https://peopleanalytics-regression-book.org/data/job_retention.csv"
 job_retention <- read.csv(url)
@@ -470,13 +497,14 @@ uninf_cox_model <- brm(
   formula = month | cens(1 - left) ~ gender + 
     field + level + sentiment,
   data = job_retention_bayes,
-  family = cox(), # for survival outcome variable
-  iter = 10000,
-  chains = 4,
-  refresh = 0,
-  save_pars = save_pars('all'),
-  seed = 123
+  family = cox() # for survival outcome variable
 )
+```
+
+```{r}
+#| echo: false
+# load the model from saved file
+uninf_cox_model <- readRDS("models/other/uninf_cox_model.RDS")
 ```
 
 We can now view the model summary.

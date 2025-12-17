@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-809cd4ad8465a863d451ae2f0a07b33b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-108e51fa0b95596792f9f0eaa63a27ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -121,7 +122,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -358,6 +359,18 @@ window.Quarto = {
 <li><p>The number of iterations you will need to ensure convergence will vary by model and data. In the examples in this chapter we use 10,000 iterations, which is a generous number for most models.</p></li>
 <li><p>Your choice of backend for <code>brms</code> can have a significant impact on model fitting time. The backend is the R package which ‘translates’ your specified model into instructions that <code>stan</code> will undersand. The default backend is <code>rstan</code>, which is generally reliable for most models but not very fast. Using the <code>cmdstanr</code> backend can lead to faster fitting times. To use <code>cmdstanr</code>, you will need to install the <code>cmdstanr</code> package and set it up according to the instructions in the package documentation. Once set up, you can specify the backend in <code>brms</code> using the <code>backend = "cmdstanr"</code> argument in the <code>brm()</code> function or by setting the option <code>options(brms.backend = "cmdstanr")</code> before fitting your model.</p></li>
 </ul>
+<p>In preparation for fitting a variety of models in this chapter, we will set some default options for <code>brms</code> to save having to specify these in every model run.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set default options for brms</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.iter =</span> <span class="dv">10000</span>, <span class="co"># number of iterations</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.chains =</span> <span class="dv">4</span>,   <span class="co"># number of chains</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.refresh =</span> <span class="dv">0</span>,  <span class="co"># suppress output during fitting</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.seed =</span> <span class="dv">123</span>,    <span class="co"># set seed for reproducibility</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>) <span class="co"># save all parameters</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <section id="bayesian-binomial-logistic-regression" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="bayesian-binomial-logistic-regression"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</h2>
 <p>As we saw in <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>, binomial logistic regression is used when each observation of our outcome is a Bernoulli random variable that can take a value of 1 (e.g., ‘success’) with probability <span class="math inline">\(p_i\)</span> and a value of 0 (e.g., ‘failure’) with probability <span class="math inline">\(1-p_i\)</span>. That is</p>
@@ -372,37 +385,31 @@ y_i \sim \text{Bernoulli}(p_i)
 <p>In a Bayesian framework, we can fit a binomial logistic regression model using the <code>brms</code> package in a similar way to how we fit a linear regression model. The syntax is similar to that of frequentist logistic regression, but we specify the family as <code>bernoulli()</code> to explicitly indicate that each observation of our outcome is a Bernoulli random variable.</p>
 <p>To illustrate, let’s use a random sample from our <code>salespeople</code> dataset from <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the salespeople dataset</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a random sample of 100 observations</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>salespeople_bayes <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">100</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the salespeople dataset</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a random sample of 100 observations</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>salespeople_bayes <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">100</span>), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We are interested in how the sales, customer ratings and performance ratings of our 100 sales people affect their likelihood of promotion. We will fit a Bayesian binomial logistic regression model to this subset of data using the default flat priors.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Binomial Logistic Regression model</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>uninf_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> promoted <span class="sc">~</span> sales <span class="sc">+</span> customer_rate <span class="sc">+</span> performance,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> salespeople_bayes,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="co"># for binary outcome variable (logistic function is default link)</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Binomial Logistic Regression model</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>uninf_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> promoted <span class="sc">~</span> sales <span class="sc">+</span> customer_rate <span class="sc">+</span> performance,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> salespeople_bayes,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>() <span class="co"># for binary outcome variable (logistic function is default link)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>After fitting the model, we can examine the summary of the posterior distributions of the coefficients, which will represent log-odds coefficients.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_binomial_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_binomial_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: bernoulli 
   Links: mu = logit 
@@ -413,10 +420,10 @@ Formula: promoted ~ sales + customer_rate + performance
 
 Regression Coefficients:
               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept       -28.50      8.74   -48.67   -14.63 1.00     9977     9943
-sales             0.06      0.02     0.03     0.10 1.00     8382     8346
-customer_rate    -1.89      1.26    -4.66     0.28 1.00     9195     9149
-performance       1.40      0.80    -0.02     3.15 1.00    11212    10169
+Intercept       -28.44      8.56   -48.27   -14.81 1.00     8810     9159
+sales             0.06      0.02     0.03     0.10 1.00     7457     7339
+customer_rate    -1.88      1.26    -4.64     0.29 1.00     8790     8077
+performance       1.40      0.79    -0.01     3.08 1.00    10645     9370
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -425,15 +432,15 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 <p>And we can transform these to posterior distributions of the odds ratios.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert log-odds to odds ratios</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>(odds_ratio_summary <span class="ot">&lt;-</span> <span class="fu">fixef</span>(uninf_binomial_model) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">exp</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert log-odds to odds ratios</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>(odds_ratio_summary <span class="ot">&lt;-</span> <span class="fu">fixef</span>(uninf_binomial_model) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">exp</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  Estimate   Est.Error         Q2.5        Q97.5
-Intercept     4.190094e-13 6277.330242 7.276895e-22 4.420353e-07
-sales         1.057368e+00    1.017768 1.029277e+00 1.101769e+00
-customer_rate 1.511911e-01    3.541510 9.438410e-03 1.319739e+00
-performance   4.057097e+00    2.227564 9.763509e-01 2.325488e+01</code></pre>
+Intercept     4.468431e-13 5198.008019 1.092333e-21 3.711096e-07
+sales         1.057232e+00    1.017337 1.029548e+00 1.100415e+00
+customer_rate 1.518821e-01    3.510834 9.684400e-03 1.331130e+00
+performance   4.060503e+00    2.203647 9.924827e-01 2.185864e+01</code></pre>
 </div>
 </div>
 <p>We can also visualize the posterior distributions of the odds ratios using the <code>mcmc_areas()</code> function from the <code>bayesplot</code> package. An example for the <code>sales</code> coefficient is shown in <a href="#fig-sales-or" class="quarto-xref">Figure&nbsp;<span>14.1</span></a>, indicating the posterior distribution of the multiple of the odds of promotion associated with an extra thousand dollars in sales.</p>
@@ -441,18 +448,19 @@ performance   4.057097e+00    2.227564 9.763509e-01 2.325488e+01</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sales-or-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">as.matrix</span>(uninf_binomial_model, <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_sales"</span>))),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.66</span>, </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob_outer =</span> <span class="fl">0.95</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">as.matrix</span>(uninf_binomial_model, <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_sales"</span>))),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fl">0.66</span>, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob_outer =</span> <span class="fl">0.95</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -468,12 +476,12 @@ Figure&nbsp;14.1: Posterior distribution of the odds ratio for the <code>sales</
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-binom-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(uninf_binomial_model, <span class="at">type =</span> <span class="st">"stat"</span>, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(uninf_binomial_model, <span class="at">type =</span> <span class="st">"stat"</span>, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -486,15 +494,15 @@ Figure&nbsp;14.2: Posterior predictive check comparing the proportion of success
 </div>
 <p>For a new data point, we can obtain the posterior predictive probability of success using the <code>posterior_predict()</code> function, which runs draws of our posterior parameters and predicts a success or failure for each draw based on our new data. For example, for a sales person with $575k in sales, an average customer rating of 3.9 and a performance rating of 3, we can determine the posterior predictive probability of promotion as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># determine posterior binary predictions new data point</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sales =</span> <span class="dv">575</span>, <span class="at">customer_rate =</span> <span class="fl">3.9</span>, <span class="at">performance =</span> <span class="dv">3</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>posterior_preds <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(uninf_binomial_model, <span class="at">newdata =</span> new_data, </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">ndraws =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to probability by taking mean</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(posterior_preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># determine posterior binary predictions new data point</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sales =</span> <span class="dv">575</span>, <span class="at">customer_rate =</span> <span class="fl">3.9</span>, <span class="at">performance =</span> <span class="dv">3</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>posterior_preds <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(uninf_binomial_model, <span class="at">newdata =</span> new_data, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">ndraws =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to probability by taking mean</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(posterior_preds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5952</code></pre>
+<pre><code>[1] 0.5887</code></pre>
 </div>
 </div>
 </section>
@@ -502,29 +510,24 @@ Figure&nbsp;14.2: Posterior predictive check comparing the proportion of success
 <h2 data-number="14.2" class="anchored" data-anchor-id="bayesian-multinomial-logistic-regression"><span class="header-section-number">14.2</span> Bayesian Multinomial Logistic Regression</h2>
 <p>In <a href="multinomial_regression.html" class="quarto-xref"><span>Chapter 6</span></a>, we learned that multinomial logistic regression is used when the outcome variable is categorical with more than two categories that do not have a natural ordering. In this case, we model the log-odds of each category relative to a reference category as a linear function of our input variables. In a Bayesian framework, we can fit a multinomial logistic regression model using the <code>brms</code> package by specifying the family as <code>categorical()</code>. As usual we will take a sample from our <code>health_insurance</code> dataset from <a href="multinomial_regression.html" class="quarto-xref"><span>Chapter 6</span></a> to illustrate.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the health insurance dataset</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>health_insurance_bayes <span class="ot">&lt;-</span> health_insurance[<span class="fu">sample</span>(<span class="fu">nrow</span>(health_insurance), <span class="dv">100</span>), ]</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Multinomial Logistic Regression model with flat priors</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>uninf_multinom_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> position_level <span class="sc">+</span> gender <span class="sc">+</span> absent,</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance_bayes,</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">categorical</span>(), <span class="co"># for multinomial outcome variable</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the health insurance dataset</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>health_insurance_bayes <span class="ot">&lt;-</span> health_insurance[<span class="fu">sample</span>(<span class="fu">nrow</span>(health_insurance), <span class="dv">100</span>), ]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Multinomial Logistic Regression model with flat priors</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>uninf_multinom_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> position_level <span class="sc">+</span> gender <span class="sc">+</span> absent,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance_bayes,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">categorical</span>() <span class="co"># for multinomial outcome variable</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we can view our summary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_multinom_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_multinom_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: categorical 
   Links: muB = logit; muC = logit 
@@ -535,18 +538,18 @@ Formula: product ~ age + household + position_level + gender + absent
 
 Regression Coefficients:
                    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-muB_Intercept        -11.23      3.52   -18.67    -4.88 1.00    10291    11185
-muC_Intercept        -14.09      3.71   -22.23    -7.68 1.00    11355    11628
-muB_age                0.54      0.11     0.34     0.79 1.00     7278     8752
-muB_household         -2.38      0.54    -3.54    -1.41 1.00    11671    13047
-muB_position_level    -0.38      0.54    -1.48     0.62 1.00    15201    14036
-muB_genderMale        -4.02      1.33    -6.79    -1.55 1.00    12446    13622
-muB_absent            -0.02      0.08    -0.17     0.13 1.00    15630    14478
-muC_age                0.44      0.10     0.27     0.67 1.00     7414     8867
-muC_household         -0.02      0.29    -0.60     0.55 1.00    15104    14344
-muC_position_level    -0.26      0.44    -1.15     0.56 1.00    15978    13867
-muC_genderMale        -1.25      1.06    -3.44     0.74 1.00    14489    13177
-muC_absent            -0.04      0.07    -0.17     0.09 1.00    14979    14543
+muB_Intercept        -11.23      3.55   -18.83    -4.87 1.00    10576    11510
+muC_Intercept        -14.10      3.76   -22.40    -7.63 1.00    11670    11872
+muB_age                0.54      0.12     0.34     0.80 1.00     7463     8822
+muB_household         -2.39      0.56    -3.60    -1.40 1.00    10997    11884
+muB_position_level    -0.39      0.54    -1.49     0.63 1.00    14824    12659
+muB_genderMale        -4.04      1.35    -6.82    -1.54 1.00    12420    13286
+muB_absent            -0.02      0.08    -0.17     0.13 1.00    14711    13102
+muC_age                0.44      0.10     0.27     0.67 1.00     7668     8776
+muC_household         -0.03      0.30    -0.60     0.58 1.00    13866    13238
+muC_position_level    -0.26      0.43    -1.16     0.55 1.00    15988    13855
+muC_genderMale        -1.26      1.07    -3.47     0.74 1.00    14399    14483
+muC_absent            -0.04      0.07    -0.17     0.09 1.00    14367    12143
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -559,20 +562,20 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-multinom-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert observations to numeric</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>y_observed <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(health_insurance_bayes<span class="sc">$</span>product))</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get 1000 posterior predictions</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>y_sim <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(uninf_multinom_model, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior predictive check showing proportions for each product</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ppc_bars</span>(y_observed, y_sim) <span class="sc">+</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>)) <span class="sc">+</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert observations to numeric</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y_observed <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(health_insurance_bayes<span class="sc">$</span>product))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get 1000 posterior predictions</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>y_sim <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(uninf_multinom_model, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior predictive check showing proportions for each product</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ppc_bars</span>(y_observed, y_sim) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>)) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -586,31 +589,31 @@ Figure&nbsp;14.3: Posterior predictive check comparing the proportions of each p
 <p>We see that the model fits the data very well, with the median predictions closely matching the observed data.</p>
 <p>Given new data for an individual, we can calculate the probability of the choice of each product using our posterior draws.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new data point</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="dv">35</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">household =</span> <span class="dv">3</span>,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">position_level =</span> <span class="dv">3</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">gender =</span> <span class="st">"Male"</span>,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">absent =</span> <span class="dv">2</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior predictions for new data point</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>posterior_preds <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(uninf_multinom_model, <span class="at">newdata =</span> new_data, </span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">ndraws =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">123</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">factor</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>))</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to probabilities of each product choice</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>(product_probs <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(posterior_preds)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new data point</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="dv">35</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">household =</span> <span class="dv">3</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">position_level =</span> <span class="dv">3</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">gender =</span> <span class="st">"Male"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">absent =</span> <span class="dv">2</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior predictions for new data point</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>posterior_preds <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(uninf_multinom_model, <span class="at">newdata =</span> new_data, </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">ndraws =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">123</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">factor</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>))</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to probabilities of each product choice</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>(product_probs <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(posterior_preds)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>posterior_preds
      A      B      C 
-0.6428 0.0210 0.3362 </code></pre>
+0.6328 0.0181 0.3491 </code></pre>
 </div>
 </div>
 <p>Since this model sees our first appearance of categorical input variables in the Bayesian modeling framework, it is worth making a note that <code>brms</code> will automatically create dummies for these variables, just as we saw in the <code>lm()</code> and <code>glm()</code> functions for frequentist regression models. If we wish to set an informed prior for the coefficient of a specific categorical input variable, we will need to specify the dummy variable associated with our prior. To determine the correct way to specify the prior, we can first look at all our priors in the model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_prior</span>(uninf_multinom_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_prior</span>(uninf_multinom_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                prior     class           coef group resp dpar nlpar lb ub tag
                (flat)         b                            muB                
@@ -646,10 +649,10 @@ Figure&nbsp;14.3: Posterior predictive check comparing the proportions of each p
 </div>
 <p>We can use this syntax to specify our informed prior. As an example, if we had information that being male is associated with a 20% increase in the odds of choosing product B over product A, we would set a prior for the <code>b</code> coefficient of <code>genderMale</code> in the <code>muB</code> set of parameters. We would specify the mean on the log-odds scale as <code>log(1.2)</code>, and we might set a standard deviation of <code>log(0.1)</code> to reflect a strong belief about this effect. This prior would be specified as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set a prior for the effect of being male on the log-odds of choosing product B over product A</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fu">log</span>(<span class="fl">1.2</span>), <span class="fu">log</span>(<span class="fl">0.1</span>)), <span class="at">class =</span> <span class="st">"b"</span>, <span class="at">coef =</span> <span class="st">"genderMale"</span>, <span class="at">dpar =</span> <span class="st">"muB"</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set a prior for the effect of being male on the log-odds of choosing product B over product A</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fu">log</span>(<span class="fl">1.2</span>), <span class="fu">log</span>(<span class="fl">0.1</span>)), <span class="at">class =</span> <span class="st">"b"</span>, <span class="at">coef =</span> <span class="st">"genderMale"</span>, <span class="at">dpar =</span> <span class="st">"muB"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We could then refit the model with this prior specified using the <code>prior</code> argument in the <code>brm()</code> function.</p>
 <section id="bayesian-ordinal-logistic-regression" class="level3" data-number="14.2.1">
@@ -657,35 +660,30 @@ Figure&nbsp;14.3: Posterior predictive check comparing the proportions of each p
 <p>In <a href="ordinal_regression.html" class="quarto-xref"><span>Chapter 7</span></a>, we learned that ordinal logistic regression is used when the outcome variable is categorical with more than two categories that have a natural ordering. In this case, we model the log-odds of being in a category less than or equal to a certain level as a linear function of our input variables. In particular, we focused on the proportional odds model, which assumes that the effect of each input variable is the same across all thresholds of the outcome variable, allowing us to have a single coefficient for each input variable to indicate the strength of effect on the log-odds of being in a higher category in general. We also learned that it is essential to check the proportional odds assumption when fitting a proportional odds logistic regression model, as violation of this assumption can lead to false inferences from the model.</p>
 <p>In a Bayesian framework, we can fit a proportional odds logistic regression model using the <code>brms</code> package by specifying the family as <code>cumulative()</code>, representing a cumulative logistic model. As usual we will take a sample from our <code>soccer</code> dataset from <a href="ordinal_regression.html" class="quarto-xref"><span>Chapter 7</span></a> to illustrate. We are aiming to estimate the effect of numerous factors on the discliplinary record of a player in a game - a three level ordinal outcome: “None” for no discipline, “Yellow” for a formal warning and “Red” for a sending-off. As with the <code>polr()</code> function for the frequentist proportional odds logistic regression model, <code>brms</code> will expect us to ensure our outcome variable is an ordinal factor.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the soccer dataset</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/soccer.csv"</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>soccer <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>soccer_bayes <span class="ot">&lt;-</span> soccer[<span class="fu">sample</span>(<span class="fu">nrow</span>(soccer), <span class="dv">100</span>), ]</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># convert discipline to an ordered factor</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>soccer_bayes<span class="sc">$</span>discipline <span class="ot">&lt;-</span> <span class="fu">ordered</span>(</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  soccer_bayes<span class="sc">$</span>discipline,</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"None"</span>, <span class="st">"Yellow"</span>, <span class="st">"Red"</span>)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian proportional odds Logistic Regression model with flat priors</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>uninf_polr_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> discipline <span class="sc">~</span> .,</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> soccer_bayes,</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">cumulative</span>(), <span class="co"># for ordinal outcome variable</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the soccer dataset</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/soccer.csv"</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>soccer <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>soccer_bayes <span class="ot">&lt;-</span> soccer[<span class="fu">sample</span>(<span class="fu">nrow</span>(soccer), <span class="dv">100</span>), ]</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># convert discipline to an ordered factor</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>soccer_bayes<span class="sc">$</span>discipline <span class="ot">&lt;-</span> <span class="fu">ordered</span>(</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  soccer_bayes<span class="sc">$</span>discipline,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"None"</span>, <span class="st">"Yellow"</span>, <span class="st">"Red"</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian proportional odds Logistic Regression model with flat priors</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>uninf_polr_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> discipline <span class="sc">~</span> .,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> soccer_bayes,</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">cumulative</span>() <span class="co"># for ordinal outcome variable</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we can view our summary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_polr_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_polr_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: cumulative 
   Links: mu = logit 
@@ -696,16 +694,16 @@ Formula: discipline ~ n_yellow_25 + n_red_25 + position + result + country + lev
 
 Regression Coefficients:
                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept[1]       4.43      1.33     1.95     7.11 1.00    20324    14734
-Intercept[2]       6.05      1.41     3.40     8.89 1.00    19750    14197
-n_yellow_25        0.39      0.18     0.05     0.74 1.00    28091    16385
-n_red_25           0.76      0.25     0.28     1.27 1.00    23090    15499
-positionM          1.22      0.66    -0.03     2.61 1.00    17477    14798
-positionS          0.63      0.87    -1.05     2.35 1.00    18879    14578
-resultL            1.25      0.64     0.02     2.51 1.00    18575    15872
-resultW            0.25      0.62    -0.95     1.48 1.00    19649    16126
-countryGermany     0.54      0.49    -0.41     1.52 1.00    29322    15510
-level             -0.53      0.50    -1.54     0.45 1.00    26756    14852
+Intercept[1]       4.42      1.32     1.91     7.13 1.00    17186    13646
+Intercept[2]       6.04      1.40     3.40     8.90 1.00    16741    14059
+n_yellow_25        0.39      0.18     0.05     0.74 1.00    23889    16660
+n_red_25           0.76      0.25     0.29     1.28 1.00    18895    13963
+positionM          1.22      0.66    -0.00     2.56 1.00    14877    13512
+positionS          0.63      0.85    -1.03     2.32 1.00    15380    14959
+resultL            1.25      0.64     0.04     2.52 1.00    16640    14769
+resultW            0.26      0.62    -0.96     1.50 1.00    17452    15415
+countryGermany     0.54      0.49    -0.41     1.52 1.00    23871    15069
+level             -0.54      0.50    -1.51     0.43 1.00    22289    16376
 
 Further Distributional Parameters:
      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
@@ -719,28 +717,23 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of being in a higher discipline category.</p>
 <p>In a Bayesian regression framework, an effective way to test the proportional odds assumption is to run an alternative model that does not assume proportional odds, and then compare the two models using information criteria such as from Leave-One-Out Cross-Validation (LOO-CV) . If the non-proportional odds model has a significantly better fit according to these criteria, it suggests that the proportional odds assumption may be violated. A common alternative model for ordinal regression is an adjacent category model. Here is how we can fit an adjacent category ordinal model in <code>brms</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian adjacent category Logistic Regression model with flat priors</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>uninf_acat_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> discipline <span class="sc">~</span> .,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> soccer_bayes,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">acat</span>(), <span class="co"># for adjacent category ordinal outcome variable</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian adjacent category Logistic Regression model with flat priors</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>uninf_acat_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> discipline <span class="sc">~</span> .,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> soccer_bayes,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">acat</span>() <span class="co"># for adjacent category ordinal outcome variable</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we can compare the fit using LOO:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare LOO for both models</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>loo_polr <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_polr_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>loo_acat <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_acat_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_polr, loo_acat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare LOO for both models</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>loo_polr <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_polr_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>loo_acat <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_acat_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_polr, loo_acat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 elpd_diff se_diff
 uninf_polr_model  0.0       0.0   
-uninf_acat_model -1.1       1.8   </code></pre>
+uninf_acat_model -1.2       1.8   </code></pre>
 </div>
 </div>
 <p>The LOO comparison suggests that there is no meaningful difference between the models, so we can be reasonably confident that the proportional odds assumption holds in this case.</p>
@@ -751,29 +744,24 @@ uninf_acat_model -1.1       1.8   </code></pre>
 <p>In <a href="poisson_nb.html" class="quarto-xref"><span>Chapter 8</span></a>, we learned that Poisson regression is used when the outcome variable is a count of events that occur in a fixed period of time or space. We model the log of the expected count as a linear function of our input variables, to ensure that the count outcomes are always non-negative. This means that when we exponentiate the coefficients of our model, we see that the effects of the input variables are multiplicative on the count outcome. We also learned that Poisson regression assumes that the mean and variance of the outcome variable are equal, which may not hold in practice. When the variance exceeds the mean, we have overdispersion, which can lead to underestimated standard errors and misleading inferences from the model. In such cases, negative binomial regression can be used as an alternative, as it includes an additional shape parameter <span class="math inline">\(\theta\)</span> to account for overdispersion.</p>
 <p>In a Bayesian framework, we can fit a Poisson regression model using the <code>brms</code> package by specifying the family as <code>poisson()</code>. As usual we will take a sample from our <code>absenteeism</code> dataset from <a href="poisson_nb.html" class="quarto-xref"><span>Chapter 8</span></a> to illustrate.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the absenteeism dataset</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/absenteeism.csv"</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>absenteeism <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>absenteeism_bayes <span class="ot">&lt;-</span> absenteeism[<span class="fu">sample</span>(<span class="fu">nrow</span>(absenteeism), <span class="dv">100</span>), ]</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Poisson Regression model with flat priors</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>uninf_poisson_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism_bayes,</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="co"># for count outcome variable</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the absenteeism dataset</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/absenteeism.csv"</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>absenteeism <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 100 observations</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>absenteeism_bayes <span class="ot">&lt;-</span> absenteeism[<span class="fu">sample</span>(<span class="fu">nrow</span>(absenteeism), <span class="dv">100</span>), ]</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Poisson Regression model with flat priors</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>uninf_poisson_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism_bayes,</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>() <span class="co"># for count outcome variable</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can now inspect the model summary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_poisson_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_poisson_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: poisson 
   Links: mu = log 
@@ -784,10 +772,10 @@ Formula: days_absent ~ tenure + is_manager + performance_rating
 
 Regression Coefficients:
                    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept              1.21      0.18     0.87     1.55 1.00    19270    14545
-tenure                 0.05      0.00     0.05     0.06 1.00    19625    16342
-is_manager             0.02      0.09    -0.17     0.20 1.00    19823    12946
-performance_rating     0.10      0.04     0.01     0.19 1.00    19790    14426
+Intercept              1.21      0.18     0.86     1.55 1.00    19132    15803
+tenure                 0.05      0.00     0.05     0.06 1.00    18164    15843
+is_manager             0.01      0.09    -0.17     0.19 1.00    18816    14270
+performance_rating     0.10      0.04     0.01     0.19 1.00    19624    14897
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -800,12 +788,12 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-poisson-pp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(uninf_poisson_model, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">+</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(uninf_poisson_model, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -818,21 +806,16 @@ Figure&nbsp;14.4: Posterior predictive check for the Bayesian Poisson regression
 </div>
 <p>We can see some issues with our predictive fit. This suggests that we may have overdispersion in our data. We can address this by fitting a negative binomial regression model instead, which we can do in <code>brms</code> by specifying the family as <code>negbinomial()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Negative Binomial Regression model with flat priors</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>uninf_negbin_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism_bayes,</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">negbinomial</span>(), <span class="co"># for count outcome variable with overdispersion</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Negative Binomial Regression model with flat priors</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>uninf_negbin_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism_bayes,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">negbinomial</span>() <span class="co"># for count outcome variable with overdispersion</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can now inspect the model summary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_negbin_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_negbin_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: negbinomial 
   Links: mu = log 
@@ -843,14 +826,14 @@ Formula: days_absent ~ tenure + is_manager + performance_rating
 
 Regression Coefficients:
                    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept              1.22      0.50     0.24     2.21 1.00    24069    15898
-tenure                 0.05      0.01     0.04     0.07 1.00    21784    15806
-is_manager             0.04      0.33    -0.58     0.71 1.00    22411    14657
-performance_rating     0.09      0.13    -0.16     0.35 1.00    23794    15385
+Intercept              1.22      0.50     0.22     2.21 1.00    24895    14617
+tenure                 0.05      0.01     0.04     0.07 1.00    22186    15271
+is_manager             0.03      0.33    -0.59     0.70 1.00    24454    14768
+performance_rating     0.09      0.13    -0.17     0.36 1.00    24358    14950
 
 Further Distributional Parameters:
       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-shape     1.55      0.27     1.10     2.13 1.00    20611    15993
+shape     1.55      0.27     1.09     2.13 1.00    21232    15738
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -862,13 +845,13 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-negbin-pp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(uninf_negbin_model, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">+</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">50</span>) <span class="sc">+</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(uninf_negbin_model, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">50</span>) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -881,14 +864,14 @@ Figure&nbsp;14.5: Posterior predictive check for the Bayesian negative binomial 
 </div>
 <p>Finally, we can also use LOO-CV to formally compare the fit of the two models, which establishes a substantially superior fit for the negative binomial model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare LOO for both models</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>loo_poisson <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_poisson_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>loo_negbin <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_negbin_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_poisson, loo_negbin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare LOO for both models</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>loo_poisson <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_poisson_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>loo_negbin <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_negbin_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_poisson, loo_negbin)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    elpd_diff se_diff
 uninf_negbin_model     0.0       0.0 
-uninf_poisson_model -211.8      41.7 </code></pre>
+uninf_poisson_model -211.6      41.7 </code></pre>
 </div>
 </div>
 <p>Note that zero-inflated versions of both Poisson and negative binomial regression models can also be fit in <code>brms</code> by specifying the families as <code>zero_inflated_poisson()</code> and <code>zero_inflated_negbinomial()</code> respectively. These models will generate the posterior of an additional zero-inflation parameter <code>zi</code>, representing the probability that a zero observation is an “excess zero”.</p>
@@ -898,33 +881,29 @@ uninf_poisson_model -211.8      41.7 </code></pre>
 <p>In <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a>, we learned that mixed effects models (also known as multilevel or hierarchical models) are used when our data has a hierarchical structure, such as students nested within schools or employees nested within departments. These models allow us to account for the non-independence of observations within groups by including random effects that capture the variability between groups. In a Bayesian framework, we can fit mixed effects models using the <code>brms</code> package by specifying random effects in the model formula using the <code>(1 | group_variable)</code> syntax which we learned in <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a>. There is no need to specify a different family for mixed effects models in <code>bems</code>; we simply include the random effects in the formula and apply the appropriate model family for the outcome variable type.</p>
 <p>To illustrate, let’s use a random sample from our <code>speed_dating</code> dataset from <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a> and run a Bayesian binomial mixed effects model to understand how the various factors considered by individuals over multiple speed dates relate to the overall binary decision they made about their dates.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the speed dating dataset</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> speed_dating[<span class="fu">complete.cases</span>(speed_dating), ]</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 1000 observations</span></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>speed_dating_bayes <span class="ot">&lt;-</span> speed_dating[<span class="fu">sample</span>(<span class="fu">nrow</span>(speed_dating), <span class="dv">1000</span>), ]</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Binomial Logistic Mixed Effects model with flat priors</span></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>uninf_mixed_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> speed_dating_bayes,</span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="co"># for binary outcome variable</span></span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>, <span class="at">group =</span> <span class="cn">TRUE</span>), <span class="co"># save group-level parameters</span></span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the speed dating dataset</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> speed_dating[<span class="fu">complete.cases</span>(speed_dating), ]</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 1000 observations</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>speed_dating_bayes <span class="ot">&lt;-</span> speed_dating[<span class="fu">sample</span>(<span class="fu">nrow</span>(speed_dating), <span class="dv">1000</span>), ]</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Binomial Logistic Mixed Effects model with flat priors</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>uninf_mixed_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> speed_dating_bayes,</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="co"># for binary outcome variable</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>, <span class="at">group =</span> <span class="cn">TRUE</span>) <span class="co"># save group-level parameters</span></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we can view our summary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_mixed_binomial_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_mixed_binomial_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: bernoulli 
   Links: mu = logit 
@@ -936,16 +915,16 @@ Formula: dec ~ agediff + samerace + attr + intel + prob + (1 | iid)
 Multilevel Hyperparameters:
 ~iid (Number of levels: 449) 
               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sd(Intercept)     2.96      0.43     2.19     3.89 1.00     2912     5384
+sd(Intercept)     2.95      0.44     2.17     3.91 1.00     3157     6004
 
 Regression Coefficients:
           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept   -14.32      1.90   -18.39   -10.96 1.00     3499     6357
-agediff      -0.03      0.05    -0.13     0.07 1.00    12926    13748
-samerace     -0.02      0.30    -0.61     0.57 1.00    12849    13052
-attr          1.36      0.16     1.08     1.69 1.00     4710     8051
-intel         0.16      0.12    -0.07     0.42 1.00     7666    10812
-prob          0.78      0.11     0.57     1.02 1.00     4526     7882
+Intercept   -14.32      1.92   -18.50   -10.93 1.00     3973     6472
+agediff      -0.03      0.05    -0.13     0.07 1.00    12761    14227
+samerace     -0.01      0.30    -0.59     0.59 1.00    12586    13611
+attr          1.36      0.16     1.08     1.69 1.00     5088     8137
+intel         0.16      0.13    -0.07     0.42 1.00     8002     9609
+prob          0.78      0.12     0.57     1.02 1.00     4607     7221
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -959,30 +938,25 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>In <a href="survival_analysis.html" class="quarto-xref"><span>Chapter 10</span></a>, we learned that Cox proportional hazards models are used in survival analysis to model an event that occurs over time, such as employee turnover or customer churn. These models estimate the hazard function, which represents the instantaneous risk of the event occurring at a given time, conditional on survival up to that time. The Cox model assumes that the hazard ratios between individuals are proportional over time, allowing us to estimate the effect of input variables on the hazard function without specifying the baseline hazard function.</p>
 <p>In a Bayesian framework, we can fit Cox proportional hazards models using the <code>brms</code> package by specifying the family as <code>cox()</code>. If your data contains censored observations, the model formula should take the general form <code>time | cens(1 - event) ~ x1 + x2 + ...</code>, where <code>time</code> is the variable indicating the time of the observation and <code>event</code> is the binary variable indicating if the event had occurred. As usual we will take a sample from our <code>job_retention</code> dataset from <a href="survival_analysis.html" class="quarto-xref"><span>Chapter 10</span></a> to illustrate.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the job retention dataset</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/job_retention.csv"</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>job_retention <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 1000 observations</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>job_retention_bayes <span class="ot">&lt;-</span> job_retention[<span class="fu">sample</span>(<span class="fu">nrow</span>(job_retention), <span class="dv">1000</span>), ]</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Cox Proportional Hazards model with flat priors</span></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>uninf_cox_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> month <span class="sc">|</span> <span class="fu">cens</span>(<span class="dv">1</span> <span class="sc">-</span> left) <span class="sc">~</span> gender <span class="sc">+</span> </span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    field <span class="sc">+</span> level <span class="sc">+</span> sentiment,</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention_bayes,</span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">cox</span>(), <span class="co"># for survival outcome variable</span></span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
-<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the job retention dataset</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/job_retention.csv"</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>job_retention <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a sample of 1000 observations</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>job_retention_bayes <span class="ot">&lt;-</span> job_retention[<span class="fu">sample</span>(<span class="fu">nrow</span>(job_retention), <span class="dv">1000</span>), ]</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Cox Proportional Hazards model with flat priors</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>uninf_cox_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> month <span class="sc">|</span> <span class="fu">cens</span>(<span class="dv">1</span> <span class="sc">-</span> left) <span class="sc">~</span> gender <span class="sc">+</span> </span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    field <span class="sc">+</span> level <span class="sc">+</span> sentiment,</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention_bayes,</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">cox</span>() <span class="co"># for survival outcome variable</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can now view the model summary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_cox_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_cox_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: cox 
   Links: mu = log 
@@ -993,27 +967,27 @@ Formula: month | cens(1 - left) ~ gender + field + level + sentiment
 
 Regression Coefficients:
                        Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-Intercept                  0.55      0.39    -0.17     1.34 1.01      649
-genderM                   -0.06      0.12    -0.29     0.17 1.00     3352
-fieldFinance               0.06      0.14    -0.20     0.34 1.00     1245
-fieldHealth                0.19      0.27    -0.35     0.68 1.00     2650
-fieldLaw                   0.05      0.33    -0.63     0.65 1.00     1529
-fieldPublicDGovernment     0.26      0.17    -0.07     0.58 1.00     1976
-fieldSalesDMarketing      -0.01      0.21    -0.43     0.38 1.00     3929
-levelLow                  -0.09      0.17    -0.41     0.24 1.00     5836
-levelMedium               -0.00      0.19    -0.37     0.39 1.00     3684
-sentiment                 -0.13      0.03    -0.18    -0.07 1.00     5528
+Intercept                  0.54      0.40    -0.17     1.43 1.01      811
+genderM                   -0.06      0.12    -0.29     0.16 1.00    10233
+fieldFinance               0.06      0.13    -0.20     0.31 1.00     8743
+fieldHealth                0.17      0.27    -0.37     0.67 1.01     1474
+fieldLaw                   0.03      0.33    -0.66     0.63 1.00     6705
+fieldPublicDGovernment     0.25      0.16    -0.07     0.57 1.00    10167
+fieldSalesDMarketing      -0.02      0.21    -0.43     0.38 1.00     7380
+levelLow                  -0.08      0.17    -0.40     0.26 1.00     7261
+levelMedium                0.01      0.19    -0.37     0.39 1.00     2783
+sentiment                 -0.13      0.03    -0.18    -0.07 1.00     4703
                        Tail_ESS
-Intercept                   315
-genderM                    3351
-fieldFinance                557
-fieldHealth                4268
-fieldLaw                    887
-fieldPublicDGovernment      971
-fieldSalesDMarketing       2940
-levelLow                   9494
-levelMedium               10585
-sentiment                  9525
+Intercept                   257
+genderM                   10642
+fieldFinance               9481
+fieldHealth                 975
+fieldLaw                   9548
+fieldPublicDGovernment     9734
+fieldSalesDMarketing       8846
+levelLow                   7792
+levelMedium                3098
+sentiment                  7053
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1110,13 +1084,14 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

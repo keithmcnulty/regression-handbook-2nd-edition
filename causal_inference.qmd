@@ -401,19 +401,35 @@ head(selection)
 Before we define a causal model to work with, let's look at what a 'naive' analysis would look like.  We can run a simple Bayesian logistic regression predicting `Hire` from `Test` alone.
 
 ```{r}
-#| results: false
+#| eval: false
 library(brms)
+
+# set brms options
+options(
+  brms.iter = 10000,
+  brms.chains = 4,
+  brms.seed = 123,
+  brms.refresh = 0,
+  brms.save_pars = save_pars('all')
+)
 
 # run simple Bayesian logistic regression
 naive_model <- brm(
   formula = Hire ~ Test,
   data = selection,
-  family = bernoulli(),
-  chains = 4,
-  iter = 10000,
-  seed = 123,
-  save_pars = save_pars('all')
+  family = bernoulli()
 )
+```
+
+```{r}
+#| echo: false
+library(brms)
+```
+
+```{r}
+#| echo: false
+# load previously saved model
+naive_model <- readRDS("models/causal/naive_model.RDS")
 ```
 
 We can now take a look at our posterior coefficients for `Test`, as in @fig-naiveposterior.
@@ -431,7 +447,7 @@ mcmc_areas(
 ) +
   theme_minimal()
 ```
-Posterior distribution of the odds ratio for `Test` from a naive Bayesian logistic regression predicting `Hire` from `Test` alone.
+Posterior distribution of the coefficient for `Test` from a naive Bayesian logistic regression predicting `Hire` from `Test` alone.
 :::
 
 ```{r}
@@ -558,7 +574,7 @@ DAG with custom coloring of nodes based on their roles (exposure, outcome, other
 
 ### Deriving information from the DAG
 
-We can ask `dagitty` what to find our adjustment sets based on our exposure and outcome variable.
+We can ask `dagitty` to find our adjustment sets based on our exposure and outcome variable.
 
 ```{r}
 # Find the adjustment set for the effect of Test on Hire
@@ -608,18 +624,19 @@ Now that we have identified our adjustment sets and implied conditional independ
 First, we can test our conditional independencies implied by our DAG using regression models. We can test the first conditional independence statement: `GPA` is independent of `Hire` when conditioned on `Int`, `Pres` and `Test`.  
 
 ```{r}
-#| results: false
+#| eval: false
 # fit a Bayesian binomial regression model
 model_ci <- brm(
   formula = Hire ~ GPA + Int + Pres + Test,
   data = selection,
-  family = bernoulli(),
-  chains = 4,
-  iter = 10000,
-  seed = 123,
-  refresh = 0,
-  save_pars = save_pars('all')
+  family = bernoulli()
 )
+```
+
+```{r}
+#| echo: false
+# load previously saved model
+model_ci <- readRDS("models/causal/model_ci.RDS")
 ```
 
 We can now examine the posterior distribution of the GPA coefficient.
@@ -643,19 +660,21 @@ Posterior distribution of the GPA coefficient from the Bayesian regression model
 
 Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of `Test` on `Hire` using any of the two adjustment sets we identified earlier. In this case, we will control for `GPA` alone.
 
+
 ```{r}
-#| results: false
+#| eval: false
 # fit a Bayesian binomial regression model to estimate the causal effect of Test on Hire
 model_causal <- brm(
   formula = Hire ~ Test + GPA,
   data = selection,
-  family = bernoulli(),
-  chains = 4,
-  iter = 10000,
-  seed = 123,
-  refresh = 0,
-  save_pars = save_pars('all')
+  family = bernoulli()
 )
+```
+
+```{r}
+#| echo: false
+# load previously saved model
+model_causal <- readRDS("models/causal/model_causal.RDS")
 ```
 
 We can visualize our causal effect estimate for `Test`, as in @fig-selection-causal.

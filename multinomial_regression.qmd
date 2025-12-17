@@ -42,7 +42,7 @@ First we load the data and take a look at it briefly.
 
 ```{r}
 # if needed, download health_insurance data
-url <- "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
+url <- "https://peopleanalytics-regression-book.org/data/health_insurance.csv"
 health_insurance <- read.csv(url)
 ```
 
@@ -301,7 +301,7 @@ import pandas as pd
 import statsmodels.api as sm
 
 # load health insurance data
-url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
+url = "https://peopleanalytics-regression-book.org/data/health_insurance.csv"
 health_insurance = pd.read_csv(url)
 
 # convert product to categorical as an outcome variable

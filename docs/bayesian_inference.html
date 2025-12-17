@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -91,14 +91,15 @@ div.csl-indent {
 <link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-809cd4ad8465a863d451ae2f0a07b33b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-108e51fa0b95596792f9f0eaa63a27ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -141,7 +142,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -343,9 +344,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#sec-bayes-hyp-test" id="toc-sec-bayes-hyp-test" class="nav-link" data-scroll-target="#sec-bayes-hyp-test"><span class="header-section-number">12.3</span> Bayesian hypothesis testing</a>
   <ul class="collapse">
-  <li><a href="#asec-bayes-ttest" id="toc-asec-bayes-ttest" class="nav-link" data-scroll-target="#asec-bayes-ttest"><span class="header-section-number">12.3.1</span> Bayesian t-test for difference in means between two independent groups</a></li>
-  <li><a href="#bayesian-test-for-non-zero-correlation" id="toc-bayesian-test-for-non-zero-correlation" class="nav-link" data-scroll-target="#bayesian-test-for-non-zero-correlation"><span class="header-section-number">12.3.2</span> Bayesian test for non-zero correlation</a></li>
+  <li><a href="#sec-bayes-ttest" id="toc-sec-bayes-ttest" class="nav-link" data-scroll-target="#sec-bayes-ttest"><span class="header-section-number">12.3.1</span> Bayesian t-test for difference in means between two independent groups</a></li>
+  <li><a href="#sec-bayes-corr" id="toc-sec-bayes-corr" class="nav-link" data-scroll-target="#sec-bayes-corr"><span class="header-section-number">12.3.2</span> Bayesian test for non-zero correlation</a></li>
   <li><a href="#bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups" id="toc-bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups" class="nav-link" data-scroll-target="#bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups"><span class="header-section-number">12.3.3</span> Bayesian chi-square test (Test for difference in frequency distribution between groups)</a></li>
+  <li><a href="#bayesian-hypothesis-testing-using-python" id="toc-bayesian-hypothesis-testing-using-python" class="nav-link" data-scroll-target="#bayesian-hypothesis-testing-using-python"><span class="header-section-number">12.3.4</span> Bayesian hypothesis testing using Python</a></li>
   </ul></li>
   <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">12.4</span> Learning exercises</a>
   <ul class="collapse">
@@ -435,21 +437,21 @@ Figure&nbsp;12.1: Non-informative Beta(1, 1) (uniform) prior on the distribution
 \]</span></p>
 <p>Let’s simulate and plot this prior distribution to visualize our initial beliefs about the pass rate before observing any data. First, we will take 1000 possible values of <span class="math inline">\(\theta\)</span> between 0 and 1 and simulate a Beta distribution. We can use the <code>dbeta()</code> function to calculate the density of the Beta distribution for different values of <span class="math inline">\(\theta\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set a seed to ensure this process can be reproduced exactly</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set a seed to ensure this process can be reproduced exactly</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a vector with 1000 possible values for theta between 0 and 1</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>theta_values <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate the prior distribution using a Beta distribution with alpha = 8 and beta = 2</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>unnormalized_prior <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta_values, <span class="at">shape1 =</span> <span class="dv">8</span>, <span class="at">shape2 =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>unnormalized_prior <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta_values, <span class="at">shape1 =</span> <span class="dv">8</span>, <span class="at">shape2 =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This has provided us with the probability density function (PDF) values across our 1000 values of <span class="math inline">\(\theta\)</span>. Let’s now plot our simulated prior distribution to visualize our initial beliefs about the pass rate before observing any data, as in <a href="#fig-pass-prior" class="quarto-xref">Figure&nbsp;<span>12.2</span></a>.</p>
 <div id="fig-pass-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pass-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ggplot2 for plotting</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ggplot2 for plotting</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
@@ -461,7 +463,7 @@ Figure&nbsp;12.1: Non-informative Beta(1, 1) (uniform) prior on the distribution
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pass Rate (θ)"</span>,</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -485,8 +487,8 @@ Figure&nbsp;12.2: Informative prior distribution of pass rate (<span class="math
 <p>When we sample from a PDF, we are taking discrete values, and hence we are effectively creating a PMF from the PDF. This means that if we want to have explicit probabilities for each value, we need to ensure that the sampled values sum to 1. In our case, since we are simulating the prior distribution using a continuous Beta distribution (which is a PDF), we can treat the simulated values as a PMF by normalizing them if needed. It is very simple to normalize a set of sampled values from a PDF—you just divide each value by the total sum of all values. Normalizing does not change the relative shape of the distribution, it just changes the scale to ensure that everything sums to 1.</p>
 <p>Normalizing your samples from a PDF is not absolutely necessary for the purposes of Bayes’ Theorem. We can always work directly with the density values as they are, since we will be normalizing the posterior distribution later in any case using <span class="math inline">\(P(D)\)</span>. Nevertheless, it is quite common to normalize these values so that the explicit probabilities sum to 1, and this can help with interpretation and later comparison of distributions. For this reason, we will normalize our prior distribution.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize the prior distribution to ensure it sums to 1</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>prior_distribution <span class="ot">&lt;-</span> unnormalized_prior<span class="sc">/</span><span class="fu">sum</span>(unnormalized_prior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize the prior distribution to ensure it sums to 1</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>prior_distribution <span class="ot">&lt;-</span> unnormalized_prior<span class="sc">/</span><span class="fu">sum</span>(unnormalized_prior)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="defining-the-likelihood-pd-mid-theta" class="level3" data-number="12.2.2">
@@ -497,15 +499,15 @@ P(D \mid \theta) = \binom{20}{12} \theta^{12}(1 - \theta)^{8}
 \]</span></p>
 <p>Let’s simulate and plot this likelihood function to visualize how likely our observed data is for the 1000 different values of the pass rate <span class="math inline">\(\theta\)</span>. We can use the <code>dbinom()</code> function in R to calculate the likelihood of observing 12 passes out of 20 engineers for the different values of <span class="math inline">\(\theta\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate the likelihood function using a Binomial distribution</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>likelihood_function <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">12</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">prob =</span> theta_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate the likelihood function using a Binomial distribution</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>likelihood_function <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">12</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">prob =</span> theta_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s now plot our simulated likelihood function in <a href="#fig-pass-likelihood" class="quarto-xref">Figure&nbsp;<span>12.3</span></a>. Note, importantly, that the likelihood function is not a probability distribution and does not need to sum to 1 across all our values of <span class="math inline">\(\theta\)</span>.</p>
 <div id="fig-pass-likelihood" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pass-likelihood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>likelihood_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta_values, <span class="at">likelihood =</span> likelihood_function)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the likelihood function</span></span>
@@ -514,7 +516,7 @@ P(D \mid \theta) = \binom{20}{12} \theta^{12}(1 - \theta)^{8}
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pass Rate (θ)"</span>,</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Likelihood"</span>) <span class="sc">+</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -534,18 +536,18 @@ Figure&nbsp;12.3: Likelihood of observing 12 passes out of 20 engineers for diff
 <h3 data-number="12.2.3" class="anchored" data-anchor-id="calculating-the-posterior-ptheta-mid-d"><span class="header-section-number">12.2.3</span> Calculating the posterior <span class="math inline">\(P(\theta \mid D)\)</span></h3>
 <p>Now that we have defined our prior belief and the likelihood of the observed data, we can use Bayes’ Theorem to calculate the <em>posterior</em> distribution of the pass rate <span class="math inline">\(\theta\)</span> given the observed data. Here we will take all 1000 simulated values of <span class="math inline">\(\theta\)</span> and apply Bayes’ theorem across each of them to calculate the posterior probability that <span class="math inline">\(\theta\)</span> is our population pass rate given the data we have observed. We multiply the prior distribution and the likelihood function for each value of <span class="math inline">\(\theta\)</span>, and then normalize the result to ensure that the posterior distribution sums to 1:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the unnormalized posterior distribution (numerator of Bayes' Theorem)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the unnormalized posterior distribution (numerator of Bayes' Theorem)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>unnormalized_posterior <span class="ot">&lt;-</span> prior_distribution <span class="sc">*</span> likelihood_function</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize the posterior distribution (divide by total area to ensure it integates to 1)</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>posterior_distribution <span class="ot">&lt;-</span> unnormalized_posterior <span class="sc">/</span> <span class="fu">sum</span>(unnormalized_posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>posterior_distribution <span class="ot">&lt;-</span> unnormalized_posterior <span class="sc">/</span> <span class="fu">sum</span>(unnormalized_posterior)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s now plot our calculated posterior distribution <span class="math inline">\(P(\theta \mid D)\)</span> to visualize our updated beliefs about the pass rate <span class="math inline">\(\theta\)</span> after observing the data, as in <a href="#fig-pass-posterior" class="quarto-xref">Figure&nbsp;<span>12.4</span></a>.</p>
 <div id="fig-pass-posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pass-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>posterior_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta_values, <span class="at">density =</span> posterior_distribution)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the posterior distribution</span></span>
@@ -554,7 +556,7 @@ Figure&nbsp;12.3: Likelihood of observing 12 passes out of 20 engineers for diff
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pass Rate (θ)"</span>,</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -597,7 +599,7 @@ Figure&nbsp;12.5: Prior, Normalized Likelihood and Posterior probabilities of pa
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-post-update-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new observed data</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new observed data</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>new_passes <span class="ot">&lt;-</span> <span class="dv">25</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>new_fails <span class="ot">&lt;-</span> <span class="dv">5</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -621,7 +623,7 @@ Figure&nbsp;12.5: Prior, Normalized Likelihood and Posterior probabilities of pa
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pass Rate (θ)"</span>,</span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -642,25 +644,25 @@ Figure&nbsp;12.6: Posterior distribution of pass rate (<span class="math inline"
 <h3 data-number="12.2.5" class="anchored" data-anchor-id="summary-statistics-and-credible-intervals-of-the-posterior-distribution"><span class="header-section-number">12.2.5</span> Summary statistics and credible intervals of the posterior distribution</h3>
 <p>We can calculate summary statistics of our posterior distribution to better state our updated beliefs about the pass rate <span class="math inline">\(\theta\)</span>. For example, we can calculate the mean and median of the posterior distribution to get a sense of the central tendency of our updated beliefs. We can also calculate the mode of the posterior distribution, which represents the most likely value of <span class="math inline">\(\theta\)</span> given the observed data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mean (expected value) of the new posterior distribution</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(mean_posterior <span class="ot">&lt;-</span> <span class="fu">sum</span>(theta_values <span class="sc">*</span> new_posterior_distribution))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mean (expected value) of the new posterior distribution</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(mean_posterior <span class="ot">&lt;-</span> <span class="fu">sum</span>(theta_values <span class="sc">*</span> new_posterior_distribution))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.75</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the median of the new posterior distribution</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(median_posterior <span class="ot">&lt;-</span> theta_values[<span class="fu">which</span>(<span class="fu">cumsum</span>(new_posterior_distribution) <span class="sc">&gt;=</span> <span class="fl">0.5</span>)[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the median of the new posterior distribution</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(median_posterior <span class="ot">&lt;-</span> theta_values[<span class="fu">which</span>(<span class="fu">cumsum</span>(new_posterior_distribution) <span class="sc">&gt;=</span> <span class="fl">0.5</span>)[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7527528</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mode of the posterior distribution</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(mode_posterior <span class="ot">&lt;-</span> theta_values[<span class="fu">which.max</span>(new_posterior_distribution)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mode of the posterior distribution</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(mode_posterior <span class="ot">&lt;-</span> theta_values[<span class="fu">which.max</span>(new_posterior_distribution)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7587588</code></pre>
 </div>
 </div>
 <p>Additionally, given that we have determined a specific distribution for the pass rate <span class="math inline">\(\theta\)</span>, we can calculate <em>credible intervals</em> to express the uncertainty around our estimate. A credible interval is an interval within which the parameter is believed to lie with a certain probability, based on the posterior distribution. For example, a 95% credible interval for the pass rate <span class="math inline">\(\theta\)</span> would indicate that there is a 95% probability that the true pass rate lies within this interval, given the observed data. We can calculate the 95% credible interval for our updated posterior distribution using the <code>quantile()</code> function in R:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the 95% credible interval for the updated posterior distribution</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the 95% credible interval for the updated posterior distribution</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>interval_boundaries <span class="ot">&lt;-</span> <span class="fu">quantile</span>(new_posterior_distribution, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cumulative sum of probability</span></span>
@@ -670,7 +672,7 @@ Figure&nbsp;12.6: Posterior distribution of pass rate (<span class="math inline"
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> theta_values[<span class="fu">which</span>(cumsum_posterior <span class="sc">&gt;=</span> <span class="fl">0.025</span>)[<span class="dv">1</span>]]</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> theta_values[<span class="fu">which</span>(cumsum_posterior <span class="sc">&gt;=</span> <span class="fl">0.975</span>)[<span class="dv">1</span>]]</span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"95% Credible Interval: ["</span>, <span class="fu">round</span>(lower_bound, <span class="dv">2</span>), <span class="st">", "</span>, <span class="fu">round</span>(upper_bound, <span class="dv">2</span>), <span class="st">"]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"95% Credible Interval: ["</span>, <span class="fu">round</span>(lower_bound, <span class="dv">2</span>), <span class="st">", "</span>, <span class="fu">round</span>(upper_bound, <span class="dv">2</span>), <span class="st">"]"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "95% Credible Interval: [0.63, 0.85]"</code></pre>
 </div>
@@ -722,19 +724,19 @@ BF_{10} = \frac{P(D \mid H_1)}{P(D \mid H_0)}
 </ul>
 <p>To implement Bayesian hypothesis tests in R, we will utilize the <code>BayesFactor</code> package. This package allows us to perform statistical hypothesis tests within a Bayesian framework without needing to write complex custom simulations from scratch. These tests use standard minimally informed priors for the specific tests being used. To illustrate these Bayesian tests, we will use the same examples of hypothesis tests on our <code>salespeople</code> data set as we used in <a href="primer_stats.html" class="quarto-xref"><span>Chapter 3</span></a> for classical statistics, but now using smaller subsets of this data. Let’s download that set first.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, use online url to download salespeople data</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, use online url to download salespeople data</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove NAs</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="asec-bayes-ttest" class="level3" data-number="12.3.1">
-<h3 data-number="12.3.1" class="anchored" data-anchor-id="asec-bayes-ttest"><span class="header-section-number">12.3.1</span> Bayesian t-test for difference in means between two independent groups</h3>
+<section id="sec-bayes-ttest" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="sec-bayes-ttest"><span class="header-section-number">12.3.1</span> Bayesian t-test for difference in means between two independent groups</h3>
 <p>As in <a href="primer_stats.html" class="quarto-xref"><span>Chapter 3</span></a>, we want to test if there is a difference in sales between high performing and low performing salespeople.</p>
 <p>We will take random samples of 10 salespeople in the lowest performing group and 10 salespeople in the highest performing group. We will assume for our purposes in this chapter that we only have data for these 20 salespeople.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people with performance ratings 1 and 4 </span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people with performance ratings 1 and 4 </span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>low_perf <span class="ot">&lt;-</span> salespeople[salespeople<span class="sc">$</span>performance <span class="sc">==</span> <span class="dv">1</span>, ]</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>sample_low <span class="ot">&lt;-</span> low_perf[<span class="fu">sample</span>(<span class="fu">nrow</span>(low_perf), <span class="dv">10</span>), ]</span>
@@ -743,15 +745,15 @@ BF_{10} = \frac{P(D \mid H_1)}{P(D \mid H_0)}
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>sample_high <span class="ot">&lt;-</span> high_perf[<span class="fu">sample</span>(<span class="fu">nrow</span>(high_perf), <span class="dv">10</span>), ]</span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># combine into a single data frame</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>df_sales <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sample_low, sample_high)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>df_sales <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sample_low, sample_high)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next we will run a Bayesian t-test to compare the mean sales between the two performance groups. Our Null Hypothesis (<span class="math inline">\(H_0\)</span>) is that there is no difference in mean sales between high and low performing salespeople, while our Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) is that there is a difference in mean sales between the two groups.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load BayesFactor package</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load BayesFactor package</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesFactor)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run a Bayesian t-test</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ttestBF</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> df_sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ttestBF</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> df_sales)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayes factor analysis
 --------------
@@ -766,13 +768,13 @@ Bayes factor type: BFindepSample, JZS</code></pre>
 <p>We see that the Bayes Factor <span class="math inline">\(BF_{10}\)</span> is just over 3, indicating that the data would approximately triple any prior belief we have about the likelihood of the alternative hypothesis<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. This is moderate evidence in favor of the data supporting the Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) that there is a difference in mean sales between high and low performing salespeople.</p>
 <p>Note that because of the Bayes Factor, we did not even have to look at the posterior distributions of the difference in means to make this conclusion. However, we can still simulate the posterior distribution to visualize the difference in means between the two groups.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian t-test and simulate posterior samples over 10000 points</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian t-test and simulate posterior samples over 10000 points</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>bf_result <span class="ot">&lt;-</span> <span class="fu">ttestBF</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> df_sales)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>posterior_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_result, <span class="at">iterations =</span> <span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>posterior_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_result, <span class="at">iterations =</span> <span class="dv">10000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can view the first few rows of the posterior samples to see the estimated difference in sales between low and high performing salespeople.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(posterior_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(posterior_samples)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Markov Chain Monte Carlo (MCMC) output:
 Start = 1 
@@ -793,7 +795,7 @@ Thinning interval = 1
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-ttest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame for plotting</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>posterior_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sales_diff =</span> <span class="fu">as.vector</span>(<span class="sc">-</span>posterior_samples[ ,<span class="st">"beta (1 - 4)"</span>])</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -803,7 +805,7 @@ Thinning interval = 1
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Difference"</span>,</span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -820,8 +822,8 @@ Figure&nbsp;12.7: Posterior distribution of sales difference between high and lo
 </div>
 <p>We can also calculate summary statistics and credible intervals for the posterior distribution of the sales difference between high and low performing salespeople, using the convenient <code>describe_posterior()</code> function from the <code>bayestestR</code> package.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayestestR)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(posterior_summary <span class="ot">&lt;-</span> <span class="fu">describe_posterior</span>(<span class="sc">-</span>posterior_samples))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayestestR)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(posterior_summary <span class="ot">&lt;-</span> <span class="fu">describe_posterior</span>(<span class="sc">-</span>posterior_samples))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Summary of Posterior Distribution
 
@@ -840,7 +842,7 @@ g            |     -0.94 | [   -26.60,     -0.12] |   100% | [-0.10, 0.10] |    
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-ttest-halfeye-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ggdist package for halfeye plots</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ggdist package for halfeye plots</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot halfeye of posterior distribution of sales difference</span></span>
@@ -851,7 +853,7 @@ g            |     -0.94 | [   -26.60,     -0.12] |   100% | [-0.10, 0.10] |    
 <span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Difference"</span>,</span>
 <span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -868,8 +870,8 @@ Figure&nbsp;12.8: Halfeye plot of posterior distribution of sales difference bet
 </div>
 <p>To adapt the <code>ttestBF()</code> function to do a one-tailed test, you can use the <code>nullInterval</code> argument to specify the direction of the test. For example, if you want to test if high performing salespeople have higher sales than low performing salespeople (and noting that the default of the test is to test performance group 1 minus performance group 4), you can set <code>nullInterval = c(0, Inf)</code> to associate your null hypothesis with lower performers obtaining greater sales than higher performers. This will test the Alternative Hypothesis that the mean sales of high performing salespeople is greater than that of low performing salespeople.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a one-tailed Bayesian t-test</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ttestBF</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> df_sales, <span class="at">nullInterval =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">Inf</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a one-tailed Bayesian t-test</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ttestBF</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> df_sales, <span class="at">nullInterval =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">Inf</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayes factor analysis
 --------------
@@ -884,18 +886,18 @@ Bayes factor type: BFindepSample, JZS</code></pre>
 </div>
 <p>We can see that, when our Alternative Hypothesis is that high performing salespeople have higher sales than low performing salespeople (the second hypothesis presented), the Bayes Factor <span class="math inline">\(BF_{10}\)</span> is just over 6, indicating the data moderately supports this hypothesis. The opposite hypothesis (that low performing salespeople have higher sales than high performing salespeople) has a correspondingly low Bayes Factor, indicating the data provides moderate evidence against this hypothesis.</p>
 </section>
-<section id="bayesian-test-for-non-zero-correlation" class="level3" data-number="12.3.2">
-<h3 data-number="12.3.2" class="anchored" data-anchor-id="bayesian-test-for-non-zero-correlation"><span class="header-section-number">12.3.2</span> Bayesian test for non-zero correlation</h3>
+<section id="sec-bayes-corr" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="sec-bayes-corr"><span class="header-section-number">12.3.2</span> Bayesian test for non-zero correlation</h3>
 <p>Next, let’s take a look at whether there is a non-zero correlation between sales and average customer rating. As before, we will take a random sample of 10 salespeople from our data set for this test, and assume this is the only data we have available.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 10 salespeople</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 10 salespeople</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>sample_salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">10</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>sample_salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">10</span>), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>First, we will run a Bayesian correlation test to assess the evidence for a non-zero correlation between sales and average customer rating. Our Null Hypothesis (<span class="math inline">\(H_0\)</span>) is that there is no correlation between sales and average customer rating, while our Alternative Hypothesis (<span class="math inline">\(H_1\)</span>) is that there is a non-zero correlation between the two variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a Bayesian correlation test</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a Bayesian correlation test</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayes factor analysis
 --------------
@@ -912,7 +914,7 @@ Bayes factor type: BFcorrelation, Jeffreys-beta*</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian correlation test and extract posterior samples over 10000 simulations</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian correlation test and extract posterior samples over 10000 simulations</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>bf_corr_result <span class="ot">&lt;-</span> <span class="fu">correlationBF</span>(sample_salespeople<span class="sc">$</span>sales, sample_salespeople<span class="sc">$</span>customer_rate)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>posterior_corr_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_corr_result, <span class="at">iterations =</span> <span class="dv">10000</span>)</span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -929,7 +931,7 @@ Bayes factor type: BFcorrelation, Jeffreys-beta*</code></pre>
 <span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Correlation Coefficient"</span>,</span>
 <span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -946,7 +948,7 @@ Figure&nbsp;12.9: Posterior distribution of correlation coefficient between sale
 </div>
 <p>And, like before, we can view summary statistics and credible intervals for the posterior distribution of the correlation coefficient.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe_posterior</span>(posterior_corr_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe_posterior</span>(posterior_corr_samples)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Summary of Posterior Distribution
 
@@ -962,7 +964,7 @@ zeta      |   0.72 | [0.17, 1.31] | 100% | [-0.10, 0.10] |        0%</code></pre
 <h3 data-number="12.3.3" class="anchored" data-anchor-id="bayesian-chi-square-test-test-for-difference-in-frequency-distribution-between-groups"><span class="header-section-number">12.3.3</span> Bayesian chi-square test (Test for difference in frequency distribution between groups)</h3>
 <p>Finally, let’s look at categorical data. We will test if there is a difference in likelihood of promotion between the performance categories of salespeople. Again we will take a random sample of 20 salespeople in each performance category (1 to 4) from our data set making a total sample of 80 salespeople, and we assume this is the only data we have available.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people from each performance rating group</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people from each performance rating group</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>sample_data <span class="ot">=</span> <span class="fu">data.frame</span>()</span>
@@ -971,12 +973,12 @@ zeta      |   0.72 | [0.17, 1.31] | 100% | [-0.10, 0.10] |        0%</code></pre
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  perf_group <span class="ot">&lt;-</span> salespeople[salespeople<span class="sc">$</span>performance <span class="sc">==</span> i, ]</span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  sample_group <span class="ot">&lt;-</span> perf_group[<span class="fu">sample</span>(<span class="fu">nrow</span>(perf_group), <span class="dv">20</span>), ]</span>
 <span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  sample_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sample_data, sample_group)</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In the Bayesian framework, we test whether promotion likelihood is independent from performance category using a contingency table Bayes Factor. First we create our contingency table of promoted vs performance for our sample of 40 salespeople.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table of promoted vs performance</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>(contingency <span class="ot">&lt;-</span> <span class="fu">table</span>(sample_data<span class="sc">$</span>promoted, sample_data<span class="sc">$</span>performance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table of promoted vs performance</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>(contingency <span class="ot">&lt;-</span> <span class="fu">table</span>(sample_data<span class="sc">$</span>promoted, sample_data<span class="sc">$</span>performance))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   
      1  2  3  4
@@ -993,8 +995,8 @@ zeta      |   0.72 | [0.17, 1.31] | 100% | [-0.10, 0.10] |        0%</code></pre
 </ol>
 <p>The choice you make for your sampling method requires a knowledge of the processes behind your data. In our case, we will use <code>jointMulti</code>, as we have a fixed total number of salespeople in our data, but we assume that promotion rate and performance ratings are not strictly controlled and can vary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Bayesian Contingency Table Test</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Bayesian Contingency Table Test</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayes factor analysis
 --------------
@@ -1011,7 +1013,7 @@ Bayes factor type: BFcontingencyTable, joint multinomial</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-chi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian contingency table test and extract posterior samples over 10000 simulations</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run Bayesian contingency table test and extract posterior samples over 10000 simulations</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>bf_contingency_result <span class="ot">&lt;-</span> <span class="fu">contingencyTableBF</span>(contingency, <span class="at">sampleType =</span> <span class="st">"jointMulti"</span>)</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>posterior_contingency_samples <span class="ot">&lt;-</span> <span class="fu">posterior</span>(bf_contingency_result, <span class="at">iterations =</span> <span class="dv">10000</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
@@ -1041,7 +1043,7 @@ Bayes factor type: BFcontingencyTable, joint multinomial</code></pre>
 <span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Promotion Rate"</span>,</span>
 <span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Performance Rating"</span>) <span class="sc">+</span></span>
-<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1057,6 +1059,56 @@ Figure&nbsp;12.10: Posterior distributions of promotion rates for each performan
 </figure>
 </div>
 <p>Visualizing the posteriors in this way gives us additional information regarding the promotion likelihood for each performance category. We see that the difference between performance category 2 and the higher two performance categories is quite pronounced, and is the main reason why the Bayes Factor indicates strong evidence for a difference in promotion rates between performance categories.</p>
+</section>
+<section id="bayesian-hypothesis-testing-using-python" class="level3" data-number="12.3.4">
+<h3 data-number="12.3.4" class="anchored" data-anchor-id="bayesian-hypothesis-testing-using-python"><span class="header-section-number">12.3.4</span> Bayesian hypothesis testing using Python</h3>
+<p>The <code>pingouin</code> package in Python offers very simple functions for Bayes Factor estimations against a null hypothesis. These functions accept the relevant statistics (eg a <span class="math inline">\(t\)</span>-statistic for a <span class="math inline">\(t\)</span>-test as well as the size of both groups) and returns the Bayes Factor. For example, to calculate our <span class="math inline">\(t\)</span>-test Bayes Factor as in <a href="#sec-bayes-ttest" class="quarto-xref"><span>Section 12.3.1</span></a>, we would first determine the <span class="math inline">\(t\)</span>-statistic for the difference in means of the two groups as follows:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pingouin <span class="im">as</span> pg</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load salespeople data</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> pd.read_csv(url).dropna()</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co"># take samples of 10 people with performance ratings 1 and 4</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>low_perf <span class="op">=</span> salespeople[salespeople[<span class="st">'performance'</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>sample_low <span class="op">=</span> low_perf.sample(<span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>high_perf <span class="op">=</span> salespeople[salespeople[<span class="st">'performance'</span>] <span class="op">==</span> <span class="dv">4</span>]</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>sample_high <span class="op">=</span> high_perf.sample(<span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the t-statistic for the difference in means</span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>t_test_result <span class="op">=</span> pg.ttest(sample_low[<span class="st">'sales'</span>], sample_high[<span class="st">'sales'</span>])</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>t_statistic <span class="op">=</span> t_test_result[<span class="st">'T'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the Bayes Factor for the t-test</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>n1 <span class="op">=</span> <span class="bu">len</span>(sample_low)</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>n2 <span class="op">=</span> <span class="bu">len</span>(sample_high)</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>bf_10 <span class="op">=</span> pg.bayesfactor_ttest(t_statistic, n1, n2)</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(bf_10, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3.66</code></pre>
+</div>
+</div>
+<p>And similarly, to calculate the Bayes Factor for the correlation test as in <a href="#sec-bayes-corr" class="quarto-xref"><span>Section 12.3.2</span></a>, we would do the following:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 10 salespeople</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>sample_salespeople <span class="op">=</span> salespeople.sample(<span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the correlation coefficient</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>corr_result <span class="op">=</span> pg.corr(sample_salespeople[<span class="st">'sales'</span>], sample_salespeople[<span class="st">'customer_rate'</span>])</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>corr_coefficient <span class="op">=</span> corr_result[<span class="st">'r'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the Bayes Factor for the correlation test</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(sample_salespeople)</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>bf_10_corr <span class="op">=</span> pg.bayesfactor_pearson(corr_coefficient, n)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(bf_10_corr, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4.48</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="learning-exercises" class="level2" data-number="12.4">
@@ -1121,7 +1173,7 @@ McElreath, Richard. 2020. <em>Statistical Rethinking: A Bayesian Course with Exa
 <li id="fn3"><p>Note that the output also tell us about the standard prior distribution being used - in this case the JZS (Jeffreys-Zellner-Siow) distribution.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>The output here is agnostic to direction, and will always return the probability of the most likely direction, akin to a one-tailed test without a specified direction.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>As before, we can explicitly calculate the one-tailed Bayes Factor for a <em>positive</em> correlation by using <code>nullInterval = c(-1, 0)</code> in our test function<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>http://peopleanalytics-regression-book.org/data/ugtests.csv<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>https://peopleanalytics-regression-book.org/data/ugtests.csv<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1177,13 +1229,14 @@ McElreath, Richard. 2020. <em>Statistical Rethinking: A Bayesian Course with Exa
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

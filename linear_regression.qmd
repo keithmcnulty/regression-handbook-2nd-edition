@@ -64,7 +64,7 @@ We will load the `ugtests` data set into our session and take a brief look at it
 
 ```{r}
 # if needed, download ugtests data
-url <- "http://peopleanalytics-regression-book.org/data/ugtests.csv"
+url <- "https://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests <- read.csv(url)
 ```
 
@@ -761,7 +761,7 @@ import pandas as pd
 import statsmodels.formula.api as smf
 
 # get data
-url = "http://peopleanalytics-regression-book.org/data/ugtests.csv"
+url = "https://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests = pd.read_csv(url)
 
 # define model
@@ -800,7 +800,7 @@ print(ugtests_model.summary())
 
 ### Data exercises
 
-Load the `sociological_data` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/sociological_data.csv].  This data represents a sample of information obtained from individuals who participated in a global research study and contains the following fields:
+Load the `sociological_data` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/sociological_data.csv].  This data represents a sample of information obtained from individuals who participated in a global research study and contains the following fields:
 
 * `annual_income_ppp`:  The annual income of the individual in PPP adjusted US dollars
 * `average_wk_hrs`:  The average number of hours per week worked by the individual

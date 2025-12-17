@@ -367,14 +367,14 @@ To implement Bayesian hypothesis tests in R, we will utilize the `BayesFactor` p
 
 ```{r}
 # if needed, use online url to download salespeople data
-url <- "http://peopleanalytics-regression-book.org/data/salespeople.csv"
+url <- "https://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople <- read.csv(url)
 
 # remove NAs
 salespeople <- salespeople[complete.cases(salespeople), ]
 ```
 
-### Bayesian t-test for difference in means between two independent groups {#asec-bayes-ttest}
+### Bayesian t-test for difference in means between two independent groups {#sec-bayes-ttest}
 
 As in @sec-found-stats, we want to test if there is a difference in sales between high performing and low performing salespeople.
 
@@ -482,7 +482,7 @@ ttestBF(formula = sales ~ performance, data = df_sales, nullInterval = c(0, Inf)
 
 We can see that, when our Alternative Hypothesis is that high performing salespeople have higher sales than low performing salespeople (the second hypothesis presented), the Bayes Factor $BF_{10}$ is just over 6, indicating the data moderately supports this hypothesis.  The opposite hypothesis (that low performing salespeople have higher sales than high performing salespeople) has a correspondingly low Bayes Factor, indicating the data provides moderate evidence against this hypothesis.
 
-### Bayesian test for non-zero correlation
+### Bayesian test for non-zero correlation {#sec-bayes-corr}
 
 Next, let's take a look at whether there is a non-zero correlation between sales and average customer rating.  As before, we will take a random sample of 10 salespeople from our data set for this test, and assume this is the only data we have available.
 
@@ -614,6 +614,53 @@ Posterior distributions of promotion rates for each performance category.
 
 Visualizing the posteriors in this way gives us additional information regarding the promotion likelihood for each performance category.  We see that the difference between performance category 2 and the higher two performance categories is quite pronounced, and is the main reason why the Bayes Factor indicates strong evidence for a difference in promotion rates between performance categories.
 
+### Bayesian hypothesis testing using Python
+
+The `pingouin` package in Python offers very simple functions for Bayes Factor estimations against a null hypothesis.  These functions accept the relevant statistics (eg a $t$-statistic for a $t$-test as well as the size of both groups) and returns the Bayes Factor.  For example, to calculate our $t$-test Bayes Factor as in @sec-bayes-ttest, we would first determine the $t$-statistic for the difference in means of the two groups as follows:
+
+```{python}
+import pingouin as pg
+import pandas as pd
+
+# load salespeople data
+url = "https://peopleanalytics-regression-book.org/data/salespeople.csv"
+salespeople = pd.read_csv(url).dropna()
+
+# take samples of 10 people with performance ratings 1 and 4
+low_perf = salespeople[salespeople['performance'] == 1]
+sample_low = low_perf.sample(10, random_state=42)
+
+high_perf = salespeople[salespeople['performance'] == 4]
+sample_high = high_perf.sample(10, random_state=42)
+
+# calculate the t-statistic for the difference in means
+t_test_result = pg.ttest(sample_low['sales'], sample_high['sales'])
+t_statistic = t_test_result['T'].values[0]
+
+# calculate the Bayes Factor for the t-test
+n1 = len(sample_low)
+n2 = len(sample_high)
+bf_10 = pg.bayesfactor_ttest(t_statistic, n1, n2)
+print(round(bf_10, 2))
+```
+
+And similarly, to calculate the Bayes Factor for the correlation test as in @sec-bayes-corr, we would do the following:
+
+
+```{python}
+# take a random sample of 10 salespeople
+sample_salespeople = salespeople.sample(10, random_state=42)
+
+# calculate the correlation coefficient
+corr_result = pg.corr(sample_salespeople['sales'], sample_salespeople['customer_rate'])
+
+corr_coefficient = corr_result['r'].values[0]
+
+# calculate the Bayes Factor for the correlation test
+n = len(sample_salespeople)
+bf_10_corr = pg.bayesfactor_pearson(corr_coefficient, n)
+print(round(bf_10_corr, 2))
+```
 
 ## Learning exercises
 
@@ -641,7 +688,7 @@ Visualizing the posteriors in this way gives us additional information regarding
 
 ### Data exercises
 
-Load the `ugtests` data set which we used in @sec-linear-reg-ols via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/ugtests.csv]. Remind yourself of what this data set contains.
+Load the `ugtests` data set which we used in @sec-linear-reg-ols via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/ugtests.csv]. Remind yourself of what this data set contains.
 
 For questions 1 to 5, focus on the Year 1 examination scores.  Take a random sample of 20 students from the data set to use as your first set of observed data, and remove these from the full data.  Then take another random sample of 30 students from the remaining data set to use as your second set of observed data for Bayesian updating.  
 

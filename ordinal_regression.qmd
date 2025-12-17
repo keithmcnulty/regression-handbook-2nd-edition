@@ -87,7 +87,7 @@ Let's download the `soccer` data set and take a quick look at it.
 
 ```{r}
 # if needed, download data
-url <- "http://peopleanalytics-regression-book.org/data/soccer.csv"
+url <- "https://peopleanalytics-regression-book.org/data/soccer.csv"
 soccer <- read.csv(url)
 ```
 
@@ -438,7 +438,7 @@ from statsmodels.miscmodels.ordinal_model import OrderedModel
 from pandas.api.types import CategoricalDtype
 
 # load soccer data
-url = "http://peopleanalytics-regression-book.org/data/soccer.csv"
+url = "https://peopleanalytics-regression-book.org/data/soccer.csv"
 soccer = pd.read_csv(url)
 
 # fill NaN with "None" in discipline column
@@ -479,7 +479,7 @@ print(soccer_model.summary())
 
 ### Data exercises
 
-Load the `managers` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/managers.csv].  It is a set of information of 571 managers in a sales organization and consists of the following fields:
+Load the `managers` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/managers.csv].  It is a set of information of 571 managers in a sales organization and consists of the following fields:
 
 * `employee_id` for each manager
 * `performance_group` of each manager in a recent performance review: Bottom performer, Middle performer, Top performer

@@ -168,7 +168,7 @@ Let's take a quick look at the data.
 
 ```{r}
 # if needed, download salespeople data
-url <- "http://peopleanalytics-regression-book.org/data/salespeople.csv"
+url <- "https://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople <- read.csv(url)
 ```
 
@@ -651,7 +651,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 # obtain salespeople data
-url = "http://peopleanalytics-regression-book.org/data/salespeople.csv"
+url = "https://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople = pd.read_csv(url)
 
 # define model
@@ -697,7 +697,7 @@ print(promotion_model.summary())
 
 ### Data exercises
 
-A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  Load the `charity_donation` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/charity_donation.csv].  It contains the following data:
+A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  Load the `charity_donation` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/charity_donation.csv].  It contains the following data:
 
 * `n_donations`:  The total number of times the individual donated previous to the month being studied.
 * `total_donations`: The total amount of money donated by the individual previous to the month being studied

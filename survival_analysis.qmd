@@ -19,7 +19,7 @@ The `job_retention` data set shows the results of a study of around 3,800 indivi
 
 ```{r}
 # if needed, get job_retention data
-url <- "http://peopleanalytics-regression-book.org/data/job_retention.csv"
+url <- "https://peopleanalytics-regression-book.org/data/job_retention.csv"
 job_retention <- read.csv(url)
 head(job_retention)
 ```
@@ -258,13 +258,15 @@ Here is an example of how to plot Kaplan-Meier survival curves in Python using t
 
 ::: {#fig-survival-python}
 ```{python}
+#| label: surv-py-1
 #| results: false
 import pandas as pd
+import matplotlib.pyplot as plt
 from lifelines import KaplanMeierFitter
-from matplotlib import pyplot as plt
+
 
 # get data
-url = "http://peopleanalytics-regression-book.org/data/job_retention.csv"
+url = "https://peopleanalytics-regression-book.org/data/job_retention.csv"
 job_retention = pd.read_csv(url)
 
 # fit our data to Kaplan-Meier estimates
@@ -280,14 +282,14 @@ highsent = (job_retention["sentiment"] >= 7)
 survplot = plt.subplot()
 
 # plot high sentiment survival function
-kmf.fit(T[highsent], event_observed = E[highsent], 
+kmf.fit(T[highsent], event_observed = E[highsent],
 label = "High Sentiment")
-kmf.plot_survival_function(ax = survplot)
+kmf.plot_survival_function()
 # plot not high sentiment survival function
-kmf.fit(T[~highsent], event_observed = E[~highsent], 
+kmf.fit(T[~highsent], event_observed = E[~highsent],
 label = "Not High Sentiment")
 # render plot
-kmf.plot_survival_function(ax = survplot)
+kmf.plot_survival_function()
 ```
 
 Survival curves by sentiment category in the `job_retention` data
@@ -299,18 +301,17 @@ Survival curves by sentiment category in the `job_retention` data
 #| fig.align: "center"
 #| echo: false
 import pandas as pd
-import matplotlib
+import matplotlib.pyplot as plt
 from lifelines import KaplanMeierFitter
-from matplotlib import pyplot as plt
-matplotlib.rcParams['pdf.fonttype'] = 42
-matplotlib.rcParams['ps.fonttype'] = 42
+# matplotlib.rcParams['pdf.fonttype'] = 42
+# matplotlib.rcParams['ps.fonttype'] = 42
 # matplotlib.rcParams['text.usetex'] = True
 # matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 
 plt.cla()
 
 # get data
-url = "http://peopleanalytics-regression-book.org/data/job_retention.csv"
+url = "https://peopleanalytics-regression-book.org/data/job_retention.csv"
 job_retention = pd.read_csv(url)
 
 # fit our data to Kaplan-Meier estimates
@@ -350,6 +351,7 @@ knitr::include_graphics("www/10/survival-python-1.png")
 And here is an example of how to fit a Cox Proportional Hazard model similarly to @sec-coxphmodel^[I am not aware of any way of running frailty models currently in Python.].
 
 ```{python}
+#| label: surv-py-2
 #| results: "hide"
 from lifelines import CoxPHFitter
 
@@ -360,6 +362,7 @@ cph.fit(job_retention, duration_col = 'month', event_col = 'left',
 ```
 
 ```{python}
+#| label: surv-py-3
 # view results
 cph.print_summary()
 ```
@@ -368,6 +371,7 @@ cph.print_summary()
 Proportional Hazard assumptions can be checked using the `check_assumptions()` method^[Schoenfeld residual plots can be seen by setting `show_plots = True` in the parameters.].
 
 ```{python}
+#| label: surv-py-4
 cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 ```
 
@@ -386,7 +390,7 @@ cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 
 ### Data exercises
 
-For these exercises, use the same `job_retention` data set as in the walkthrough example for this chapter, which can be loaded via the `peopleanalyticsdata` package or downloaded from the internet^[http://peopleanalytics-regression-book.org/data/job_retention.csv].  The `intention` field represents a score of 1 to 10 on the individual's intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention.  This response was recorded at the beginning of the study period.
+For these exercises, use the same `job_retention` data set as in the walkthrough example for this chapter, which can be loaded via the `peopleanalyticsdata` package or downloaded from the internet^[https://peopleanalytics-regression-book.org/data/job_retention.csv].  The `intention` field represents a score of 1 to 10 on the individual's intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention.  This response was recorded at the beginning of the study period.
 
 1.  Create three categories of `intention` as follows:  High (score of 7 or higher), Moderate (score of 4--6), Low (score of 3 or less)
 2.  Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.

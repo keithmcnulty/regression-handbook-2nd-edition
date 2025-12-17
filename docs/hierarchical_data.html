@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -91,14 +91,15 @@ div.csl-indent {
 <link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-809cd4ad8465a863d451ae2f0a07b33b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-108e51fa0b95596792f9f0eaa63a27ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -126,7 +127,7 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
 <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <script src="site_libs/plotly-binding-4.11.0/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
@@ -150,7 +151,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -427,17 +428,17 @@ y = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + \dots + \beta_px_p
 </ul>
 <p>This data can be explored in numerous ways, but we will focus here on modeling options. We are interested in the binary outcome <code>dec</code> (the decision of the individual), and we would like to understand how it relates to the age difference, the racial similarity and the ratings on <code>attr</code>, <code>intel</code> and <code>prob</code>. First, let’s assume that we don’t care about how an individual makes up their mind about their speed date, and that we are only interested in the dynamics of speed date decisions. Then we would simply run a binomial logistic regression on our data set, ignoring <code>iid</code> and other grouping variables like <code>race</code>, <code>goal</code> and <code>gender</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run standard binomial model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run standard binomial model</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">glm</span>(dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob, </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> speed_dating, </span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -469,19 +470,19 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <p>Now let’s say that we are interested in how a given <em>individual</em> weighs up these factors in coming to a decision. Different individuals may have different ingoing criteria for making speed dating decisions. As a result, each individual may have varying base likelihoods of a positive decision, and each individual may be affected by the input variables in different ways as they come to their decision. Therefore we will need to assign random effects for individuals based on <code>iid</code>. The <code>lme4</code> package in R contains functions for performing mixed linear regression models and mixed generalized linear regression models. These functions take formulas with additional terms to define the random effects to be estimated. The function for a linear model is <code>lmer()</code> and for a generalized linear model is <code>glmer()</code>.</p>
 <p>In the simple case, let’s assume that each individual has a different ingoing base likelihood of making a positive decision on a speed date. We will therefore model a random intercept according to the <code>iid</code> of the individual. Here we would use the formula <code>dec ~ agediff + samerace + attr + intel + prob + (1 | iid)</code>, where <code>(1 | iid)</code> means ‘a random effect for <code>iid</code> on the intercept of the model’.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run binomial mixed effects model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run binomial mixed effects model</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>iid_intercept_model <span class="ot">&lt;-</span> lme4<span class="sc">:::</span><span class="fu">glmer</span>(</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> speed_dating,</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"binomial"</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view summary without correlation table of fixed effects</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view summary without correlation table of fixed effects</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(iid_intercept_model, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">correlation =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">correlation =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Generalized linear mixed model fit by maximum likelihood (Laplace
   Approximation) [glmerMod]
@@ -503,7 +504,7 @@ Number of obs: 7789, groups:  iid, 541
 
 Fixed effects:
              Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept) -12.88882    0.42139 -30.587  &lt; 2e-16 ***
+(Intercept) -12.88882    0.42138 -30.587  &lt; 2e-16 ***
 agediff      -0.03671    0.01401  -2.621  0.00877 ** 
 samerace      0.20187    0.08140   2.480  0.01314 *  
 attr          1.07894    0.03334  32.364  &lt; 2e-16 ***
@@ -519,8 +520,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div aria-describedby="fig-fullbin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-8b8ec4048475da4a8da7" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-8b8ec4048475da4a8da7">{"x":{"visdat":{"5825a82e2a7":["function () ","plotlyVisDat"]},"cur_data":"5825a82e2a7","attrs":{"5825a82e2a7":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"5825a82e2a7.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":{},"x":{},"y":{},"type":"mesh3d","name":"Fitted values","intensity":{},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"colorbar":{"title":"dec<br />fit","ticklen":2},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"z":[0.55167007063019569,0.36543956566883634,0.094743988866070522,0.0076437647799770829,0.0037688346579606265,0.15568246920311746,0.36543956566883634,0.15568246920311746,0.36543956566883634,0.010615198959612538,0.016978072964557282,0.015440957465234335,0.021378171308672561,0.032423282879171747,0.021378171308672561,0.021378171308672561,0.21230551138277276,0.0080184361744172691,0.15568246920311746,0.069886456900002655,0.061046668573534864,0.12723350885371623,0.016191584810136002,0.13268628089808349,0.2375078349399761,0.31286361463819928,0.032423282879171747,0.31286361463819928,0.090687426860997844,0.033970982865853004,0.17566216508312368,0.37669483555133793,0.033970982865853004,0.01113388583064258,0.090687426860997844,0.023492221673967809,0.090687426860997844,0.090687426860997844,0.069886456900002655,0.090687426860997844,0.2375078349399761,0.016191584810136002,0.64268729092811161,0.37669483555133793,0.12723350885371623,0.37669483555133793,0.22888419123772732,0.121973306138145,0.56356704648254796,0.37669483555133793,0.22888419123772732,0.37669483555133793,0.45705471848342177,0.46904597614716526,0.46904597614716526,0.063870491926204614,0.024624454064771668,0.22888419123772732,0.64268729092811161,0.30258968271451397,0.090687426860997844,0.46904597614716526,0.046695269000722718],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2,6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4,7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6,5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3,8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values","intensity":[0.55167007063019569,0.36543956566883634,0.094743988866070522,0.0076437647799770829,0.0037688346579606265,0.15568246920311746,0.36543956566883634,0.15568246920311746,0.36543956566883634,0.010615198959612538,0.016978072964557282,0.015440957465234335,0.021378171308672561,0.032423282879171747,0.021378171308672561,0.021378171308672561,0.21230551138277276,0.0080184361744172691,0.15568246920311746,0.069886456900002655,0.061046668573534864,0.12723350885371623,0.016191584810136002,0.13268628089808349,0.2375078349399761,0.31286361463819928,0.032423282879171747,0.31286361463819928,0.090687426860997844,0.033970982865853004,0.17566216508312368,0.37669483555133793,0.033970982865853004,0.01113388583064258,0.090687426860997844,0.023492221673967809,0.090687426860997844,0.090687426860997844,0.069886456900002655,0.090687426860997844,0.2375078349399761,0.016191584810136002,0.64268729092811161,0.37669483555133793,0.12723350885371623,0.37669483555133793,0.22888419123772732,0.121973306138145,0.56356704648254796,0.37669483555133793,0.22888419123772732,0.37669483555133793,0.45705471848342177,0.46904597614716526,0.46904597614716526,0.063870491926204614,0.024624454064771668,0.22888419123772732,0.64268729092811161,0.30258968271451397,0.090687426860997844,0.46904597614716526,0.046695269000722718],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-9a5ccf583ba10176a519" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-9a5ccf583ba10176a519">{"x":{"visdat":{"976adadd07f":["function () ","plotlyVisDat"]},"cur_data":"976adadd07f","attrs":{"976adadd07f":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"976adadd07f.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":{},"x":{},"y":{},"type":"mesh3d","name":"Fitted values","intensity":{},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"colorbar":{"title":"dec<br />fit","ticklen":2},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"z":[0.55167007063019591,0.3654395656688369,0.094743988866070522,0.0076437647799771167,0.00376883465796064,0.15568246920311818,0.3654395656688369,0.15568246920311818,0.3654395656688369,0.010615198959612594,0.016978072964557313,0.015440957465234403,0.021378171308672672,0.03242328287917183,0.021378171308672672,0.021378171308672672,0.21230551138277351,0.008018436174417283,0.15568246920311818,0.069886456900002586,0.061046668573535107,0.12723350885371629,0.016191584810136044,0.13268628089808338,0.23750783493997599,0.31286361463819889,0.03242328287917183,0.31286361463819889,0.090687426860997913,0.033970982865853032,0.17566216508312368,0.37669483555133809,0.033970982865853032,0.011133885830642606,0.090687426860997913,0.02349222167396783,0.090687426860997913,0.090687426860997913,0.069886456900002586,0.090687426860997913,0.23750783493997599,0.016191584810136044,0.64268729092811161,0.37669483555133809,0.12723350885371629,0.37669483555133809,0.22888419123772749,0.12197330613814529,0.56356704648254774,0.37669483555133809,0.22888419123772749,0.37669483555133809,0.45705471848342205,0.46904597614716526,0.46904597614716526,0.063870491926204781,0.024624454064771668,0.22888419123772749,0.64268729092811161,0.30258968271451397,0.090687426860997913,0.46904597614716526,0.04669526900072276],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2,6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4,7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6,5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3,8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values","intensity":[0.55167007063019591,0.3654395656688369,0.094743988866070522,0.0076437647799771167,0.00376883465796064,0.15568246920311818,0.3654395656688369,0.15568246920311818,0.3654395656688369,0.010615198959612594,0.016978072964557313,0.015440957465234403,0.021378171308672672,0.03242328287917183,0.021378171308672672,0.021378171308672672,0.21230551138277351,0.008018436174417283,0.15568246920311818,0.069886456900002586,0.061046668573535107,0.12723350885371629,0.016191584810136044,0.13268628089808338,0.23750783493997599,0.31286361463819889,0.03242328287917183,0.31286361463819889,0.090687426860997913,0.033970982865853032,0.17566216508312368,0.37669483555133809,0.033970982865853032,0.011133885830642606,0.090687426860997913,0.02349222167396783,0.090687426860997913,0.090687426860997913,0.069886456900002586,0.090687426860997913,0.23750783493997599,0.016191584810136044,0.64268729092811161,0.37669483555133809,0.12723350885371629,0.37669483555133809,0.22888419123772749,0.12197330613814529,0.56356704648254774,0.37669483555133809,0.22888419123772749,0.37669483555133809,0.45705471848342205,0.46904597614716526,0.46904597614716526,0.063870491926204781,0.024624454064771668,0.22888419123772749,0.64268729092811161,0.30258968271451397,0.090687426860997913,0.46904597614716526,0.04669526900072276],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -533,8 +534,8 @@ Figure&nbsp;9.1: 3D visualization of the fitted plain binomial <code>model</code
 <div aria-describedby="fig-mixedbin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-ff5aaed95d3bd1a9323f" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-ff5aaed95d3bd1a9323f">{"x":{"visdat":{"582552ca149d":["function () ","plotlyVisDat"]},"cur_data":"582552ca149d","attrs":{"582552ca149d":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"582552ca149d.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.9680650183617111,0.80842174438606706,0.45289843695702214,0.0018978990889644992,0.0006037627979087382,0.17976697031377242,0.80842174438606706,0.17976697031377242,0.80842174438606706,0.0022280549722641816,0.030233470249831286,0.0059494405563266847,0.0069794684660877612,0.041222249454937521,0.0069794684660877612,0.0069794684660877612,0.37004536198269883,0.0043210971345476207,0.17976697031377242,0.41346029875330337,0.055974521206295758],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"inherit":true},"582552ca149d.2":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.076126920791359812,0.0011564804812837495,0.15829353889248543,0.371832581861119,0.61337988153269973,0.0036310359620276593,0.61337988153269973,0.029826501535233675,0.0082487792059811309,0.18089909671523016,0.44943880389456481,0.0082487792059811309,0.00043179761682849896,0.029826501535233675,0.0030936292446062988,0.029826501535233675,0.029826501535233675,0.056380622948109853,0.029826501535233675,0.371832581861119,0.0011564804812837495],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"inherit":true},"582552ca149d.3":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.57040208752553612,0.13598680460973023,0.015638390215405099,0.13598680460973023,0.047622899135072186,0.006912708217580066,0.53065638383708336,0.13598680460973023,0.047622899135072186,0.13598680460973023,0.15599718295178946,0.29668679038390089,0.29668679038390089,0.002206642112078942,0.0013636699093278436,0.047622899135072186,0.57040208752553612,0.11818381226705818,0.0058924743023204169,0.29668679038390089,0.0018796532348992711],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"z":[0.9680650183617111,0.80842174438606706,0.45289843695702214,0.0018978990889644992,0.0006037627979087382,0.17976697031377242,0.80842174438606706,0.17976697031377242,0.80842174438606706,0.0022280549722641816,0.030233470249831286,0.0059494405563266847,0.0069794684660877612,0.041222249454937521,0.0069794684660877612,0.0069794684660877612,0.37004536198269883,0.0043210971345476207,0.17976697031377242,0.41346029875330337,0.055974521206295758],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","frame":null},{"z":[0.076126920791359812,0.0011564804812837495,0.15829353889248543,0.371832581861119,0.61337988153269973,0.0036310359620276593,0.61337988153269973,0.029826501535233675,0.0082487792059811309,0.18089909671523016,0.44943880389456481,0.0082487792059811309,0.00043179761682849896,0.029826501535233675,0.0030936292446062988,0.029826501535233675,0.029826501535233675,0.056380622948109853,0.029826501535233675,0.371832581861119,0.0011564804812837495],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","frame":null},{"z":[0.57040208752553612,0.13598680460973023,0.015638390215405099,0.13598680460973023,0.047622899135072186,0.006912708217580066,0.53065638383708336,0.13598680460973023,0.047622899135072186,0.13598680460973023,0.15599718295178946,0.29668679038390089,0.29668679038390089,0.002206642112078942,0.0013636699093278436,0.047622899135072186,0.57040208752553612,0.11818381226705818,0.0058924743023204169,0.29668679038390089,0.0018796532348992711],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-165b1441f00ba732481d" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-165b1441f00ba732481d">{"x":{"visdat":{"976a4ffc051e":["function () ","plotlyVisDat"]},"cur_data":"976a4ffc051e","attrs":{"976a4ffc051e":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"976a4ffc051e.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.9680650183617111,0.80842174438606706,0.45289843695702214,0.0018978990889644992,0.0006037627979087382,0.17976697031377242,0.80842174438606706,0.17976697031377242,0.80842174438606706,0.0022280549722641816,0.030233470249831286,0.0059494405563266847,0.0069794684660877612,0.041222249454937521,0.0069794684660877612,0.0069794684660877612,0.37004536198269883,0.0043210971345476207,0.17976697031377242,0.41346029875330337,0.055974521206295758],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"inherit":true},"976a4ffc051e.2":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.076126920791359812,0.0011564804812837495,0.15829353889248543,0.371832581861119,0.61337988153269973,0.0036310359620276593,0.61337988153269973,0.029826501535233675,0.0082487792059811309,0.18089909671523016,0.44943880389456481,0.0082487792059811309,0.00043179761682849896,0.029826501535233675,0.0030936292446062988,0.029826501535233675,0.029826501535233675,0.056380622948109853,0.029826501535233675,0.371832581861119,0.0011564804812837495],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"inherit":true},"976a4ffc051e.3":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.57040208752553612,0.13598680460973023,0.015638390215405099,0.13598680460973023,0.047622899135072186,0.006912708217580066,0.53065638383708336,0.13598680460973023,0.047622899135072186,0.13598680460973023,0.15599718295178946,0.29668679038390089,0.29668679038390089,0.002206642112078942,0.0013636699093278436,0.047622899135072186,0.57040208752553612,0.11818381226705818,0.0058924743023204169,0.29668679038390089,0.0018796532348992711],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"z":[0.9680650183617111,0.80842174438606706,0.45289843695702214,0.0018978990889644992,0.0006037627979087382,0.17976697031377242,0.80842174438606706,0.17976697031377242,0.80842174438606706,0.0022280549722641816,0.030233470249831286,0.0059494405563266847,0.0069794684660877612,0.041222249454937521,0.0069794684660877612,0.0069794684660877612,0.37004536198269883,0.0043210971345476207,0.17976697031377242,0.41346029875330337,0.055974521206295758],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","frame":null},{"z":[0.076126920791359812,0.0011564804812837495,0.15829353889248543,0.371832581861119,0.61337988153269973,0.0036310359620276593,0.61337988153269973,0.029826501535233675,0.0082487792059811309,0.18089909671523016,0.44943880389456481,0.0082487792059811309,0.00043179761682849896,0.029826501535233675,0.0030936292446062988,0.029826501535233675,0.029826501535233675,0.056380622948109853,0.029826501535233675,0.371832581861119,0.0011564804812837495],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","frame":null},{"z":[0.57040208752553612,0.13598680460973023,0.015638390215405099,0.13598680460973023,0.047622899135072186,0.006912708217580066,0.53065638383708336,0.13598680460973023,0.047622899135072186,0.13598680460973023,0.15599718295178946,0.29668679038390089,0.29668679038390089,0.002206642112078942,0.0013636699093278436,0.047622899135072186,0.57040208752553612,0.11818381226705818,0.0058924743023204169,0.29668679038390089,0.0018796532348992711],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -547,13 +548,13 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <section id="mixed-effects-models-using-python" class="level3" data-number="9.1.3">
 <h3 data-number="9.1.3" class="anchored" data-anchor-id="mixed-effects-models-using-python"><span class="header-section-number">9.1.3</span> Mixed effects models using Python</h3>
 <p>The <code>pymer4</code> package provides a simple implementation of linear and generalized linear mixed effects models. The <code>glmer()</code> function is used for generalized linear mixed models, and the specific model is defined by the <code>family</code> parameter. This package is implemented in R under the hood, and also requires Polars rather than Pandas DataFrames. To avoid issues related to the back-end R code, it is recommended that you explicitly remove all rows containing <code>NaN</code> values before fitting a model, or else perform imputation to fill these values.</p>
-<p>To recreate our model random intercept model from the previous section using <code>pymer4</code>, we would use the following code:</p>
+<p>To recreate our random intercept model from the previous section using <code>pymer4</code>, we would use the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymer4.models <span class="im">import</span> glmer</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymer4.models <span class="im">import</span> glmer</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># load data and drop rows with NaN values, then convert to Polars</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="op">=</span> pd.read_csv(url).dropna()</span>
@@ -565,7 +566,9 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>model.fit()</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># view the table of results</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>model.summary()._tbl_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>model.summary()._tbl_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output-display">
 <div><style>
 .dataframe > thead > tr,
@@ -575,7 +578,7 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 }
 </style>
 <small>shape: (9, 10)</small>
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">rfx</th>
@@ -590,16 +593,16 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <th data-quarto-table-cell-role="th">stars</th>
 </tr>
 <tr class="even">
-<th>str</th>
-<th>str</th>
-<th>f64</th>
-<th>f64</th>
-<th>f64</th>
-<th>f64</th>
-<th>f64</th>
-<th>f64</th>
-<th>str</th>
-<th>str</th>
+<td>str</td>
+<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>str</td>
+<td>str</td>
 </tr>
 </thead>
 <tbody>
@@ -643,10 +646,10 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <td>null</td>
 <td>"(Intercept)"</td>
 <td>-12.893847</td>
-<td>-13.721121</td>
-<td>-12.066572</td>
-<td>0.422087</td>
-<td>-30.547861</td>
+<td>-13.721104</td>
+<td>-12.066589</td>
+<td>0.422078</td>
+<td>-30.548506</td>
 <td>inf</td>
 <td>"&lt;.001"</td>
 <td>"***"</td>
@@ -670,7 +673,7 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <td>0.038387</td>
 <td>0.357678</td>
 <td>0.081453</td>
-<td>2.43124</td>
+<td>2.431242</td>
 <td>inf</td>
 <td>"0.01505"</td>
 <td>"*"</td>
@@ -679,10 +682,10 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <td>null</td>
 <td>"attr"</td>
 <td>1.07863</td>
-<td>1.013247</td>
-<td>1.144012</td>
+<td>1.013248</td>
+<td>1.144011</td>
 <td>0.033359</td>
-<td>32.33411</td>
+<td>32.334394</td>
 <td>inf</td>
 <td>"&lt;.001"</td>
 <td>"***"</td>
@@ -692,9 +695,9 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <td>"intel"</td>
 <td>0.316896</td>
 <td>0.248741</td>
-<td>0.385052</td>
+<td>0.385051</td>
 <td>0.034774</td>
-<td>9.113025</td>
+<td>9.113105</td>
 <td>inf</td>
 <td>"&lt;.001"</td>
 <td>"***"</td>
@@ -706,7 +709,7 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <td>0.563438</td>
 <td>0.676085</td>
 <td>0.028737</td>
-<td>21.566592</td>
+<td>21.566708</td>
 <td>inf</td>
 <td>"&lt;.001"</td>
 <td>"***"</td>
@@ -731,9 +734,9 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 </ol>
 <p>As a walkthrough example, we will work with the <code>politics_survey</code> data set.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/politics_survey.csv"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>politics_survey <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/politics_survey.csv"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>politics_survey <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This data set represents the results of a survey conducted by a political party on a set of approximately 2100 voters. The results are on a Likert scale of 1 to 4 where 1 indicates strong negative sentiment with a statement and 4 indicates strong positive sentiment. Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:</p>
 <ol type="1">
@@ -749,7 +752,7 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 </ol>
 <p>Let’s take a quick look at the data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(politics_survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(politics_survey)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Overall Pol1 Pol2 Pol3 Hab1 Hab2 Hab3 Loc1 Loc2 Loc3 Loc4 Env1 Env2 Int1 Int2
 1       3    2    2    2    2    2    2    3    3    2    2    2    3    3    3
@@ -778,7 +781,7 @@ Figure&nbsp;9.3: 3D visualization of the individual-level binomial models create
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="hierarchical_data_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="hierarchical_data_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -791,7 +794,7 @@ Figure&nbsp;9.5: Simple path diagram showing proposed measurement model for <cod
 </div>
 <p>The <code>lavaan</code> package in R is a specialized package for running analysis on latent variables. The function <code>cfa()</code> can be used to perform a confirmatory factor analysis on a specified measurement model. The measurement model can be specified using an appropriately commented and formatted text string as follows. Note the <code>=~</code> notation, and note also that each factor is defined on a new line.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define measurement model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define measurement model</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>meas_mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st"># measurement model</span></span>
@@ -803,14 +806,14 @@ Figure&nbsp;9.5: Simple path diagram showing proposed measurement model for <cod
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="st">Pers =~ Pers1 + Pers2 + Pers3</span></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2 + Nat3</span></span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>With the measurement model defined, the confirmatory factor analysis can be run and a summary viewed. The <code>lavaan</code> summary functions used in this section produce quite large outputs. We will proceed to highlight which parts of this output are important in interpreting and refining the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>cfa_meas_mod <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="at">model =</span> meas_mod, <span class="at">data =</span> politics_survey)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(cfa_meas_mod, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(cfa_meas_mod, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lavaan 0.6-20 ended normally after 108 iterations
 
@@ -977,7 +980,7 @@ Variances:
 <p>Finally, the parameter estimates for the latent variables should be examined. In particular the <code>Std.all</code> column which is similar to standardized regression coefficients. These parameters are commonly known as factor loadings—they can be interpreted as the extent to which the item response is explained by the proposed latent variable. In general, factor loadings of 0.7 or above are considered reasonable. Factor loadings less than this may be introducing unacceptable measurement error. One option if this occurs is to drop the item completely from the measurement model, or to explore an alternative measurement model with the item assigned to another latent variable. In any case the analyst will need to balance these considerations against the need to have factors measured against multiple items wherever possible in order to minimize other aspects of measurement error.</p>
 <p>In our case we could consider dropping <code>Pol3</code>, <code>Loc1</code>, <code>Pers1</code> and <code>Nat3</code> from the measurement model as they have factor loadings of less than 0.7 and are in factors that contain three items. We will fit this revised measurement model, and rather than printing the entire output again, we will focus here on our CFI, TLI, RMSEA and SRMR statistics to see if they have improved. It is advisable, however, that factor loadings are also checked, especially where primary items that scale the variance of latent factors have been removed.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>meas_mod_revised <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>meas_mod_revised <span class="ot">&lt;-</span> <span class="st">"</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st"># measurement model</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
@@ -994,7 +997,7 @@ Variances:
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>fits <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">fitmeasures</span>(cfa_meas_mod_rev)</span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>fits[<span class="fu">c</span>(<span class="st">"cfi"</span>, <span class="st">"tli"</span>, <span class="st">"rmsea"</span>, <span class="st">"srmr"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>fits[<span class="fu">c</span>(<span class="st">"cfi"</span>, <span class="st">"tli"</span>, <span class="st">"rmsea"</span>, <span class="st">"srmr"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       cfi        tli      rmsea       srmr 
 0.97804888 0.96719394 0.03966962 0.02736629 </code></pre>
@@ -1006,7 +1009,7 @@ Variances:
 <h3 data-number="9.2.2" class="anchored" data-anchor-id="running-and-interpreting-the-structural-model"><span class="header-section-number">9.2.2</span> Running and interpreting the structural model</h3>
 <p>With a satisfactory measurement model, the structural model is a simple regression formula. The <code>sem()</code> function in <code>lavaan</code> can be used to perform a full structural equation model including the measurement model and structural model. Like for <code>cfa()</code>, an extensive output can be expected from this function, but assuming that our measurement model is satisfactory, our key interest is now in the structural model elements of this output.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define full SEM using revised measurement model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define full SEM using revised measurement model</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>full_sem <span class="ot">&lt;-</span> <span class="st">"</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st"># measurement model</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
@@ -1024,7 +1027,7 @@ Variances:
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co"># run full SEM </span></span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>full_model <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">sem</span>(<span class="at">model =</span> full_sem, <span class="at">data =</span> politics_survey)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(full_model, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(full_model, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lavaan 0.6-20 ended normally after 99 iterations
 
@@ -1167,7 +1170,7 @@ Variances:
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="hierarchical_data_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="hierarchical_data_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1184,12 +1187,12 @@ Figure&nbsp;9.6: Path diagram for full structural equation model on <code>politi
 <h3 data-number="9.2.3" class="anchored" data-anchor-id="structural-equation-models-using-python"><span class="header-section-number">9.2.3</span> Structural equation models using Python</h3>
 <p>The <code>semopy</code> package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the <code>lavaan</code> package in R. However, its reporting is not as intuitive compared to <code>lavaan</code>. A full tutorial is available <a href="https://semopy.com/tutorial.html">here</a>. Here is an example of how to run the same model as that studied in <a href="#sec-struc-eq-model" class="quarto-xref"><span>Section 9.2</span></a> using <code>semopy</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> semopy <span class="im">import</span> Model</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/politics_survey.csv"</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/politics_survey.csv"</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>politics_survey <span class="op">=</span> pd.read_csv(url)</span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -1213,12 +1216,12 @@ Figure&nbsp;9.6: Path diagram for full structural equation model on <code>politi
 <span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model to data and inspect</span></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>full_model.fit(politics_survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>full_model.fit(politics_survey)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Then to inspect the results:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect the results of SEM (first few rows)</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>full_model.inspect().head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect the results of SEM (first few rows)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>full_model.inspect().head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   lval op rval  Estimate  Std. Err    z-value p-value
 0  Pol1  ~  Pol  1.000000         -          -       -
@@ -1292,8 +1295,8 @@ Skrondal, Anders, and Sophia Rabe-Hesketh. 2004. <em>Generalized Latent Variable
 <ol>
 <li id="fn1"><p>I have simplified the data set, and the full version can be found at https://www.openml.org/search?type=data&amp;exact_name=SpeedDating<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Other reported measures include chi-square statistical tests of perfect fit for the measurement model and for the baseline model, and AIC and BIC. While these generally are not very helpful in determining the quality of a specific measurement model, they are valuable for comparing different measurement model options.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>http://peopleanalytics-regression-book.org/data/speed_dating.csv<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p><a href="http://peopleanalytics-regression-book.org/data/employee_survey.csv" class="uri">http://peopleanalytics-regression-book.org/data/employee_survey.csv</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>https://peopleanalytics-regression-book.org/data/speed_dating.csv<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a href="https://peopleanalytics-regression-book.org/data/employee_survey.csv" class="uri">https://peopleanalytics-regression-book.org/data/employee_survey.csv</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1349,13 +1352,14 @@ Skrondal, Anders, and Sophia Rabe-Hesketh. 2004. <em>Generalized Latent Variable
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

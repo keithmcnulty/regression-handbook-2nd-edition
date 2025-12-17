@@ -52,7 +52,7 @@ library(bayesplot)
 library(ggplot2)  
 
 # if needed, download ugtests data
-url <- "http://peopleanalytics-regression-book.org/data/ugtests.csv"
+url <- "https://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests <- read.csv(url)
 
 # take a random sample of 100 rows
@@ -70,7 +70,7 @@ Let's first fit a multiple linear regression model accepting the default priors.
 
 ```{r}
 #| label: first-model
-#| results: false
+#| eval: false
 # Fit an uninformed Bayesian linear regression Model
 
 uninf_model <- brm(
@@ -84,6 +84,12 @@ uninf_model <- brm(
   save_pars = save_pars('all'), # save all parameters for later use (optional)
   seed = 123 # set seed for reproducibility
 )
+```
+
+```{r}
+#| echo: false
+# load previously saved model
+uninf_model <- readRDS("models/linear/uninf_model.RDS")
 ```
 
 Let's review the various arguments we passed to `brm()`:
@@ -103,6 +109,7 @@ If we want to see the priors used by a `brms` model, we just need to use the `ge
 # Check the priors used in the model
 get_prior(uninf_model)
 ```
+
 This output means that the following priors have been used in our initial model:
 
 *  **Intercept Coefficient**: A Student-$t$ distribution with 3 degrees of freedom, and with the mean and scale automatically determined based on the data.
@@ -151,7 +158,7 @@ To assign a prior to a specific parameter in the `prior()` function, we use the 
 
 ```{r}
 #| label: second-model
-#| results: false
+#| eval: false
 # Define informative priors on the Yr1 coefficient
 priors <- c(
   prior(normal(0, 0.05), class = b, coef = Yr1)
@@ -171,6 +178,12 @@ inf_model <- brm(
   save_pars = save_pars('all'),
   seed = 123
 )
+```
+
+```{r}
+#| echo: false
+# load previously saved model
+inf_model <- readRDS("models/linear/inf_model.RDS")
 ```
 
 Let's view our informed model summary:
@@ -281,7 +294,7 @@ Let's create a simple uninformed Bayesian linear regression model using just `Yr
 
 ```{r}
 #| label: third-model
-#| results: false
+#| eval: false
 # Fit a simpler Bayesian Linear Regression Model
 
 simple_model <- brm(
@@ -295,6 +308,12 @@ simple_model <- brm(
   save_pars = save_pars('all'),
   seed = 123
 )
+```
+
+```{r}
+#| echo: false
+# load previously saved model
+simple_model <- readRDS("models/linear/simple_model.RDS")
 ```
 
 There are a number of ways we can compare the fit of Bayesian linear models. Some common ways involve computing R-squareds, determining predictive accuracy, or performing hypothesis tests on model fits.
@@ -347,12 +366,14 @@ We can test the hypothesis that a model is a better fit than another using the B
 
 ```{r}
 #| label: model-bayesfactor
-#| results: false
+#| eval: false
 # Compute Bayes Factor for model comparison
-bayes_factor_test <- bayes_factor(inf_model, simple_model, seed = 123)
+(bayes_factor_test <- bayes_factor(inf_model, simple_model, seed = 123))
 ```
 ```{r}
-bayes_factor_test
+#| echo: false
+# load previously saved bayes factor test
+(bayes_factor_test <- readRDS("models/linear/bayes_factor_test.RDS"))
 ```
 
 
@@ -380,7 +401,7 @@ Now we can rerun our informed model on the scaled data:
 
 ```{r}
 #| label: fourth-model
-#| results: false
+#| eval: false
 # Fit the Bayesian Linear Regression Model on standardized data
 priors_std <- c(
   prior(normal(0, 0.05), class = b, coef = Yr1)
@@ -398,6 +419,12 @@ inf_model_std <- brm(
   save_pars = save_pars('all'),
   seed = 123
 )
+```
+
+```{r}
+#| echo: false
+# load previously saved model
+inf_model_std <- readRDS("models/linear/inf_model_std.RDS")
 ```
 
 ```{r}
@@ -491,7 +518,7 @@ Now we can utilize these as priors in our new model with updated new data:
 
 ```{r}
 #| label: fifth-model
-#| results: false
+#| eval: false
 # Fit updated model with new data and previous posteriors as priors
 updated_model <- brm(
   formula = Final ~ Yr1 + Yr2 + Yr3,
@@ -505,6 +532,12 @@ updated_model <- brm(
   save_pars = save_pars('all'),
   seed = 123
 )
+```
+
+```{r}
+#| echo: false
+# load previously saved model
+updated_model <- readRDS("models/linear/updated_model.RDS")
 ```
 
 Now we can compare the mean estimates of our original informed model and our updated model to see how our beliefs have changed with the new data.
@@ -588,6 +621,124 @@ It is good practice to check how sensitive your results are to the choice of pri
 On the other hand, large samples can result in priors being 'swamped' or 'overwhelmed' by the data, leading to similar posterior distributions regardless of the priors used.  This is not necessarily a problem, but it is important to be aware of this phenomenon when interpreting your results.  In cases where priors are swamped, one of the values of Bayesian inference is reduced (namely the ability to incorporate prior knowledge).  However, the other advantages of Bayesian inference (such as the rich probabilistic interpretation of coefficients and predictions) still hold.  It is the choice of the analyst to decide whether Bayesian inference is appropriate in such cases.
 
 Many of the other model diagnostics we used in OLS regression (e.g., residual plots, tests for homoscedasticity, etc.) are still applicable in Bayesian regression.  The mean of the Posterior Predictive Distribution can be used to compute residuals, and these can be analyzed in the same way as in OLS regression to check residual distribution and homoscedasticity.  As with classical models, the `fitted()` function can be used to extract the mean fitted values from the model.
+
+## Bayesian linear regression using Python
+
+The `PyMC` library in Python can be used to fit Bayesian regression models. When used in combination with the `Bambi` package, it provides a high-level interface similar to `brms` in R. The `arviz` package can be used for visualization and diagnostics of Bayesian models.
+
+To fit our uninformed Bayesian linear regression model from earlier in this chapter in Python, we first specify the model and then view it to see the default priors:
+
+
+```{python}
+#| label: py-bayes-model
+import pandas as pd
+import pymc as pm
+import bambi as bmb
+import arviz as az
+
+# Load the data
+url = "https://peopleanalytics-regression-book.org/data/ugtests.csv"
+ugtests = pd.read_csv(url)
+
+# take a random sample of 100 rows for faster computation
+ugtests_bayes = ugtests.sample(n=100, random_state=123)
+
+# specify a Bayesian linear regression model with default priors
+model = bmb.Model("Final ~ Yr1 + Yr2 + Yr3", data=ugtests_bayes, family = "gaussian")
+model.build()
+print(model)
+```
+
+If we wish, we can specify informative priors in the `bmb.Model()` constructor:
+
+```{python}
+#| label: py-bayes-informative
+# Define informative priors
+priors = {
+    "Yr1": bmb.Prior("Normal", mu=0, sigma=0.05)
+}
+
+# Fit a Bayesian linear regression model with informative priors
+model_inf = bmb.Model("Final ~ Yr1 + Yr2 + Yr3", data=ugtests_bayes, priors=priors)
+print(model_inf)
+```
+
+Once we have specified our model, we can fit it using MCMC sampling:
+
+```{python}
+#| label: py-bayes-fit
+#| eval: false
+# Fit the model using MCMC sampling
+fitted = model_inf.fit(draws=10000, chains=4, random_seed=123)
+```
+
+```{python}
+#| echo: false
+# load previously saved fitted model
+import pickle
+file_input = open('models/linear/fitted.pkl', 'rb')
+fitted = pickle.load(file_input)
+file_input.close()
+```
+
+And then we can summarize the posteriors using a handy function from `arviz`:
+
+```{python}
+#| label: py-bayes-summary
+# Summarize the posterior distributions
+az.summary(fitted)
+```
+
+We can also use `arviz` functions to visualize the posterior distributions and trace plots as in @fig-py-post and @fig-py-trace:
+
+:::{#fig-py-post}
+
+```{python}
+#| label: py-bayes-posterior
+#| results: 'hide'
+# Plot posterior distributions
+az.plot_posterior(fitted)
+```
+
+Posterior distributions for the coefficients of our informed Bayesian linear regression model in Python.
+:::
+
+:::{#fig-py-trace}
+
+```{python}
+#| label: py-bayes-trace
+#| results: 'hide'
+# Plot trace plots
+az.plot_trace(fitted)
+```
+
+Trace plots of the MCMC simulation for our informed Bayesian linear regression model in Python.
+:::
+
+
+A posterior predictive check can also be performed using `arviz`, as in @fig-py-ppc.  The `predict()` method generates posterior predictive samples which are added to the fitted model object, and the `plot_ppc()` function visualizes them against the observed data.
+
+:::{#fig-py-ppc}
+
+```{python}
+#| label: py-bayes-ppc
+#| eval: false
+# perform posterior predictive check
+model_inf.predict(fitted, kind="response", random_seed=123)
+az.plot_ppc(fitted, num_pp_samples=1000, random_seed=123)
+```
+```{python}
+#| echo: false
+#| results: 'hide'
+# load previously saved ppc plot
+file_input = open('models/linear/ppc.pkl', 'rb')
+ppc = pickle.load(file_input)
+file_input.close()
+ppc
+```
+
+Posterior Predictive Check for our informed Bayesian linear regression model in Python.
+:::
 
 ## Learning exercises
 

@@ -64,7 +64,7 @@ This data can be explored in numerous ways, but we will focus here on modeling o
 
 ```{r}
 # if needed, get data
-url <- "http://peopleanalytics-regression-book.org/data/speed_dating.csv"
+url <- "https://peopleanalytics-regression-book.org/data/speed_dating.csv"
 speed_dating <- read.csv(url)
 ```
 
@@ -237,14 +237,14 @@ If we believe that different individuals are influenced differently by one or mo
 
 The `pymer4` package provides a simple implementation of linear and generalized linear mixed effects models.  The `glmer()` function is used for generalized linear mixed models, and the specific model is defined by the `family` parameter.  This package is implemented in R under the hood, and also requires Polars rather than Pandas DataFrames.  To avoid issues related to the back-end R code, it is recommended that you explicitly remove all rows containing `NaN` values before fitting a model, or else perform imputation to fill these values.
 
-To recreate our model random intercept model from the previous section using `pymer4`, we would use the following code:
+To recreate our random intercept model from the previous section using `pymer4`, we would use the following code:
 
 ```{python}
 from pymer4.models import glmer
 import pandas as pd
 import polars as pl
 
-url = "http://peopleanalytics-regression-book.org/data/speed_dating.csv"
+url = "https://peopleanalytics-regression-book.org/data/speed_dating.csv"
 
 # load data and drop rows with NaN values, then convert to Polars
 speed_dating = pd.read_csv(url).dropna()
@@ -257,10 +257,7 @@ model.fit()
 
 # view the table of results
 model.summary()._tbl_data
-
 ```
-
-
 
 ## Structural equation models for latent hierarchy in data {#sec-struc-eq-model}
 
@@ -283,7 +280,7 @@ As a walkthrough example, we will work with the `politics_survey` data set.
 
 ```{r}
 # if needed, get data
-url <- "http://peopleanalytics-regression-book.org/data/politics_survey.csv"
+url <- "https://peopleanalytics-regression-book.org/data/politics_survey.csv"
 politics_survey <- read.csv(url)
 ```
 
@@ -477,7 +474,7 @@ from semopy import Model
 
 
 # get data
-url = "http://peopleanalytics-regression-book.org/data/politics_survey.csv"
+url = "https://peopleanalytics-regression-book.org/data/politics_survey.csv"
 politics_survey = pd.read_csv(url)
 
 
@@ -528,7 +525,7 @@ full_model.inspect().head()
 
 ### Data exercises
 
-For Exercises 1--4, use the `speed_dating` set used earlier in this chapter^[http://peopleanalytics-regression-book.org/data/speed_dating.csv].
+For Exercises 1--4, use the `speed_dating` set used earlier in this chapter^[https://peopleanalytics-regression-book.org/data/speed_dating.csv].
 
 1.  Split the data into two sets according to the gender of the participant. Run standard binomial logistic regression models on each set to determine the relationship between the `dec` decision outcome and the input variables `samerace`, `agediff`, `attr`, `intel` and `prob`.
 2.  Run similar mixed models on these sets with a random intercept for `iid`.
@@ -537,7 +534,7 @@ For Exercises 1--4, use the `speed_dating` set used earlier in this chapter^[htt
 
 For exercises 5--10, load the `employee_survey` data set via the `peopleanalyticsdata` package or download it from the internet[^hierarchical_data-3]. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
 
-[^hierarchical_data-3]: <http://peopleanalytics-regression-book.org/data/employee_survey.csv>
+[^hierarchical_data-3]: <https://peopleanalytics-regression-book.org/data/employee_survey.csv>
 
 -   `Happiness` is an overall measure of the employees current sentiment about their job.
 -   Items beginning with `Ben` relate to employment benefits.

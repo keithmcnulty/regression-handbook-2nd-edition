@@ -73,7 +73,7 @@ Let's download the `absenteeism` data set and take a quick look at it.
 
 ```{r}
 # if needed, download data
-url <- "http://peopleanalytics-regression-book.org/data/absenteeism.csv"
+url <- "https://peopleanalytics-regression-book.org/data/absenteeism.csv"
 absenteeism <- read.csv(url)
 ```
 
@@ -447,7 +447,7 @@ In Python, count models can be fit using the `statsmodels` library, very similar
 ```{python}
 import pandas as pd
 
-url = "http://peopleanalytics-regression-book.org/data/absenteeism.csv"
+url = "https://peopleanalytics-regression-book.org/data/absenteeism.csv"
 absenteeism = pd.read_csv(url)
 ```
 
@@ -508,7 +508,7 @@ If needed, zero-inflated models can be fit using the `statsmodels` library's `Ze
 
 ### Data exercises
 
-A retail company wants to understand factors affecting the number of customer complaints received about their telephone customer service representatives. Load the `complaints` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/complaints.csv]. It contains the following data for 376 representatives:
+A retail company wants to understand factors affecting the number of customer complaints received about their telephone customer service representatives. Load the `complaints` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/complaints.csv]. It contains the following data for 376 representatives:
 
 * `n_complaints`: Number of complaints received about the representative in the past year
 * `experience`: Years of experience in customer service
