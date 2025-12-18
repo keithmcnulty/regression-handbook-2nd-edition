@@ -1,5 +1,42 @@
 # Fitting Other Regression Models Using Bayesian Inference
 
+```{r}
+#| echo: false
+#| eval: false
+# models and other large computational objects are loaded from saved objects
+# model fitting code chunks are set to eval: false to avoid long computation times
+# during rendering 
+# to create the models from scratch, run the code chunks in your R/Python session
+# and save the objects to a 'models/other' folder as .RDS or .pkl files
+
+# utility function for saving models in R
+save_model_to_other <- function(model, filename) {
+  # check the 'models/other' directory exists, if not create it
+  if (!dir.exists("models/other")) {
+    dir.create("models/other", recursive = TRUE)
+  }
+  # save to file within the 'models/other' directory
+  saveRDS(model, file = paste0("models/other/", filename))
+}
+```
+
+```{python}
+#| echo: false
+#| eval: false
+# utility function for saving models in Python
+import os
+import pickle
+
+def save_model_to_other(model, filename):
+    # check the 'models/other' directory exists, if not create it
+    if not os.path.exists("models/other"):
+        os.makedirs("models/other")
+    # save to file within the 'models/other' directory
+    with open(os.path.join("models/other", filename), 'wb') as f:
+        pickle.dump(model, f)
+```
+
+
 In the earlier chapters of this book, we dedicated significant attention to each variety of regression modeling technique, explaining the specifics of formulation, estimation, and interpretation. Moving forward, we should not need to do this for the Bayesian versions of these techniques.  Given that we understand the underlying frequentist models from our earlier chapters, and now that we have a solid grasp of the principles and mechanics of Bayesian inference from the last two chapters, we can now focus on how to implement these models in a Bayesian framework without delving too deeply into the foundational details again.
 
 In this chapter, we will explore how to fit several other types of regression models using Bayesian methods. We will mainly focus on the mechanics of how to implement the models, and touch on any matters specific to the model type that are relevant in a Bayesian context. We will start with binomial logistic regression, and then move on to the other common logistic regression models, Poisson regression, negative binomial regression and finally we will touch on mixed effects models and Cox proportional hazards models. For each model type, we will provide code examples using the `brms` package in R which, as we have seen, allows for flexible Bayesian modeling using `stan` as the backend.
@@ -28,7 +65,7 @@ options(
 )
 ```
 
-## Bayesian Binomial Logistic Regression 
+## Bayesian Binomial Logistic Regression {#sec-bayes-bin-log-reg}
 
 As we saw in @sec-bin-log-reg, binomial logistic regression is used when each observation of our outcome is a Bernoulli random variable that can take a value of 1 (e.g., 'success') with probability $p_i$ and a value of 0 (e.g., 'failure') with probability $1-p_i$.  That is 
 
@@ -516,6 +553,102 @@ summary(uninf_cox_model)
 Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of employee attrition, assuming no change in the other input variables.  By exponentiating these coefficient distributions, we can interpret them as adds ratios describing the multiple on the attrition hazard associated with a unit change in the input variable assuming no change in the other input variables.  
 
 Note that it is not currently possible to do posterior predictive checks for Cox proportional hazards models in `brms`, due to the complexity of the survival outcome and censoring mechanism.  However, we can assess the fit of the model using other methods, such as examining the estimated survival curves for different groups or using LOO-CV to estimate the expected log predictive density (ELPD).
+
+## Fitting other regression models using Python
+
+To fit similar models using Python, we can use `bambi` for model specification and fitting with `arviz` for summarizing and visualizing posteriors.  The workflow is very similar to that which we described in @sec-py-linear-bayes, but specifying the appropriate model type in `bambi` using the `family` argument in the `Model()` constructor.  The following table gives the corresponding family names in `bambi` for various regression models we have discussed in this chapter:
+
+
+| Regression Model                     | `bambi` Family Name          |
+|-------------------------------------|------------------------------|
+| Binomial Logistic Regression        | `Bernoulli`                  |
+| Multinomial Logistic Regression     | `categorical`                |
+| Ordinal Logistic Regression         | `cumulative`                 |
+| Poisson Regression                  | `poisson`                    |
+| Negative Binomial Regression        | `negativebinomial`           |
+
+As an example, to fit our Bayesian binomial logistic regression model from @sec-bayes-bin-log-reg in this chapter using `bambi` in Python, first we specify a and build the model.
+
+```{python}
+#| label: py-bayes-binomial-logistic
+
+import pandas as pd
+import bambi as bmb
+import arviz as az
+
+# Load the salespeople dataset
+url = "https://peopleanalytics-regression-book.org/data/salespeople.csv"
+salespeople = pd.read_csv(url)
+
+# remove rows with NAs
+salespeople = salespeople.dropna()
+
+# Take a random sample of 100 observations
+salespeople_bayes = salespeople.sample(n=100, random_state=123)
+
+# spwecify uninformed Bayesian Binomial Logistic Regression model
+uninf_binomial_model = bmb.Model(
+    formula="promoted ~ sales + customer_rate + performance",
+    data=salespeople_bayes,
+    family="bernoulli"  # for binary outcome variable
+)
+
+# build and view model
+uninf_binomial_model.build()
+print(uninf_binomial_model)
+```
+If we are comfortable with our priors, we proceed to fit the model:
+
+```{python}
+#| label: py-bayes-binomial-logistic-fit
+#| eval: false
+# fit the model
+fitted = uninf_binomial_model.fit(draws=10000, chains=4, random_seed=123)
+```
+
+```{python}
+#| echo: false
+# load the model from saved file
+import pickle
+with open("models/other/uninf_binomial_model.pkl", 'rb') as f:
+    fitted = pickle.load(f)
+```
+
+We can then summarize the posterior distributions of the coefficients using `arviz` as follows:
+
+```{python}
+# summarize the posterior distributions
+az.summary(fitted)
+```
+
+We can plot the posterior distributions of the log-odds coefficients as in @fig-py-bayes-bin-posterior.
+
+::: {#fig-py-bayes-bin-posterior}
+```{python}
+#| label: py-bayes-bin-posterior
+#| results: 'hide'
+# Plot posterior distributions
+az.plot_posterior(fitted)
+```
+
+Posterior distributions of the coefficients for the Bayesian Binomial Logistic Regression model using `bambi` in Python.
+:::
+
+And the posterior predictive check can be performed as in @fig-py-bayes-bin-ppc.
+
+::: {#fig-py-bayes-bin-ppc}
+
+```{python}
+#| label: py-bayes-bin-ppc
+#| results: 'hide'
+# perform posterior predictive check
+uninf_binomial_model.predict(fitted, kind="response", random_seed=123)
+az.plot_ppc(fitted, num_pp_samples=1000, random_seed=123)
+```
+
+Posterior predictive check comparing the proportion of successes in the observed data to that in the posterior predictive simulations for the Bayesian Binomial Logistic Regression model using `bambi` in Python.
+
+:::
 
 ## Learning exercises
 

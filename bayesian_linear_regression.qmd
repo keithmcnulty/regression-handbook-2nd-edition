@@ -1,5 +1,41 @@
 # Linear Regression Using Bayesian Inference {#sec-linear-reg-bayes}
 
+```{r}
+#| echo: false
+#| eval: false
+# models and other large computational objects are loaded from saved objects
+# model fitting code chunks are set to eval: false to avoid long computation times
+# during rendering 
+# to create the models from scratch, run the code chunks in your R/Python session
+# and save the objects to a 'models/linear' folder as .RDS or .pkl files
+
+# utility function for saving models in R
+save_model_to_linear <- function(model, filename) {
+  # check the 'models/linear' directory exists, if not create it
+  if (!dir.exists("models/linear")) {
+    dir.create("models/linear", recursive = TRUE)
+  }
+  # save to file within the 'models/linear' directory
+  saveRDS(model, file = paste0("models/linear/", filename))
+}
+```
+
+```{python}
+#| echo: false
+#| eval: false
+# utility function for saving models in Python
+import os
+import pickle
+
+def save_model_to_linear(model, filename):
+    # check the 'models/linear' directory exists, if not create it
+    if not os.path.exists("models/linear"):
+        os.makedirs("models/linear")
+    # save to file within the 'models/linear' directory
+    with open(os.path.join("models/linear", filename), 'wb') as f:
+        pickle.dump(model, f)
+```
+
 In the previous chapter, we introduced the fundamental philosophy of Bayesian inference. We learned to view population parameters not as fixed, unknown constants to be estimated, but as random variables described by probability distributions. We explored how to combine prior beliefs with observed data to form posterior beliefs, and we applied this logic to basic hypothesis testing.
 
 In this chapter, we will revisit Linear Regression, but this time through the lens of Bayesian inference. We will learn how to specify, fit, and interpret Bayesian linear regression models, as well as perform certain diagnostics specific to Bayesian estimation methods.  As with classical linear regression, much of what we learn in this chapter will generalize to other types of Bayesian regression models, such as Bayesian logistic regression and Bayesian Poisson regression, which we will cover in the next chapter.  
@@ -622,9 +658,9 @@ On the other hand, large samples can result in priors being 'swamped' or 'overwh
 
 Many of the other model diagnostics we used in OLS regression (e.g., residual plots, tests for homoscedasticity, etc.) are still applicable in Bayesian regression.  The mean of the Posterior Predictive Distribution can be used to compute residuals, and these can be analyzed in the same way as in OLS regression to check residual distribution and homoscedasticity.  As with classical models, the `fitted()` function can be used to extract the mean fitted values from the model.
 
-## Bayesian linear regression using Python
+## Bayesian linear regression using Python {#sec-py-linear-bayes}
 
-The `PyMC` library in Python can be used to fit Bayesian regression models. When used in combination with the `Bambi` package, it provides a high-level interface similar to `brms` in R. The `arviz` package can be used for visualization and diagnostics of Bayesian models.
+The `Bambi` package can be used to fit Bayesian regression models in Python, providing a high-level interface similar to `brms` in R, and using the `PyMC` package for the MCMC backend. The `arviz` package can be used for visualization and diagnostics of Bayesian models.
 
 To fit our uninformed Bayesian linear regression model from earlier in this chapter in Python, we first specify the model and then view it to see the default priors:
 
@@ -632,7 +668,6 @@ To fit our uninformed Bayesian linear regression model from earlier in this chap
 ```{python}
 #| label: py-bayes-model
 import pandas as pd
-import pymc as pm
 import bambi as bmb
 import arviz as az
 
@@ -722,22 +757,12 @@ A posterior predictive check can also be performed using `arviz`, as in @fig-py-
 
 ```{python}
 #| label: py-bayes-ppc
-#| eval: false
 # perform posterior predictive check
 model_inf.predict(fitted, kind="response", random_seed=123)
 az.plot_ppc(fitted, num_pp_samples=1000, random_seed=123)
 ```
-```{python}
-#| echo: false
-#| results: 'hide'
-# load previously saved ppc plot
-file_input = open('models/linear/ppc.pkl', 'rb')
-ppc = pickle.load(file_input)
-file_input.close()
-ppc
-```
 
-Posterior Predictive Check for our informed Bayesian linear regression model in Python.
+Posterior predictive check for our informed Bayesian linear regression model in Python.
 :::
 
 ## Learning exercises

@@ -364,7 +364,7 @@ window.Quarto = {
   <li><a href="#trace-plots" id="toc-trace-plots" class="nav-link" data-scroll-target="#trace-plots"><span class="header-section-number">13.7.2</span> Trace Plots</a></li>
   <li><a href="#sensitivity-to-priors-and-other-considerations" id="toc-sensitivity-to-priors-and-other-considerations" class="nav-link" data-scroll-target="#sensitivity-to-priors-and-other-considerations"><span class="header-section-number">13.7.3</span> Sensitivity to priors and other considerations</a></li>
   </ul></li>
-  <li><a href="#bayesian-linear-regression-using-python" id="toc-bayesian-linear-regression-using-python" class="nav-link" data-scroll-target="#bayesian-linear-regression-using-python"><span class="header-section-number">13.8</span> Bayesian linear regression using Python</a></li>
+  <li><a href="#sec-py-linear-bayes" id="toc-sec-py-linear-bayes" class="nav-link" data-scroll-target="#sec-py-linear-bayes"><span class="header-section-number">13.8</span> Bayesian linear regression using Python</a></li>
   <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">13.9</span> Learning exercises</a>
   <ul class="collapse">
   <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">13.9.1</span> Discussion questions</a></li>
@@ -631,7 +631,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -659,7 +659,7 @@ Figure&nbsp;13.1: Posterior distributions for the coefficients of our informed B
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -706,7 +706,7 @@ Figure&nbsp;13.2: 66% (dark lines) and 95% (light lines) credible intervals for 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -776,7 +776,7 @@ Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1050,7 +1050,7 @@ Yr3              0.83658769           0.851905429</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1079,7 +1079,7 @@ Figure&nbsp;13.4: Bayesian R-squared distributions for the original informed mod
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1105,7 +1105,7 @@ Figure&nbsp;13.5: Posterior Predictive Check. The dark line (<span class="math i
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1124,27 +1124,26 @@ Figure&nbsp;13.6: Trace plots of the MCMC simulation. The four colors represent 
 <p>Many of the other model diagnostics we used in OLS regression (e.g., residual plots, tests for homoscedasticity, etc.) are still applicable in Bayesian regression. The mean of the Posterior Predictive Distribution can be used to compute residuals, and these can be analyzed in the same way as in OLS regression to check residual distribution and homoscedasticity. As with classical models, the <code>fitted()</code> function can be used to extract the mean fitted values from the model.</p>
 </section>
 </section>
-<section id="bayesian-linear-regression-using-python" class="level2" data-number="13.8">
-<h2 data-number="13.8" class="anchored" data-anchor-id="bayesian-linear-regression-using-python"><span class="header-section-number">13.8</span> Bayesian linear regression using Python</h2>
-<p>The <code>PyMC</code> library in Python can be used to fit Bayesian regression models. When used in combination with the <code>Bambi</code> package, it provides a high-level interface similar to <code>brms</code> in R. The <code>arviz</code> package can be used for visualization and diagnostics of Bayesian models.</p>
+<section id="sec-py-linear-bayes" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="sec-py-linear-bayes"><span class="header-section-number">13.8</span> Bayesian linear regression using Python</h2>
+<p>The <code>Bambi</code> package can be used to fit Bayesian regression models in Python, providing a high-level interface similar to <code>brms</code> in R, and using the <code>PyMC</code> package for the MCMC backend. The <code>arviz</code> package can be used for visualization and diagnostics of Bayesian models.</p>
 <p>To fit our uninformed Bayesian linear regression model from earlier in this chapter in Python, we first specify the model and then view it to see the default priors:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bambi <span class="im">as</span> bmb</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/ugtests.csv"</span></span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>ugtests <span class="op">=</span> pd.read_csv(url)</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 100 rows for faster computation</span></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>ugtests_bayes <span class="op">=</span> ugtests.sample(n<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="co"># specify a Bayesian linear regression model with default priors</span></span>
-<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> bmb.Model(<span class="st">"Final ~ Yr1 + Yr2 + Yr3"</span>, data<span class="op">=</span>ugtests_bayes, family <span class="op">=</span> <span class="st">"gaussian"</span>)</span>
-<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>model.build()</span>
-<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bambi <span class="im">as</span> bmb</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/ugtests.csv"</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>ugtests <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 100 rows for faster computation</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>ugtests_bayes <span class="op">=</span> ugtests.sample(n<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="co"># specify a Bayesian linear regression model with default priors</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> bmb.Model(<span class="st">"Final ~ Yr1 + Yr2 + Yr3"</span>, data<span class="op">=</span>ugtests_bayes, family <span class="op">=</span> <span class="st">"gaussian"</span>)</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>model.build()</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       Formula: Final ~ Yr1 + Yr2 + Yr3
         Family: gaussian
@@ -1258,19 +1257,17 @@ Figure&nbsp;13.8: Trace plots of the MCMC simulation for our informed Bayesian l
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># perform posterior predictive check</span></span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>model_inf.predict(fitted, kind<span class="op">=</span><span class="st">"response"</span>, random_seed<span class="op">=</span><span class="dv">123</span>)</span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(fitted, num_pp_samples<span class="op">=</span><span class="dv">1000</span>, random_seed<span class="op">=</span><span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-32-5.png" class="img-fluid figure-img" width="614"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/py-bayes-ppc-5.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-py-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13.9: Posterior Predictive Check for our informed Bayesian linear regression model in Python.
+Figure&nbsp;13.9: Posterior predictive check for our informed Bayesian linear regression model in Python.
 </figcaption>
 </figure>
 </div>

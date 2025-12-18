@@ -312,7 +312,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#bayesian-binomial-logistic-regression" id="toc-bayesian-binomial-logistic-regression" class="nav-link active" data-scroll-target="#bayesian-binomial-logistic-regression"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</a></li>
+  <li><a href="#sec-bayes-bin-log-reg" id="toc-sec-bayes-bin-log-reg" class="nav-link active" data-scroll-target="#sec-bayes-bin-log-reg"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</a></li>
   <li><a href="#bayesian-multinomial-logistic-regression" id="toc-bayesian-multinomial-logistic-regression" class="nav-link" data-scroll-target="#bayesian-multinomial-logistic-regression"><span class="header-section-number">14.2</span> Bayesian Multinomial Logistic Regression</a>
   <ul class="collapse">
   <li><a href="#bayesian-ordinal-logistic-regression" id="toc-bayesian-ordinal-logistic-regression" class="nav-link" data-scroll-target="#bayesian-ordinal-logistic-regression"><span class="header-section-number">14.2.1</span> Bayesian Ordinal Logistic Regression</a></li>
@@ -320,10 +320,11 @@ window.Quarto = {
   <li><a href="#bayesian-poisson-and-negative-binomial-regression" id="toc-bayesian-poisson-and-negative-binomial-regression" class="nav-link" data-scroll-target="#bayesian-poisson-and-negative-binomial-regression"><span class="header-section-number">14.3</span> Bayesian Poisson and Negative Binomial Regression</a></li>
   <li><a href="#bayesian-mixed-effects-models" id="toc-bayesian-mixed-effects-models" class="nav-link" data-scroll-target="#bayesian-mixed-effects-models"><span class="header-section-number">14.4</span> Bayesian Mixed Effects Models</a></li>
   <li><a href="#bayesian-cox-proportional-hazards-models" id="toc-bayesian-cox-proportional-hazards-models" class="nav-link" data-scroll-target="#bayesian-cox-proportional-hazards-models"><span class="header-section-number">14.5</span> Bayesian Cox Proportional Hazards Models</a></li>
-  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">14.6</span> Learning exercises</a>
+  <li><a href="#fitting-other-regression-models-using-python" id="toc-fitting-other-regression-models-using-python" class="nav-link" data-scroll-target="#fitting-other-regression-models-using-python"><span class="header-section-number">14.6</span> Fitting other regression models using Python</a></li>
+  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">14.7</span> Learning exercises</a>
   <ul class="collapse">
-  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">14.6.1</span> Discussion questions</a></li>
-  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">14.6.2</span> Data exercises</a></li>
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">14.7.1</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">14.7.2</span> Data exercises</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/other_bayesian_regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -371,8 +372,8 @@ window.Quarto = {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>) <span class="co"># save all parameters</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="bayesian-binomial-logistic-regression" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="bayesian-binomial-logistic-regression"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</h2>
+<section id="sec-bayes-bin-log-reg" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="sec-bayes-bin-log-reg"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</h2>
 <p>As we saw in <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>, binomial logistic regression is used when each observation of our outcome is a Bernoulli random variable that can take a value of 1 (e.g., ‘success’) with probability <span class="math inline">\(p_i\)</span> and a value of 0 (e.g., ‘failure’) with probability <span class="math inline">\(1-p_i\)</span>. That is</p>
 <p><span class="math display">\[
 y_i \sim \text{Bernoulli}(p_i)
@@ -460,7 +461,7 @@ performance   4.060503e+00    2.203647 9.924827e-01 2.185864e+01</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -481,7 +482,7 @@ Figure&nbsp;14.1: Posterior distribution of the odds ratio for the <code>sales</
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -575,7 +576,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -793,7 +794,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -851,7 +852,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -997,10 +998,146 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of employee attrition, assuming no change in the other input variables. By exponentiating these coefficient distributions, we can interpret them as adds ratios describing the multiple on the attrition hazard associated with a unit change in the input variable assuming no change in the other input variables.</p>
 <p>Note that it is not currently possible to do posterior predictive checks for Cox proportional hazards models in <code>brms</code>, due to the complexity of the survival outcome and censoring mechanism. However, we can assess the fit of the model using other methods, such as examining the estimated survival curves for different groups or using LOO-CV to estimate the expected log predictive density (ELPD).</p>
 </section>
-<section id="learning-exercises" class="level2" data-number="14.6">
-<h2 data-number="14.6" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">14.6</span> Learning exercises</h2>
-<section id="discussion-questions" class="level3" data-number="14.6.1">
-<h3 data-number="14.6.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">14.6.1</span> Discussion questions</h3>
+<section id="fitting-other-regression-models-using-python" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="fitting-other-regression-models-using-python"><span class="header-section-number">14.6</span> Fitting other regression models using Python</h2>
+<p>To fit similar models using Python, we can use <code>bambi</code> for model specification and fitting with <code>arviz</code> for summarizing and visualizing posteriors. The workflow is very similar to that which we described in <a href="bayesian_linear_regression.html#sec-py-linear-bayes" class="quarto-xref"><span>Section 13.8</span></a>, but specifying the appropriate model type in <code>bambi</code> using the <code>family</code> argument in the <code>Model()</code> constructor. The following table gives the corresponding family names in <code>bambi</code> for various regression models we have discussed in this chapter:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Regression Model</th>
+<th><code>bambi</code> Family Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Binomial Logistic Regression</td>
+<td><code>Bernoulli</code></td>
+</tr>
+<tr class="even">
+<td>Multinomial Logistic Regression</td>
+<td><code>categorical</code></td>
+</tr>
+<tr class="odd">
+<td>Ordinal Logistic Regression</td>
+<td><code>cumulative</code></td>
+</tr>
+<tr class="even">
+<td>Poisson Regression</td>
+<td><code>poisson</code></td>
+</tr>
+<tr class="odd">
+<td>Negative Binomial Regression</td>
+<td><code>negativebinomial</code></td>
+</tr>
+</tbody>
+</table>
+<p>As an example, to fit our Bayesian binomial logistic regression model from <a href="#sec-bayes-bin-log-reg" class="quarto-xref"><span>Section 14.1</span></a> in this chapter using <code>bambi</code> in Python, first we specify a and build the model.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bambi <span class="im">as</span> bmb</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the salespeople dataset</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> salespeople.dropna()</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a random sample of 100 observations</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>salespeople_bayes <span class="op">=</span> salespeople.sample(n<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="co"># spwecify uninformed Bayesian Binomial Logistic Regression model</span></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>uninf_binomial_model <span class="op">=</span> bmb.Model(</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">"promoted ~ sales + customer_rate + performance"</span>,</span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>salespeople_bayes,</span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span><span class="st">"bernoulli"</span>  <span class="co"># for binary outcome variable</span></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a><span class="co"># build and view model</span></span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>uninf_binomial_model.build()</span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(uninf_binomial_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Formula: promoted ~ sales + customer_rate + performance
+        Family: bernoulli
+          Link: p = logit
+  Observations: 100
+        Priors: 
+    target = p
+        Common-level effects
+            Intercept ~ Normal(mu: 0.0, sigma: 1.5)
+            sales ~ Normal(mu: 0.0, sigma: 0.0053)
+            customer_rate ~ Normal(mu: 0.0, sigma: 1.064)
+            performance ~ Normal(mu: 0.0, sigma: 1.0743)</code></pre>
+</div>
+</div>
+<p>If we are comfortable with our priors, we proceed to fit the model:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the model</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>fitted <span class="op">=</span> uninf_binomial_model.fit(draws<span class="op">=</span><span class="dv">10000</span>, chains<span class="op">=</span><span class="dv">4</span>, random_seed<span class="op">=</span><span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We can then summarize the posterior distributions of the coefficients using <code>arviz</code> as follows:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize the posterior distributions</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>az.summary(fitted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                mean     sd  hdi_3%  ...  ess_bulk  ess_tail  r_hat
+Intercept     -9.943  2.238 -14.074  ...   53135.0   31337.0    1.0
+sales          0.018  0.003   0.013  ...   41696.0   31359.0    1.0
+customer_rate -0.444  0.406  -1.202  ...   46972.0   31904.0    1.0
+performance    0.197  0.346  -0.448  ...   52186.0   33108.0    1.0
+
+[4 rows x 9 columns]</code></pre>
+</div>
+</div>
+<p>We can plot the posterior distributions of the log-odds coefficients as in <a href="#fig-py-bayes-bin-posterior" class="quarto-xref">Figure&nbsp;<span>14.6</span></a>.</p>
+<div id="fig-py-bayes-bin-posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-py-bayes-bin-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot posterior distributions</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>az.plot_posterior(fitted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="other_bayesian_regression_files/figure-html/py-bayes-bin-posterior-1.png" class="img-fluid figure-img" width="3091"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-py-bayes-bin-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.6: Posterior distributions of the coefficients for the Bayesian Binomial Logistic Regression model using <code>bambi</code> in Python.
+</figcaption>
+</figure>
+</div>
+<p>And the posterior predictive check can be performed as in <a href="#fig-py-bayes-bin-ppc" class="quarto-xref">Figure&nbsp;<span>14.7</span></a>.</p>
+<div id="fig-py-bayes-bin-ppc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-py-bayes-bin-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># perform posterior predictive check</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>uninf_binomial_model.predict(fitted, kind<span class="op">=</span><span class="st">"response"</span>, random_seed<span class="op">=</span><span class="dv">123</span>)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(fitted, num_pp_samples<span class="op">=</span><span class="dv">1000</span>, random_seed<span class="op">=</span><span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="other_bayesian_regression_files/figure-html/py-bayes-bin-ppc-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-py-bayes-bin-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.7: Posterior predictive check comparing the proportion of successes in the observed data to that in the posterior predictive simulations for the Bayesian Binomial Logistic Regression model using <code>bambi</code> in Python.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="learning-exercises" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">14.7</span> Learning exercises</h2>
+<section id="discussion-questions" class="level3" data-number="14.7.1">
+<h3 data-number="14.7.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">14.7.1</span> Discussion questions</h3>
 <ol type="1">
 <li><p>What is the correct family to specify in <code>brms</code> for fitting a Bayesian binomial logistic regression model with a binary outcome variable?</p></li>
 <li><p>What statistic is most appropriate for a posterior predictive check for a Bayesian binomial logistic regression model?</p></li>
@@ -1012,8 +1149,8 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <li><p>If you are modeling a censored survival outcome using a Bayesian Cox proportional hazards model in <code>brms</code>, how would you write the outcome variable in your model formula?</p></li>
 </ol>
 </section>
-<section id="data-exercises" class="level3" data-number="14.6.2">
-<h3 data-number="14.6.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">14.6.2</span> Data exercises</h3>
+<section id="data-exercises" class="level3" data-number="14.7.2">
+<h3 data-number="14.7.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">14.7.2</span> Data exercises</h3>
 <p>For each of the earlier (frequentist) chapters on the methods outlined in this chapter, use the problem and dataset provided in the exercises at the end of each chapter.</p>
 <ol type="1">
 <li><p>Generate two smaller versions of the dataset by taking random samples of the rows - aim for around 10-20% of the original observations in each dataset. Don’t forget to remove your first sample before taking the second sample.</p></li>

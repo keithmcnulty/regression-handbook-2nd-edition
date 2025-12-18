@@ -1,5 +1,41 @@
 # Causal Inference - Moving From Association to Causation
 
+```{r}
+#| echo: false
+#| eval: false
+# models and other large computational objects are loaded from saved objects
+# model fitting code chunks are set to eval: false to avoid long computation times
+# during rendering 
+# to create the models from scratch, run the code chunks in your R/Python session
+# and save the objects to a 'models/causal' folder as .RDS or .pkl files
+
+# utility function for saving models in R
+save_model_to_causal <- function(model, filename) {
+  # check the 'models/causal' directory exists, if not create it
+  if (!dir.exists("models/causal")) {
+    dir.create("models/causal", recursive = TRUE)
+  }
+  # save to file within the 'models/linear' directory
+  saveRDS(model, file = paste0("models/causal/", filename))
+}
+```
+
+```{python}
+#| echo: false
+#| eval: false
+# utility function for saving models in Python
+import os
+import pickle
+
+def save_model_to_causal(model, filename):
+    # check the 'models/causal' directory exists, if not create it
+    if not os.path.exists("models/causal"):
+        os.makedirs("models/causal")
+    # save to file within the 'models/causal' directory
+    with open(os.path.join("models/causal", filename), 'wb') as f:
+        pickle.dump(model, f)
+```
+
 This book is about statistics, and over many previous chapters we have covered numerous classical and modern approaches to explanatory statistical modeling.  Historically, statisticians have been careful to view such models as descriptive tools for summarizing associations in data, rather than as tools for making causal claims. In our previous chapters, when interpreting the output of models, our language has been very intentional in relation to this.  We have used language rooted in description and association, such as 'x has an effect on y' or 'a change in x is associated with a change in y'. We have deliberately avoided using phrases with action verbs like 'a change in x *causes* a change in y' or 'a change in x *drives* a change in y'. This caution reflects a long-standing principle in statistics, and one which has become a very popular refrain over the years: association (or correlation) does not imply causation.
 
 In reality, however, most of us who practice statistics do not employ our toolkit and skillset to simply describe associations.  We want to understand the dynamic mechanisms of the problem we are interested in, and often that means we want to understand whether causal relationships exist.  For example, we may want to know if a new employee benefit has caused an increase in employee satisfaction, or if a change in the structure of an education program has caused better learning outcomes.  Moreover, when our leaders and clients want us to help them make decisions, they often have questions like *'Why is this happening?'* or *'What would happen if...?'*.  Answering questions like these requires inferring causality.  Realistically, if an analyst is simply not willing to have an opinion on questions of causality, their skills may be of limited value to decision-makers.
@@ -710,6 +746,72 @@ posterior_samples_causal <- as.matrix(model_causal)
 ```
 
 This indicates that there is a `r round(prob_positive*100, 1)`% probability that the test score has a positive causal effect on the log odds of being hired.  This is a big difference from our earlier naive estimation, and gives us much lower confidence that the test is making a meaningful contribution to the hiring decision.   Controlling for our confounder `GPA` has had a major impact on our estimate.
+
+## Causal inference using DAGs in Python
+
+The `DoWhy` package in Python provides a comprehensive framework for causal inference. It allows users to define causal models, identify adjustment sets, and estimate causal effects using various methods, including linear regression and propensity score matching. `DoWhy` also integrates with other libraries like `NetworkX` for graph representation and visualization.
+
+`DoWhy` can be used to create and analyze DAGs, identify confounders, and guide regression analyses to estimate causal effects, similar to `dagitty` in R.  As an example, the following creates our selection process DAG as in @fig-dagcomplex:
+
+```{python}
+import pandas as pd
+from dowhy import CausalModel
+
+# get selection data
+url = "https://peopleanalytics-regression-book.org/data/selection.csv"
+selection = pd.read_csv(url)
+
+# define the causal graph
+graph_str = """graph[
+  directed 1 node[id "Hire" label "Hire"]
+  node[id "Test" label "Test"]
+  node[id "Int" label "Int"]
+  node[id "Pres" label "Pres"]
+  node[id "GPA" label "GPA"]
+  edge[source "Test" target "Hire"]
+  edge[source "Int" target "Hire"]
+  edge[source "Pres" target "Hire"]
+  edge[source "Pres" target "Int"]
+  edge[source "GPA" target "Pres"]
+  edge[source "GPA" target "Int"]
+  edge[source "GPA" target "Test"]
+]"""
+
+# define treatment and outcome
+treatment_name="Test"
+outcome_name="Hire"
+
+# create causal model
+selection_dag = CausalModel(
+    data = selection,
+    graph=graph_str, 
+    treatment=treatment_name, 
+    outcome=outcome_name
+)
+```
+
+We can view thw causal graph using the `view_graph()` method as in @fig-py-causal-graph:
+
+::: {#fig-py-causal-graph}
+
+```{python}
+# view DAG
+selection_dag.view_model()
+```
+Causal graph representing beliefs about causal relationships between a Hiring Decision, Test Score, Interview Score, Presentation Score, and GPA.
+:::
+
+We can then identify the minimal adjustment set using the `identify_effect()` method, which confirms that `GPA` needs to be added to our model to estimate the causal effect of `Test` on `Hire`.
+
+
+```{python}
+# identify minimal adjustment set
+adjustments = selection_dag.identify_effect()
+print(adjustments)
+```
+
+The `DoWhy` package contains a very wide range of methods for estimating causal effects, including linear regression, propensity score matching, inverse probability weighting, and more.  It's estimation capabilities do not currently extend to generalized linear models or Bayesian regression.  In the context of explanatory modeling, it can be used to construct causal models which can then inform the structure of regression models to be implemented in `statsmodels` or `Bambi`.
+
 
 ## Learning exercises
 
