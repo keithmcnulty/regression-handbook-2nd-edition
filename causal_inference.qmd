@@ -42,17 +42,17 @@ In reality, however, most of us who practice statistics do not employ our toolki
 
 But inferring causality is hard and requires a lot of intellectual discipline.  In the modeling examples and exercises in previous chapters of this book, we did not have this discipline in mind.  Our focus was on the theory, execution and direct interpretation of statistical methods.  In our quest for associations, we threw many variables into models without much thought about the role each variable might play in the causal mechanics of the problem we were trying to solve. As we will learn in this chapter, this is not a good practice when our goal is to infer causality.  Causal inference requires careful thinking about the data generating process, the role of confounding variables, and the assumptions we are making when we use statistical models to find evidence to support or disregard a causal hypothesis.
 
-Over the last few decades there has been a growing body of work in statistics, psychology, clinical medicine and related fields that has developed rigorous frameworks and methods for causal inference.  This chapter introduces some of these key concepts and methods with a focus on how they can be applied in practice.  We will spend the first part of the chapter introducing the fundamental theories underlying causal inference, and then we will look at the toolkit of methods that can be used to infer causality from data.  Finally, we will use a walkthrough example to illustrate how this toolkit can be applied in practice.
+Over the last few decades there has been a growing body of work in statistics, psychology, clinical medicine and related fields that has developed rigorous frameworks and methods for causal inference.  This chapter introduces some of these key concepts and methods with a focus on how they can be applied in practice.  We will spend the first part of the chapter introducing the fundamental theories underlying causal inference, and then we will look at the toolkit of methods that can be used to infer causality from observational data.  Finally, we will use a walkthrough example to illustrate how this toolkit can be applied in practice.
 
 ## Underlying theoretical frameworks for causal inference
 
 The modern field of causal inference has been primarily shaped by two complementary frameworks. Throughout this chapter, we will draw on the strengths of both.
 
-1.  **The Rubin causal model (or Potential Outcomes framework):** Popularized by Donald Rubin (@rubin1974), this model is rooted in the language of experiments. It forces us to think about the "potential" state of the world under different scenarios. For each individual, we imagine two potential outcomes: the outcome if they receive a "treatment" (e.g., attending a training program) and the outcome if they receive the "control" (e.g., not attending). The causal effect is the difference between these two potential outcomes. The core difficulty, which we will explore, is that we can only ever observe *one* of these outcomes for any given individual. This is what is called the *"Fundamental Problem of Causal Inference"* (@holland1986). This framework is incredibly useful for defining what a causal effect *is* with mathematical precision.  
+1.  **The Rubin causal model (RCM or Potential Outcomes framework):** Popularized by Donald Rubin^[@rubin1974], this model is rooted in the language of experiments. It forces us to think about the "potential" state of the world under different scenarios. For each individual, we imagine two potential outcomes: the outcome if they receive a "treatment" (e.g., attending a training program) and the outcome if they receive the "control" (e.g., not attending). The causal effect is the difference between these two potential outcomes. The core difficulty, which we will explore, is that we can only ever observe *one* of these outcomes for any given individual. This is what is called the *Fundamental Problem of Causal Inference*^[@holland1986]. This framework is incredibly useful for defining what a causal effect *is* with mathematical precision.  
 
-2.  **The structural causal model (SCM):** Championed by Judea Pearl (@pearl2000), this framework uses the intuitive language of graphs to represent our causal assumptions and hypotheses. Through using *Directed Acyclic Graphs (DAGs)*, we can visualize the assumed data-generating process. By drawing nodes (variables) and arrows (causal effects), we create a causal map of the system we are studying. This map then provides us with a clear, visual guide for how to analyze our data. It tells us which variables we must control for, which we must *not* control for, and whether our causal question is even answerable with the data we have.
+2.  **The structural causal model (SCM):** Championed by Judea Pearl^[@pearl2000], this framework uses the intuitive language of graphs to represent our causal assumptions and hypotheses. Through using *Directed Acyclic Graphs (DAGs)*, we can visualize the assumed data-generating process. By drawing nodes (variables) and arrows (causal effects), we create a causal map of the system we are studying. This map then provides us with a clear, visual guide for how to analyze our data. It tells us which variables we must control for, which we must *not* control for, and whether our causal question is even answerable with the data we have.
 
-While historically there has been some friction between these two philosophies, they are now largely seen as two sides of the same coin. The RCM provides the rigorous definition of a causal effect, while the SCM give us the tools to think about the complex system of variables in which that effect is embedded. In this chapter, we will use the RCM to understand *what* we're trying to estimate and we will use the SCM to figure out *how* to estimate it from data.  For a more in-depth treatment of the Rubin causal model, see @imbens2015.  For a more in-depth treatment of the Structural causal model, see @pearl2016 or @pearl2019.  @brumback2022 and @mcelreath are also excellent resources for learning about how to apply causal inference techniques in settings involving observational data.
+While historically there has been some friction between these two philosophies, they are now largely seen as two sides of the same coin. The RCM provides the rigorous definition of a causal effect, while the SCM give us the tools to think about the complex system of variables in which that effect is embedded. In this chapter, we will use the RCM to understand *what* we're trying to estimate and we will use the SCM to figure out *how* to estimate it from observational data.  For a more in-depth treatment of the Rubin causal model, see @imbens2015.  For a more in-depth treatment of the Structural causal model, see @pearl2016 or @pearl2019.  @brumback2022 and @mcelreath are also excellent resources for learning about how to apply causal inference techniques in settings involving observational data.
 
 ## The Rubin causal model (RCM)
 
@@ -60,7 +60,7 @@ Throughout this book we have looked at statistical effects, but we have only def
 
 ### Treatment effects
 
-Imagine a single manager of a sales team in a company, let's call her Jane. Jane has the option to volunteer for a new management training program.  We are interested in the causal effect of this new program on the sales of Jane's team. Let's denote the treatment, which is participation in the training program, as $T$. Jane can either receive the treatment ($T = 1$) or not receive it ($T = 0$).
+Imagine a single manager of a sales team in a company.  Let's call her Jane. Jane has the option to volunteer for a new management training program.  We are interested in the causal effect of this new program on the sales of Jane's team. Let's denote the treatment, which is participation in the training program, as $T$. Jane can either receive the treatment ($T = 1$) or not receive it ($T = 0$).
 
 Under RCM, we imagine that for Jane, there exist two potential outcomes right before her decision is made about her attendance at the training:
 
@@ -97,7 +97,7 @@ $$
 
 If we estimate the ATE of our management training to be \$0.6 million, it means that, on average, the program increases average team sales by that amount. This is exactly the kind of information a decision-maker needs to evaluate the program's worth.  For example, they can compare the ATE to the cost of running the training to see if the investment has a positive financial return.  
 
-But, again, in real life it is usually the case that not everyone is treated.  Our training program is optional it's likely to everyone will attend.   Therefore, it is more insightful for us to determine the average treatment effect for those who attend the training.  We want to determine the average treatment effect for the treated, known as the ATT:
+But, again, in real life it is usually the case that not everyone is treated.  Our training program is optional and  not everyone will attend.   Therefore, it is more insightful for us to determine the average treatment effect for those who attend the training.  We want to determine the average treatment effect for the treated, known as the ATT:
 
 $$
 \begin{aligned}
@@ -106,7 +106,7 @@ $$
 \end{aligned}
 $$
 
-The question now becomes: how can we estimate the ATT when we can't see Y(0) for the people who have been treated?
+The question now becomes: how can we estimate the ATT when we can't see $Y(0)$ for the people who have been treated?
 
 ### Naive comparisons and counfounding
 
@@ -127,9 +127,9 @@ $$
 \end{aligned}
 $$
 
-This is known as the **bias** of the naive comparison as an estimator for the ATT.  If this bias is zero, then the naive comparison is an unbiased estimator of the ATT.  If this bias is not zero, then the naive comparison is a biased estimator of the ATT.  This bias term can be non zero for a variety of reasons, but the most common is **confounding**^[Another source of bias is when treatment effects differ between individuals.   This is known as the Heterogeneous Treatment Effect (HTE) bias.  In our causal models, we make the assumption that there is no HTE bias and that Y(1) - Y(0) is the same across all individuals.].  Confounding is the presence of a third variable (or set of variables) that is a common cause of both the treatment and the outcome.  This common cause creates a spurious association between the treatment and the outcome that is not causal.  
+This is known as the **bias** of the naive comparison as an estimator for the ATT.  If this bias is zero, then the naive comparison is an unbiased estimator of the ATT.  If this bias is not zero, then the naive comparison is a biased estimator of the ATT.  This bias term can be non-zero for a variety of reasons, but the most common is **confounding**^[Another source of bias is when treatment effects differ between individuals.   This is known as the Heterogeneous Treatment Effect (HTE) bias.  In our causal models, we make the assumption that there is no HTE bias and that Y(1) - Y(0) is the same across all individuals.].  Confounding is the presence of a third variable (or set of variables) that is a common cause of both the treatment and the outcome.  This common cause creates a spurious association between the treatment and the outcome that is not causal.  
 
-Returning to the management training example, the managers who volunteer for training ($T=1$) might be more ambitious, more motivated, and already better managers than those who do not ($T=0$). Therefore, even if nobody got the training, the treatment group's teams would likely have higher sales anyway. That is, $E[Y(0) \mid T=1] > E[Y(0) \mid T=0]$. This difference is confounding. The ambition and motivation of the managers is a common cause of both their decision to take the training and their team's higher sales.
+Returning to the management training example, the managers who volunteer for training ($T=1$) might be more ambitious, more motivated, and already better managers than those who do not ($T=0$). Therefore, even if nobody got the training, the treatment group's teams would likely have higher sales anyway. That is, $E[Y(0) \mid T=1] > E[Y(0) \mid T=0]$. This difference is confounding. The ambition and motivation of the managers is a common cause of both their decision to take the training and their teams' higher sales.
 
 The naive comparison mixes the true causal effect of the training (ATT) with this pre-existing bias. Our entire goal in causal inference is to find a way to eliminate this bias and isolate the true ATT.  The most effective (but, sadly, usually the least practical) way to do this is through a randomized controlled trial (RCT).
 
@@ -137,7 +137,7 @@ In an RCT, the researchers randomly assign individuals to either the treatment o
 
 ### Causal inference from observational data
 
-Unfortunately, in psychology, sociology, human resources and other people-related fields we can't always run an RCT. It might be inequitable (we can't randomly give some employees a benefit that we don't give others), impractical (we can't randomly assign a new corporate culture to half the company), or impossible (we can't randomly assign personality traits). We are more often than not working with observational data, where people have already selected their own "treatments".
+Unfortunately, in psychology, sociology, human resources and other people-related fields we can't always run an RCT. It might be inequitable (we can't randomly give some employees a benefit that we don't give others), impractical (we can't randomly assign a new corporate culture to half the company), or impossible (we can't randomly assign personality traits). We are more often than not working with observational data, where people have already "selected their own treatments".
 
 To estimate a causal effect from such data, we need to try to emulate a randomized trial with statistics. To do this, we must rely on a set of critical, untestable assumptions. Conditional on these assumptions, we can recover unbiased estimates of causal effects. Let's review these assumptions.
 
@@ -153,7 +153,7 @@ $$(Y(1), Y(0)) \perp T \mid X$$
   
 That is, once we account for the variables in $X$, the group that received the treatment and the group that did not are, on average, comparable, as if the treatment had been randomly assigned within each level of $X$. 
 
-In our training example, we suspected that "motivation" might be a confounder. Managers' motivation ($X$) affects both their likelihood of taking the training ($T$) and their team's sales ($Y$). Ignorability assumes that if we look only at a group of managers with the *same level of motivation*, then within that group, the decision to take the training was essentially random with respect to their potential team sales.  By conditioning on (or controlling for) all possible common causes of the treatment and the outcome---the set of confounders $X$---we hope to make the bias disappear. This is why it is sometimes called "conditional exchangeability". We don't believe the entire treatment and control groups are exchangeable, but we are willing to assume they are exchangeable with each level of $X$.
+In our training example, we suspected that "motivation" might be a confounder. Managers' motivation ($X$) affects both their likelihood of taking the training ($T$) and their team's sales ($Y$). Ignorability assumes that if we look only at a group of managers with the *same level of motivation*, then within that group, the decision to take the training was essentially random with respect to their potential team sales.  By conditioning on (or controlling for) all possible common causes of the treatment and the outcome---the set of confounders $X$---we hope to make the bias disappear. This is why it is sometimes called "conditional exchangeability". We don't believe the entire treatment and control groups are exchangeable, but we are willing to assume they are exchangeable within each level of $X$.
 
 Of course the challenge here is that we must identify and measure *all* the important confounders. If there is a confounder that we did not measure or include in our set $X$ (e.g., the managers' level of prior experience), then this assumption will be violated, and our causal estimate will be biased due to unmeasured confounding. This is the biggest challenge of causal inference on observational people data.  Many potential confounders are unknown, unmeasurable or both.
 
@@ -172,15 +172,15 @@ If positivity is violated, we simply cannot estimate the ATT for some groups ass
 
 ### The 'boobytraps' of causal inference
 
-Armed with Rubin's causal model and the key assumptions above, we can now articulate the common types of problems we might encounter in attempting to infer causality between a treatment and an outcome.  All of these "boobytraps" relate to how we handle other variables outside the treatment variable $T$ and the outcome variable $Y$ in different situations.  
+Armed with RCM and the key assumptions above, we can now articulate the common types of problems we might encounter in attempting to infer causality between a treatment and an outcome.  All of these "boobytraps" relate to how we handle other variables outside the treatment variable $T$ and the outcome variable $Y$ in different situations.  
 
 *   **Confounding:** As we have seen, this is a central problem. A third variable (or set of variables) $X$ is a common cause of both the treatment $T$ and the outcome $Y$. The relates to the assumption of ignorability.  To obtain an unbiased estimate of the ATT, we must identify and condition on all confounding variables.  In our management training example, if we fail to account for the managers' motivation levels, which affects both their likelihood of taking the training and their team's sales, our estimate of the training's causal effect will be biased.
 
-*   **Selection Bias:** While confounding is a form of selection bias, this term specifically refers to a situation where the sample is selected (or the analysis is conditioned) based on factors related to the outcome. This relates to the assumption of positivity.  If certain types of individuals are systematically excluded from the analysis based on their factors related to the outcome, it can bias our estimates.  For example, if we only analyze data from managers who had high sales, we might overestimate the training's effectiveness because we are ignoring those who had low sales.
+*   **Selection Bias:** While confounding is a form of selection bias, this term specifically refers to a situation where the sample is selected (or the analysis is conditioned) based on factors related to the outcome. This relates to the assumption of positivity.  If certain types of individuals are systematically excluded from the analysis based on factors related to the outcome, it can bias our estimates.  For example, if we only analyze data from managers who had high sales, we might over- or underestimate the training's effectiveness because we are ignoring those who had low sales.
 
 *   **Mediation:** In understanding causal mechanisms, it is critical to consider if a causal effect is operating via some intermediate variables or *mediators*.  This relates to the assumption of SUTVA.  If we condition on a mediator variable that lies on the causal path from treatment to outcome, we can block part of the causal effect we are trying to estimate. For example, imagine if the training results in managers teaching new sales techniques to their teams, which then impacts sales.  If we condition our analysis on the specific sales techniques used by the teams, we will underestimate the total causal effect of the training on sales.
 
-The RCM gives us a clear language to define the causal effects we want to estimate. The assumptions of SUTVA, Ignorability, and Positivity define the "rules of the game" for when we can legitimately estimate those effects from observational data without bias. The challenge, however, is that the crucial assumption of Ignorability depends on identifying the correct set of confounding variables *X*. How do we do that? Simply throwing every variable we have into a regression model is not the answer and, in fact, it usually makes things worse.
+The RCM gives us a clear language to define the causal effects we want to estimate. The assumptions of SUTVA, Ignorability, and Positivity define the "rules of the game" for when we can legitimately estimate those effects from observational data without bias. The challenge, however, is that the crucial assumption of Ignorability depends on identifying the correct set of confounding variables. How do we do that? Simply throwing every variable we have into a regression model is not the answer and, in fact, it usually makes things worse.
 
 ## The structural causal model (SCM)
 
@@ -227,17 +227,17 @@ DAG representing the assumed causal relationships between motivation, training, 
 :::
 
 This simple graph encodes several causal beliefs:
-1.  `Motivation` has a direct causal effect on `Training` (more motivated managers are more likely to sign up).
-2.  `Motivation` has a direct causal effect on `Sales` (more motivated managers lead their teams to higher sales figures).
-3.  `Training` has a direct causal effect on `Sales` (this is the effect we want to estimate).
+1.  Motivation has a direct causal effect on Training (more motivated managers are more likely to sign up).
+2.  Motivation has a direct causal effect on Sales (more motivated managers lead their teams to achieve higher sales figures).
+3.  Training has a direct causal effect on Sales (this is the effect we want to estimate).
 4.   There are no other common causes of any two variables in the graph.
-5.  `Sales` does not have a direct causal effect on `Training` (the outcome doesn't affect the treatment). 
+5.  Sales does not have a direct causal effect on Training (the outcome doesn't affect the treatment). 
 
 This DAG is our causal model. It is not derived from the data; it is imposed upon it by our expert knowledge and beliefs. The DAG forces us to be transparent about our assumptions, which can then be analyzed, critiqued or improved.
 
 ### DAG paths and the three fundamental structures
 
-The reason DAGs are so useful is that they provide rules for how statistical associations flow between variables. An association between two variables, X and Y, exists if there is an open (or unblocked) path between them in the DAG. A direct causal effect is one source of association, but there are others. By understanding the three fundamental structures that can exist between variables in a DAG, we can create a system through which we can identify open non-causal paths. Each of these structures relate to the "boobytraps" we discussed earlier: mediation, confounding and selection bias.  They can be seen in @fig-dagstructures.
+The reason DAGs are so useful is that they provide rules for how statistical associations flow between variables. An association between two variables $X$ and $Y$ exists if there is an open (or unblocked) path between them in the DAG. A direct causal effect is one source of association, but there are others. By understanding the three fundamental structures that can exist between variables in a DAG, we can create a system through which we can identify open non-causal paths. Each of these structures relate to the "boobytraps" we discussed earlier: mediation, confounding and selection bias.  They can be seen in @fig-dagstructures.
 
 ::: {#fig-dagstructures}
 ```{r}
@@ -324,7 +324,7 @@ Referring to @fig-dagstructures:
 
 * Confounding is represented by a 'fork' structure.  This means C is a common cause of both A and B. In this fork, there is no causal path from A to B. However, because they share a common cause, information flows from C to A and from C to B, creating a spurious (non-causal) association between A and B. If we were to naively correlate A and B, we would find an association, not because A has a direct causal effect on B, but because C has a direct causal effect on both. The non-causal path from A to B is called a 'backdoor' path, because A has an edge going into it rather than coming out of it. To block this backdoor path, we must condition on the common cause, C. For example, if we believe `Training <- Motivation -> Sales`, then to estimate the causal effect of `Training` on `Sales`, we must include `Motivation` in our model.  If we leave it out, we will have a biased estimate.
 
-* Selection bias is represented by a 'collider' structure.  This structure means A and B are both independent causes of a third variable, D. The arrows "collide" at D. In a collider structure, if A and B are independent to begin with, there is no open path between them. The collider D *naturally blocks* the flow of association. However, if we condition on the collider D, we *open the path* and create a spurious association between A and B where none existed before. For example, if we believe `Knowledge -> Being Hired <- Interpersonal Skills`, then in the general population, `Knowledge` and `Interpersonal Skills` are uncorrelated. But if we look only at only those who were hired, then within that selected group, `Knowledge` and `Interpersonal Skills` can become negatively correlated. Conditioning on the common effect (the collider) induces an association.  Moreover, if a variable is a descendant of a collider (i.e., it is on a chain emanating from the collider, such as our variable `E`), conditioning on that descendant also opens the path.
+* Selection bias is represented by a 'collider' structure.  This structure means A and B are both independent causes of a third variable, D. The arrows "collide" at D. In a collider structure, if A and B are independent to begin with, there is no open path between them. The collider D *naturally blocks* the flow of association. However, if we condition on the collider D, we *open the path* and create a spurious association between A and B where none existed before. For example, if we believe `Knowledge -> Being Hired <- Interpersonal Skills`, then in the general population, `Knowledge` and `Interpersonal Skills` are uncorrelated. But if we look only at only those who were hired, then within that selected group, `Knowledge` and `Interpersonal Skills` can become negatively correlated. Conditioning on the common effect (the collider) induces an association.  Moreover, if a variable is a descendant of a collider (i.e., it is on a chain emanating from the collider, such as our variable E), conditioning on that descendant also opens the path.
 
 This leaves us with three critical rules for how associations flow through a DAG:
 
@@ -345,9 +345,7 @@ This leads us to the **backdoor criterion**, a powerful graphical test for choos
 1.  No variable in Z is a descendant of T (we don't control for mediators or other variables caused by the treatment).
 2.  The variables in Z block every backdoor path between T and Y.
 
-If we can find a set of variables Z that satisfies the backdoor criterion, then we can estimate the causal effect of T on Y by conditioning on Z. In practice, this means including Z along with T as input variables in a regression model.  
-
-Let's look at a specific example in order to see this criterion in action.
+If we can find a set of variables Z that satisfies the backdoor criterion, then we can estimate the causal effect of T on Y by conditioning on Z. In practice, this means including Z along with T as input variables in a regression model.  Let's look at a specific example in order to see this criterion in action.
 
 ### Example of applying the backdoor criterion
 
@@ -391,23 +389,24 @@ DAG representing beliefs about causal relationships between a hiring decision, t
 
 Let's identify all the paths between `Test` and `Hire` and use the backdoor criterion find a sufficient adjustment set using the backdoor criterion.
 
-*   **Path 1 (The Causal Path):** `Test -> Hire`. We want to keep this path open.  It is causal because it flows in the direction of the arrows from treatment variable to outcome variable.
-*   **Path 2 (A Backdoor Path):** `Test <- GPA -> Int -> Hire`. This is a classic confounding path through `GPA`. It's a fork, with a chain from `GPA` to `Hire`. To block it, we have two options. We can condition on the common cause `GPA`, and then we do not need to condition on `Int` because by conditioning on `GPA` we have already blocked the backdoor path.  Alternatively, we can condition on `Int` to black the path through the chain.
-*   **Path 3 (Another Backdoor Path):** ``Test <- GPA -> Pres -> Hire`. This is another backdoor path through `GPA` and `Pres`. It's another fork followed by a chain. Conditioning on `GPA` will also block this path, or alternatively so will conditioning on `Pres`.
-*   **Path 4 (Another Backdoor Path):** `Test <- GPA -> Pres -> Int -> Hire`. This is yet another backdoor path through `GPA`, `Pres` and `Int`. It's another fork followed by a longer chain. Conditioning on `GPA` will also block this path, as will conditioning on `Pres` or `Int`.
+*   **Path 1 (the causal path):** `Test -> Hire`. We want to keep this path open.  It is causal because it flows in the direction of the arrows from treatment variable to outcome variable.
+*   **Path 2 (q backdoor path):** `Test <- GPA -> Int -> Hire`. This is a classic confounding path through `GPA`. It's a fork, with a chain from `GPA` to `Hire`. To block it, we have two options. We can condition on the common cause `GPA`, and then we do not need to condition on `Int` because by conditioning on `GPA` we have already blocked the backdoor path.  Alternatively, we can condition on `Int` to block the path through the chain.
+*   **Path 3 (another backdoor path):** ``Test <- GPA -> Pres -> Hire`. This is another backdoor path through `GPA` and `Pres`. It's another fork followed by a chain. Conditioning on `GPA` will also block this path, or alternatively so will conditioning on `Pres`.
+*   **Path 4 (another backdoor path):** `Test <- GPA -> Pres -> Int -> Hire`. This is yet another backdoor path through `GPA`, `Pres` and `Int`. It's another fork followed by a longer chain. Conditioning on `GPA` will also block this path, as will conditioning on `Pres` or `Int`.
+*   **Path 5 (a blocked path):** `Test <- GPA -> Int <- Pres -> Hire`. This path is blocked because `Int` is a collider. We do not need to concern ourselves with this path.
 
 This provides us with two possible adjustment sets for determining the causal effect of `Test` on `Hire`:
 
-1.  `{GPA}`: By conditioning on `GPA` alone, we block all backdoor paths (Paths 2, 3 and 4) while keeping the causal path (Path 1) open.
-2.  `{Int, Pres}`: By conditioning on both `Int` and `Pres`, we also block all backdoor paths while keeping the causal path open.
+1.  `{GPA}`: By conditioning on `GPA` alone, we block all open backdoor paths (Paths 2, 3 and 4) while keeping the causal path (Path 1) open.
+2.  `{Int, Pres}`: By conditioning on both `Int` and `Pres`, we also block all open backdoor paths while keeping the causal path open.
 
 This means that if we want to run a regression model to determine the causal effect of `Test` on `Hire`, we can either include `GPA` as a control variable, or we can include both `Int` and `Pres` as control variables. Either approach will give us an unbiased estimate of the causal effect of `Test` on `Hire`, conditional on our DAG.
 
-This example illustrates the power of DAGs. Without drawing the graph and applying the backdoor criterion, a researcher might be tempted to control for everything they measured. The DAG shows that this "kitchen sink" approach to regression is not just unnecessary, but it can lead to major errors in inferring causal effects. DAGs provides a principled, theory-driven way to construct regression models.
+This example illustrates the power of DAGs. Without drawing the graph and applying the backdoor criterion, a researcher might be tempted to control for everything they measured. The DAG shows that this "kitchen sink" approach to regression is not just unnecessary, but it can lead to major errors in inferring causal effects. DAGs provide a principled, theory-driven way to construct regression models.
 
 ## Causal inference in R
 
-In R, the `dagitty` package allows you to specify a DAG using a simple text-based syntax. Once specified, you can query the DAG to find parents, children, ancestors, descendants, identify instrumental variables, and, most importantly, find adjustment sets using the backdoor criterion. It can also list the "testable implications" of your DAG-—-that is, the conditional independencies that should hold true in your data if your causal model is correct, which you can verify.
+In R, the `dagitty` package allows you to specify a DAG using a simple text-based syntax. Once specified, you can query the DAG to identify instrumental variables, and find sufficient adjustment sets using the backdoor criterion. It can also list the "testable implications" of your DAG, by listing the conditional independencies that should hold true in your data if your causal model is correct, which you can verify.
 
 The `ggdag` package is built on top of `ggplot2` and works seamlessly with `dagitty` objects. It provides an easy and highly customizable way to create visualizations of your DAGs. It can automatically highlight paths, adjustment sets, and other features, making it a very helpful tool for both analysis and communication.
 
@@ -420,8 +419,8 @@ The `selection` data set contains data related to the hiring process for 70 cand
 * `Hire`: A binary variable indicating whether the candidate was hired (1) or not (0).
 * `Test`: The candidate's score out of a maximum of 15 on a written test.
 * `Int`: The candidate's rating from a one-on-one interview, on an integer scale from 1 (Low) to 5 (High).
-* `Pres`: The candidate's average rating from a presentation to a panel, on an scale from 1 (Low) to 5 (High).
-* `GPA`: The candidate's undergraduate Grade Point Average (GPA), on a scale from 1.0 to 5.0.
+* `Pres`: The candidate's average rating from a presentation to a panel, on a scale from 1 (Low) to 5 (High).
+* `GPA`: The candidate's undergraduate Grade Point Average (GPA), on a scale from 1.0 to 4.0.
 
 Let's take a quick look at the data.
 
@@ -434,7 +433,7 @@ selection <- read.csv(url)
 head(selection)
 ```
 
-Before we define a causal model to work with, let's look at what a 'naive' analysis would look like.  We can run a simple Bayesian logistic regression predicting `Hire` from `Test` alone.
+Before we define a causal model to work with, let's look at what a 'naive' analysis would look like.  We can run a simple Bayesian logistic regression explaining `Hire` from `Test` alone.
 
 ```{r}
 #| eval: false
@@ -468,7 +467,7 @@ library(brms)
 naive_model <- readRDS("models/causal/naive_model.RDS")
 ```
 
-We can now take a look at our posterior coefficients for `Test`, as in @fig-naiveposterior.
+We can now take a look at the posterior estimate of our coefficient for `Test`, as in @fig-naiveposterior.
 
 ::: {#fig-naiveposterior}
 
@@ -483,7 +482,7 @@ mcmc_areas(
 ) +
   theme_minimal()
 ```
-Posterior distribution of the coefficient for `Test` from a naive Bayesian logistic regression predicting `Hire` from `Test` alone.
+Posterior distribution of the coefficient for `Test` from a naive Bayesian logistic regression explaining `Hire` from `Test` alone.
 :::
 
 ```{r}
@@ -502,7 +501,7 @@ We have a hypothesized causal model for how these variables relate to each other
 The syntax for defining a DAG using `dagitty` is straightforward. We define the nodes and edges in a string format.  The treatment (exposure) and outcome variables can be specified using special tags.
 
 ```{r}
-# Define the selection DAG
+# define the selection DAG
 library(dagitty)
 
 selection_dag_string <- "dag {
@@ -544,6 +543,7 @@ The `ggdag` package makes plotting this DAG very easy, as in @fig-dagplot.
 :::{#fig-dagplot}
 
 ```{r}
+# visualize the selection DAG
 library(ggplot2)
 ggdag(selection_dag) +
   theme_dag() 
@@ -651,13 +651,13 @@ Another powerful feature of `dagitty` is its ability to list the *testable impli
 impliedConditionalIndependencies(selection_dag)
 ```
 
-To understand the output, we can interpret each line as a conditional independence statement. For example, the first line  means that `GPA` is independent of `Hire` when conditioned on `Int`, `Pres` and `Test`.  This makes sense because the three conditioned variables are mediators between `GPA` and `Hire` on chain paths, and we know that when we condition on a mediator we block the path, this making `GPA` and `Hire` d-separated.  
+To understand the output, we can interpret each line as a conditional independence statement. For example, the first line  means that `GPA` is independent of `Hire` when conditioned on `Int`, `Pres` and `Test`.  This makes sense because the three conditioned variables are mediators between `GPA` and `Hire` on chain paths, and we know that when we condition on a mediator we block the path, thus making `GPA` and `Hire` d-separated.  
 
 ### Using DAGs to guide regression analyses
 
 Now that we have identified our adjustment sets and implied conditional independencies, we can use them to guide our regression analyses in determining the causal effect of the test performance on the hiring decision.  Although we can use DAGs alongside classical (frequentist) regression models, it is more common nowadays to use them with Bayesian regression models.  Bayesian models provide a more intuitive framework for causal inference, allowing us to directly estimate the posterior distribution of causal effects and incorporate prior knowledge into our analyses.
 
-First, we can test our conditional independencies implied by our DAG using regression models. We can test the first conditional independence statement: `GPA` is independent of `Hire` when conditioned on `Int`, `Pres` and `Test`.  
+First, we can test the conditional independencies implied by our DAG using regression models. We can test the first conditional independence statement: `GPA` is independent of `Hire` when conditioned on `Int`, `Pres` and `Test`.  
 
 ```{r}
 #| eval: false
@@ -749,9 +749,9 @@ This indicates that there is a `r round(prob_positive*100, 1)`% probability that
 
 ## Causal inference using DAGs in Python
 
-The `DoWhy` package in Python provides a comprehensive framework for causal inference. It allows users to define causal models, identify adjustment sets, and estimate causal effects using various methods, including linear regression and propensity score matching. `DoWhy` also integrates with other libraries like `NetworkX` for graph representation and visualization.
+The `DoWhy` package in Python provides a comprehensive framework for causal inference. It allows users to define causal models, identify adjustment sets and estimate causal effects using various methods, including linear regression and propensity score matching. `DoWhy` also integrates with other libraries like `NetworkX` for graph representation and visualization.
 
-`DoWhy` can be used to create and analyze DAGs, identify confounders, and guide regression analyses to estimate causal effects, similar to `dagitty` in R.  As an example, the following creates our selection process DAG as in @fig-dagcomplex:
+`DoWhy` can be used to create and analyze DAGs, identify confounders and guide regression analyses to estimate causal effects, similar to `dagitty` in R.  As an example, the following creates our selection process DAG as in @fig-dagcomplex:
 
 ```{python}
 import pandas as pd
@@ -810,16 +810,16 @@ adjustments = selection_dag.identify_effect()
 print(adjustments)
 ```
 
-The `DoWhy` package contains a very wide range of methods for estimating causal effects, including linear regression, propensity score matching, inverse probability weighting, and more.  It's estimation capabilities do not currently extend to generalized linear models or Bayesian regression.  In the context of explanatory modeling, it can be used to construct causal models which can then inform the structure of regression models to be implemented in `statsmodels` or `Bambi`.
+The `DoWhy` package contains a very wide range of methods for estimating causal effects, including linear regression, propensity score matching, inverse probability weighting, and more.  Its estimation capabilities do not currently extend to generalized linear models or Bayesian regression.  In the context of explanatory modeling, it can be used to construct causal models which can then inform the structure of regression models to be implemented in `statsmodels` or `bambi`.
 
 
 ## Learning exercises
 
 ### Discussion questions
 
-1.  What are the different types of treatment effects defined in the Rubin causal model? How are they defined mathematically?
+1.  What are the different types of treatment effects defined in the Rubin causal model (RCM)? How are they defined mathematically?
 
-2.  What is 'bias' in the context of the Potential Outcomes framework?  Give a common reason why the naive estimate of a treatment effect might be biased.
+2.  What is 'bias' in the context of the RCM?  Give a common reason why the naive estimate of a treatment effect might be biased.
 
 3.  Outline the three key assumptions (SUTVA, Ignorability, Positivity) required for unbiased causal inference on observational data.
 
@@ -829,7 +829,7 @@ The `DoWhy` package contains a very wide range of methods for estimating causal 
 
 6.  What does it mean for two variables to be d-separated in a DAG? How does d-separation relate to statistical independence?
 
-7.  What is the Backdoor Criterion, and how does it help in identifying a sufficient adjustment set for estimating causal effects?
+7.  What is the backdoor criterion, and how does it help in identifying a sufficient adjustment set for estimating causal effects?
 
 8.  How can DAGs be used to guide regression analyses for causal inference? What are the advantages of using DAGs in this context?
 
@@ -860,7 +860,7 @@ For our data exercises in this chapter, we will return to the `sociological_data
 
 6.  List the conditional independencies implied by your DAG.  Using regression models, test at least two of these conditional independencies using the `sociological_data` dataset.
 
-7.  Finally, estimate the causal effect of `education_months` on `annual_income_ppp` using a Bayesian regression model that controls for the variables in your adjustment set.  
+7.  Estimate the causal effect of `education_months` on `annual_income_ppp` using a Bayesian regression model that controls for the variables in your adjustment set.  
 
 8.  Visualize the posterior distribution of the causal effect estimate and interpret the results.  Give the 95% credible interval for the causal effect estimate. How has your estimate changed compared to the naive model in Question 1?
 
