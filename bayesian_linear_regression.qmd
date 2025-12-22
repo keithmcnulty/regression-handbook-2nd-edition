@@ -38,7 +38,7 @@ def save_model_to_linear(model, filename):
 
 In the previous chapter, we introduced the fundamental philosophy of Bayesian inference. We learned to view population parameters not as fixed, unknown constants to be estimated, but as random variables described by probability distributions. We explored how to combine prior beliefs with observed data to form posterior beliefs, and we applied this logic to basic hypothesis testing.
 
-In this chapter, we will revisit Linear Regression, but this time through the lens of Bayesian inference. We will learn how to specify, fit, and interpret Bayesian linear regression models, as well as perform certain diagnostics specific to Bayesian estimation methods.  As with classical linear regression, much of what we learn in this chapter will generalize to other types of Bayesian regression models, such as Bayesian logistic regression and Bayesian Poisson regression, which we will cover in the next chapter.  
+In this chapter, we will revisit the very first modeling method we learned about, linear regression, but this time through the lens of Bayesian inference. We will learn how to specify, fit, and interpret Bayesian linear regression models, as well as perform certain diagnostics specific to Bayesian estimation methods.  As with classical linear regression, much of what we learn in this chapter will generalize to other types of Bayesian regression models, such as Bayesian logistic regression and Bayesian Poisson regression, which we will cover in the next chapter.  
 
 While classical Ordinary Least Squares (OLS) regression---which we covered extensively in @sec-linear-reg-ols---remains a powerful tool, Bayesian linear regression offers distinct advantages which are precisely the advantages offered by Bayesian inference more generally. It allows us to incorporate prior knowledge, it functions well even with smaller sample sizes, and perhaps most importantly, it provides a rich, probabilistic interpretation of our model coefficients and predictions. On the other hand, Bayesian regression models can be computationally intensive and require careful consideration of priors and convergence diagnostics.
 
@@ -70,9 +70,9 @@ $$y_i \sim \mathcal{N} (\mu_i, \sigma^2)$$
 
 where the mean $\mu_i$ is still modeled as a linear combination of the input variable observations:
 
-$$\mu_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_k x_{ik}$$
+$$\mu_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_p x_{ip}$$
 
-The crucial difference is that $\beta_0, \beta_1, \cdots, \beta_k$ and $\sigma$ are not fixed values we are trying to hunt down. They are random variables with their own distributions. Our goal is to learn the Posterior distribution of each these parameters given our data and any prior beliefs we may have about them.  If we use $\beta$ to represent the vector of all regression coefficients, and noting that our data consists of the outcome variable vector $y$ and the matrix of input variables $X$, what we are looking for is the posterior distribution $P(\beta, \sigma \mid y, X)$, where $\sigma$ is the stadard deviation of our residuals $\epsilon_i$.  In this context, Bayes' Theorem can be restated as:
+The crucial difference is that $\beta_0, \beta_1, \cdots, \beta_p$ and $\sigma$ are not fixed values. They are random variables with their own distributions. Our goal is to learn the posterior distribution of each these parameters given our data and any prior beliefs we may have about them.  If we use $\beta$ to represent the vector of all regression coefficients, and noting that our data consists of the outcome variable vector $y$ and the matrix of input variables $X$, what we are looking for is the posterior distribution $P(\beta, \sigma \mid y, X)$, where $\sigma$ is the standard deviation of our residuals $\epsilon_i$.  In this context, Bayes' Theorem can be restated as:
 
 $$
 P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
@@ -80,11 +80,11 @@ $$
 
 This means that the output of a Bayesian regression model is not a single line or hyperplane that best fits the data, but a probability distribution of *all possible lines or hyperplanes* that are consistent with our data and our priors.  We are simulating posteriors for multiple parameters, and as you can imagine, this will need some computational horsepower.
 
-Calculating the posterior distribution for complex models with multiple parameters is not possible using simple algebraic methods. To solve this, we will need to employ Markov Chain Monte Carlo (MCMC) simulation.  MCMC is a class of algorithms used to sample from complex probability distributions. MCMC algorithms work by constructing Markov Chains, which aee sequences of random steps whose long-run behavior mimics the target distribution. A Markov Chain starts from an initial point in the parameter space, and then proposes moves to new points, accepting or rejecting them according to rules that ensure the chain will eventually sample in proportion to the desired distribution. Over many iterations, the collected samples approximate the underlying distribution, enabling estimation of quantities like means, variances, and credible intervals even in high-dimensional problems.  
+Calculating the posterior distribution for complex models with multiple parameters is not possible using simple algebraic methods. To solve this, we will need to employ Markov Chain Monte Carlo (MCMC) simulation.  MCMC is a class of algorithms used to sample from probability distributions. MCMC algorithms work by constructing Markov Chains, which are sequences of random steps whose long-run behavior mimics the target distribution. A Markov Chain starts from an initial point in the parameter space, and then proposes moves to new points, accepting or rejecting them according to rules that ensure the chain will eventually sample in proportion to the desired distribution. Over many iterations, the collected samples approximate the underlying distribution, enabling estimation of quantities like means, variances, and credible intervals even in high-dimensional problems.  
 
 ## Running a Bayesian linear regression model
 
-We will use a random subset of the `ugtests` dataset from @sec-linear-reg-ols, which contains information about undergraduate students' scores over four years of their Biology degree program. Our goal is to predict the `Final` year score based on the `Yr1`,`Yr2` and `Yr3` scores using Bayesian linear regression.  Initially, we will assume that this subset is all the data we have available for our model. As we will be running a lot of random sampling and simulations in this chapter, we will be setting random seeds throughout to ensure the calculations are reproducible.
+We will use a random subset of the `ugtests` dataset from @sec-linear-reg-ols, which contains information about undergraduate students' scores over four years of their Biology degree program. Our goal is to explain the `Final` year score based on the `Yr1`,`Yr2` and `Yr3` scores using Bayesian linear regression.  Initially, we will assume that this subset is all the data we have available for our model. As we will be running a lot of random sampling and simulations in this chapter, we will be setting random seeds throughout to ensure the calculations are reproducible.
 
 
 ```{r}
@@ -103,7 +103,7 @@ sample_1 <- sample(nrow(ugtests), 100)
 ugtests_bayes <- ugtests[sample_1, ]
 ```
 
-### Specifying the Model
+### Specifying the model
 
 In `brms`, we use `brm()` with the `family = gaussian()` argument to fit a Bayesian linear regression model. The syntax is very similar to `lm()` and `glm()` from our previous chapters, but with a few extra arguments regarding the Bayesian specifics.  If `brm()` is not given any priors, it will use a set of default priors which assume we have no ingoing beliefs about any of our parameters.  
 
@@ -113,8 +113,7 @@ Let's first fit a multiple linear regression model accepting the default priors.
 ```{r}
 #| label: first-model
 #| eval: false
-# Fit an uninformed Bayesian linear regression Model
-
+# fit an uninformed Bayesian linear regression Model
 uninf_model <- brm(
   formula = Final ~ Yr1 + Yr2 + Yr3,
   data = ugtests_bayes,
@@ -148,14 +147,14 @@ Let's review the various arguments we passed to `brm()`:
 If we want to see the priors used by a `brms` model, we just need to use the `get_prior()` function:
 
 ```{r}
-# Check the priors used in the model
+# check the priors used in the model
 get_prior(uninf_model)
 ```
 
 This output means that the following priors have been used in our initial model:
 
 *  **Intercept Coefficient**: A Student-$t$ distribution with 3 degrees of freedom, and with the mean and scale automatically determined based on the data.
-*  **'Slope' Coefficients (`b`)**: A Uniform distribution across all real numbers, each with equal probability.  This is effectively the "flat" prior, indicating no ingoing knowledge about the coefficients.
+*  **'Slope' Coefficients (`class = b`)**: A Uniform distribution across all real numbers, each with equal probability.  This is effectively the "flat" prior, indicating no ingoing knowledge about the coefficients.
 *  **Residual standard deviation (`sigma`)**: A Student-$t$ distribution with 3 degrees of freedom, and with the scale automatically determined based on the data.  Note that the `lb` column for this prior contains zero.  The `lb` and `ub` columns set lower and upper bounds for the prior.  Therefore in this case we actually have a half-distribution with a lower bound of zero to reflect that fact that `sigma` must be positive.
 
 ### Interpreting the Results {#sec-bayes-reg-interpret}
@@ -163,13 +162,13 @@ This output means that the following priors have been used in our initial model:
 Once the model is fit, we can examine the results. Unlike `lm()`, which gives us t-statistics and p-values, `brm()` gives us summaries of the posterior distribution.
 
 ```{r}
-# View summary of the model
+# view summary of the model
 summary(uninf_model)
 ```
 
 We can understand the basic summary output of estimates in a very similar way to OLS regression:
 
-1.  The `Estimate` column provides the medians of the posterior distributions for each parameter.  In this case: 
+1.  The `Estimate` column provides the means of the posterior distributions for each parameter.  In this case: 
     *   `Intercept`: This is the posterior mean of the final year score assuming there was a score of zero in all of the previous years.
     *   `Yr1`: This is the posterior mean change in Final year score associated with a one point increase in Year 1 score, assuming no change in the other input variables.
     *   `Yr2`: This is the posterior mean change in Final year score associated with a one point increase in Year 2 score, assuming no change in the other input variables.
@@ -201,7 +200,7 @@ To assign a prior to a specific parameter in the `prior()` function, we use the 
 ```{r}
 #| label: second-model
 #| eval: false
-# Define informative priors on the Yr1 coefficient
+# define informative priors on the Yr1 coefficient
 priors <- c(
   prior(normal(0, 0.05), class = b, coef = Yr1)
   # use lb and ub arguments to set bounds if needed
@@ -231,7 +230,7 @@ inf_model <- readRDS("models/linear/inf_model.RDS")
 Let's view our informed model summary:
 
 ```{r}
-# View summary of the informed prior model
+# view summary of the informed prior model
 summary(inf_model)
 ```
 
@@ -239,13 +238,13 @@ We now see that our posterior estimates have shifted based on our prior beliefs.
 
 ## Examining posteriors
 
-### Visualizing Posterior Parameter Distributions
+### Visualizing posterior parameter distributions
 
 Visualization is a particularly important communication tool in Bayesian statistics, because we are communicating uncertainty about our parameters. We can plot the distributions of plausible values for our informed model coefficients using the `mcmc_areas()` function from the `bayesplot` package.
 
 ::: {#fig-bayes-areas}
 ```{r}
-# Plot posterior distributions for coefficients
+# plot posterior distributions for coefficients
 library(bayesplot)
 
 mcmc_areas(
@@ -281,22 +280,22 @@ mcmc_intervals(
 
 Both of these visualizations are helpful in verifying our interpretations of the coefficients. For example, we can see that the 95% credible interval for the `b_Yr1` coefficient includes zero, suggesting that there is a reasonable probability that Year 1 scores have little to no effect on `Final` scores, consistent with our prior beliefs.
 
-### Posterior Predictive Distribution
+### Posterior predictive distribution
 
-Bayesian regression allows us to more precisely quantify our uncertainty when predicting outcomes for new data. In OLS regression, we typically get a single predicted value (point prediction) and perhaps a prediction interval. In Bayesian analysis, we generate a full Posterior Predictive Distribution (PPD). This distribution captures both our uncertainty about the model coefficients and the inherent variability in the data (the $\sigma$ parameter). 
+Bayesian regression allows us to more precisely quantify our uncertainty when predicting outcomes for new data. In OLS regression, we typically get a single predicted value (point prediction) and perhaps a prediction interval. In Bayesian analysis, we generate a full posterior predictive distribution (PPD). This distribution captures both our uncertainty about the model coefficients and the inherent variability in the data (the $\sigma$ parameter). 
 
 For every simulated set of coefficients in our posterior, the model generates a prediction. This results in a distribution of predicted final year scores.  Let's use our informed model to predict the final year score for an improving student, using 1000 draws from our posterior coefficients^['Draws' are a common term for samples taken from the simulated posteriors.].
 
 
 ```{r}
-# Define new data
+# define new data
 new_student <- data.frame(Yr1 = 43, Yr2 = 111, Yr3 = 143)
 
-# Generate posterior predictive distribution using 1000 draws from inf_model
+# generate posterior predictive distribution using 1000 draws from inf_model
 post_pred <- posterior_predict(inf_model, newdata = new_student, 
                                ndraws = 1000, seed = 123)
 
-# Convert to data frame for plotting
+# convert to data frame for plotting
 pred_values <- data.frame(Final = as.vector(post_pred))
 ```
 
@@ -306,7 +305,7 @@ We can now plot exactly what we expect this student's final year score to look l
 ```{r}
 library(ggdist)
 
-# Plot the predictive distribution in a halfeye plot
+# plot the predictive distribution in a halfeye plot
 ggplot(pred_values, aes(x = Final)) +
   stat_halfeye(
     .width = c(0.66, 0.95),
@@ -323,7 +322,7 @@ Distribution of predicted Final year score for a new student
 Note that we can easily obtain posterior prediction intervals using the `posterior_interval()` function in `brms`.  Let's compute the 95% posterior prediction interval for this student's final year score.
 
 ```{r}
-# Compute 95% posterior prediction interval for new data point
+# compute 95% posterior prediction interval for new data point
 posterior_interval(post_pred, prob = 0.95) |> 
   round()
 ```
@@ -337,8 +336,7 @@ Let's create a simple uninformed Bayesian linear regression model using just `Yr
 ```{r}
 #| label: third-model
 #| eval: false
-# Fit a simpler Bayesian Linear Regression Model
-
+# fit a simpler Bayesian Linear Regression Model
 simple_model <- brm(
   formula = Final ~ Yr2,
   data = ugtests_bayes,
@@ -364,8 +362,10 @@ There are a number of ways we can compare the fit of Bayesian linear models. Som
 
 We can calculate a Bayesian version of $R^2$. Unlike the single number in OLS regression, a set of values are drawn from our posterior coefficients, each allowing a calculation of the variance explained, and this provides a distribution for our $R^2$.   `brms` provides a convenient function `bayes_R2()` to compute this.  Let's use it to compare the fit of our models.
 
+::: {#bayes-r2-plot}
+
 ```{r}
-# Calculate full posterior R-squareds based on 1000 draws
+# calculate full posterior R-squareds based on 1000 draws
 r2_uninf_full <- bayes_R2(uninf_model, summary = FALSE, ndraws = 1000, seed = 123)
 r2_inf_full <- bayes_R2(inf_model, summary = FALSE, ndraws = 1000, seed = 123)
 r2_simple <- bayes_R2(simple_model, summary = FALSE, ndraws = 1000, seed = 123)
@@ -386,14 +386,19 @@ ggplot(r2_df, aes(x = R2, fill = Model)) +
   labs(y = "Probability") +
   theme_minimal()
 ```
-We can see that our simple model has a very poor fit compared to both full models, which seem to be very similar in fit.  
+
+Posterior distributions of Bayesian $R^2$ for our three models.  Note that the graph uses a 'dodge' position to separate the distributions vertically for clarity, and so the probability scale should not be viewed literally.
+
+:::
+
+In @fig-bayes-r2-plot,we can see that our simple model has a very poor fit compared to both full models, which seem to be very similar in fit.  
 
 ### LOO Cross-Validation
 
-We can use Leave-One-Out Cross-Validation (LOO-CV), which estimate out-of-sample predictive accuracy, to compare the predictive fit of models.       
+We can use Leave-One-Out Cross-Validation (LOO-CV), which estimates out-of-sample predictive accuracy, to compare the predictive fit of models.       
 
 ```{r}
-# Compare models using LOO
+# compare models using LOO
 loo_simple <- loo(simple_model, seed = 123)
 loo_informed_full <- loo(inf_model, seed = 123)
 loo_uninformed_full <- loo(uninf_model, seed = 123)
@@ -409,7 +414,7 @@ We can test the hypothesis that a model is a better fit than another using the B
 ```{r}
 #| label: model-bayesfactor
 #| eval: false
-# Compute Bayes Factor for model comparison
+# compute Bayes Factor for model comparison
 (bayes_factor_test <- bayes_factor(inf_model, simple_model, seed = 123))
 ```
 ```{r}
@@ -421,7 +426,7 @@ We can test the hypothesis that a model is a better fit than another using the B
 
 We can see that the Bayes Factor very strongly supports the informed full model over the simple model.  Bayes Factor tests can be highly unreliable unless there has been extensive MCMC simulations performed during model fitting. It is recommended that at least 40,000 iterations are performed in model fitting to allow reliable Bayes Factor estimates.  If you are unsure about the stability of your Bayes Factor estimates, you can rerun the model fitting with a higher number of iterations and see if the Bayes Factor changes significantly. 
 
-## Variable Standardization and Coefficient Hypothesis Testing
+## Variable standardization and coefficient hypothesis testing
 
 ### Dealing with variable scale issues via standardization
 
@@ -431,7 +436,7 @@ Explicitly standardizing the scales of our variables before modeling can have be
 
 
 ```{r}
-#  Standardize all variables
+#  standardize all variables
 library(dplyr)
 
 ugtests_bayes_std <- ugtests_bayes |> 
@@ -444,7 +449,7 @@ Now we can rerun our informed model on the scaled data:
 ```{r}
 #| label: fourth-model
 #| eval: false
-# Fit the Bayesian Linear Regression Model on standardized data
+# fit the Bayesian Linear Regression Model on standardized data
 priors_std <- c(
   prior(normal(0, 0.05), class = b, coef = Yr1)
 )
@@ -487,7 +492,7 @@ library(bayestestR)
 describe_posterior(inf_model_std)
 ```
 
-The ROPE (Region of Practical Equivalence) is typically determined to be between -0.1 and 0.1 standard deviations of the output variable (@kruschke).  If the input variables are on a different scale to the output variable (as they were in our earlier modeling), the ROPE may not make sense.  Because we have standardized the variables, we can be more confident that the ROPE is meaningful.  This summary suggests that `Yr2` and `Yr3` are extremely likely to be positive predictors of `Final`, while `Yr1` is not likely to have any predictive value.  A more terse summary can be obtained by using the `equivalence_test()` function, which will explicitly reject coefficients that are practically different from zero:
+The ROPE (Region of Practical Equivalence) is typically determined to be between -0.1 and 0.1 standard deviations of the output variable^[@kruschke].  If the input variables are on a different scale to the output variable (as they were in our earlier modeling), the ROPE may not make sense.  Because we have standardized the variables, we can be more confident that the ROPE is meaningful.  This summary suggests that `Yr2` and `Yr3` are extremely likely to be positive predictors of `Final`, while `Yr1` is not likely to have any predictive value.  A more terse summary can be obtained by using the `equivalence_test()` function, which will explicitly reject coefficients that are practically different from zero:
 
 
 ```{r}
@@ -513,10 +518,10 @@ We may want to test very specific hypotheses about our coefficients, and Bayesia
 
 
 ```{r}
-# Extract posterior samples from standardized model
+# extract posterior samples from standardized model
 posterior_samples <- as_draws_df(inf_model_std, seed = 123)
 
-# Calculate the probability that Yr3 > 2*Yr2
+# calculate the probability that Yr3 > 2*Yr2
 prob_Yr3_greater_Yr2 <- mean(posterior_samples$b_Yr3 > 2*posterior_samples$b_Yr2)
 round(prob_Yr3_greater_Yr2, 2)
 ```
@@ -551,7 +556,7 @@ new_priors <- model_to_priors(
 We can view our new priors before we decide to use them:
 
 ```{r}
-# View new priors extracted from previous model
+# view new priors extracted from previous model
 new_priors
 ```
 
@@ -561,7 +566,7 @@ Now we can utilize these as priors in our new model with updated new data:
 ```{r}
 #| label: fifth-model
 #| eval: false
-# Fit updated model with new data and previous posteriors as priors
+# fit updated model with new data and previous posteriors as priors
 updated_model <- brm(
   formula = Final ~ Yr1 + Yr2 + Yr3,
   data = ugtests_bayes_update,
@@ -585,7 +590,7 @@ updated_model <- readRDS("models/linear/updated_model.RDS")
 Now we can compare the mean estimates of our original informed model and our updated model to see how our beliefs have changed with the new data.
 
 ```{r}
-# Compare mean fixed effects of original and updated models
+# compare mean fixed effects of original and updated models
 inf_model_effects <- fixef(inf_model)[, "Estimate"]
 updated_model_effects <- fixef(updated_model)[, "Estimate"]
 
@@ -597,7 +602,7 @@ We can see that our new data suggests new mean estimates for our coefficent post
 :::{#fig-bayes-r2-update}
 
 ```{r}
-# Compare original and updated models using bayes R2
+# compare original and updated models using bayes R2
 r2_updated <- bayes_R2(updated_model, summary = FALSE, ndraws = 1000, seed = 123)
 
 # create data frame for visualization
@@ -621,17 +626,17 @@ Bayesian R-squared distributions for the original informed model and the updated
 
 We can see from @fig-bayes-r2-update that our updated model has an improved fit, as well as a greater degree of certainty around the fit.
 
-## Model Diagnostics and Validation
+## Model diagnostics and validation
 
 Because Bayesian models rely on simulations, we must verify that our predictions look like our fixed observed data. It is also critical to determine that the MCMC simulations behaved as expected and have converged properly.
 
-### Posterior Predictive Checks
+### Posterior predictive checks
 
-A Posterior Predictive Check (PPC) is used to determine if the data predicted by our model resembles our observed data. If our model is well specified and the simulation has worked as hoped, predictions drawn from the model's posterior should resemble the `Final` column of our observed data.  We can use the `pp_check()` function to check if this is the case.
+A posterior predictive check (PPC) is used to determine if the data predicted by our model resembles our observed data. If our model is well specified and the simulation has worked as hoped, predictions drawn from the model's posterior should resemble the `Final` column of our observed data.  We can use the `pp_check()` function to check if this is the case.
 
 ::: {#fig-pp-check}
 ```{r}
-# Posterior predictive check using 1000 posterior draws
+# posterior predictive check using 1000 posterior draws
 pp_check(updated_model, ndraws = 1000) +
   theme_minimal()
 ```
@@ -639,16 +644,15 @@ pp_check(updated_model, ndraws = 1000) +
 Posterior Predictive Check. The dark line ($y$) is the distribution of our actual final year data. The light blue lines ($y_{\mathrm{rep}}$) are 1000 draws of final year distributions predicted from our model posteriors.
 :::
 
-In @fig-pp-check, we see that the distributions drawn from the posterior simulations (light blue) overlay the actual data (dark blue) to within a reasonable range. This suggests our model structure (linear regression) fits the data generating process well. If, for instance, the real data had two humps (bimodal) and our simulations only had one, this would raise a concern that the model is misspecified.
+In @fig-pp-check, we see that the distributions drawn from the posterior simulations (light blue) overlay the actual data (dark line) to within a reasonable range. This suggests our model structure (linear regression) fits the data generating process well. 
 
-
-### Trace Plots
+### Trace plots
 
 Trace plots show the path of the MCMC sampling chains. We want to see "fuzzy caterpillars"-—-chains that mix well and oscillate around a stable mean. We do not want to see trends (going up or down) or chains that stay separate from each other.  We can use the `mcmc_trace()` function from the `bayesplot` package to visualize the trace plots for our model coefficients.
 
 ::: {#fig-trace-plot}
 ```{r}
-# Plot trace plots for coefficients
+# plot trace plots for coefficients
 mcmc_trace(updated_model, pars = c("b_Yr1", "b_Yr2", "b_Yr3")) +
   theme_minimal()
 ```
@@ -662,11 +666,11 @@ It is good practice to check how sensitive your results are to the choice of pri
 
 On the other hand, large samples can result in priors being 'swamped' or 'overwhelmed' by the data, leading to similar posterior distributions regardless of the priors used.  This is not necessarily a problem, but it is important to be aware of this phenomenon when interpreting your results.  In cases where priors are swamped, one of the values of Bayesian inference is reduced (namely the ability to incorporate prior knowledge).  However, the other advantages of Bayesian inference (such as the rich probabilistic interpretation of coefficients and predictions) still hold.  It is the choice of the analyst to decide whether Bayesian inference is appropriate in such cases.
 
-Many of the other model diagnostics we used in OLS regression (e.g., residual plots, tests for homoscedasticity, etc.) are still applicable in Bayesian regression.  The mean of the Posterior Predictive Distribution can be used to compute residuals, and these can be analyzed in the same way as in OLS regression to check residual distribution and homoscedasticity.  As with classical models, the `fitted()` function can be used to extract the mean fitted values from the model.
+Many of the other model diagnostics we used in OLS regression (e.g., residual plots, tests for homoscedasticity, etc.) are still applicable in Bayesian regression.  The mean of the posterior predictive distribution can be used to compute residuals, and these can be analyzed in the same way as in OLS regression to check residual distribution and homoscedasticity.  As with classical models, the `fitted()` function can be used to extract the mean fitted values from the model.
 
 ## Bayesian linear regression using Python {#sec-py-linear-bayes}
 
-The `Bambi` package can be used to fit Bayesian regression models in Python, providing a high-level interface similar to `brms` in R, and using the `PyMC` package for the MCMC backend. The `arviz` package can be used for visualization and diagnostics of Bayesian models.
+The `bambi` package can be used to fit Bayesian regression models in Python, providing a high-level interface similar to `brms` in R, and using the `PyMC` package for the MCMC backend. The `arviz` package can be used for visualization and diagnostics of Bayesian models.
 
 To fit our uninformed Bayesian linear regression model from earlier in this chapter in Python, we first specify the model and then view it to see the default priors:
 
@@ -677,7 +681,7 @@ import pandas as pd
 import bambi as bmb
 import arviz as az
 
-# Load the data
+# load the data
 url = "https://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests = pd.read_csv(url)
 
@@ -694,12 +698,12 @@ If we wish, we can specify informative priors in the `bmb.Model()` constructor:
 
 ```{python}
 #| label: py-bayes-informative
-# Define informative priors
+# define informative priors
 priors = {
     "Yr1": bmb.Prior("Normal", mu=0, sigma=0.05)
 }
 
-# Fit a Bayesian linear regression model with informative priors
+# fit a Bayesian linear regression model with informative priors
 model_inf = bmb.Model("Final ~ Yr1 + Yr2 + Yr3", data=ugtests_bayes, priors=priors)
 print(model_inf)
 ```
@@ -709,7 +713,7 @@ Once we have specified our model, we can fit it using MCMC sampling:
 ```{python}
 #| label: py-bayes-fit
 #| eval: false
-# Fit the model using MCMC sampling
+# fit the model using MCMC sampling
 fitted = model_inf.fit(draws=10000, chains=4, random_seed=123)
 ```
 
@@ -726,7 +730,7 @@ And then we can summarize the posteriors using a handy function from `arviz`:
 
 ```{python}
 #| label: py-bayes-summary
-# Summarize the posterior distributions
+# summarize the posterior distributions
 az.summary(fitted)
 ```
 
@@ -737,7 +741,7 @@ We can also use `arviz` functions to visualize the posterior distributions and t
 ```{python}
 #| label: py-bayes-posterior
 #| results: 'hide'
-# Plot posterior distributions
+# plot posterior distributions
 az.plot_posterior(fitted)
 ```
 
@@ -749,7 +753,7 @@ Posterior distributions for the coefficients of our informed Bayesian linear reg
 ```{python}
 #| label: py-bayes-trace
 #| results: 'hide'
-# Plot trace plots
+# plot trace plots
 az.plot_trace(fitted)
 ```
 
@@ -793,21 +797,21 @@ Posterior predictive check for our informed Bayesian linear regression model in 
 
 9.  Why is variable standardization helpful when defining informative priors or using a Region of Practical Equivalence (ROPE) for hypothesis testing?
 
-10.  Describe what a "Trace Plot" and a "Posterior Predictive Check" (PPC) show, and what patterns (or lack thereof) indicate a healthy and well-specified model.
+10.  Describe what a trace plot and a posterior predictive check (PPC) show, and what patterns (or lack thereof) indicate a healthy and well-specified model.
 
 ### Data exercises
 
 Use the `sociological_data` set from the exercises in @sec-lin-reg-ols-exercises. Ensure that categorical variables are coerced to factors and missing data is removed.  Reduce the size of the dataset by taking a random sample of 500 rows.  Ensure you set a seed to ensure you can replicate your work.  
 
-1.  Fit a Bayesian linear regression model predicting `annual_income_ppp` using all other variables in the dataset. Use `brm` with `chains = 4`, `iter = 10000`, and the default priors.
+1.  Fit a Bayesian linear regression model explaining `annual_income_ppp` using all other variables in the dataset. Use `brm` with `chains = 4`, `iter = 10000`, and the default priors.
 
 2.  Run a summary of the model. Examine the `Rhat` and `Bulk_ESS`/`Tail_ESS` columns. Did the chains converge successfully?
 
-3.  Generate Trace Plots for the coefficients of `education_months` and `family_size`. Do they resemble "fuzzy caterpillars"?
+3.  Generate rrace plots for the coefficients of `education_months` and `family_size`. Do they resemble "fuzzy caterpillars"?
 
 4.  Visualize the posterior distributions of the coefficients using `mcmc_areas()`.  Is this helpful?  What adjustments might you consider to make it more interpretable?
 
-5.  Interpret the posterior mean and the 95% credible interval for the `education_months` coefficient. Can you state with 95% probability that education has a positive effect on income?
+5.  Interpret the posterior mean and the 95% credible interval for the `education_months` coefficient. Can you state with at least 95% probability that education has a positive effect on income?
 
 6.  Imagine you possess expert knowledge from a previous study suggesting that `family_size` usually has a slightly negative effect on income, and `work_distance` generally has no effect.  Construct and examine a new model using informative priors as follows:
     *   Set a normal prior for `family_size` with a mean of -500 and a small standard deviation.
@@ -816,9 +820,9 @@ Use the `sociological_data` set from the exercises in @sec-lin-reg-ols-exercises
 
 7.  Compare your uninformed model (from Question 1) and your informed model (from Question 6) using `bayes_R2()`.  Does the incorporation of prior beliefs significantly change the explained variance?
 
-8. Use Leave-One-Out Cross-Validation to compare the predictive performance of the two models. Is there a preferred model?
+8. Use leave-one-out cross-validation to compare the predictive performance of the two models. Is there a preferred model?
 
-9. Using your choice of model, perform a Posterior Predictive Check. Does the simulated data resemble the observed distribution of `annual_income_ppp`?
+9. Using your choice of model, perform a posterior predictive check. Does the simulated data resemble the observed distribution of `annual_income_ppp`?
 
 10. Run your choice of model on a scaled version of your data.  Determine which coefficients are practically different from zero based on the ROPE. Remember that you can only scale numeric columns in your data^[If you are copying the code from earlier in this chapter, you can use `where(is.numeric)` instead of `everything()` to ensure only numeric columns are scaled.].  
 
@@ -826,7 +830,7 @@ Use the `sociological_data` set from the exercises in @sec-lin-reg-ols-exercises
 
 12. Take a further sample of 500 rows from the remaining rows of the `sociological_data` dataset.  Fit an updated model using the posterior distributions from your (unstandardized) model of choice as priors.  Compare the mean coefficient estimates of the updated model to your preferred model.  How have the coefficients changed with the new data?  
 
-13. Create a hypothetical individual profile (a new dataframe) representing a male skilled worker with high education and no family living in Northern America.  Use the mean of the your new data sample for the other variables.  Using your updated model, generate the Posterior Predictive Distribution for this individual's income. Plot the distribution.
+13. Create a hypothetical individual profile (a new dataframe) representing a male skilled worker with high education and no family living in Northern America.  Use the means from your new data sample for the other variables.  Using your updated model, generate the posterior predictive distribution for this individual's income. Plot the distribution.
 
-14. Report the 90% Prediction Interval for this individual. Explain, in plain language, what this interval represents regarding the uncertainty of your prediction.
+14. Report the 90% prediction interval for this individual. Explain, in plain language, what this interval represents regarding the uncertainty of your prediction.
 

@@ -335,14 +335,14 @@ window.Quarto = {
   <li><a href="#applying-bayes-theorem-to-linear-regression" id="toc-applying-bayes-theorem-to-linear-regression" class="nav-link active" data-scroll-target="#applying-bayes-theorem-to-linear-regression"><span class="header-section-number">13.1</span> Applying Bayes’ Theorem to Linear Regression</a></li>
   <li><a href="#running-a-bayesian-linear-regression-model" id="toc-running-a-bayesian-linear-regression-model" class="nav-link" data-scroll-target="#running-a-bayesian-linear-regression-model"><span class="header-section-number">13.2</span> Running a Bayesian linear regression model</a>
   <ul class="collapse">
-  <li><a href="#specifying-the-model" id="toc-specifying-the-model" class="nav-link" data-scroll-target="#specifying-the-model"><span class="header-section-number">13.2.1</span> Specifying the Model</a></li>
+  <li><a href="#specifying-the-model" id="toc-specifying-the-model" class="nav-link" data-scroll-target="#specifying-the-model"><span class="header-section-number">13.2.1</span> Specifying the model</a></li>
   <li><a href="#sec-bayes-reg-interpret" id="toc-sec-bayes-reg-interpret" class="nav-link" data-scroll-target="#sec-bayes-reg-interpret"><span class="header-section-number">13.2.2</span> Interpreting the Results</a></li>
   <li><a href="#specifying-informative-priors" id="toc-specifying-informative-priors" class="nav-link" data-scroll-target="#specifying-informative-priors"><span class="header-section-number">13.2.3</span> Specifying informative priors</a></li>
   </ul></li>
   <li><a href="#examining-posteriors" id="toc-examining-posteriors" class="nav-link" data-scroll-target="#examining-posteriors"><span class="header-section-number">13.3</span> Examining posteriors</a>
   <ul class="collapse">
-  <li><a href="#visualizing-posterior-parameter-distributions" id="toc-visualizing-posterior-parameter-distributions" class="nav-link" data-scroll-target="#visualizing-posterior-parameter-distributions"><span class="header-section-number">13.3.1</span> Visualizing Posterior Parameter Distributions</a></li>
-  <li><a href="#posterior-predictive-distribution" id="toc-posterior-predictive-distribution" class="nav-link" data-scroll-target="#posterior-predictive-distribution"><span class="header-section-number">13.3.2</span> Posterior Predictive Distribution</a></li>
+  <li><a href="#visualizing-posterior-parameter-distributions" id="toc-visualizing-posterior-parameter-distributions" class="nav-link" data-scroll-target="#visualizing-posterior-parameter-distributions"><span class="header-section-number">13.3.1</span> Visualizing posterior parameter distributions</a></li>
+  <li><a href="#posterior-predictive-distribution" id="toc-posterior-predictive-distribution" class="nav-link" data-scroll-target="#posterior-predictive-distribution"><span class="header-section-number">13.3.2</span> Posterior predictive distribution</a></li>
   </ul></li>
   <li><a href="#model-comparisons" id="toc-model-comparisons" class="nav-link" data-scroll-target="#model-comparisons"><span class="header-section-number">13.4</span> Model Comparisons</a>
   <ul class="collapse">
@@ -350,7 +350,7 @@ window.Quarto = {
   <li><a href="#loo-cross-validation" id="toc-loo-cross-validation" class="nav-link" data-scroll-target="#loo-cross-validation"><span class="header-section-number">13.4.2</span> LOO Cross-Validation</a></li>
   <li><a href="#sec-bayes-model-hyp-test" id="toc-sec-bayes-model-hyp-test" class="nav-link" data-scroll-target="#sec-bayes-model-hyp-test"><span class="header-section-number">13.4.3</span> Hypothesis testing on model fit</a></li>
   </ul></li>
-  <li><a href="#variable-standardization-and-coefficient-hypothesis-testing" id="toc-variable-standardization-and-coefficient-hypothesis-testing" class="nav-link" data-scroll-target="#variable-standardization-and-coefficient-hypothesis-testing"><span class="header-section-number">13.5</span> Variable Standardization and Coefficient Hypothesis Testing</a>
+  <li><a href="#variable-standardization-and-coefficient-hypothesis-testing" id="toc-variable-standardization-and-coefficient-hypothesis-testing" class="nav-link" data-scroll-target="#variable-standardization-and-coefficient-hypothesis-testing"><span class="header-section-number">13.5</span> Variable standardization and coefficient hypothesis testing</a>
   <ul class="collapse">
   <li><a href="#dealing-with-variable-scale-issues-via-standardization" id="toc-dealing-with-variable-scale-issues-via-standardization" class="nav-link" data-scroll-target="#dealing-with-variable-scale-issues-via-standardization"><span class="header-section-number">13.5.1</span> Dealing with variable scale issues via standardization</a></li>
   <li><a href="#hypothesis-testing-on-coefficients-using-rope" id="toc-hypothesis-testing-on-coefficients-using-rope" class="nav-link" data-scroll-target="#hypothesis-testing-on-coefficients-using-rope"><span class="header-section-number">13.5.2</span> Hypothesis testing on coefficients using ROPE</a></li>
@@ -358,10 +358,10 @@ window.Quarto = {
   <li><a href="#testing-specific-hypotheses-about-coefficients" id="toc-testing-specific-hypotheses-about-coefficients" class="nav-link" data-scroll-target="#testing-specific-hypotheses-about-coefficients"><span class="header-section-number">13.5.4</span> Testing specific hypotheses about coefficients</a></li>
   </ul></li>
   <li><a href="#sec-bayes-reg-updating" id="toc-sec-bayes-reg-updating" class="nav-link" data-scroll-target="#sec-bayes-reg-updating"><span class="header-section-number">13.6</span> Bayesian updating of regression models</a></li>
-  <li><a href="#model-diagnostics-and-validation" id="toc-model-diagnostics-and-validation" class="nav-link" data-scroll-target="#model-diagnostics-and-validation"><span class="header-section-number">13.7</span> Model Diagnostics and Validation</a>
+  <li><a href="#model-diagnostics-and-validation" id="toc-model-diagnostics-and-validation" class="nav-link" data-scroll-target="#model-diagnostics-and-validation"><span class="header-section-number">13.7</span> Model diagnostics and validation</a>
   <ul class="collapse">
-  <li><a href="#posterior-predictive-checks" id="toc-posterior-predictive-checks" class="nav-link" data-scroll-target="#posterior-predictive-checks"><span class="header-section-number">13.7.1</span> Posterior Predictive Checks</a></li>
-  <li><a href="#trace-plots" id="toc-trace-plots" class="nav-link" data-scroll-target="#trace-plots"><span class="header-section-number">13.7.2</span> Trace Plots</a></li>
+  <li><a href="#posterior-predictive-checks" id="toc-posterior-predictive-checks" class="nav-link" data-scroll-target="#posterior-predictive-checks"><span class="header-section-number">13.7.1</span> Posterior predictive checks</a></li>
+  <li><a href="#trace-plots" id="toc-trace-plots" class="nav-link" data-scroll-target="#trace-plots"><span class="header-section-number">13.7.2</span> Trace plots</a></li>
   <li><a href="#sensitivity-to-priors-and-other-considerations" id="toc-sensitivity-to-priors-and-other-considerations" class="nav-link" data-scroll-target="#sensitivity-to-priors-and-other-considerations"><span class="header-section-number">13.7.3</span> Sensitivity to priors and other considerations</a></li>
   </ul></li>
   <li><a href="#sec-py-linear-bayes" id="toc-sec-py-linear-bayes" class="nav-link" data-scroll-target="#sec-py-linear-bayes"><span class="header-section-number">13.8</span> Bayesian linear regression using Python</a></li>
@@ -396,7 +396,7 @@ window.Quarto = {
 
 
 <p>In the previous chapter, we introduced the fundamental philosophy of Bayesian inference. We learned to view population parameters not as fixed, unknown constants to be estimated, but as random variables described by probability distributions. We explored how to combine prior beliefs with observed data to form posterior beliefs, and we applied this logic to basic hypothesis testing.</p>
-<p>In this chapter, we will revisit Linear Regression, but this time through the lens of Bayesian inference. We will learn how to specify, fit, and interpret Bayesian linear regression models, as well as perform certain diagnostics specific to Bayesian estimation methods. As with classical linear regression, much of what we learn in this chapter will generalize to other types of Bayesian regression models, such as Bayesian logistic regression and Bayesian Poisson regression, which we will cover in the next chapter.</p>
+<p>In this chapter, we will revisit the very first modeling method we learned about, linear regression, but this time through the lens of Bayesian inference. We will learn how to specify, fit, and interpret Bayesian linear regression models, as well as perform certain diagnostics specific to Bayesian estimation methods. As with classical linear regression, much of what we learn in this chapter will generalize to other types of Bayesian regression models, such as Bayesian logistic regression and Bayesian Poisson regression, which we will cover in the next chapter.</p>
 <p>While classical Ordinary Least Squares (OLS) regression—which we covered extensively in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a>—remains a powerful tool, Bayesian linear regression offers distinct advantages which are precisely the advantages offered by Bayesian inference more generally. It allows us to incorporate prior knowledge, it functions well even with smaller sample sizes, and perhaps most importantly, it provides a rich, probabilistic interpretation of our model coefficients and predictions. On the other hand, Bayesian regression models can be computationally intensive and require careful consideration of priors and convergence diagnostics.</p>
 <p>To implement Bayesian regression models in R, we will use the <code>brms</code> package. This package serves as an accessible interface to <code>stan</code>, a state-of-the-art platform for statistical modeling and high-performance statistical computation based on Markov Chain Monte Carlo (MCMC) methods. The beauty of <code>brms</code> is that it allows us to fit Bayesian models using syntax that is almost identical to the classic <code>lm()</code> and <code>glm()</code> functions we already know.</p>
 <section id="applying-bayes-theorem-to-linear-regression" class="level2" data-number="13.1">
@@ -417,17 +417,17 @@ window.Quarto = {
 <p>In the Bayesian framework, we conceptualize the problem differently. We assume that each observation <span class="math inline">\(y_i\)</span> of the outcome variable comes from a normal distribution characterized by a mean <span class="math inline">\(\mu_i\)</span> and a variance <span class="math inline">\(\sigma^2\)</span>:</p>
 <p><span class="math display">\[y_i \sim \mathcal{N} (\mu_i, \sigma^2)\]</span></p>
 <p>where the mean <span class="math inline">\(\mu_i\)</span> is still modeled as a linear combination of the input variable observations:</p>
-<p><span class="math display">\[\mu_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_k x_{ik}\]</span></p>
-<p>The crucial difference is that <span class="math inline">\(\beta_0, \beta_1, \cdots, \beta_k\)</span> and <span class="math inline">\(\sigma\)</span> are not fixed values we are trying to hunt down. They are random variables with their own distributions. Our goal is to learn the Posterior distribution of each these parameters given our data and any prior beliefs we may have about them. If we use <span class="math inline">\(\beta\)</span> to represent the vector of all regression coefficients, and noting that our data consists of the outcome variable vector <span class="math inline">\(y\)</span> and the matrix of input variables <span class="math inline">\(X\)</span>, what we are looking for is the posterior distribution <span class="math inline">\(P(\beta, \sigma \mid y, X)\)</span>, where <span class="math inline">\(\sigma\)</span> is the stadard deviation of our residuals <span class="math inline">\(\epsilon_i\)</span>. In this context, Bayes’ Theorem can be restated as:</p>
+<p><span class="math display">\[\mu_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_p x_{ip}\]</span></p>
+<p>The crucial difference is that <span class="math inline">\(\beta_0, \beta_1, \cdots, \beta_p\)</span> and <span class="math inline">\(\sigma\)</span> are not fixed values. They are random variables with their own distributions. Our goal is to learn the posterior distribution of each these parameters given our data and any prior beliefs we may have about them. If we use <span class="math inline">\(\beta\)</span> to represent the vector of all regression coefficients, and noting that our data consists of the outcome variable vector <span class="math inline">\(y\)</span> and the matrix of input variables <span class="math inline">\(X\)</span>, what we are looking for is the posterior distribution <span class="math inline">\(P(\beta, \sigma \mid y, X)\)</span>, where <span class="math inline">\(\sigma\)</span> is the standard deviation of our residuals <span class="math inline">\(\epsilon_i\)</span>. In this context, Bayes’ Theorem can be restated as:</p>
 <p><span class="math display">\[
 P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 \]</span></p>
 <p>This means that the output of a Bayesian regression model is not a single line or hyperplane that best fits the data, but a probability distribution of <em>all possible lines or hyperplanes</em> that are consistent with our data and our priors. We are simulating posteriors for multiple parameters, and as you can imagine, this will need some computational horsepower.</p>
-<p>Calculating the posterior distribution for complex models with multiple parameters is not possible using simple algebraic methods. To solve this, we will need to employ Markov Chain Monte Carlo (MCMC) simulation. MCMC is a class of algorithms used to sample from complex probability distributions. MCMC algorithms work by constructing Markov Chains, which aee sequences of random steps whose long-run behavior mimics the target distribution. A Markov Chain starts from an initial point in the parameter space, and then proposes moves to new points, accepting or rejecting them according to rules that ensure the chain will eventually sample in proportion to the desired distribution. Over many iterations, the collected samples approximate the underlying distribution, enabling estimation of quantities like means, variances, and credible intervals even in high-dimensional problems.</p>
+<p>Calculating the posterior distribution for complex models with multiple parameters is not possible using simple algebraic methods. To solve this, we will need to employ Markov Chain Monte Carlo (MCMC) simulation. MCMC is a class of algorithms used to sample from probability distributions. MCMC algorithms work by constructing Markov Chains, which are sequences of random steps whose long-run behavior mimics the target distribution. A Markov Chain starts from an initial point in the parameter space, and then proposes moves to new points, accepting or rejecting them according to rules that ensure the chain will eventually sample in proportion to the desired distribution. Over many iterations, the collected samples approximate the underlying distribution, enabling estimation of quantities like means, variances, and credible intervals even in high-dimensional problems.</p>
 </section>
 <section id="running-a-bayesian-linear-regression-model" class="level2" data-number="13.2">
 <h2 data-number="13.2" class="anchored" data-anchor-id="running-a-bayesian-linear-regression-model"><span class="header-section-number">13.2</span> Running a Bayesian linear regression model</h2>
-<p>We will use a random subset of the <code>ugtests</code> dataset from <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a>, which contains information about undergraduate students’ scores over four years of their Biology degree program. Our goal is to predict the <code>Final</code> year score based on the <code>Yr1</code>,<code>Yr2</code> and <code>Yr3</code> scores using Bayesian linear regression. Initially, we will assume that this subset is all the data we have available for our model. As we will be running a lot of random sampling and simulations in this chapter, we will be setting random seeds throughout to ensure the calculations are reproducible.</p>
+<p>We will use a random subset of the <code>ugtests</code> dataset from <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a>, which contains information about undergraduate students’ scores over four years of their Biology degree program. Our goal is to explain the <code>Final</code> year score based on the <code>Yr1</code>,<code>Yr2</code> and <code>Yr3</code> scores using Bayesian linear regression. Initially, we will assume that this subset is all the data we have available for our model. As we will be running a lot of random sampling and simulations in this chapter, we will be setting random seeds throughout to ensure the calculations are reproducible.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)  </span>
@@ -444,23 +444,22 @@ P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ugtests_bayes <span class="ot">&lt;-</span> ugtests[sample_1, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="specifying-the-model" class="level3" data-number="13.2.1">
-<h3 data-number="13.2.1" class="anchored" data-anchor-id="specifying-the-model"><span class="header-section-number">13.2.1</span> Specifying the Model</h3>
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="specifying-the-model"><span class="header-section-number">13.2.1</span> Specifying the model</h3>
 <p>In <code>brms</code>, we use <code>brm()</code> with the <code>family = gaussian()</code> argument to fit a Bayesian linear regression model. The syntax is very similar to <code>lm()</code> and <code>glm()</code> from our previous chapters, but with a few extra arguments regarding the Bayesian specifics. If <code>brm()</code> is not given any priors, it will use a set of default priors which assume we have no ingoing beliefs about any of our parameters.</p>
 <p>Let’s first fit a multiple linear regression model accepting the default priors. You may find that the MCMC simulations in <code>brms</code> models take some time to run, depending on the processing power and memory you have available as well as the choices you make about the scale of your simulation.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit an uninformed Bayesian linear regression Model</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>uninf_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Final <span class="sc">~</span> Yr1 <span class="sc">+</span> Yr2 <span class="sc">+</span> Yr3,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ugtests_bayes,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="co"># Indicates linear regression (gaussian/normal distribution)</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,          <span class="co"># Number of independent MCMC chains </span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,         <span class="co"># Number of steps in each MCMC chain </span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,         <span class="co"># Suppress progress output (optional)</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">silent =</span> <span class="dv">1</span>,        <span class="co"># Reduce console output (optional)</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>), <span class="co"># save all parameters for later use (optional)</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span> <span class="co"># set seed for reproducibility</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit an uninformed Bayesian linear regression Model</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>uninf_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Final <span class="sc">~</span> Yr1 <span class="sc">+</span> Yr2 <span class="sc">+</span> Yr3,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ugtests_bayes,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="co"># Indicates linear regression (gaussian/normal distribution)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,          <span class="co"># Number of independent MCMC chains </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,         <span class="co"># Number of steps in each MCMC chain </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,         <span class="co"># Suppress progress output (optional)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">silent =</span> <span class="dv">1</span>,        <span class="co"># Reduce console output (optional)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>), <span class="co"># save all parameters for later use (optional)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span> <span class="co"># set seed for reproducibility</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s review the various arguments we passed to <code>brm()</code>:</p>
 <ul>
@@ -475,7 +474,7 @@ P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 </ul>
 <p>If we want to see the priors used by a <code>brms</code> model, we just need to use the <code>get_prior()</code> function:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the priors used in the model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check the priors used in the model</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_prior</span>(uninf_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     prior     class coef group resp dpar nlpar lb ub tag
@@ -497,7 +496,7 @@ P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 <p>This output means that the following priors have been used in our initial model:</p>
 <ul>
 <li><strong>Intercept Coefficient</strong>: A Student-<span class="math inline">\(t\)</span> distribution with 3 degrees of freedom, and with the mean and scale automatically determined based on the data.</li>
-<li><strong>‘Slope’ Coefficients (<code>b</code>)</strong>: A Uniform distribution across all real numbers, each with equal probability. This is effectively the “flat” prior, indicating no ingoing knowledge about the coefficients.</li>
+<li><strong>‘Slope’ Coefficients (<code>class = b</code>)</strong>: A Uniform distribution across all real numbers, each with equal probability. This is effectively the “flat” prior, indicating no ingoing knowledge about the coefficients.</li>
 <li><strong>Residual standard deviation (<code>sigma</code>)</strong>: A Student-<span class="math inline">\(t\)</span> distribution with 3 degrees of freedom, and with the scale automatically determined based on the data. Note that the <code>lb</code> column for this prior contains zero. The <code>lb</code> and <code>ub</code> columns set lower and upper bounds for the prior. Therefore in this case we actually have a half-distribution with a lower bound of zero to reflect that fact that <code>sigma</code> must be positive.</li>
 </ul>
 </section>
@@ -505,7 +504,7 @@ P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 <h3 data-number="13.2.2" class="anchored" data-anchor-id="sec-bayes-reg-interpret"><span class="header-section-number">13.2.2</span> Interpreting the Results</h3>
 <p>Once the model is fit, we can examine the results. Unlike <code>lm()</code>, which gives us t-statistics and p-values, <code>brm()</code> gives us summaries of the posterior distribution.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View summary of the model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view summary of the model</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: gaussian 
@@ -533,7 +532,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 <p>We can understand the basic summary output of estimates in a very similar way to OLS regression:</p>
 <ol type="1">
-<li><p>The <code>Estimate</code> column provides the medians of the posterior distributions for each parameter. In this case:</p>
+<li><p>The <code>Estimate</code> column provides the means of the posterior distributions for each parameter. In this case:</p>
 <ul>
 <li><code>Intercept</code>: This is the posterior mean of the final year score assuming there was a score of zero in all of the previous years.</li>
 <li><code>Yr1</code>: This is the posterior mean change in Final year score associated with a one point increase in Year 1 score, assuming no change in the other input variables.</li>
@@ -562,7 +561,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>This suggests that we could propose an informative prior for our Year 1 coefficient in our model. We can do this using the <code>prior()</code> function in <code>brms</code>. Let’s specify a normal prior for the <code>Yr1</code> coefficient centered around 0 to reflect our belief that it has a weak or null effect on Final year scores. Let’s also specify a very narrow standard deviation to indicate a strong belief.</p>
 <p>To assign a prior to a specific parameter in the <code>prior()</code> function, we use the <code>class</code> and <code>coef</code> arguments. The <code>class</code> argument indicates the type of parameter (<code>b</code> for slope coefficients, <code>Intercept</code> for the intercept, <code>sigma</code> for the residual standard deviation), while the <code>coef</code> argument specifies which <code>b</code> variable the prior applies to. For any parameters not explicitly assigned a prior, <code>brms</code> will use the default priors.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define informative priors on the Yr1 coefficient</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define informative priors on the Yr1 coefficient</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.05</span>), <span class="at">class =</span> b, <span class="at">coef =</span> Yr1)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># use lb and ub arguments to set bounds if needed</span></span>
@@ -584,7 +583,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 <p>Let’s view our informed model summary:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View summary of the informed prior model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view summary of the informed prior model</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(inf_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: gaussian 
@@ -616,13 +615,13 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <section id="examining-posteriors" class="level2" data-number="13.3">
 <h2 data-number="13.3" class="anchored" data-anchor-id="examining-posteriors"><span class="header-section-number">13.3</span> Examining posteriors</h2>
 <section id="visualizing-posterior-parameter-distributions" class="level3" data-number="13.3.1">
-<h3 data-number="13.3.1" class="anchored" data-anchor-id="visualizing-posterior-parameter-distributions"><span class="header-section-number">13.3.1</span> Visualizing Posterior Parameter Distributions</h3>
+<h3 data-number="13.3.1" class="anchored" data-anchor-id="visualizing-posterior-parameter-distributions"><span class="header-section-number">13.3.1</span> Visualizing posterior parameter distributions</h3>
 <p>Visualization is a particularly important communication tool in Bayesian statistics, because we are communicating uncertainty about our parameters. We can plot the distributions of plausible values for our informed model coefficients using the <code>mcmc_areas()</code> function from the <code>bayesplot</code> package.</p>
 <div id="fig-bayes-areas" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-areas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot posterior distributions for coefficients</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot posterior distributions for coefficients</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
@@ -677,18 +676,18 @@ Figure&nbsp;13.2: 66% (dark lines) and 95% (light lines) credible intervals for 
 <p>Both of these visualizations are helpful in verifying our interpretations of the coefficients. For example, we can see that the 95% credible interval for the <code>b_Yr1</code> coefficient includes zero, suggesting that there is a reasonable probability that Year 1 scores have little to no effect on <code>Final</code> scores, consistent with our prior beliefs.</p>
 </section>
 <section id="posterior-predictive-distribution" class="level3" data-number="13.3.2">
-<h3 data-number="13.3.2" class="anchored" data-anchor-id="posterior-predictive-distribution"><span class="header-section-number">13.3.2</span> Posterior Predictive Distribution</h3>
-<p>Bayesian regression allows us to more precisely quantify our uncertainty when predicting outcomes for new data. In OLS regression, we typically get a single predicted value (point prediction) and perhaps a prediction interval. In Bayesian analysis, we generate a full Posterior Predictive Distribution (PPD). This distribution captures both our uncertainty about the model coefficients and the inherent variability in the data (the <span class="math inline">\(\sigma\)</span> parameter).</p>
+<h3 data-number="13.3.2" class="anchored" data-anchor-id="posterior-predictive-distribution"><span class="header-section-number">13.3.2</span> Posterior predictive distribution</h3>
+<p>Bayesian regression allows us to more precisely quantify our uncertainty when predicting outcomes for new data. In OLS regression, we typically get a single predicted value (point prediction) and perhaps a prediction interval. In Bayesian analysis, we generate a full posterior predictive distribution (PPD). This distribution captures both our uncertainty about the model coefficients and the inherent variability in the data (the <span class="math inline">\(\sigma\)</span> parameter).</p>
 <p>For every simulated set of coefficients in our posterior, the model generates a prediction. This results in a distribution of predicted final year scores. Let’s use our informed model to predict the final year score for an improving student, using 1000 draws from our posterior coefficients<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define new data</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define new data</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>new_student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Yr1 =</span> <span class="dv">43</span>, <span class="at">Yr2 =</span> <span class="dv">111</span>, <span class="at">Yr3 =</span> <span class="dv">143</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate posterior predictive distribution using 1000 draws from inf_model</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># generate posterior predictive distribution using 1000 draws from inf_model</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>post_pred <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(inf_model, <span class="at">newdata =</span> new_student, </span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to data frame for plotting</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to data frame for plotting</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>pred_values <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Final =</span> <span class="fu">as.vector</span>(post_pred))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can now plot exactly what we expect this student’s final year score to look like, including our uncertainty about the model parameters <em>and</em> the natural noise in the data, using the halfeye plot in <a href="#fig-post-predict" class="quarto-xref">Figure&nbsp;<span>13.3</span></a>.</p>
@@ -698,7 +697,7 @@ Figure&nbsp;13.2: 66% (dark lines) and 95% (light lines) credible intervals for 
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the predictive distribution in a halfeye plot</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the predictive distribution in a halfeye plot</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pred_values, <span class="fu">aes</span>(<span class="at">x =</span> Final)) <span class="sc">+</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">.width =</span> <span class="fu">c</span>(<span class="fl">0.66</span>, <span class="fl">0.95</span>),</span>
@@ -723,7 +722,7 @@ Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
 </div>
 <p>Note that we can easily obtain posterior prediction intervals using the <code>posterior_interval()</code> function in <code>brms</code>. Let’s compute the 95% posterior prediction interval for this student’s final year score.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute 95% posterior prediction interval for new data point</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute 95% posterior prediction interval for new data point</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_interval</span>(post_pred, <span class="at">prob =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -738,26 +737,26 @@ Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
 <h2 data-number="13.4" class="anchored" data-anchor-id="model-comparisons"><span class="header-section-number">13.4</span> Model Comparisons</h2>
 <p>Let’s create a simple uninformed Bayesian linear regression model using just <code>Yr2</code> as an input variable, so we can compare it to our full uninformed and informed models.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a simpler Bayesian Linear Regression Model</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>simple_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Final <span class="sc">~</span> Yr2,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ugtests_bayes,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">silent =</span> <span class="dv">1</span>,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a simpler Bayesian Linear Regression Model</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>simple_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Final <span class="sc">~</span> Yr2,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ugtests_bayes,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">silent =</span> <span class="dv">1</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>),</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>There are a number of ways we can compare the fit of Bayesian linear models. Some common ways involve computing R-squareds, determining predictive accuracy, or performing hypothesis tests on model fits.</p>
 <section id="bayesian-r2" class="level3" data-number="13.4.1">
 <h3 data-number="13.4.1" class="anchored" data-anchor-id="bayesian-r2"><span class="header-section-number">13.4.1</span> Bayesian <span class="math inline">\(R^2\)</span></h3>
 <p>We can calculate a Bayesian version of <span class="math inline">\(R^2\)</span>. Unlike the single number in OLS regression, a set of values are drawn from our posterior coefficients, each allowing a calculation of the variance explained, and this provides a distribution for our <span class="math inline">\(R^2\)</span>. <code>brms</code> provides a convenient function <code>bayes_R2()</code> to compute this. Let’s use it to compare the fit of our models.</p>
+<div id="bayes-r2-plot">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate full posterior R-squareds based on 1000 draws</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate full posterior R-squareds based on 1000 draws</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>r2_uninf_full <span class="ot">&lt;-</span> <span class="fu">bayes_R2</span>(uninf_model, <span class="at">summary =</span> <span class="cn">FALSE</span>, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>r2_inf_full <span class="ot">&lt;-</span> <span class="fu">bayes_R2</span>(inf_model, <span class="at">summary =</span> <span class="cn">FALSE</span>, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>r2_simple <span class="ot">&lt;-</span> <span class="fu">bayes_R2</span>(simple_model, <span class="at">summary =</span> <span class="cn">FALSE</span>, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
@@ -785,13 +784,15 @@ Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
 </div>
 </div>
 </div>
-<p>We can see that our simple model has a very poor fit compared to both full models, which seem to be very similar in fit.</p>
+<p>Posterior distributions of Bayesian <span class="math inline">\(R^2\)</span> for our three models. Note that the graph uses a ‘dodge’ position to separate the distributions vertically for clarity, and so the probability scale should not be viewed literally.</p>
+</div>
+<p>In <span class="quarto-unresolved-ref">?fig-bayes-r2-plot</span>,we can see that our simple model has a very poor fit compared to both full models, which seem to be very similar in fit.</p>
 </section>
 <section id="loo-cross-validation" class="level3" data-number="13.4.2">
 <h3 data-number="13.4.2" class="anchored" data-anchor-id="loo-cross-validation"><span class="header-section-number">13.4.2</span> LOO Cross-Validation</h3>
-<p>We can use Leave-One-Out Cross-Validation (LOO-CV), which estimate out-of-sample predictive accuracy, to compare the predictive fit of models.</p>
+<p>We can use Leave-One-Out Cross-Validation (LOO-CV), which estimates out-of-sample predictive accuracy, to compare the predictive fit of models.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare models using LOO</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare models using LOO</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>loo_simple <span class="ot">&lt;-</span> <span class="fu">loo</span>(simple_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>loo_informed_full <span class="ot">&lt;-</span> <span class="fu">loo</span>(inf_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>loo_uninformed_full <span class="ot">&lt;-</span> <span class="fu">loo</span>(uninf_model, <span class="at">seed =</span> <span class="dv">123</span>)</span>
@@ -809,7 +810,7 @@ simple_model -33.6       7.8  </code></pre>
 <h3 data-number="13.4.3" class="anchored" data-anchor-id="sec-bayes-model-hyp-test"><span class="header-section-number">13.4.3</span> Hypothesis testing on model fit</h3>
 <p>We can test the hypothesis that a model is a better fit than another using the Bayes Factor, which we covered in <a href="bayesian_inference.html#sec-bayes-hyp-test" class="quarto-xref"><span>Section 12.3</span></a>. We can use the <code>bayes_factor()</code> function to compute Bayes Factors for model hypothesis tests. Let’s test that our informed full model is a better fit than our simple model.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute Bayes Factor for model comparison</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute Bayes Factor for model comparison</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>(bayes_factor_test <span class="ot">&lt;-</span> <span class="fu">bayes_factor</span>(inf_model, simple_model, <span class="at">seed =</span> <span class="dv">123</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
@@ -821,13 +822,13 @@ simple_model -33.6       7.8  </code></pre>
 </section>
 </section>
 <section id="variable-standardization-and-coefficient-hypothesis-testing" class="level2" data-number="13.5">
-<h2 data-number="13.5" class="anchored" data-anchor-id="variable-standardization-and-coefficient-hypothesis-testing"><span class="header-section-number">13.5</span> Variable Standardization and Coefficient Hypothesis Testing</h2>
+<h2 data-number="13.5" class="anchored" data-anchor-id="variable-standardization-and-coefficient-hypothesis-testing"><span class="header-section-number">13.5</span> Variable standardization and coefficient hypothesis testing</h2>
 <section id="dealing-with-variable-scale-issues-via-standardization" class="level3" data-number="13.5.1">
 <h3 data-number="13.5.1" class="anchored" data-anchor-id="dealing-with-variable-scale-issues-via-standardization"><span class="header-section-number">13.5.1</span> Dealing with variable scale issues via standardization</h3>
 <p>When our data variables are on different scales, it can complicate the interpretation of coefficients and the setting of priors. In our data, the input variable <code>Yr1</code> is on a different scale to <code>Yr2</code> and <code>Yr3</code>, and all of them are on a different scale to our outcome variable. This means that when we interpret our coefficients, the effect a one unit increase in <code>Yr1</code> is not comparable with that of a one unit increase in <code>Yr2</code> or <code>Yr3</code>. This can make it difficult to set meaningful priors for our coefficients, as the scale of the coefficients will be affected by the scale of the input variables. It can also make hypothesis testing on the coefficients more difficult, as the ROPE (Region of Practical Equivalence) may not be meaningful if the input variables are on different scales.</p>
 <p>Explicitly standardizing the scales of our variables before modeling can have benefits in defining our priors and in running hypothesis tests. We can standardize the scales of our variables using the <code>scale()</code> function in R. This function takes the mean of each variable and sets it to zero, and expresses each value as a positive or negative multiple of the standard deviation from the mean.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Standardize all variables</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  standardize all variables</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>ugtests_bayes_std <span class="ot">&lt;-</span> ugtests_bayes <span class="sc">|&gt;</span> </span>
@@ -835,7 +836,7 @@ simple_model -33.6       7.8  </code></pre>
 </div>
 <p>Now we can rerun our informed model on the scaled data:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the Bayesian Linear Regression Model on standardized data</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the Bayesian Linear Regression Model on standardized data</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>priors_std <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.05</span>), <span class="at">class =</span> b, <span class="at">coef =</span> Yr1)</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -907,7 +908,7 @@ Yr2         | 1.000 | 22462
 Yr3         | 1.000 | 25014</code></pre>
 </div>
 </div>
-<p>The ROPE (Region of Practical Equivalence) is typically determined to be between -0.1 and 0.1 standard deviations of the output variable (<span class="citation" data-cites="kruschke">Kruschke (<a href="bibliography.html#ref-kruschke" role="doc-biblioref">2018</a>)</span>). If the input variables are on a different scale to the output variable (as they were in our earlier modeling), the ROPE may not make sense. Because we have standardized the variables, we can be more confident that the ROPE is meaningful. This summary suggests that <code>Yr2</code> and <code>Yr3</code> are extremely likely to be positive predictors of <code>Final</code>, while <code>Yr1</code> is not likely to have any predictive value. A more terse summary can be obtained by using the <code>equivalence_test()</code> function, which will explicitly reject coefficients that are practically different from zero:</p>
+<p>The ROPE (Region of Practical Equivalence) is typically determined to be between -0.1 and 0.1 standard deviations of the output variable<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. If the input variables are on a different scale to the output variable (as they were in our earlier modeling), the ROPE may not make sense. Because we have standardized the variables, we can be more confident that the ROPE is meaningful. This summary suggests that <code>Yr2</code> and <code>Yr3</code> are extremely likely to be positive predictors of <code>Final</code>, while <code>Yr1</code> is not likely to have any predictive value. A more terse summary can be obtained by using the <code>equivalence_test()</code> function, which will explicitly reject coefficients that are practically different from zero:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test for equivalence of coefficients to zero</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">equivalence_test</span>(inf_model_std)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -950,10 +951,10 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 <h3 data-number="13.5.4" class="anchored" data-anchor-id="testing-specific-hypotheses-about-coefficients"><span class="header-section-number">13.5.4</span> Testing specific hypotheses about coefficients</h3>
 <p>We may want to test very specific hypotheses about our coefficients, and Bayesian inference gives us a great deal of flexibility to do this. For example, if we wanted to know the probability that the Year 3 score has more than double the effect of the Year 2 score, we can do this by extracting the posterior draws and calculating the proportion of them where this condition holds.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract posterior samples from standardized model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract posterior samples from standardized model</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>posterior_samples <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(inf_model_std, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the probability that Yr3 &gt; 2*Yr2</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the probability that Yr3 &gt; 2*Yr2</span></span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>prob_Yr3_greater_Yr2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(posterior_samples<span class="sc">$</span>b_Yr3 <span class="sc">&gt;</span> <span class="dv">2</span><span class="sc">*</span>posterior_samples<span class="sc">$</span>b_Yr2)</span>
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(prob_Yr3_greater_Yr2, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -986,7 +987,7 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 <p>We can view our new priors before we decide to use them:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View new priors extracted from previous model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view new priors extracted from previous model</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>new_priors</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 prior     class coef group resp dpar nlpar lb ub tag  source
@@ -1000,7 +1001,7 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 <p>Now we can utilize these as priors in our new model with updated new data:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit updated model with new data and previous posteriors as priors</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit updated model with new data and previous posteriors as priors</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>updated_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Final <span class="sc">~</span> Yr1 <span class="sc">+</span> Yr2 <span class="sc">+</span> Yr3,</span>
 <span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ugtests_bayes_update,</span>
@@ -1016,7 +1017,7 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 <p>Now we can compare the mean estimates of our original informed model and our updated model to see how our beliefs have changed with the new data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare mean fixed effects of original and updated models</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare mean fixed effects of original and updated models</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>inf_model_effects <span class="ot">&lt;-</span> <span class="fu">fixef</span>(inf_model)[, <span class="st">"Estimate"</span>]</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>updated_model_effects <span class="ot">&lt;-</span> <span class="fu">fixef</span>(updated_model)[, <span class="st">"Estimate"</span>]</span>
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1034,7 +1035,7 @@ Yr3              0.83658769           0.851905429</code></pre>
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bayes-r2-update-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare original and updated models using bayes R2</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare original and updated models using bayes R2</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>r2_updated <span class="ot">&lt;-</span> <span class="fu">bayes_R2</span>(updated_model, <span class="at">summary =</span> <span class="cn">FALSE</span>, <span class="at">ndraws =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create data frame for visualization</span></span>
@@ -1068,16 +1069,16 @@ Figure&nbsp;13.4: Bayesian R-squared distributions for the original informed mod
 <p>We can see from <a href="#fig-bayes-r2-update" class="quarto-xref">Figure&nbsp;<span>13.4</span></a> that our updated model has an improved fit, as well as a greater degree of certainty around the fit.</p>
 </section>
 <section id="model-diagnostics-and-validation" class="level2" data-number="13.7">
-<h2 data-number="13.7" class="anchored" data-anchor-id="model-diagnostics-and-validation"><span class="header-section-number">13.7</span> Model Diagnostics and Validation</h2>
+<h2 data-number="13.7" class="anchored" data-anchor-id="model-diagnostics-and-validation"><span class="header-section-number">13.7</span> Model diagnostics and validation</h2>
 <p>Because Bayesian models rely on simulations, we must verify that our predictions look like our fixed observed data. It is also critical to determine that the MCMC simulations behaved as expected and have converged properly.</p>
 <section id="posterior-predictive-checks" class="level3" data-number="13.7.1">
-<h3 data-number="13.7.1" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">13.7.1</span> Posterior Predictive Checks</h3>
-<p>A Posterior Predictive Check (PPC) is used to determine if the data predicted by our model resembles our observed data. If our model is well specified and the simulation has worked as hoped, predictions drawn from the model’s posterior should resemble the <code>Final</code> column of our observed data. We can use the <code>pp_check()</code> function to check if this is the case.</p>
+<h3 data-number="13.7.1" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">13.7.1</span> Posterior predictive checks</h3>
+<p>A posterior predictive check (PPC) is used to determine if the data predicted by our model resembles our observed data. If our model is well specified and the simulation has worked as hoped, predictions drawn from the model’s posterior should resemble the <code>Final</code> column of our observed data. We can use the <code>pp_check()</code> function to check if this is the case.</p>
 <div id="fig-pp-check" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pp-check-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior predictive check using 1000 posterior draws</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior predictive check using 1000 posterior draws</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(updated_model, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">+</span></span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1094,16 +1095,16 @@ Figure&nbsp;13.5: Posterior Predictive Check. The dark line (<span class="math i
 </figcaption>
 </figure>
 </div>
-<p>In <a href="#fig-pp-check" class="quarto-xref">Figure&nbsp;<span>13.5</span></a>, we see that the distributions drawn from the posterior simulations (light blue) overlay the actual data (dark blue) to within a reasonable range. This suggests our model structure (linear regression) fits the data generating process well. If, for instance, the real data had two humps (bimodal) and our simulations only had one, this would raise a concern that the model is misspecified.</p>
+<p>In <a href="#fig-pp-check" class="quarto-xref">Figure&nbsp;<span>13.5</span></a>, we see that the distributions drawn from the posterior simulations (light blue) overlay the actual data (dark line) to within a reasonable range. This suggests our model structure (linear regression) fits the data generating process well.</p>
 </section>
 <section id="trace-plots" class="level3" data-number="13.7.2">
-<h3 data-number="13.7.2" class="anchored" data-anchor-id="trace-plots"><span class="header-section-number">13.7.2</span> Trace Plots</h3>
+<h3 data-number="13.7.2" class="anchored" data-anchor-id="trace-plots"><span class="header-section-number">13.7.2</span> Trace plots</h3>
 <p>Trace plots show the path of the MCMC sampling chains. We want to see “fuzzy caterpillars”-—-chains that mix well and oscillate around a stable mean. We do not want to see trends (going up or down) or chains that stay separate from each other. We can use the <code>mcmc_trace()</code> function from the <code>bayesplot</code> package to visualize the trace plots for our model coefficients.</p>
 <div id="fig-trace-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-trace-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot trace plots for coefficients</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot trace plots for coefficients</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_trace</span>(updated_model, <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"b_Yr1"</span>, <span class="st">"b_Yr2"</span>, <span class="st">"b_Yr3"</span>)) <span class="sc">+</span></span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1125,19 +1126,19 @@ Figure&nbsp;13.6: Trace plots of the MCMC simulation. The four colors represent 
 <h3 data-number="13.7.3" class="anchored" data-anchor-id="sensitivity-to-priors-and-other-considerations"><span class="header-section-number">13.7.3</span> Sensitivity to priors and other considerations</h3>
 <p>It is good practice to check how sensitive your results are to the choice of priors. You can do this by fitting the model with different priors (e.g., weakly informative vs.&nbsp;strongly informative) and comparing the posterior distributions of the coefficients. If the posteriors change significantly with different priors, it suggests that your data may not be strong enough to overcome the influence of the priors. If this is the case, it would be important to acknowledge this in your analysis and consider collecting more data if possible.</p>
 <p>On the other hand, large samples can result in priors being ‘swamped’ or ‘overwhelmed’ by the data, leading to similar posterior distributions regardless of the priors used. This is not necessarily a problem, but it is important to be aware of this phenomenon when interpreting your results. In cases where priors are swamped, one of the values of Bayesian inference is reduced (namely the ability to incorporate prior knowledge). However, the other advantages of Bayesian inference (such as the rich probabilistic interpretation of coefficients and predictions) still hold. It is the choice of the analyst to decide whether Bayesian inference is appropriate in such cases.</p>
-<p>Many of the other model diagnostics we used in OLS regression (e.g., residual plots, tests for homoscedasticity, etc.) are still applicable in Bayesian regression. The mean of the Posterior Predictive Distribution can be used to compute residuals, and these can be analyzed in the same way as in OLS regression to check residual distribution and homoscedasticity. As with classical models, the <code>fitted()</code> function can be used to extract the mean fitted values from the model.</p>
+<p>Many of the other model diagnostics we used in OLS regression (e.g., residual plots, tests for homoscedasticity, etc.) are still applicable in Bayesian regression. The mean of the posterior predictive distribution can be used to compute residuals, and these can be analyzed in the same way as in OLS regression to check residual distribution and homoscedasticity. As with classical models, the <code>fitted()</code> function can be used to extract the mean fitted values from the model.</p>
 </section>
 </section>
 <section id="sec-py-linear-bayes" class="level2" data-number="13.8">
 <h2 data-number="13.8" class="anchored" data-anchor-id="sec-py-linear-bayes"><span class="header-section-number">13.8</span> Bayesian linear regression using Python</h2>
-<p>The <code>Bambi</code> package can be used to fit Bayesian regression models in Python, providing a high-level interface similar to <code>brms</code> in R, and using the <code>PyMC</code> package for the MCMC backend. The <code>arviz</code> package can be used for visualization and diagnostics of Bayesian models.</p>
+<p>The <code>bambi</code> package can be used to fit Bayesian regression models in Python, providing a high-level interface similar to <code>brms</code> in R, and using the <code>PyMC</code> package for the MCMC backend. The <code>arviz</code> package can be used for visualization and diagnostics of Bayesian models.</p>
 <p>To fit our uninformed Bayesian linear regression model from earlier in this chapter in Python, we first specify the model and then view it to see the default priors:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bambi <span class="im">as</span> bmb</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
 <span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data</span></span>
 <span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/ugtests.csv"</span></span>
 <span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>ugtests <span class="op">=</span> pd.read_csv(url)</span>
 <span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
@@ -1167,12 +1168,12 @@ Figure&nbsp;13.6: Trace plots of the MCMC simulation. The four colors represent 
 </div>
 <p>If we wish, we can specify informative priors in the <code>bmb.Model()</code> constructor:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define informative priors</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define informative priors</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>priors <span class="op">=</span> {</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Yr1"</span>: bmb.Prior(<span class="st">"Normal"</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">0.05</span>)</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a Bayesian linear regression model with informative priors</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a Bayesian linear regression model with informative priors</span></span>
 <span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>model_inf <span class="op">=</span> bmb.Model(<span class="st">"Final ~ Yr1 + Yr2 + Yr3"</span>, data<span class="op">=</span>ugtests_bayes, priors<span class="op">=</span>priors)</span>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_inf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1194,12 +1195,12 @@ Figure&nbsp;13.6: Trace plots of the MCMC simulation. The four colors represent 
 </div>
 <p>Once we have specified our model, we can fit it using MCMC sampling:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model using MCMC sampling</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the model using MCMC sampling</span></span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>fitted <span class="op">=</span> model_inf.fit(draws<span class="op">=</span><span class="dv">10000</span>, chains<span class="op">=</span><span class="dv">4</span>, random_seed<span class="op">=</span><span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And then we can summarize the posteriors using a handy function from <code>arviz</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize the posterior distributions</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize the posterior distributions</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>az.summary(fitted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             mean      sd  hdi_3%  hdi_97%  ...  mcse_sd  ess_bulk  ess_tail  r_hat
@@ -1217,7 +1218,7 @@ Yr3         0.931   0.091   0.761    1.103  ...    0.000   51219.0   34582.0    
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-py-post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot posterior distributions</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot posterior distributions</span></span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>az.plot_posterior(fitted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
@@ -1237,7 +1238,7 @@ Figure&nbsp;13.7: Posterior distributions for the coefficients of our informed B
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-py-trace-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot trace plots</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot trace plots</span></span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>az.plot_trace(fitted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
@@ -1290,18 +1291,18 @@ Figure&nbsp;13.9: Posterior predictive check for our informed Bayesian linear re
 <li><p>Explain how to interpret the results of a comparison between two models using Leave One Out Cross-Validation (LOO-CV).</p></li>
 <li><p>In a Bayes Factor hypothesis test of regression models or model coefficients, what primarily determines how reliable the Bayes Factor estimate is?</p></li>
 <li><p>Why is variable standardization helpful when defining informative priors or using a Region of Practical Equivalence (ROPE) for hypothesis testing?</p></li>
-<li><p>Describe what a “Trace Plot” and a “Posterior Predictive Check” (PPC) show, and what patterns (or lack thereof) indicate a healthy and well-specified model.</p></li>
+<li><p>Describe what a trace plot and a posterior predictive check (PPC) show, and what patterns (or lack thereof) indicate a healthy and well-specified model.</p></li>
 </ol>
 </section>
 <section id="data-exercises" class="level3" data-number="13.9.2">
 <h3 data-number="13.9.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">13.9.2</span> Data exercises</h3>
 <p>Use the <code>sociological_data</code> set from the exercises in <a href="linear_regression.html#sec-lin-reg-ols-exercises" class="quarto-xref"><span>Section 4.8</span></a>. Ensure that categorical variables are coerced to factors and missing data is removed. Reduce the size of the dataset by taking a random sample of 500 rows. Ensure you set a seed to ensure you can replicate your work.</p>
 <ol type="1">
-<li><p>Fit a Bayesian linear regression model predicting <code>annual_income_ppp</code> using all other variables in the dataset. Use <code>brm</code> with <code>chains = 4</code>, <code>iter = 10000</code>, and the default priors.</p></li>
+<li><p>Fit a Bayesian linear regression model explaining <code>annual_income_ppp</code> using all other variables in the dataset. Use <code>brm</code> with <code>chains = 4</code>, <code>iter = 10000</code>, and the default priors.</p></li>
 <li><p>Run a summary of the model. Examine the <code>Rhat</code> and <code>Bulk_ESS</code>/<code>Tail_ESS</code> columns. Did the chains converge successfully?</p></li>
-<li><p>Generate Trace Plots for the coefficients of <code>education_months</code> and <code>family_size</code>. Do they resemble “fuzzy caterpillars”?</p></li>
+<li><p>Generate rrace plots for the coefficients of <code>education_months</code> and <code>family_size</code>. Do they resemble “fuzzy caterpillars”?</p></li>
 <li><p>Visualize the posterior distributions of the coefficients using <code>mcmc_areas()</code>. Is this helpful? What adjustments might you consider to make it more interpretable?</p></li>
-<li><p>Interpret the posterior mean and the 95% credible interval for the <code>education_months</code> coefficient. Can you state with 95% probability that education has a positive effect on income?</p></li>
+<li><p>Interpret the posterior mean and the 95% credible interval for the <code>education_months</code> coefficient. Can you state with at least 95% probability that education has a positive effect on income?</p></li>
 <li><p>Imagine you possess expert knowledge from a previous study suggesting that <code>family_size</code> usually has a slightly negative effect on income, and <code>work_distance</code> generally has no effect. Construct and examine a new model using informative priors as follows:</p>
 <ul>
 <li>Set a normal prior for <code>family_size</code> with a mean of -500 and a small standard deviation.</li>
@@ -1309,13 +1310,13 @@ Figure&nbsp;13.9: Posterior predictive check for our informed Bayesian linear re
 <li>Run an informed model using these priors.</li>
 </ul></li>
 <li><p>Compare your uninformed model (from Question 1) and your informed model (from Question 6) using <code>bayes_R2()</code>. Does the incorporation of prior beliefs significantly change the explained variance?</p></li>
-<li><p>Use Leave-One-Out Cross-Validation to compare the predictive performance of the two models. Is there a preferred model?</p></li>
-<li><p>Using your choice of model, perform a Posterior Predictive Check. Does the simulated data resemble the observed distribution of <code>annual_income_ppp</code>?</p></li>
-<li><p>Run your choice of model on a scaled version of your data. Determine which coefficients are practically different from zero based on the ROPE. Remember that you can only scale numeric columns in your data<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p></li>
+<li><p>Use leave-one-out cross-validation to compare the predictive performance of the two models. Is there a preferred model?</p></li>
+<li><p>Using your choice of model, perform a posterior predictive check. Does the simulated data resemble the observed distribution of <code>annual_income_ppp</code>?</p></li>
+<li><p>Run your choice of model on a scaled version of your data. Determine which coefficients are practically different from zero based on the ROPE. Remember that you can only scale numeric columns in your data<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p></li>
 <li><p>Using your scaled model, calculate the specific probability that the effect of a standard deviation increase in <code>education_months</code> is larger than the the effect of living in Northern America (assuming no change in other variables).</p></li>
 <li><p>Take a further sample of 500 rows from the remaining rows of the <code>sociological_data</code> dataset. Fit an updated model using the posterior distributions from your (unstandardized) model of choice as priors. Compare the mean coefficient estimates of the updated model to your preferred model. How have the coefficients changed with the new data?</p></li>
-<li><p>Create a hypothetical individual profile (a new dataframe) representing a male skilled worker with high education and no family living in Northern America. Use the mean of the your new data sample for the other variables. Using your updated model, generate the Posterior Predictive Distribution for this individual’s income. Plot the distribution.</p></li>
-<li><p>Report the 90% Prediction Interval for this individual. Explain, in plain language, what this interval represents regarding the uncertainty of your prediction.</p></li>
+<li><p>Create a hypothetical individual profile (a new dataframe) representing a male skilled worker with high education and no family living in Northern America. Use the means from your new data sample for the other variables. Using your updated model, generate the posterior predictive distribution for this individual’s income. Plot the distribution.</p></li>
+<li><p>Report the 90% prediction interval for this individual. Explain, in plain language, what this interval represents regarding the uncertainty of your prediction.</p></li>
 </ol>
 
 
@@ -1330,7 +1331,8 @@ Kruschke, John K. 2018. <span>“Rejecting or Accepting Parameter Values in Baye
 <hr>
 <ol>
 <li id="fn1"><p>‘Draws’ are a common term for samples taken from the simulated posteriors.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>If you are copying the code from earlier in this chapter, you can use <code>where(is.numeric)</code> instead of <code>everything()</code> to ensure only numeric columns are scaled.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><span class="citation" data-cites="kruschke">Kruschke (<a href="bibliography.html#ref-kruschke" role="doc-biblioref">2018</a>)</span><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>If you are copying the code from earlier in this chapter, you can use <code>where(is.numeric)</code> instead of <code>everything()</code> to ensure only numeric columns are scaled.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

@@ -8,7 +8,7 @@ In this chapter we are going to 'flip the script' on this philosophy.  Instead o
 
 The critical theorem from probability theory that underpins this approach is *Bayes' Theorem*, named after the Reverend Thomas Bayes, an 18th century statistician and theologian.  As we will see, Bayes' Theorem provides us with a mathematical way to combine our prior beliefs about a parameter with the evidence provided by our data to arrive at an updated *posterior* belief about the parameter.  This mechanism is the essence of *Bayesian inference*.  
 
-Bayesian inference has become increasingly popular in recent years.  This was not always so, because the techniques used in Bayesian inference require simulation of data, which can require substantially more computational resources compared to classical approaches. Only in the past two decades has widespread computational power become available that has made it more feasible to apply Bayesian methods to large datasets.  As a result, Bayesian approaches are now widely used in fields such as machine learning, epidemiology, ecology and social sciences, to name but a small few.  All of the methods that we have learned so far using classical statistics have Bayesian counterparts.  
+Bayesian inference has become increasingly popular in recent years.  There are a number of philosophical and epistemological reasons behind the recent growth in its use and application, but a key practical enabler for this growth has been the rapid development in computational technology in the early 21st century. Techniques used in Bayesian inference require simulation of data, which can demand substantially more computational resources compared to classical approaches. Only in the past two decades has widespread computational power become available that has made it more feasible to apply Bayesian methods to large datasets.  Bayesian approaches are now widely used in fields such as epidemiology, econometrics, ecology, anthropology and the social sciences, to name but a small few.  All of the methods that we have learned so far using classical statistics have Bayesian counterparts.  
 
 In People Analytics, Bayesian methods can be particularly useful when dealing with small sample sizes, when incorporating prior knowledge about employee behavior or organizational context, or when making probabilistic predictions about future outcomes.  It is fair to say that not all individuals working in this field will need to have a knowledge of Bayesian inference, as classical approaches will often yield similar conclusions especially when sample sizes are larger and prior beliefs are limited. However, having a basic grasp of Bayesian methods can provide an analyst with a greater depth of understanding on how the processes they are trying to model play out statistically.  For this reason, readers should regard this and subsequent chapters as optional, advanced material.
 
@@ -90,9 +90,6 @@ $$
 Let's simulate and plot this prior distribution to visualize our initial beliefs about the pass rate before observing any data.  First, we will take 1000 possible values of $\theta$ between 0 and 1 and simulate a Beta distribution.  We can use the `dbeta()` function to calculate the density of the Beta distribution for different values of $\theta$.
 
 ```{r}
-# set a seed to ensure this process can be reproduced exactly
-set.seed(42)
-
 # create a vector with 1000 possible values for theta between 0 and 1
 theta_values <- seq(0, 1, length.out = 1000)
 
@@ -121,7 +118,7 @@ ggplot(prior_df, aes(x = theta, y = density)) +
 
 ```
 
-Informative prior distribution of pass rate ($\theta$) before observing any data.
+Informative Beta(8, 2) prior distribution of pass rate ($\theta$) before observing any data.
 :::
 
 Comparing to the non-informative prior in @fig-pass-noninform, we can see that the area has shifted significantly to the right, indicating our prior belief that pass rates are likely to be high.
@@ -239,7 +236,7 @@ Prior, Normalized Likelihood and Posterior probabilities of pass rate ($\theta$)
 
 ### Bayesian Updating {#sec-bayes-updating}
 
-One of the powerful features of Bayesian inference is the ability to continuously update our beliefs about a parameter as new data becomes available.  In our example, suppose that after some time, an additional 30 engineers complete the training program, and of those, 25 pass the certification exam while 5 fail.  We can use our current posterior distribution as the new prior distribution and incorporate this new data to update our beliefs about the pass rate $\theta$.  A common saying in Bayesian statistics is that *today's posterior is tomorrow's prior* (@lindley).
+One of the powerful features of Bayesian inference is the ability to continuously update our beliefs about a parameter as new data becomes available.  In our example, suppose that after some time, an additional 30 engineers complete the training program, and of those, 25 pass the certification exam while 5 fail.  We can use our current posterior distribution as the new prior distribution and incorporate this new data to update our beliefs about the pass rate $\theta$.  A common saying in Bayesian statistics is that *today's posterior is tomorrow's prior*^[@lindley].
 
 To perform this Bayesian updating, we can follow the same steps as before.  First, we will define our new prior distribution using the current posterior distribution.  Then, we will define the likelihood of the new observed data using a Binomial distribution.  Finally, we will calculate the new posterior distribution by combining the new prior and the new likelihood using Bayes' Theorem, as in @fig-post-update.
 
@@ -268,7 +265,7 @@ ggplot(new_posterior_df, aes(x = theta, y = density)) +
   geom_line(color = "purple") +
   geom_area(fill = "purple", alpha = 0.2) +
   labs(x = "Pass Rate (θ)",
-       y = "Density") +
+       y = "Probability") +
   theme_minimal()
 ```
 
@@ -342,7 +339,7 @@ $$
 \frac{P(H_1 \mid D)}{P(H_0 \mid D)} = \frac{P(D \mid H_1)}{P(D \mid H_0)} \times \frac{P(H_1)}{P(H_0)}
 $$
 
-The left side of this equation is known as the **posterior odds** of the two hypotheses, while the right side consists of two components: the **Bayes Factor** (the first term) and the **prior odds** (the second term). The Bayes Factor is a multiple which quantifies how much more likely the data is under one hypothesis compared to the other, while the prior odds represent our initial beliefs about the relative plausibility of the two hypotheses before observing the data. For example, if we have no prior preference for either hypothesis, the prior odds would be 1. Then if the Bayes Factor is 5, the posterior odds would also be 5, meaning that after observing the data, the Alternative Hypothesis is 5 times more likely than the Null Hypothesis.
+The left side of this equation is known as the **posterior odds** of $H_1$, while the right side consists of two components: the **Bayes Factor** (the first term) and the **prior odds** (the second term). The Bayes Factor is a multiple which quantifies how much more likely the data is under one hypothesis compared to the other, while the prior odds represent our initial beliefs about the relative plausibility of the two hypotheses before observing the data. For example, if we have no prior preference for either hypothesis, the prior odds would be 1. Then if the Bayes Factor is 5, the posterior odds would also be 5, meaning that after observing the data, the Alternative Hypothesis is 5 times more likely than the Null Hypothesis.
 
 If we are comparing an Alternative Hypothesis ($H_1$) against a Null Hypothesis ($H_0$), the Bayes Factor is usually denoted as $BF_{10}$:
 
@@ -356,7 +353,7 @@ Using the Bayes Factor, we can interpret the strength of evidence provided by th
 * If $BF_{10} > 1$, the data favors the Alternative Hypothesis ($H_1$). 
 * If $BF_{10} < 1$, the data favors the Null Hypothesis ($H_0$).
 
-A common rule of thumb (see @jeffreys) for interpreting Bayes Factors which favor the Alternative Hypothesis is:
+A common rule of thumb^[@jeffreys] for interpreting Bayes Factors which favor the Alternative Hypothesis is:
 
 *   **1-3**: Anecdotal evidence
 *   **3-10**: Moderate evidence
@@ -374,11 +371,11 @@ salespeople <- read.csv(url)
 salespeople <- salespeople[complete.cases(salespeople), ]
 ```
 
-### Bayesian t-test for difference in means between two independent groups {#sec-bayes-ttest}
+### Bayesian $t$-test for difference in means between two independent groups {#sec-bayes-ttest}
 
 As in @sec-found-stats, we want to test if there is a difference in sales between high performing and low performing salespeople.
 
-We will take random samples of 10 salespeople in the lowest performing group and 10 salespeople in the highest performing group.  We will assume for our purposes in this chapter that we only have data for these 20 salespeople.
+We will take random samples of 10 salespeople in the lowest performing group and 10 salespeople in the highest performing group.  We will assume for our purposes in this chapter that we only have data for these 20 salespeople.  Note that we set a random seed whenever we initiate a process that involves random sampling, in order to ensure that others can repeat the same randomization so that results are reproducible.
 
 ```{r}
 # take samples of 10 people with performance ratings 1 and 4 
@@ -394,7 +391,7 @@ df_sales <- rbind(sample_low, sample_high)
 ```
 
 
-Next we will run a Bayesian t-test to compare the mean sales between the two performance groups.  Our Null Hypothesis ($H_0$) is that there is no difference in mean sales between high and low performing salespeople, while our Alternative Hypothesis ($H_1$) is that there is a difference in mean sales between the two groups.
+Next we will run a Bayesian $t$-test to compare the mean sales between the two performance groups.  Our Null Hypothesis ($H_0$) is that there is no difference in mean sales between high and low performing salespeople, while our Alternative Hypothesis ($H_1$) is that there is a difference in mean sales between the two groups.
 
 ```{r}
 # load BayesFactor package
@@ -410,6 +407,7 @@ Note that because of the Bayes Factor, we did not even have to look at the poste
 
 ```{r}
 # run Bayesian t-test and simulate posterior samples over 10000 points
+set.seed(42)
 bf_result <- ttestBF(formula = sales ~ performance, data = df_sales)
 posterior_samples <- posterior(bf_result, iterations = 10000)
 ```
@@ -434,7 +432,7 @@ posterior_df <- data.frame(
 ggplot(posterior_df, aes(x = sales_diff)) +
   geom_density(alpha = 0.5, color = "blue", fill = "blue") +
   labs(x = "Sales Difference",
-       y = "Density") +
+       y = "Probability") +
   theme_minimal()
 
 ```
@@ -466,7 +464,7 @@ ggplot(posterior_df, aes(x = sales_diff)) +
     color = "blue",
   ) +
   labs(x = "Sales Difference",
-       y = "Density") +
+       y = "Probability") +
   theme_minimal()
 ```
 
@@ -504,6 +502,7 @@ We see that the Bayes Factor $BF_{10}$ suggests strong evidence from the data su
 ::: {#fig-bayes-corr}
 ```{r}
 # run Bayesian correlation test and extract posterior samples over 10000 simulations
+set.seed(42)
 bf_corr_result <- correlationBF(sample_salespeople$sales, sample_salespeople$customer_rate)
 posterior_corr_samples <- posterior(bf_corr_result, iterations = 10000)
 
@@ -532,7 +531,7 @@ And, like before, we can view summary statistics and credible intervals for the 
 describe_posterior(posterior_corr_samples)
 ```
 
-Therefore we can say that there is a probability of `r round(describe_posterior(posterior_corr_samples)$pd[1], 2)` that the correlation between sales and average customer rating is greater than zero given the data we observe.  We see that the 95% credible interval hs no overlap with the ROPE, further supporting our Alternative Hypothesis^[As before, we can explicitly calculate the one-tailed Bayes Factor for a *positive* correlation by using `nullInterval = c(-1, 0)` in our test function].
+Therefore we are certain that there is a positive correlation between sales and average customer rating given the data we observe.  We see that the 95% credible interval hs no overlap with the ROPE, further supporting our Alternative Hypothesis^[As before, we can explicitly calculate the one-tailed Bayes Factor for a *positive* correlation by using `nullInterval = c(-1, 0)` in our test function].
 
 ### Bayesian chi-square test (Test for difference in frequency distribution between groups)
 
@@ -551,7 +550,7 @@ for (i in 1:4) {
 }
 ```
 
-In the Bayesian framework, we test whether promotion likelihood is independent from performance category using a contingency table Bayes Factor.  First we create our contingency table of promoted vs performance for our sample of 40 salespeople.
+In the Bayesian framework, we test whether promotion likelihood is independent from performance category using a contingency table Bayes Factor.  First we create our contingency table of promoted vs performance for our sample of 80 salespeople.
 
 ```{r}
 # create contingency table of promoted vs performance
@@ -577,6 +576,7 @@ Here we see a Bayes Factor $BF_{10}$ which indicates very strong evidence from t
 ::: {#fig-bayes-chi}
 ```{r}
 # run Bayesian contingency table test and extract posterior samples over 10000 simulations
+set.seed(42)
 bf_contingency_result <- contingencyTableBF(contingency, sampleType = "jointMulti")
 posterior_contingency_samples <- posterior(bf_contingency_result, iterations = 10000) |> 
   as.data.frame()
@@ -616,7 +616,7 @@ Visualizing the posteriors in this way gives us additional information regarding
 
 ### Bayesian hypothesis testing using Python
 
-The `pingouin` package in Python offers very simple functions for Bayes Factor estimations against a null hypothesis.  These functions accept the relevant statistics (eg a $t$-statistic for a $t$-test as well as the size of both groups) and returns the Bayes Factor.  For example, to calculate our $t$-test Bayes Factor as in @sec-bayes-ttest, we would first determine the $t$-statistic for the difference in means of the two groups as follows:
+The `pingouin` package in Python offers very simple functions for Bayes Factor estimations against a null hypothesis.  These functions accept the relevant statistics (eg a $t$-statistic for a $t$-test as well as the size of both groups) and returns the Bayes Factor.  For example, to calculate our $t$-test Bayes Factor as in @sec-bayes-ttest, we would first determine the $t$-statistic for the difference in means of the two groups as follows^[Note that setting the same random seed in both R and Python does not produce the same randomization process, so you can expect analyses to differ between the two languages when randomization is required.]:
 
 ```{python}
 import pingouin as pg
@@ -676,9 +676,9 @@ print(round(bf_10_corr, 2))
 
 5.  "Today's posterior is tomorrow's prior." Explain this concept and how it applies to Bayesian updating.
 
-6.  How does the interpretation of a **95% Credible Interval** differ from a **95% Confidence Interval**?
+6.  How does the interpretation of a *Credible* Interval differ from a *Confidence* Interval?
 
-7.  Why does Bayesian inference allow us to interpret a 95% Credible Interval?
+7.  Why does Bayesian inference allow us to make direct statements about the probability of our parameter taking specific values?
 
 8.  Explain the meaning of the Bayes Factor $BF_{10}$ in the context of hypothesis testing. 
 
@@ -704,11 +704,11 @@ For questions 1 to 5, focus on the Year 1 examination scores.  Take a random sam
 
 For questions 6 to 10, take a random sample of 50 rows from the full `ugtests` data set and treat this as your observed data.  
 
-6.  Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers.  Use a Bayesian t-test to perform this test.  Report and interpret the Bayes Factor.  
+6.  Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers.  Use a Bayesian $t$-test to perform this test.  Report and interpret the Bayes Factor.  
 
-7.  Visualize the posterior distribution of the difference in means between the two groups using a halfeye plot.  
+7.  Visualize the posterior distribution of the difference in Year 2 score means between the two groups using a halfeye plot.  
 
-8.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in scores between the two groups. 
+8.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in Year 2 scores between the two groups. 
 
 9.  Test the hypothesis that there is a correlation between Year 2 and Final Year examination scores using a Bayesian correlation test.  Report and interpret the Bayes Factor.
 
