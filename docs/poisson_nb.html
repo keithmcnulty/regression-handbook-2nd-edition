@@ -500,19 +500,19 @@ Figure&nbsp;8.2: Distribution of <code>days_absent</code> with histogram and den
 <p><span class="math display">\[
 P(Y=k) = \frac{\lambda^k e^{-\lambda}}{k!}
 \]</span></p>
-<p>We assume that the expected event count <span class="math inline">\(\lambda_i\)</span> for each individual observation <span class="math inline">\(i\)</span> depends on that observation’s input variables (<span class="math inline">\(x_{i1}, x_{i2}, \dots, x_{ip}\)</span>). To ensure that our predicted <span class="math inline">\(\lambda_i\)</span> is always positive, we model the <em>natural logarithm</em> of <span class="math inline">\(\lambda_i\)</span> as a linear function of the input variables. This is the <em>log transformation</em>.</p>
+<p>We assume that the expected event count <span class="math inline">\(\lambda_i\)</span> for each individual observation <span class="math inline">\(i\)</span> depends on that observation’s input variables <span class="math inline">\(x_{1i}, x_{2i}, \dots, x_{pi}\)</span>. To ensure that our predicted <span class="math inline">\(\lambda_i\)</span> is always positive, we model the <em>natural logarithm</em> of <span class="math inline">\(\lambda_i\)</span> as a linear function of the input variables. This is the <em>log transformation</em>.</p>
 <p><span class="math display">\[
-\ln(\lambda_i) = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_px_{ip}
+\ln(\lambda_i) = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \cdots + \beta_px_{ip}
 \]</span></p>
 <p>This equation should look familiar. It’s a linear model, just like in linear regression. The crucial difference is that we are not modeling the expected count outcome directly; we are modeling the <em>log of the expected count</em>.</p>
 <p>By exponentiating both sides, we can see how the input variables relate to the expected count itself:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\lambda_i &amp;= e^{\beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_px_{ip}} \\
-&amp;= e^{\beta_0}(e^{\beta_1})^{x_{i1}}(e^{\beta_2})^{x_{i2}}\dots(e^{\beta_p})^{x_{ip}}
+\lambda_i &amp;= e^{\beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \cdots + \beta_px_{ip}} \\
+&amp;= e^{\beta_0}(e^{\beta_1})^{x_{i1}}(e^{\beta_2})^{x_{i2}}\cdots(e^{\beta_p})^{x_{ip}}
 \end{aligned}
 \]</span></p>
-<p>This shows that the effects of the input variables are multiplicative on the expected count <span class="math inline">\(\lambda_i\)</span>. This is analogous to work we have done in previous chapters, where logistic regression coefficients have a multiplicative effect on the odds of an outcome.</p>
+<p>This shows that the effects of the input variables are multiplicative on the expected count <span class="math inline">\(\lambda_i\)</span>. This is analogous to work we have done in previous chapters, where exponentiated logistic regression coefficients have a multiplicative effect on the odds of an outcome.</p>
 </section>
 <section id="fitting-and-interpreting-a-poisson-regression-model" class="level3" data-number="8.2.2">
 <h3 data-number="8.2.2" class="anchored" data-anchor-id="fitting-and-interpreting-a-poisson-regression-model"><span class="header-section-number">8.2.2</span> Fitting and interpreting a Poisson regression model</h3>
@@ -637,9 +637,9 @@ dispersion
 <h3 data-number="8.3.2" class="anchored" data-anchor-id="quasi-poisson-regression"><span class="header-section-number">8.3.2</span> Quasi-Poisson regression</h3>
 <p>Quasi-Poisson regression, which is a simple extension of the Poisson model, relaxes the assumption that the mean and variance are equal, allowing the variance to be a linear function of the mean. That is</p>
 <p><span class="math display">\[
-Var(y) = \theta \mu
+Var(y_i) = \theta \mu_i
 \]</span></p>
-<p>where <span class="math inline">\(\theta\)</span> is a dispersion parameter estimated from the data and <span class="math inline">\(\mu\)</span> is the average event count (equivalent to <span class="math inline">\(\lambda\)</span> in the Poisson model). We expect <span class="math inline">\(\theta &gt; 1\)</span> in the presence of overdispersion, and a greater <span class="math inline">\(\theta\)</span> means greater dispersion. The coefficient estimates in a Quasi-Poisson model are identical to the Poisson model, but the standard errors are adjusted, which affects which input variables are returned as significant.</p>
+<p>where <span class="math inline">\(\theta\)</span> is a dispersion parameter estimated from the data and <span class="math inline">\(\mu_i\)</span> is the average event count (equivalent to <span class="math inline">\(\lambda_i\)</span> in the Poisson model). We expect <span class="math inline">\(\theta &gt; 1\)</span> in the presence of overdispersion, and a greater <span class="math inline">\(\theta\)</span> means greater dispersion. The coefficient estimates in a Quasi-Poisson model are identical to the Poisson model, but the standard errors are adjusted, which affects which input variables are returned as significant.</p>
 <p>Quasi-Poisson regression can be performed in R using the <code>glm()</code> function with <code>family = "quasipoisson"</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a quasi-poisson model</span></span>
@@ -680,9 +680,9 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <p>Another option in the presence of overdispersion is to use negative binomial regression. The negative binomial distribution is a generalization of the Poisson distribution that includes an additional dispersion parameter which allows the variance to be greater than the mean.</p>
 <p>The variance for a negative binomial distribution is modeled as:</p>
 <p><span class="math display">\[
-Var(y) = \mu + \frac{\mu^2}{\theta}
+Var(y_i) = \mu_i + \frac{\mu_i^2}{\theta}
 \]</span></p>
-<p>where <span class="math inline">\(\theta\)</span> is a dispersion parameter, so the term <span class="math inline">\(\frac{\mu^2}{\theta}\)</span> allows for the extra variance. Note that in this model the variance is a quadratic function of the mean, rather than the linear function used in the Quasi-Poisson model. Note also that a greater <span class="math inline">\(\theta\)</span> means less dispersion, and as <span class="math inline">\(\theta\)</span> gets larger and approaches infinity, the term <span class="math inline">\(\frac{\mu^2}{\theta}\)</span> approaches zero, and the variance approaches the mean <span class="math inline">\(\mu\)</span>. In this case, the negative binomial distribution converges to the Poisson distribution.</p>
+<p>where <span class="math inline">\(\theta\)</span> is a dispersion parameter, so the term <span class="math inline">\(\frac{\mu_i^2}{\theta}\)</span> allows for the extra variance. Note that in this model the variance is a quadratic function of the mean, rather than the linear function used in the Quasi-Poisson model. Note also that a greater <span class="math inline">\(\theta\)</span> means less dispersion, and as <span class="math inline">\(\theta\)</span> gets larger and approaches infinity, the term <span class="math inline">\(\frac{\mu_i^2}{\theta}\)</span> approaches zero, and the variance approaches the mean <span class="math inline">\(\mu_i\)</span>. In this case, the negative binomial distribution converges to the Poisson distribution.</p>
 <p>We can fit a negative binomial model in R using the <code>glm.nb()</code> function from the <code>MASS</code> package. The syntax is identical to <code>glm()</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
@@ -829,11 +829,11 @@ E[\mathrm{incidents}_i] = \mathrm{rate}_i \times \mathrm{employees}_i
 \]</span></p>
 <p>We model the log-rate as a linear combination of input variables:</p>
 <p><span class="math display">\[
-\ln(\mathrm{rate}_i) = \beta_0 + \beta_1x_{i1} + \dots
+\ln(\mathrm{rate}_i) = \beta_0 + \beta_1x_{1i} + \cdots
 \]</span></p>
 <p>Substituting this in gives:</p>
 <p><span class="math display">\[
-\ln(E[\mathrm{incidents}_i]) = (\beta_0 + \beta_1x_{i1} + \dots) + \ln(\mathrm{employees}_i)
+\ln(E[\mathrm{incidents}_i]) = (\beta_0 + \beta_1x_{1i} + \cdots) + \ln(\mathrm{employees}_i)
 \]</span></p>
 <p>The term <span class="math inline">\(\ln(\mathrm{employees}_i)\)</span> is called an <strong>offset</strong>. It is an input variable whose coefficient is fixed to 1. We include it in the model to account for the varying exposure time or group size. In R’s <code>glm()</code> and <code>glm.nb()</code>, this is specified using the <code>offset()</code> function inside the formula. For example</p>
 <pre><code>glm(incidents ~ X1 + X2 + offset(log(employees)), family=poisson)</code></pre>
@@ -988,8 +988,8 @@ Model:                            GLM   Df Residuals:                      861
 Model Family:                 Poisson   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -4459.5
-Date:                Wed, 17 Dec 2025   Deviance:                       5799.6
-Time:                        23:40:02   Pearson chi2:                 5.99e+03
+Date:                Mon, 22 Dec 2025   Deviance:                       5799.6
+Time:                        13:32:17   Pearson chi2:                 5.99e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -1032,8 +1032,8 @@ Model:                            GLM   Df Residuals:                      861
 Model Family:        NegativeBinomial   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -2842.3
-Date:                Wed, 17 Dec 2025   Deviance:                       702.79
-Time:                        23:40:02   Pearson chi2:                     548.
+Date:                Mon, 22 Dec 2025   Deviance:                       702.79
+Time:                        13:32:17   Pearson chi2:                     548.
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
 Covariance Type:            nonrobust                                         
 ======================================================================================

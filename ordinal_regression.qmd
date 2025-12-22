@@ -128,70 +128,70 @@ Now our data is in a position to run a model.  You may wish to conduct some expl
 
 ## Modeling ordinal outcomes under the assumption of proportional odds
 
-For simplicity, and noting that this is easily generalizable, let's assume that we have an ordinal outcome variable $y$ with three levels similar to our walkthrough example, and that we have one input variable $x$.  Let's call the outcome levels 1, 2 and 3.  To follow our intuition from @sec-ord-intuit, we can model a linear continuous variable $y' = \alpha_1x + \alpha_0 + E$, where $E$ is some error with a mean of zero, and two increasing cutoff values $\tau_1$ and $\tau_2$.  We define $y$ in terms of $y'$ as follows:  $y = 1$ if $y' \le \tau_1$, $y = 2$ if $\tau_1 < y' \le \tau_2$ and $y = 3$ if $y' > \tau_2$.     
+For simplicity, and noting that this is easily generalizable, let's assume that we have an observation of an ordinal outcome variable $y_i$ with three levels similar to our walkthrough example, and that we have an observation of one input variable $x_i$.  Let's call the outcome levels 1, 2 and 3.  To follow our intuition from @sec-ord-intuit, we can model a linear continuous variable $y_i' = \alpha_1x_i + \alpha_0 + \epsilon_i$, where $\epsilon_i$ is some error with a mean of zero, and two increasing cutoff values $\tau_1$ and $\tau_2$.  We define $y_i$ in terms of $y_i'$ as follows:  $y_i = 1$ if $y_i' \le \tau_1$, $y_i = 2$ if $\tau_1 < y_i' \le \tau_2$ and $y_i = 3$ if $y_i' > \tau_2$.     
 
 ### Using a latent continuous outcome variable to derive a proportional odds model {#sec-mod-lin-reg}
 
-Recall from @sec-norm-dist-assum that our linear regression approach assumes that our residuals  $E$ around our line $y' = \alpha_1x + \alpha_0$ have a normal distribution.  Let's modify that assumption slightly and instead assume that our residuals take a logistic distribution based on the variance of $y'$.  Therefore, $y' = \alpha_1x + \alpha_0 + \sigma\epsilon$, where $\sigma$ is proportional to the variance of $y'$ and $\epsilon$ follows the shape of a logistic function.  That is 
+Recall from @sec-norm-dist-assum that our linear regression approach assumes that our residuals $\epsilon_i$ around our line $y_i' = \alpha_1x_i + \alpha_0$ have a normal distribution with a constant variance.  Let's modify that assumption slightly and instead assume that our residuals take a logistic distribution.  Therefore, $y_i' = \alpha_1x_i + \alpha_0 + \epsilon_i$, where $\epsilon_i$ follows the shape of a logistic function.  That is 
 
 $$
-P(\epsilon \leq z) = \frac{1}{1 + e^{-z}}
+P(\epsilon_i \leq z) = \frac{1}{1 + e^{-z}}
 $$
 
-Let's look at the probability that our ordinal outcome variable $y$ is in its lowest category.
+Let's look at the probability that our ordinal outcome observation $y_i$ is in its lowest category.
 
 $$
 \begin{aligned}
-P(y = 1) &= P(y' \le \tau_1) \\
-&= P(\alpha_1x + \alpha_0 + \sigma\epsilon \leq \tau_1) \\
-&= P(\epsilon \leq \frac{\tau_1 - \alpha_1x - \alpha_0}{\sigma}) \\
-&= P(\epsilon \le \gamma_1 - \beta{x}) \\
-&= \frac{1}{1 + e^{-(\gamma_1 - \beta{x})}}
+P(y_i = 1) &= P(y_i' \le \tau_1) \\
+&= P(\alpha_1x_i + \alpha_0 + \epsilon_i \leq \tau_1) \\
+&= P(\epsilon_i \leq \tau_1 - \alpha_1x_i - \alpha_0) \\
+&= P(\epsilon_i \le \gamma_1 - \beta{x_i}) \\
+&= \frac{1}{1 + e^{-(\gamma_1 - \beta{x_i})}}
 \end{aligned}
 $$
 
-where $\gamma_1 = \frac{\tau_1 - \alpha_0}{\sigma}$ and $\beta = \frac{\alpha_1}{\sigma}$.  
+where $\gamma_1 = \tau_1 - \alpha_0$ and $\beta = \alpha_1$.  
 
-Since our only values for $y$ are 1, 2 and 3, similar to our derivations in @sec-mod-prob, we conclude that $P(y > 1) = 1 - P(y = 1)$, which calculates to
+Since our only values for $y_i$ are 1, 2 and 3, similar to our derivations in @sec-mod-prob, we conclude that $P(y_i > 1) = 1 - P(y_i = 1)$, which calculates to
 
 $$
-P(y > 1) = \frac{e^{-(\gamma_1 - \beta{x})}}{1 + e^{-(\gamma_1 - \beta{x})}}
+P(y_i > 1) = \frac{e^{-(\gamma_1 - \beta{x_i})}}{1 + e^{-(\gamma_1 - \beta{x_i})}}
 $$
 
 Therefore
 
 $$
 \begin{aligned}
-\frac{P(y = 1)}{P(y > 1)} = \frac{\frac{1}{1 + e^{-(\gamma_1 - \beta{x})}}}{\frac{e^{-(\gamma_1 - \beta{x})}}{1 + e^{-(\gamma_1 - \beta{x})}}}
-= e^{\gamma_1 - \beta{x}}
+\frac{P(y_i = 1)}{P(y_i > 1)} = \frac{\frac{1}{1 + e^{-(\gamma_1 - \beta{x_i})}}}{\frac{e^{-(\gamma_1 - \beta{x_i})}}{1 + e^{-(\gamma_1 - \beta{x_i})}}}
+= e^{\gamma_1 - \beta{x_i}}
 \end{aligned}
 $$
 
-By applying the natural logarithm, we conclude that the log odds of $y$ being in our bottom category is
+By applying the natural logarithm, we conclude that the log odds of $y_i$ being in our bottom category is
 
 
 $$
-\mathrm{ln}\left(\frac{P(y = 1)}{P(y > 1)}\right) = \gamma_1 - \beta{x}
+\mathrm{ln}\left(\frac{P(y_i = 1)}{P(y_i > 1)}\right) = \gamma_1 - \beta{x_i}
 $$
 
 In a similar way we can derive the log odds of our ordinal outcome being in our bottom two categories as
 
 $$
-\mathrm{ln}\left(\frac{P(y \leq 2)}{P(y = 3)}\right) = \gamma_2 - \beta{x}
+\mathrm{ln}\left(\frac{P(y_i \leq 2)}{P(y_i = 3)}\right) = \gamma_2 - \beta{x_i}
 $$
 
 where $\gamma_2 = \frac{\tau_2 - \alpha_0}{\sigma}$.  One can easily see how this generalizes to an arbitrary number of ordinal categories, where we can state the log odds of being in category $k$ or lower as
 
 $$
-\mathrm{ln}\left(\frac{P(y \leq k)}{P(y > k)}\right) = \gamma_k - \beta{x}
+\mathrm{ln}\left(\frac{P(y_i \leq k)}{P(y_i > k)}\right) = \gamma_k - \beta{x_i}
 $$
 Alternatively, we can state the log odds of being in a category higher than $k$ by simply inverting the above expression:
 
 $$
-\mathrm{ln}\left(\frac{P(y > k)}{P(y \leq k)}\right) = -(\gamma_k - \beta{x}) = \beta{x} - \gamma_k
+\mathrm{ln}\left(\frac{P(y_i > k)}{P(y_i \leq k)}\right) = -(\gamma_k - \beta{x_i}) = \beta{x_i} - \gamma_k
 $$
 
-By taking exponents we see that the impact of a unit change in $x$ on the odds of $y$ being in a higher ordinal category is $\beta$, *irrespective of what category we are looking at*.  Therefore we have a single coefficient to explain the effect of $x$ on $y$ throughout the ordinal scale.  Note that there are still different intercept coefficients $\gamma_1$ and $\gamma_2$ for each level of the ordinal scale.  
+By taking exponents we see that the impact of a unit change in $x_i$ on the odds of $y_i$ being in a higher ordinal category is $\beta$, *irrespective of what category we are looking at*.  Therefore we have a single coefficient to explain the effect of $x_i$ on $y_i$ throughout the ordinal scale.  Note that there are still different intercept coefficients $\gamma_1$ and $\gamma_2$ for each level of the ordinal scale.  
 
 ### Running a proportional odds logistic regression model
 
@@ -256,10 +256,10 @@ We can, as per previous chapters, remove the `level` and `country` variables fro
 Recall from @sec-mod-lin-reg that our proportional odds model generates multiple stratified binomial models, each of which has following form:
 
 $$
-P(y \leq k) = P(y' \leq \tau_k) 
+P(y_i \leq k) = P(y_i' \leq \tau_k) 
 $$
 
-Note that for an ordinal variable $y$, if $y \leq k$ and $y > k-1$, then $y = k$.  Therefore $P(y = k) = P(y \leq k) - P(y \leq k - 1)$.  This means we can calculate the specific probability of an observation being in each level of the ordinal variable in our fitted model by simply calculating the difference between the fitted values from each pair of adjacent stratified binomial models.  In our walkthrough example, this means we can calculate the specific probability of no action from the referee, or a yellow card being awarded, or a red card being awarded.  These can be viewed using the `fitted()` function.
+Note that for an ordinal observation $y_i$, if $y_i \leq k$ and $y_i > k-1$, then $y_i = k$.  Therefore $P(y_i = k) = P(y_i \leq k) - P(y_i \leq k - 1)$.  This means we can calculate the specific probability of an observation being in each level of the ordinal variable in our fitted model by simply calculating the difference between the fitted values from each pair of adjacent stratified binomial models.  In our walkthrough example, this means we can calculate the specific probability of no action from the referee, or a yellow card being awarded, or a red card being awarded.  These can be viewed using the `fitted()` function.
 
 
 ```{r}

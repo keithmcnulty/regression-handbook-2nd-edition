@@ -565,12 +565,12 @@ position_level                    1.3692971</code></pre>
 </section>
 <section id="running-a-multinomial-regression-model" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="running-a-multinomial-regression-model"><span class="header-section-number">6.3</span> Running a multinomial regression model</h2>
-<p>An alternative to running separate binary stratified models is to run a multinomial logistic regression model. A multinomial logistic model will base itself from a defined reference category, and run a generalized linear model on the log-odds of membership of each of the other categories versus the reference category. Due to its extensive use in epidemiology and medicine, this is often known as the <em>relative risk</em> of one category compared to the reference category. Mathematically speaking, if <span class="math inline">\(X\)</span> is the vector of input variables, and <span class="math inline">\(y\)</span> takes the value <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> or <span class="math inline">\(C\)</span>, with <span class="math inline">\(A\)</span> as the reference, a multinomial logistic regression model will calculate:</p>
+<p>An alternative to running separate binary stratified models is to run a multinomial logistic regression model. A multinomial logistic model will base itself from a defined reference category, and run a generalized linear model on the log-odds of membership of each of the other categories versus the reference category. Due to its extensive use in epidemiology and medicine, this is often known as the <em>relative risk</em> of one category compared to the reference category. Mathematically speaking, if <span class="math inline">\(X_i\)</span> is the vector of input variables for an observation, and the outcome observation <span class="math inline">\(y_i\)</span> takes the value <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> or <span class="math inline">\(C\)</span>, with <span class="math inline">\(A\)</span> as the reference, a multinomial logistic regression model will calculate:</p>
 <p><span class="math display">\[
-\mathrm{ln}\left(\frac{P(y = B)}{P(y=A)}\right) = \alpha{X}
+\mathrm{ln}\left(\frac{P(y_i = B)}{P(y_i=A)}\right) = \alpha{X_i}
 \]</span> and</p>
 <p><span class="math display">\[
-\mathrm{ln}\left(\frac{P(y = C)}{P(y=A)}\right) = \beta{X}
+\mathrm{ln}\left(\frac{P(y_i = C)}{P(y_i = A)}\right) = \beta{X_i}
 \]</span> for different vectors of coefficients <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>.</p>
 <section id="sec-def-ref" class="level3" data-number="6.3.1">
 <h3 data-number="6.3.1" class="anchored" data-anchor-id="sec-def-ref"><span class="header-section-number">6.3.1</span> Defining a reference level and running the model</h3>
@@ -677,12 +677,12 @@ absent           1.01174446 1.003269e+00</code></pre>
 <h3 data-number="6.3.3" class="anchored" data-anchor-id="sec-changing-ref"><span class="header-section-number">6.3.3</span> Changing the reference</h3>
 <p>It may be the case that someone would like to hear the odds ratios stated against the reference of an individual choosing Product B. For example, what are the odds ratios of Product C relative to a reference of Product B? One way to do this would be to change the reference and run the model again. Another option is to note that:</p>
 <p><span class="math display">\[
-\frac{P(y = C)}{P(y=B)} = \frac{\frac{P(y = C)}{P(y = A)}}{\frac{P(y=B)}{P(y = A)}}
-= \frac{e^{\beta{X}}}{e^{\alpha{X}}}
-= e^{(\beta - \alpha)X}
+\frac{P(y_i = C)}{P(y_i = B)} = \frac{\frac{P(y_i = C)}{P(y_i = A)}}{\frac{P(y_i = B)}{P(y_i = A)}}
+= \frac{e^{\beta{X_i}}}{e^{\alpha{X_i}}}
+= e^{(\beta - \alpha)X_i}
 \]</span> Therefore</p>
 <p><span class="math display">\[
-\mathrm{ln}\left(\frac{P(y = C)}{P(y=B)}\right) = (\beta - \alpha)X
+\mathrm{ln}\left(\frac{P(y_i = C)}{P(y_i = B)}\right) = (\beta - \alpha)X_i
 \]</span> This means we can obtain the coefficients of C against the reference of B by simply calculating the difference between the coefficients of C and B against the common reference of A. Let’s do this.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate difference between coefficients and view as column</span></span>
@@ -809,8 +809,8 @@ position_level   -0.3912014  -0.20908835</code></pre>
 Dep. Variable:                      y   No. Observations:                 1453
 Model:                        MNLogit   Df Residuals:                     1439
 Method:                           MLE   Df Model:                           12
-Date:                Wed, 17 Dec 2025   Pseudo R-squ.:                  0.5332
-Time:                        23:39:28   Log-Likelihood:                -744.68
+Date:                Mon, 22 Dec 2025   Pseudo R-squ.:                  0.5332
+Time:                        13:31:43   Log-Likelihood:                -744.68
 converged:                       True   LL-Null:                       -1595.3
 Covariance Type:            nonrobust   LLR p-value:                     0.000
 ==================================================================================

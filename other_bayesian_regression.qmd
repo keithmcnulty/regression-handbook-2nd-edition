@@ -76,7 +76,7 @@ $$
 Recall also that we model the log-odds of success as a linear function of our input variables, that is:
 
 $$
-\log\left(\frac{P(y_i = 1)}{P(y_i = 0)}\right) =  \log\left(\frac{p_i}{1-p_i}\right) =  \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + ... + \beta_k x_{ik}
+\ln\left(\frac{P(y_i = 1)}{P(y_i = 0)}\right) =  \ln\left(\frac{p_i}{1-p_i}\right) =  \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots + \beta_k x_{ip}
 $$
 
 This means that our slope coefficients must be interpreted in terms of changes in the log-odds of success for a one unit increase in the corresponding input variable, assuming no change in the other input variables.  We learned that by exponentiating the coefficients, we can interpret them in terms of odds ratios, which represents the multiple of the odds of the outcome variable associated with a unit change in the input variable, assuming no change in the other input variables.

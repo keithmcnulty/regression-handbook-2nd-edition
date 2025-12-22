@@ -112,16 +112,26 @@ In order to visualize our approach and improve our intuition, we will start with
 Let our input variable be $x$ and our outcome variable be $y$.  In @sec-inf-model, we introduced the concept of parametric modeling as an assumption that our outcome variable $y$ is expected to be related to the input variable $x$ by means of some mathematically definable function.  In other words, we assume:
 
 $$
-y = f(x) + \epsilon
+y_i = f(x_i) + \epsilon_i
 $$
 
-where $f$ is some mathematical transformation of $x$ and $\epsilon$ is some random, uncontrollable error.  Put another way, we assume that $f(x)$ represents the mean expected value of $y$ over many observations of $x$, and that any single observation of $y$ could vary from $f(x)$ by an error of $\epsilon$.  Since we are assuming that $f(x)$ represents the mean of $y$, our errors $\epsilon$ are therefore distributed around a mean of zero.  We further assume that the distribution of our errors $\epsilon$ is a normal distribution^[This assumption is necessary in order for the estimations of the model parameters to be determined.].   
+where $y_i$ and $x_i$ are individual observations of our outcome and input variables, $f$ is some mathematical transformation and $\epsilon_i$ is some random, uncontrollable error.  
 
 Recalling the equation of a straight line, because we assume that the expected relationship is linear, it will take the form:
 
-$$y = mx + c$$
-where $m$ represents the slope or gradient of the line, and $c$ represents the point at which the line intercepts the $y$ axis.  When using a straight line to model a relationship in the data, we call $c$ and $m$ the *coefficients* of the model.
+$$f(x_i) = mx_i + c$$
+where $m$ represents the slope or gradient of the line, and $c$ represents the point at which the line intercepts the $y$ axis.  We call $c$ and $m$ the *coefficients* of the model.  
 
+Another way of expressing all this is:
+
+$$
+y_i = \mu_i + \epsilon_i
+$$
+where, over many repeated observations, $\mu_i = mx_i + c$ is the mean value of $y_i$ for a given value of $x_i$, and $\epsilon_i$ is the random error term.  Finally, we make the assumption that all our error terms $\epsilon_i$ are independent and identically distributed (i.i.d.) according to a normal distribution with mean 0 and some constant variance $\sigma^2$.  In other words, we assume that:
+
+$$
+\epsilon_i \sim \mathcal{N}(0, \sigma^2)
+$$
 Now let's assume that we have a sample of 10 observations with which to estimate our linear relationship.  Let's take the first 10 values of `Yr3` and `Final` in our `ugtests` data set:
 
 ```{r}
@@ -161,7 +171,7 @@ This looks like an approximation of the relationship, but how do we know that it
 
 ### Minimising the error {#sec-minimising-error-ols}
 
-Remember that our assumed relationship $y = mx + c$ represents the expected mean value of $y$ over many observations of $x$.   For a specific single observation of $x$, we do not expect $y$ to be precisely on our expected line, because each individual observation will have an error term $\epsilon$ either above or below the expected line.   We can determine this error term $\epsilon$ in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `{r} 1.2*52 + 5`, but the real value is 93, producing an error $\epsilon$ of `{r} 93 - 1.2*52 - 5`. These errors $\epsilon$ are known as the *residuals* of our model. The residuals for the 10 points in our data set are illustrated by the solid red line segments in @fig-sample-plot-residuals.  It looks like at least one of our residuals is pretty large.
+Remember that our assumed relationship $y_i = mx_i+ c$ represents the expected mean value of $y_i$ over many repeated observations.   For a specific single observation of $x_i$, we do not expect $y_i$ to be precisely on our expected line, because each individual observation will have an error term $\epsilon_i$ either above or below the expected line.   We can determine this error term $\epsilon_i$ in the fitted model by calculating the difference between the real value of $y_i$ and the one predicted by our model.  For example, at $x_i = 52$, our modeled value of $y_i$ is `{r} 1.2*52 + 5`, but the real value is 93, producing an error $\epsilon_i$ of `{r} 93 - 1.2*52 - 5`. These errors $\epsilon_i$ are known as the *residuals* of our model. The residuals for the 10 points in our data set are illustrated by the solid red line segments in @fig-sample-plot-residuals.  It looks like at least one of our residuals is pretty large.
 
 
 ::: {#fig-sample-plot-residuals}
@@ -190,9 +200,9 @@ Residuals of $y=1.2x + 5$ for our 10 observations
 
 The error of our model---which we want to minimize---could be defined in a number of ways:
 
-1.  The average of our residuals
-2.  The average of the *absolute values* of our residuals (so that negative values are converted to positive values)
-3.  The average of the squares of our residuals (note that all squares are positive)
+1.  The average of our residuals $\epsilon_i$
+2.  The average of the *absolute values* of our residuals $\epsilon_i$ (so that negative values are converted to positive values)
+3.  The average of the squares of our residuals $\epsilon_i$ (note that all squares are positive)
 
 For a number of reasons (not least the fact that at the time this method was developed it was one of the easiest to derive), the most common approach is number 3, which is why we call our regression model *Ordinary Least Squares* regression.  Some algebra and calculus can help us determine the equation of the line that generates the least-squared residual error.  For more of the theory behind this, consult @linear, but let's look at how this works in practice.  
 
@@ -206,6 +216,7 @@ First we need to express the model we are looking to calculate as a formula.  In
 # calculate model
 model <- lm(formula = Final ~ Yr3, data = d)
 ```
+
 The `model` object that we have created is a list of a number of different pieces of information, which we can see by looking at the names of the objects in the list.
 
 
@@ -254,7 +265,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
 Residuals of our 10 observations around their mean value
 :::
 
-Recall from  @sec-mean-var-sd the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the average squared residual error of a random model.  This calculates in this case to `{r} round((9/10)*var(d$Final), 2)`.  Let's overlay our fitted model onto this random model in @fig-model-overlay.
+Recall from  @sec-mean-var-sd the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the average squared residual error of a null or random model.  This calculates in this case to `{r} round((9/10)*var(d$Final), 2)`.  Let's overlay our fitted model onto this random model in @fig-model-overlay.
 
 ::: {#fig-model-overlay}
 ```{r} 
@@ -306,10 +317,17 @@ This metric is known as the $R^2$ of our model and is the primary metric used in
 
 In reality, regression problems rarely involve one single input variable, but rather multiple variables. The methodology for multiple linear regression is similar in nature to simple linear regression, but obviously more difficult to visualize because of its increased dimensionality.
 
-In this case, our inputs are a set of $p$ variables $x_1, x_2, \dots, x_p$.  Extending the linear equation in  @sec-linear-single, we seek to develop an equation of the form:
+In this case, our inputs are a set of $p$ variables $x_1, x_2, \dots, x_p$.  Extending the simple linear regression equation, we can express the expected relationship between an outcome observation $y_i$ and its corresponding input observations $x_{i1}, x_{i2}, \cdots, x_{ip}$ as:
 
-$$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p$$
-so that our average squared residual error is minimized.  
+$$y_i = \mu_i + \epsilon_i$$
+
+where 
+
+$$
+\mu_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots + \beta_p x_{ip}
+$$
+
+and our $\epsilon_i$'s are normally distributed with a mean of zero and constant variance.  Here, $\beta_0$ is the *intercept* of the model, and $\beta_1, \beta_2, \dots, \beta_p$ are the coefficients of the input variables, also known as *slope* coefficients.  The goal of multiple linear regression is to determine the values of these coefficients so that our average squared residual error is minimized.  
 
 ### Running a multiple linear regression model and interpreting its coefficients
 
@@ -322,9 +340,9 @@ model$coefficients
 ```
 
 
-Referring to our formula in @sec-multiple-linear-regression, let's understand what each coefficient $\beta_0, \beta_1, \dots, \beta_p$ means.  $\beta_0$, the *intercept* of the model, represents the value of $y$ assuming that all the inputs were zero.  You can imagine that your output can be expected to have a base value even without any inputs---a student who completely flunked the first three years can still redeem themselves to some extent in the Final year.
+Referring to our formula in @sec-multiple-linear-regression, let's understand what each coefficient $\beta_0, \beta_1, \dots, \beta_p$ means.  $\beta_0$, the intercept of the model, represents the expected value of $y$ assuming that all the inputs were zero.  You can imagine that your output can be expected to have a base value even without any inputs---a student who completely flunked the first three years can still redeem themselves to some extent in the Final year.
 
-Now looking at the other coefficients, let's consider what happens if our first input $x_1$ increased by a single unit, assuming nothing else changed.  We would then expect our value of y to increase by $\beta_1$.  Similarly for any input $x_k$, a unit increase would result in an increase in $y$ of $\beta_k$, assuming no other changes in the inputs. 
+Now looking at the other coefficients, let's consider what happens if our first input $x_1$ increased by a single unit, assuming nothing else changed.  We would then expect our value of $y$ to increase by $\beta_1$.  Similarly for any input $x_k$, a unit increase would result in an increase in $y$ of $\beta_k$, assuming no other changes in the inputs. 
 
 In the case of our `ugtests` data set, we can say the following:
 

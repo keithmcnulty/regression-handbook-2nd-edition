@@ -216,7 +216,7 @@ So we can see that some relationships with our outcome may exist here, but it's 
 
 ## Modeling probabilistic outcomes using a logistic function {#sec-mod-prob}
 
-Imagine that you have an outcome event $y$ which either occurs or does not occur.  The probability of $y$ occurring, or $P(y = 1)$, obviously takes a value between 0 and 1.  Now imagine that some input variable $x$ has a positive effect on the probability of the event occurring.  Then you would naturally expect $P(y = 1)$ to increase as $x$ increases.
+Imagine that you have an outcome observation $y_i$ which takes a value of either 1 (true) or 0 (false).  The probability of $y_i$ being true, or $P(y_i = 1)$, obviously takes a value between 0 and 1.  Now imagine that some input observation $x_i$ has a positive effect on $P(y_i = 1)$.  Then you would naturally expect $P(y_i = 1)$ to increase as $x_i$ increases.
 
 In our `salespeople` data set, let's plot our `promotion` outcome against the `sales` input.  This can be seen in @fig-prom-sales-plot.
 
@@ -237,12 +237,17 @@ ggplot2::ggplot(data = salespeople, aes(x = sales, y = as.numeric(as.character(p
 Plot of promotion against sales in the `salespeople` data set
 :::
 
-It's clear that promotion is more likely with higher sales levels.  As we move along the $x$ axis from left to right and gradually include more and more individuals with higher sales, we know that the probability of promotion is gradually increasing overall.  We could try to model this probability using our logistic function, which we learned about in @sec-logistic-origins.  For example, let's plot the logistic function 
+It's clear that promotion is more likely with higher sales levels.  As we move along the $x$ axis from left to right and gradually include more and more individuals with higher sales, we know that the probability of promotion is gradually increasing overall.  
+
+Referring back to @sec-logistic-origins, each $y_i$ observation is a Bernoulli random variable with a specific success probability $P(y_i = 1)$.  Therefore, over many observations of that variable, the total number of successes (promotions) will follow a binomial distribution.  As we saw in @fig-binomial-cum-prob, the cumulative probability of success in a binomial distribution takes an S-shape that can be well approximated by a logistic function.
+
+Therefore, we could try to model this cumulative probability using our logistic function, which we learned about in @sec-logistic-origins, such that the probability of our observation being a promotion $P(y_i = 1)$ has some relationship with our input observation of `sales` $x_i$.  For example, let's plot the logistic function 
+
 $$
-P(y = 1) = \frac{1}{1 + e^{-k(x - x_{0})}}
+P(y_i = 1) = \frac{1}{1 + e^{-k(x_i - x_{0i})}}
 $$ 
 
-on this data, where we set $x_0$ to the mean of `sales` and $k$ to be some maximum gradient value.   In @fig-prom-with-logistic we can see these logistic functions for different values of $k$.  All of these seem to reflect the pattern we are observing to some extent, but how do we determine the best-fitting logistic function?
+on this data, where we set $x_{0i}$ to the mean of `sales` and $k$ to be some maximum gradient value.   In @fig-prom-with-logistic we can see these logistic functions for different values of $k$.  All of these seem to reflect the pattern we are observing to some extent, but how do we determine the best-fitting logistic function?
 
 ::: {#fig-prom-with-logistic}
 
@@ -265,26 +270,26 @@ Overlaying logistic functions with various gradients onto previous plot
 
 ### Deriving the concept of log odds
 
-Let's look more carefully at the index of the exponential constant $e$ in the denominator of our logistic function.  Note that, because $x_{0}$ is a constant, we have:
+Let's look more carefully at the index of the exponential constant $e$ in the denominator of our logistic function.  Note that, because $x_{0i}$ is a constant midpoint, we have:
 
 $$
--k(x - x_{0}) = -(-kx_{0} + kx) = -(\beta_{0} + \beta_1x)
+-k(x_i - x_{0i}) = -(-kx_{0i} + kx_i) = -(\beta_{0} + \beta_1x_i)
 $$
-where $\beta_0 = -kx_0$  and $\beta_{1} = k$.  Therefore,
+where $\beta_0 = -kx_{0i}$  and $\beta_{1} = k$.  Therefore,
 
 $$
-P(y = 1) = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}}
+P(y_i = 1) = \frac{1}{1 + e^{-(\beta_0 + \beta_1x_i)}}
 $$
 
-This equation makes intuitive sense.  As the value of $x$ increases, the value $e^{-(\beta_0 + \beta_1x)}$ gets smaller and smaller towards zero, and thus $P(y = 1)$ approaches its theoretical maximum value of 1. As the value of $x$ decreases towards zero, we see that the value of $P(y = 1)$ approaches a minimum value of $\frac{1}{1 + e^{-\beta_0}}$.  Referring back to our salespeople example, we can thus see that $\beta_0$ helps determine the baseline probability of promotion assuming no sales at all.  If $\beta_0$ has an extremely negative value, this baseline probability will approach its theoretical minimum of zero.  
+This equation makes intuitive sense.  As the value of $x_i$ increases, the value $e^{-(\beta_0 + \beta_1x_i)}$ gets smaller and smaller towards zero, and thus $P(y_i = 1)$ approaches its theoretical maximum value of 1. As the value of $x_i$ decreases towards zero, we see that the value of $P(y_i = 1)$ approaches a minimum value of $\frac{1}{1 + e^{-\beta_0}}$.  Referring back to our salespeople example, we can thus see that $\beta_0$ helps determine the baseline probability of promotion assuming no sales at all.  If $\beta_0$ has an extremely negative value, this baseline probability will approach its theoretical minimum of zero.  
 
-Let's formalize the role of $\beta_0$ and $\beta_1$ in the likelihood of a positive outcome.  We know that for any binary event $y$, $P(y = 0)$ is equal to $1 - P(y = 1)$, so 
+Let's formalize the role of $\beta_0$ and $\beta_1$ in the likelihood of a positive outcome.  We know that for any binary outcome observation $y_i$, $P(y_i = 0)$ is equal to $1 - P(y_i = 1)$, so 
 
 $$
 \begin{aligned}
-P(y = 0) &= 1 - \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} \\
-&= \frac{1 + e^{-(\beta_0 + \beta_1x)} - 1}{1 + e^{-(\beta_0 + \beta_1x)}} \\
-&= \frac{e^{-(\beta_0 + \beta_1x)}}{1 + e^{-(\beta_0 + \beta_1x)}}
+P(y_i = 0) &= 1 - \frac{1}{1 + e^{-(\beta_0 + \beta_1x_i)}} \\
+&= \frac{1 + e^{-(\beta_0 + \beta_1x_i)} - 1}{1 + e^{-(\beta_0 + \beta_1x_i)}} \\
+&= \frac{e^{-(\beta_0 + \beta_1x_i)}}{1 + e^{-(\beta_0 + \beta_1x_i)}}
 \end{aligned}
 $$
 
@@ -292,23 +297,23 @@ Putting these together, we find that
 
 $$
 \begin{aligned}
-\frac{P(y = 1)}{P(y = 0)} &= \frac{\frac{1}{1 + e^{-(\beta_0 + \beta_1x)}}}{\frac{e^{-(\beta_0 + \beta_1x)}}{1 + e^{-(\beta_0 + \beta_1x)}}} \\
-&= \frac{1}{e^{-(\beta_0 + \beta_1x)}} \\
-&= e^{\beta_0 + \beta_1x}
+\frac{P(y_i = 1)}{P(y_i = 0)} &= \frac{\frac{1}{1 + e^{-(\beta_0 + \beta_1x_i)}}}{\frac{e^{-(\beta_0 + \beta_1x_i)}}{1 + e^{-(\beta_0 + \beta_1x_i)}}} \\
+&= \frac{1}{e^{-(\beta_0 + \beta_1x_i)}} \\
+&= e^{\beta_0 + \beta_1x_i}
 \end{aligned}
 $$
 
 or alternatively, if we apply the natural logarithm to both sides
 
 $$
-\ln\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x
+\ln\left(\frac{P(y_i = 1)}{P(y_i = 0)}\right) = \beta_0 + \beta_1x_i
 $$
 
 The right-hand side should look familiar from the previous chapter on linear regression, meaning there is something here we can model linearly.  But what is the left-hand side?
 
-$P(y = 1)$ is the probability that the event will occur, while $P(y = 0)$ is the probability that the event will not occur.  You may be familiar from sports like horse racing or other gambling situations that the ratio of these two represents the *odds* of an event.  For example, if a given horse has odds of 1:4, this means that there is a 20% probability they will win and an 80% probability they will not^[Often in sports the odds are expressed in the reverse order, but the concept is the same.].
+$P(y_i = 1)$ is the probability that our outcome observation is true (the individual was promoted), while $P(y_i = 0)$ is the probability that our outcome observation is false (the individual was not promoted).  You may be familiar from sports like horse racing or other gambling situations that the ratio of these two represents the *odds* of success.  For example, if a given horse has odds of 1:4 in a race, this means that there is a 20% probability they will win and an 80% probability they will not^[Often in sports the odds are expressed in the reverse order, but the concept is the same.].
 
-Therefore we can conclude that the natural logarithm of the odds of $y$---usually termed the *log odds* of $y$---is linear in $x$, and therefore we can model the log odds of $y$ using similar linear regression methods to those studied in @sec-linear-reg-ols^[In this case, a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*.].
+Therefore we can conclude that the natural logarithm of the odds of $y_i$---usually termed the *log odds* of $y_i$---is linear in $x_i$, and therefore we can model the log odds of $y_i$ using similar linear regression methods to those studied in @sec-linear-reg-ols^[In this case, a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*.].
 
 ### Modeling the log odds and interpreting the coefficients
 
@@ -327,12 +332,12 @@ We can interpret the coefficients as follows:
 
 1. The `(Intercept)` coefficient is the value of the log odds with zero input value of $x$---it is the log odds of promotion if you made no sales.  
 
-2.  The `sales` coefficient represents the increase in the log odds of promotion associated with each unit increase in sales.
+2.  The `sales` coefficient represents the change in the log odds of promotion associated with each unit increase in sales.
 
 We can convert these coefficients from log odds to odds by applying the exponent function, to return to the identity we had previously
 
 $$
-\frac{P(y = 1)}{P(y = 0)} = e^{\beta_0 + \beta_1x} = e^{\beta_0}(e^{\beta_1})^x
+\frac{P(y_i = 1)}{P(y_i = 0)} = e^{\beta_0 + \beta_1x_i} = e^{\beta_0}(e^{\beta_1})^{x_i}
 $$
 
 From this, we can interpret that $e^{\beta_0}$ represents the base odds of promotion assuming no sales, and that for every additional unit sales, those base odds are multiplied by $e^{\beta_1}$.  Given this multiplicative effect that $e^{\beta_1}$ has on the odds, it is known as an *odds ratio*.  
@@ -405,29 +410,29 @@ $$
 
 ## Running a multiple binomial logistic regression model
 
-The derivations in the previous section extend to multivariable data.  Let $y$ be a dichotomous outcome, and let $x_1, x_2, \dots, x_p$ be our input variables.  Then
+The derivations in the previous section extend to multivariable data.  Let $y_i$ be a dichotomous outcome observation, and let $x_{i1}, x_{i2}, \cdots, x_{ip}$ be our corresponding input observations.  Then
 
 $$
-\ln\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p
+\ln\left(\frac{P(y_i = 1)}{P(y_i = 0)}\right) = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \cdots + \beta_px_{ip}
 $$
 for coefficients $\beta_0, \beta_1,\dots, \beta_p$.  As before:
 
 * $\beta_0$ represents the log odds of our outcome when all inputs are zero
-* Each $\beta_i$ represents the increase in the log odds of our outcome associated with a unit change in $x_i$, assuming no change in other inputs.
+* For $r = 1, 2, \cdots, p$, each $\beta_r$ represents the change in the log odds of our outcome associated with a unit change in the input variable $x_r$, assuming no change in other inputs.
 
 Applying an exponent as before, we have
 
 $$
 \begin{aligned}
-\frac{P(y = 1)}{P(y = 0)} &= e^{\beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p} \\
-&= e^{\beta_0}(e^{\beta_1})^{x_1}(e^{\beta_2})^{x_2}\dots(e^{\beta_p})^{x_p} 
+\frac{P(y_i = 1)}{P(y_i = 0)} &= e^{\beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \cdots + \beta_px_{ip}} \\
+&= e^{\beta_0}(e^{\beta_1})^{x_{i1}}(e^{\beta_2})^{x_{i2}}\cdots(e^{\beta_p})^{x_{ip}} 
 \end{aligned}
 $$
 
 Therefore we can conclude that:
 
 * $e^{\beta_0}$ represents the odds of the outcome when all inputs are zero.
-* Each $e^{\beta_i}$ represents the *odds ratio* associated with a unit increase in $x_i$ assuming no change in the other inputs (that is, a unit increase in $x_i$ multiplies the odds of our outcome by $e^{\beta_i}$). 
+* For $r = 1, 2, \cdots, p$, each $e^{\beta_r}$ represents the *odds ratio* associated with a unit increase in the input variable $x_r$ assuming no change in the other inputs (that is, a unit increase in $x_r$ multiplies the odds of our outcome by $e^{\beta_r}$). 
 
 Let's put this into practice.
 
