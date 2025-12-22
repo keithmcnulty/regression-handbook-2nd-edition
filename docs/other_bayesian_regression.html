@@ -312,14 +312,14 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-bayes-bin-log-reg" id="toc-sec-bayes-bin-log-reg" class="nav-link active" data-scroll-target="#sec-bayes-bin-log-reg"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</a></li>
-  <li><a href="#bayesian-multinomial-logistic-regression" id="toc-bayesian-multinomial-logistic-regression" class="nav-link" data-scroll-target="#bayesian-multinomial-logistic-regression"><span class="header-section-number">14.2</span> Bayesian Multinomial Logistic Regression</a>
+  <li><a href="#sec-bayes-bin-log-reg" id="toc-sec-bayes-bin-log-reg" class="nav-link active" data-scroll-target="#sec-bayes-bin-log-reg"><span class="header-section-number">14.1</span> Bayesian binomial logistic regression</a></li>
+  <li><a href="#bayesian-multinomial-logistic-regression" id="toc-bayesian-multinomial-logistic-regression" class="nav-link" data-scroll-target="#bayesian-multinomial-logistic-regression"><span class="header-section-number">14.2</span> Bayesian multinomial logistic regression</a>
   <ul class="collapse">
-  <li><a href="#bayesian-ordinal-logistic-regression" id="toc-bayesian-ordinal-logistic-regression" class="nav-link" data-scroll-target="#bayesian-ordinal-logistic-regression"><span class="header-section-number">14.2.1</span> Bayesian Ordinal Logistic Regression</a></li>
+  <li><a href="#bayesian-ordinal-logistic-regression" id="toc-bayesian-ordinal-logistic-regression" class="nav-link" data-scroll-target="#bayesian-ordinal-logistic-regression"><span class="header-section-number">14.2.1</span> Bayesian ordinal logistic regression</a></li>
   </ul></li>
-  <li><a href="#bayesian-poisson-and-negative-binomial-regression" id="toc-bayesian-poisson-and-negative-binomial-regression" class="nav-link" data-scroll-target="#bayesian-poisson-and-negative-binomial-regression"><span class="header-section-number">14.3</span> Bayesian Poisson and Negative Binomial Regression</a></li>
-  <li><a href="#bayesian-mixed-effects-models" id="toc-bayesian-mixed-effects-models" class="nav-link" data-scroll-target="#bayesian-mixed-effects-models"><span class="header-section-number">14.4</span> Bayesian Mixed Effects Models</a></li>
-  <li><a href="#bayesian-cox-proportional-hazards-models" id="toc-bayesian-cox-proportional-hazards-models" class="nav-link" data-scroll-target="#bayesian-cox-proportional-hazards-models"><span class="header-section-number">14.5</span> Bayesian Cox Proportional Hazards Models</a></li>
+  <li><a href="#bayesian-poisson-and-negative-binomial-regression" id="toc-bayesian-poisson-and-negative-binomial-regression" class="nav-link" data-scroll-target="#bayesian-poisson-and-negative-binomial-regression"><span class="header-section-number">14.3</span> Bayesian Poisson and negative binomial regression</a></li>
+  <li><a href="#bayesian-nixed-effects-models" id="toc-bayesian-nixed-effects-models" class="nav-link" data-scroll-target="#bayesian-nixed-effects-models"><span class="header-section-number">14.4</span> Bayesian nixed effects models</a></li>
+  <li><a href="#bayesian-cox-proportional-hazards-models" id="toc-bayesian-cox-proportional-hazards-models" class="nav-link" data-scroll-target="#bayesian-cox-proportional-hazards-models"><span class="header-section-number">14.5</span> Bayesian Cox proportional hazards models</a></li>
   <li><a href="#fitting-other-regression-models-using-python" id="toc-fitting-other-regression-models-using-python" class="nav-link" data-scroll-target="#fitting-other-regression-models-using-python"><span class="header-section-number">14.6</span> Fitting other regression models using Python</a></li>
   <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">14.7</span> Learning exercises</a>
   <ul class="collapse">
@@ -351,7 +351,7 @@ window.Quarto = {
 </header>
 
 
-<p>In the earlier chapters of this book, we dedicated significant attention to each variety of regression modeling technique, explaining the specifics of formulation, estimation, and interpretation. Moving forward, we should not need to do this for the Bayesian versions of these techniques. Given that we understand the underlying frequentist models from our earlier chapters, and now that we have a solid grasp of the principles and mechanics of Bayesian inference from the last two chapters, we can now focus on how to implement these models in a Bayesian framework without delving too deeply into the foundational details again.</p>
+<p>In the earlier chapters of this book, we dedicated significant attention to each variety of regression modeling technique, explaining the specifics of formulation, estimation, and interpretation. Moving forward, we should not need to do this for the Bayesian versions of these techniques. Given that we understand the underlying frequentist models from our earlier chapters, and now that we have a solid grasp of the principles and mechanics of Bayesian inference from the last two chapters, we can focus on how to implement these models in a Bayesian framework without delving too deeply into the foundational details again.</p>
 <p>In this chapter, we will explore how to fit several other types of regression models using Bayesian methods. We will mainly focus on the mechanics of how to implement the models, and touch on any matters specific to the model type that are relevant in a Bayesian context. We will start with binomial logistic regression, and then move on to the other common logistic regression models, Poisson regression, negative binomial regression and finally we will touch on mixed effects models and Cox proportional hazards models. For each model type, we will provide code examples using the <code>brms</code> package in R which, as we have seen, allows for flexible Bayesian modeling using <code>stan</code> as the backend.</p>
 <p>Before we proceed, let’s review a few technical tips to help ensure good performance from <code>brms</code> models in general, and to reduce the amount of time needed for these models to run. Readers may find the following helpful to avoid long wait times or crashes when running models using <code>brms</code>:</p>
 <ul>
@@ -373,33 +373,33 @@ window.Quarto = {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="sec-bayes-bin-log-reg" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="sec-bayes-bin-log-reg"><span class="header-section-number">14.1</span> Bayesian Binomial Logistic Regression</h2>
+<h2 data-number="14.1" class="anchored" data-anchor-id="sec-bayes-bin-log-reg"><span class="header-section-number">14.1</span> Bayesian binomial logistic regression</h2>
 <p>As we saw in <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>, binomial logistic regression is used when each observation of our outcome is a Bernoulli random variable that can take a value of 1 (e.g., ‘success’) with probability <span class="math inline">\(p_i\)</span> and a value of 0 (e.g., ‘failure’) with probability <span class="math inline">\(1-p_i\)</span>. That is</p>
 <p><span class="math display">\[
 y_i \sim \text{Bernoulli}(p_i)
 \]</span></p>
 <p>Recall also that we model the log-odds of success as a linear function of our input variables, that is:</p>
 <p><span class="math display">\[
-\ln\left(\frac{P(y_i = 1)}{P(y_i = 0)}\right) =  \ln\left(\frac{p_i}{1-p_i}\right) =  \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots + \beta_k x_{ip}
+\ln\left(\frac{P(y_i = 1)}{P(y_i = 0)}\right) =  \ln\left(\frac{p_i}{1-p_i}\right) =  \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots + \beta_p x_{ip}
 \]</span></p>
-<p>This means that our slope coefficients must be interpreted in terms of changes in the log-odds of success for a one unit increase in the corresponding input variable, assuming no change in the other input variables. We learned that by exponentiating the coefficients, we can interpret them in terms of odds ratios, which represents the multiple of the odds of the outcome variable associated with a unit change in the input variable, assuming no change in the other input variables.</p>
+<p>This means that our slope coefficients must be interpreted in terms of changes in the log-odds of success for a one unit increase in the corresponding input variable, assuming no change in the other input variables. We learned that by exponentiating the coefficients, we can interpret them in terms of odds ratios, which represents the multiple of the odds of success associated with a unit change in the input variable, assuming no change in the other input variables.</p>
 <p>In a Bayesian framework, we can fit a binomial logistic regression model using the <code>brms</code> package in a similar way to how we fit a linear regression model. The syntax is similar to that of frequentist logistic regression, but we specify the family as <code>bernoulli()</code> to explicitly indicate that each observation of our outcome is a Bernoulli random variable.</p>
 <p>To illustrate, let’s use a random sample from our <code>salespeople</code> dataset from <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the salespeople dataset</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the salespeople dataset</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a random sample of 100 observations</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 100 observations</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>salespeople_bayes <span class="ot">&lt;-</span> salespeople[<span class="fu">sample</span>(<span class="fu">nrow</span>(salespeople), <span class="dv">100</span>), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We are interested in how the sales, customer ratings and performance ratings of our 100 sales people affect their likelihood of promotion. We will fit a Bayesian binomial logistic regression model to this subset of data using the default flat priors.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Binomial Logistic Regression model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Bayesian binomial logistic regression model</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>uninf_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
@@ -508,10 +508,10 @@ Figure&nbsp;14.2: Posterior predictive check comparing the proportion of success
 </div>
 </section>
 <section id="bayesian-multinomial-logistic-regression" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="bayesian-multinomial-logistic-regression"><span class="header-section-number">14.2</span> Bayesian Multinomial Logistic Regression</h2>
+<h2 data-number="14.2" class="anchored" data-anchor-id="bayesian-multinomial-logistic-regression"><span class="header-section-number">14.2</span> Bayesian multinomial logistic regression</h2>
 <p>In <a href="multinomial_regression.html" class="quarto-xref"><span>Chapter 6</span></a>, we learned that multinomial logistic regression is used when the outcome variable is categorical with more than two categories that do not have a natural ordering. In this case, we model the log-odds of each category relative to a reference category as a linear function of our input variables. In a Bayesian framework, we can fit a multinomial logistic regression model using the <code>brms</code> package by specifying the family as <code>categorical()</code>. As usual we will take a sample from our <code>health_insurance</code> dataset from <a href="multinomial_regression.html" class="quarto-xref"><span>Chapter 6</span></a> to illustrate.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the health insurance dataset</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the health insurance dataset</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -519,7 +519,7 @@ Figure&nbsp;14.2: Posterior predictive check comparing the proportion of success
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>health_insurance_bayes <span class="ot">&lt;-</span> health_insurance[<span class="fu">sample</span>(<span class="fu">nrow</span>(health_insurance), <span class="dv">100</span>), ]</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Multinomial Logistic Regression model with flat priors</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Bayesian Multinomial Logistic Regression model with flat priors</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>uninf_multinom_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> position_level <span class="sc">+</span> gender <span class="sc">+</span> absent,</span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance_bayes,</span>
@@ -657,7 +657,7 @@ Figure&nbsp;14.3: Posterior predictive check comparing the proportions of each p
 </div>
 <p>We could then refit the model with this prior specified using the <code>prior</code> argument in the <code>brm()</code> function.</p>
 <section id="bayesian-ordinal-logistic-regression" class="level3" data-number="14.2.1">
-<h3 data-number="14.2.1" class="anchored" data-anchor-id="bayesian-ordinal-logistic-regression"><span class="header-section-number">14.2.1</span> Bayesian Ordinal Logistic Regression</h3>
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="bayesian-ordinal-logistic-regression"><span class="header-section-number">14.2.1</span> Bayesian ordinal logistic regression</h3>
 <p>In <a href="ordinal_regression.html" class="quarto-xref"><span>Chapter 7</span></a>, we learned that ordinal logistic regression is used when the outcome variable is categorical with more than two categories that have a natural ordering. In this case, we model the log-odds of being in a category less than or equal to a certain level as a linear function of our input variables. In particular, we focused on the proportional odds model, which assumes that the effect of each input variable is the same across all thresholds of the outcome variable, allowing us to have a single coefficient for each input variable to indicate the strength of effect on the log-odds of being in a higher category in general. We also learned that it is essential to check the proportional odds assumption when fitting a proportional odds logistic regression model, as violation of this assumption can lead to false inferences from the model.</p>
 <p>In a Bayesian framework, we can fit a proportional odds logistic regression model using the <code>brms</code> package by specifying the family as <code>cumulative()</code>, representing a cumulative logistic model. As usual we will take a sample from our <code>soccer</code> dataset from <a href="ordinal_regression.html" class="quarto-xref"><span>Chapter 7</span></a> to illustrate. We are aiming to estimate the effect of numerous factors on the discliplinary record of a player in a game - a three level ordinal outcome: “None” for no discipline, “Yellow” for a formal warning and “Red” for a sending-off. As with the <code>polr()</code> function for the frequentist proportional odds logistic regression model, <code>brms</code> will expect us to ensure our outcome variable is an ordinal factor.</p>
 <div class="cell">
@@ -675,7 +675,7 @@ Figure&nbsp;14.3: Posterior predictive check comparing the proportions of each p
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"None"</span>, <span class="st">"Yellow"</span>, <span class="st">"Red"</span>)</span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian proportional odds Logistic Regression model with flat priors</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Bayesian proportional odds logistic regression model with flat priors</span></span>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>uninf_polr_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> discipline <span class="sc">~</span> .,</span>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> soccer_bayes,</span>
@@ -716,9 +716,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 </div>
 <p>Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of being in a higher discipline category.</p>
-<p>In a Bayesian regression framework, an effective way to test the proportional odds assumption is to run an alternative model that does not assume proportional odds, and then compare the two models using information criteria such as from Leave-One-Out Cross-Validation (LOO-CV) . If the non-proportional odds model has a significantly better fit according to these criteria, it suggests that the proportional odds assumption may be violated. A common alternative model for ordinal regression is an adjacent category model. Here is how we can fit an adjacent category ordinal model in <code>brms</code>.</p>
+<p>In a Bayesian regression framework, an effective way to test the proportional odds assumption is to run an alternative model that does not assume proportional odds, and then compare the two models using information criteria such as from leave-one-out cross-validation (LOO-CV) . If the non-proportional odds model has a significantly better fit according to these criteria, it suggests that the proportional odds assumption may be violated. A common alternative model for ordinal regression is an adjacent category model. Here is how we can fit an adjacent category ordinal model in <code>brms</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian adjacent category Logistic Regression model with flat priors</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Bayesian adjacent category logistic regression model with flat priors</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>uninf_acat_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> discipline <span class="sc">~</span> .,</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> soccer_bayes,</span>
@@ -741,11 +741,11 @@ uninf_acat_model -1.2       1.8   </code></pre>
 </section>
 </section>
 <section id="bayesian-poisson-and-negative-binomial-regression" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="bayesian-poisson-and-negative-binomial-regression"><span class="header-section-number">14.3</span> Bayesian Poisson and Negative Binomial Regression</h2>
+<h2 data-number="14.3" class="anchored" data-anchor-id="bayesian-poisson-and-negative-binomial-regression"><span class="header-section-number">14.3</span> Bayesian Poisson and negative binomial regression</h2>
 <p>In <a href="poisson_nb.html" class="quarto-xref"><span>Chapter 8</span></a>, we learned that Poisson regression is used when the outcome variable is a count of events that occur in a fixed period of time or space. We model the log of the expected count as a linear function of our input variables, to ensure that the count outcomes are always non-negative. This means that when we exponentiate the coefficients of our model, we see that the effects of the input variables are multiplicative on the count outcome. We also learned that Poisson regression assumes that the mean and variance of the outcome variable are equal, which may not hold in practice. When the variance exceeds the mean, we have overdispersion, which can lead to underestimated standard errors and misleading inferences from the model. In such cases, negative binomial regression can be used as an alternative, as it includes an additional shape parameter <span class="math inline">\(\theta\)</span> to account for overdispersion.</p>
 <p>In a Bayesian framework, we can fit a Poisson regression model using the <code>brms</code> package by specifying the family as <code>poisson()</code>. As usual we will take a sample from our <code>absenteeism</code> dataset from <a href="poisson_nb.html" class="quarto-xref"><span>Chapter 8</span></a> to illustrate.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the absenteeism dataset</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the absenteeism dataset</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/absenteeism.csv"</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>absenteeism <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -753,7 +753,7 @@ uninf_acat_model -1.2       1.8   </code></pre>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>absenteeism_bayes <span class="ot">&lt;-</span> absenteeism[<span class="fu">sample</span>(<span class="fu">nrow</span>(absenteeism), <span class="dv">100</span>), ]</span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Poisson Regression model with flat priors</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Bayesian Poisson regression model with flat priors</span></span>
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>uninf_poisson_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
 <span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
 <span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism_bayes,</span>
@@ -807,7 +807,7 @@ Figure&nbsp;14.4: Posterior predictive check for the Bayesian Poisson regression
 </div>
 <p>We can see some issues with our predictive fit. This suggests that we may have overdispersion in our data. We can address this by fitting a negative binomial regression model instead, which we can do in <code>brms</code> by specifying the family as <code>negbinomial()</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Negative Binomial Regression model with flat priors</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Bayesian negative binomial regression model with flat priors</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>uninf_negbin_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> days_absent <span class="sc">~</span> tenure <span class="sc">+</span> is_manager <span class="sc">+</span> performance_rating,</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> absenteeism_bayes,</span>
@@ -877,12 +877,12 @@ uninf_poisson_model -211.6      41.7 </code></pre>
 </div>
 <p>Note that zero-inflated versions of both Poisson and negative binomial regression models can also be fit in <code>brms</code> by specifying the families as <code>zero_inflated_poisson()</code> and <code>zero_inflated_negbinomial()</code> respectively. These models will generate the posterior of an additional zero-inflation parameter <code>zi</code>, representing the probability that a zero observation is an “excess zero”.</p>
 </section>
-<section id="bayesian-mixed-effects-models" class="level2" data-number="14.4">
-<h2 data-number="14.4" class="anchored" data-anchor-id="bayesian-mixed-effects-models"><span class="header-section-number">14.4</span> Bayesian Mixed Effects Models</h2>
-<p>In <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a>, we learned that mixed effects models (also known as multilevel or hierarchical models) are used when our data has a hierarchical structure, such as students nested within schools or employees nested within departments. These models allow us to account for the non-independence of observations within groups by including random effects that capture the variability between groups. In a Bayesian framework, we can fit mixed effects models using the <code>brms</code> package by specifying random effects in the model formula using the <code>(1 | group_variable)</code> syntax which we learned in <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a>. There is no need to specify a different family for mixed effects models in <code>bems</code>; we simply include the random effects in the formula and apply the appropriate model family for the outcome variable type.</p>
+<section id="bayesian-nixed-effects-models" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="bayesian-nixed-effects-models"><span class="header-section-number">14.4</span> Bayesian nixed effects models</h2>
+<p>In <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a>, we learned that mixed effects models (also known as multilevel or hierarchical models) are used when our data has a hierarchical structure, such as students nested within schools or employees nested within departments. These models allow us to account for the non-independence of observations within groups by including random effects that capture the variability between groups. In a Bayesian framework, we can fit mixed effects models using the <code>brms</code> package by specifying random effects in the model formula using the <code>(1 | group_variable)</code> syntax which we learned in <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a>. There is no need to specify a different family for mixed effects models in <code>brms</code>; we simply include the random effects in the formula and apply the appropriate model family for the outcome variable type.</p>
 <p>To illustrate, let’s use a random sample from our <code>speed_dating</code> dataset from <a href="hierarchical_data.html" class="quarto-xref"><span>Chapter 9</span></a> and run a Bayesian binomial mixed effects model to understand how the various factors considered by individuals over multiple speed dates relate to the overall binary decision they made about their dates.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the speed dating dataset</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the speed dating dataset</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -893,14 +893,13 @@ uninf_poisson_model -211.6      41.7 </code></pre>
 <span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>speed_dating_bayes <span class="ot">&lt;-</span> speed_dating[<span class="fu">sample</span>(<span class="fu">nrow</span>(speed_dating), <span class="dv">1000</span>), ]</span>
 <span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Binomial Logistic Mixed Effects model with flat priors</span></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>uninf_mixed_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> speed_dating_bayes,</span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="co"># for binary outcome variable</span></span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>, <span class="at">group =</span> <span class="cn">TRUE</span>) <span class="co"># save group-level parameters</span></span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Bayesian Binomial Logistic Mixed Effects model with flat priors</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>uninf_mixed_binomial_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> speed_dating_bayes,</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="co"># for binary outcome variable</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="st">'all'</span>, <span class="at">group =</span> <span class="cn">TRUE</span>) <span class="co"># save group-level parameters</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we can view our summary.</p>
 <div class="cell">
@@ -932,14 +931,14 @@ and Tail_ESS are effective sample size measures, and Rhat is the potential
 scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 </div>
-<p>Here we can see the posterior coefficient distributions for each fixed effect, representing the effect of a unit change in that variable on the log-odds of a positive decision about a date. We can also see the estimated standard deviation of the random intercepts for each individual under the Multilevel Hyperparameters, which captures the variability in baseline log-odds of a positive decision across individuals. A posterior predictive check can be done in the same way as for a standard Bayesian binomial logistic regression model.</p>
+<p>Here we can see the posterior coefficient distributions for each fixed effect, representing the effect of a unit change in that variable on the log-odds of a positive decision about a date. We can also see the estimated standard deviation of the random intercepts for each individual under the <code>Multilevel Hyperparameters</code>, which captures the variability in baseline log-odds of a positive decision across individuals. A posterior predictive check can be done in the same way as for a standard Bayesian binomial logistic regression model.</p>
 </section>
 <section id="bayesian-cox-proportional-hazards-models" class="level2" data-number="14.5">
-<h2 data-number="14.5" class="anchored" data-anchor-id="bayesian-cox-proportional-hazards-models"><span class="header-section-number">14.5</span> Bayesian Cox Proportional Hazards Models</h2>
+<h2 data-number="14.5" class="anchored" data-anchor-id="bayesian-cox-proportional-hazards-models"><span class="header-section-number">14.5</span> Bayesian Cox proportional hazards models</h2>
 <p>In <a href="survival_analysis.html" class="quarto-xref"><span>Chapter 10</span></a>, we learned that Cox proportional hazards models are used in survival analysis to model an event that occurs over time, such as employee turnover or customer churn. These models estimate the hazard function, which represents the instantaneous risk of the event occurring at a given time, conditional on survival up to that time. The Cox model assumes that the hazard ratios between individuals are proportional over time, allowing us to estimate the effect of input variables on the hazard function without specifying the baseline hazard function.</p>
 <p>In a Bayesian framework, we can fit Cox proportional hazards models using the <code>brms</code> package by specifying the family as <code>cox()</code>. If your data contains censored observations, the model formula should take the general form <code>time | cens(1 - event) ~ x1 + x2 + ...</code>, where <code>time</code> is the variable indicating the time of the observation and <code>event</code> is the binary variable indicating if the event had occurred. As usual we will take a sample from our <code>job_retention</code> dataset from <a href="survival_analysis.html" class="quarto-xref"><span>Chapter 10</span></a> to illustrate.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the job retention dataset</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the job retention dataset</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/job_retention.csv"</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>job_retention <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -947,7 +946,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>job_retention_bayes <span class="ot">&lt;-</span> job_retention[<span class="fu">sample</span>(<span class="fu">nrow</span>(job_retention), <span class="dv">1000</span>), ]</span>
 <span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Bayesian Cox Proportional Hazards model with flat priors</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Bayesian Cox Proportional Hazards model with flat priors</span></span>
 <span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>uninf_cox_model <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
 <span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> month <span class="sc">|</span> <span class="fu">cens</span>(<span class="dv">1</span> <span class="sc">-</span> left) <span class="sc">~</span> gender <span class="sc">+</span> </span>
 <span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    field <span class="sc">+</span> level <span class="sc">+</span> sentiment,</span>
@@ -1000,7 +999,13 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="fitting-other-regression-models-using-python" class="level2" data-number="14.6">
 <h2 data-number="14.6" class="anchored" data-anchor-id="fitting-other-regression-models-using-python"><span class="header-section-number">14.6</span> Fitting other regression models using Python</h2>
-<p>To fit similar models using Python, we can use <code>bambi</code> for model specification and fitting with <code>arviz</code> for summarizing and visualizing posteriors. The workflow is very similar to that which we described in <a href="bayesian_linear_regression.html#sec-py-linear-bayes" class="quarto-xref"><span>Section 13.8</span></a>, but specifying the appropriate model type in <code>bambi</code> using the <code>family</code> argument in the <code>Model()</code> constructor. The following table gives the corresponding family names in <code>bambi</code> for various regression models we have discussed in this chapter:</p>
+<p>To fit similar models using Python, we can use <code>bambi</code> for model specification and fitting with <code>arviz</code> for summarizing and visualizing posteriors. The workflow is very similar to that which we described in <a href="bayesian_linear_regression.html#sec-py-linear-bayes" class="quarto-xref"><span>Section 13.8</span></a>, but specifying the appropriate model type in <code>bambi</code> using the <code>family</code> argument in the <code>Model()</code> constructor. <a href="#tbl-bambi-models" class="quarto-xref">Table&nbsp;<span>14.1</span></a> gives the corresponding family names in <code>bambi</code> for various regression models we have discussed in this chapter:</p>
+<div id="tbl-bambi-models" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-bambi-models-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;14.1
+</figcaption>
+<div aria-describedby="tbl-bambi-models-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1031,23 +1036,26 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </tr>
 </tbody>
 </table>
-<p>As an example, to fit our Bayesian binomial logistic regression model from <a href="#sec-bayes-bin-log-reg" class="quarto-xref"><span>Section 14.1</span></a> in this chapter using <code>bambi</code> in Python, first we specify a and build the model.</p>
+</div>
+</figure>
+</div>
+<p>As an example, to fit our Bayesian binomial logistic regression model from <a href="#sec-bayes-bin-log-reg" class="quarto-xref"><span>Section 14.1</span></a> in this chapter using <code>bambi</code> in Python, first we specify and build the model.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bambi <span class="im">as</span> bmb</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the salespeople dataset</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the salespeople dataset</span></span>
 <span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
 <span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> pd.read_csv(url)</span>
 <span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># remove rows with NAs</span></span>
 <span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> salespeople.dropna()</span>
 <span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a random sample of 100 observations</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="co"># take a random sample of 100 observations</span></span>
 <span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>salespeople_bayes <span class="op">=</span> salespeople.sample(n<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span>
 <span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="co"># spwecify uninformed Bayesian Binomial Logistic Regression model</span></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="co"># spwecify uninformed Bayesian binomial logistic regression model</span></span>
 <span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>uninf_binomial_model <span class="op">=</span> bmb.Model(</span>
 <span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">"promoted ~ sales + customer_rate + performance"</span>,</span>
 <span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>salespeople_bayes,</span>
@@ -1107,7 +1115,7 @@ performance    0.197  0.346  -0.448  ...   52186.0   33108.0    1.0
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-py-bayes-bin-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14.6: Posterior distributions of the coefficients for the Bayesian Binomial Logistic Regression model using <code>bambi</code> in Python.
+Figure&nbsp;14.6: Posterior distributions of the coefficients for the Bayesian binomial logistic regression model fitted using <code>bambi</code> in Python.
 </figcaption>
 </figure>
 </div>
@@ -1129,7 +1137,7 @@ Figure&nbsp;14.6: Posterior distributions of the coefficients for the Bayesian B
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-py-bayes-bin-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14.7: Posterior predictive check comparing the proportion of successes in the observed data to that in the posterior predictive simulations for the Bayesian Binomial Logistic Regression model using <code>bambi</code> in Python.
+Figure&nbsp;14.7: Posterior predictive check comparing the proportion of successes in the observed data to that in the posterior predictive simulations for the Bayesian binomial logistic regression model fitted using <code>bambi</code> in Python.
 </figcaption>
 </figure>
 </div>
@@ -1154,7 +1162,7 @@ Figure&nbsp;14.7: Posterior predictive check comparing the proportion of success
 <p>For each of the earlier (frequentist) chapters on the methods outlined in this chapter, use the problem and dataset provided in the exercises at the end of each chapter.</p>
 <ol type="1">
 <li><p>Generate two smaller versions of the dataset by taking random samples of the rows - aim for around 10-20% of the original observations in each dataset. Don’t forget to remove your first sample before taking the second sample.</p></li>
-<li><p>Fit a Bayesian version of the appropriate regression model using the first dataset using flat priors.</p></li>
+<li><p>Fit a Bayesian version of the appropriate regression model using the first dataset and flat priors.</p></li>
 <li><p>Visualize and examine the posterior distributions of the coefficients and interpret them in the context of the problem.</p></li>
 <li><p>For each model, conduct appropriate posterior predictive checks to assess the fit of the model to the data. Comment on the results. Are you comfortable that the model is a good fit?</p></li>
 <li><p>If you are concerned about the fit, experiment with alternative model specifications to improve the fit. Justify your choices and comment on the results.</p></li>
