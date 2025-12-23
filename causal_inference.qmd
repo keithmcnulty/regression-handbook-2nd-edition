@@ -755,7 +755,7 @@ median_effect_causal <- median(posterior_samples_causal[,"b_Test"])
 (odds_ratio_causal <- exp(median_effect_causal))
 ```
 
-The suggests a median causal effect of a `r round(odds_ratio_causal - 1, 2)*100`% increase in the odds of being hired for each additional point scored on the test, which is only about one-third of the effect suggested by our earlier naive model. The analysis that has been informed by our DAG gives us much lower confidence that the test is making a meaningful contribution to the hiring decision.   Controlling for our confounder `GPA` has had a major impact on our estimate.
+The suggests a median causal effect of a `r round(odds_ratio_causal - 1, 2)*100`% increase in the odds of being hired for each additional point scored on the test, which is only about one third of the effect suggested by our earlier naive model. The analysis that has been informed by our DAG gives us much lower confidence that the test is making a meaningful contribution to the hiring decision.   Controlling for our confounder `GPA` has had a major impact on our estimate.
 
 ## Causal inference using DAGs in Python
 
