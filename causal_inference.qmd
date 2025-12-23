@@ -387,7 +387,7 @@ ggdag(dag, stylized = TRUE) +
 DAG representing beliefs about causal relationships between a hiring decision, test, interview, presentation and GPA.
 :::
 
-Let's identify all the paths between `Test` and `Hire` and use the backdoor criterion find a sufficient adjustment set using the backdoor criterion.
+Let's identify all the paths between `Test` and `Hire` and use the backdoor criterion to find a sufficient adjustment set.
 
 *   **Path 1 (the causal path):** `Test -> Hire`. We want to keep this path open.  It is causal because it flows in the direction of the arrows from treatment variable to outcome variable.
 *   **Path 2 (q backdoor path):** `Test <- GPA -> Int -> Hire`. This is a classic confounding path through `GPA`. It's a fork, with a chain from `GPA` to `Hire`. To block it, we have two options. We can condition on the common cause `GPA`, and then we do not need to condition on `Int` because by conditioning on `GPA` we have already blocked the backdoor path.  Alternatively, we can condition on `Int` to block the path through the chain.

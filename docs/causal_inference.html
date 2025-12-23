@@ -642,7 +642,7 @@ Figure&nbsp;15.3: DAG representing beliefs about causal relationships between a 
 </figcaption>
 </figure>
 </div>
-<p>Let’s identify all the paths between <code>Test</code> and <code>Hire</code> and use the backdoor criterion find a sufficient adjustment set using the backdoor criterion.</p>
+<p>Let’s identify all the paths between <code>Test</code> and <code>Hire</code> and use the backdoor criterion to find a sufficient adjustment set.</p>
 <ul>
 <li><strong>Path 1 (the causal path):</strong> <code>Test -&gt; Hire</code>. We want to keep this path open. It is causal because it flows in the direction of the arrows from treatment variable to outcome variable.</li>
 <li><strong>Path 2 (q backdoor path):</strong> <code>Test &lt;- GPA -&gt; Int -&gt; Hire</code>. This is a classic confounding path through <code>GPA</code>. It’s a fork, with a chain from <code>GPA</code> to <code>Hire</code>. To block it, we have two options. We can condition on the common cause <code>GPA</code>, and then we do not need to condition on <code>Int</code> because by conditioning on <code>GPA</code> we have already blocked the backdoor path. Alternatively, we can condition on <code>Int</code> to block the path through the chain.</li>

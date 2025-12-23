@@ -555,19 +555,16 @@ Note that it is not currently possible to do posterior predictive checks for Cox
 
 ## Fitting other regression models using Python
 
-To fit similar models using Python, we can use `bambi` for model specification and fitting with `arviz` for summarizing and visualizing posteriors.  The workflow is very similar to that which we described in @sec-py-linear-bayes, but specifying the appropriate model type in `bambi` using the `family` argument in the `Model()` constructor.  @tbl-bambi-models gives the corresponding family names in `bambi` for various regression models we have discussed in this chapter:
-
-::: {#tbl-bambi-models}
+To fit similar models using Python, we can use `bambi` for model specification and fitting with `arviz` for summarizing and visualizing posteriors.  The workflow is very similar to that which we described in @sec-py-linear-bayes, but specifying the appropriate model type in `bambi` using the `family` argument in the `Model()` constructor.  The table below gives the corresponding family names in `bambi` for various regression models we have discussed in this chapter:
 
 | Regression Model                     | `bambi` Family Name          |
 |-------------------------------------|------------------------------|
-| Binomial Logistic Regression        | `Bernoulli`                  |
+| Linear Regression                   | `gaussian`                   |
+| Binomial Logistic Regression        | `bernoulli`                  |
 | Multinomial Logistic Regression     | `categorical`                |
 | Ordinal Logistic Regression         | `cumulative`                 |
 | Poisson Regression                  | `poisson`                    |
 | Negative Binomial Regression        | `negativebinomial`           |
-
-:::
 
 As an example, to fit our Bayesian binomial logistic regression model from @sec-bayes-bin-log-reg in this chapter using `bambi` in Python, first we specify and build the model.
 

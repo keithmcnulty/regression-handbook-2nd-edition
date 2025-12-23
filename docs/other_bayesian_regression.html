@@ -999,13 +999,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="fitting-other-regression-models-using-python" class="level2" data-number="14.6">
 <h2 data-number="14.6" class="anchored" data-anchor-id="fitting-other-regression-models-using-python"><span class="header-section-number">14.6</span> Fitting other regression models using Python</h2>
-<p>To fit similar models using Python, we can use <code>bambi</code> for model specification and fitting with <code>arviz</code> for summarizing and visualizing posteriors. The workflow is very similar to that which we described in <a href="bayesian_linear_regression.html#sec-py-linear-bayes" class="quarto-xref"><span>Section 13.8</span></a>, but specifying the appropriate model type in <code>bambi</code> using the <code>family</code> argument in the <code>Model()</code> constructor. <a href="#tbl-bambi-models" class="quarto-xref">Table&nbsp;<span>14.1</span></a> gives the corresponding family names in <code>bambi</code> for various regression models we have discussed in this chapter:</p>
-<div id="tbl-bambi-models" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-bambi-models-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;14.1
-</figcaption>
-<div aria-describedby="tbl-bambi-models-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p>To fit similar models using Python, we can use <code>bambi</code> for model specification and fitting with <code>arviz</code> for summarizing and visualizing posteriors. The workflow is very similar to that which we described in <a href="bayesian_linear_regression.html#sec-py-linear-bayes" class="quarto-xref"><span>Section 13.8</span></a>, but specifying the appropriate model type in <code>bambi</code> using the <code>family</code> argument in the <code>Model()</code> constructor. The table below gives the corresponding family names in <code>bambi</code> for various regression models we have discussed in this chapter:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1015,30 +1009,31 @@ Table&nbsp;14.1
 </thead>
 <tbody>
 <tr class="odd">
-<td>Binomial Logistic Regression</td>
-<td><code>Bernoulli</code></td>
+<td>Linear Regression</td>
+<td><code>gaussian</code></td>
 </tr>
 <tr class="even">
+<td>Binomial Logistic Regression</td>
+<td><code>bernoulli</code></td>
+</tr>
+<tr class="odd">
 <td>Multinomial Logistic Regression</td>
 <td><code>categorical</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Ordinal Logistic Regression</td>
 <td><code>cumulative</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Poisson Regression</td>
 <td><code>poisson</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Negative Binomial Regression</td>
 <td><code>negativebinomial</code></td>
 </tr>
 </tbody>
 </table>
-</div>
-</figure>
-</div>
 <p>As an example, to fit our Bayesian binomial logistic regression model from <a href="#sec-bayes-bin-log-reg" class="quarto-xref"><span>Section 14.1</span></a> in this chapter using <code>bambi</code> in Python, first we specify and build the model.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
