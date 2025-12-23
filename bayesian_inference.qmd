@@ -68,7 +68,7 @@ prior_df <- data.frame(theta_values, prior_distribution)
 
 ggplot(prior_df, aes(x = theta_values, y = prior_distribution)) +
   geom_line(color = "purple") +
-  geom_area(fill = "purple", alpha = 0.2) +
+  geom_area(fill = "purple", alpha = 0.4) +
   labs(x = "Pass Rate (θ)",
        y = "Density") +
   theme_minimal()
@@ -110,8 +110,8 @@ prior_df <- data.frame(theta = theta_values, density = unnormalized_prior)
 
 # plot the prior distribution
 ggplot(prior_df, aes(x = theta, y = density)) +
-  geom_line(color = "darkgreen") +
-  geom_area(fill = "darkgreen", alpha = 0.2) +
+  geom_line(color = "blue") +
+  geom_area(fill = "blue", alpha = 0.4) +
   labs(x = "Pass Rate (θ)",
        y = "Density") +
   theme_minimal()
@@ -162,8 +162,8 @@ likelihood_df <- data.frame(theta = theta_values, likelihood = likelihood_functi
 
 # plot the likelihood function
 ggplot(likelihood_df, aes(x = theta, y = likelihood)) +
-  geom_line(color = "blue") +
-  geom_area(fill = "blue", alpha = 0.2) +
+  geom_line(color = "magenta") +
+  geom_area(fill = "magenta", alpha = 0.4) +
   labs(x = "Pass Rate (θ)",
        y = "Likelihood") +
   theme_minimal()
@@ -193,8 +193,8 @@ posterior_df <- data.frame(theta = theta_values, density = posterior_distributio
 
 # plot the posterior distribution
 ggplot(posterior_df, aes(x = theta, y = density)) +
-  geom_line(color = "red") +
-  geom_area(fill = "red", alpha = 0.2) +
+  geom_line(color = "cyan") +
+  geom_area(fill = "cyan", alpha = 0.4) +
   labs(x = "Pass Rate (θ)",
        y = "Density") +
   theme_minimal()
@@ -220,9 +220,9 @@ combined_df <- data.frame(
 # plot prior, likelihood and posterior together in scaled density plot
 ggplot(combined_df, aes(x = theta, y = density, color = Type, fill = Type)) +
   geom_line(linewidth = 1, show.legend = FALSE) +
-  geom_area(alpha = 0.2, position = "identity") +
-  scale_color_manual(values = c("blue", "red", "darkgreen")) +
-  scale_fill_manual(values = c("blue", "red", "darkgreen")) +
+  geom_area(alpha = 0.4, position = "identity") +
+  scale_color_manual(values = c("magenta", "cyan", "blue")) +
+  scale_fill_manual(values = c("magenta", "cyan", "blue")) +
   labs(x = "Pass Rate (θ)",
        y = "Probability",
        fill = "Type") +
@@ -263,7 +263,7 @@ new_posterior_df <- data.frame(theta = theta_values, density = new_posterior_dis
 
 ggplot(new_posterior_df, aes(x = theta, y = density)) +
   geom_line(color = "purple") +
-  geom_area(fill = "purple", alpha = 0.2) +
+  geom_area(fill = "purple", alpha = 0.4) +
   labs(x = "Pass Rate (θ)",
        y = "Probability") +
   theme_minimal()
