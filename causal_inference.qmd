@@ -490,9 +490,11 @@ Posterior distribution of the coefficient for `Test` from a naive Bayesian logis
 # calculate probability that coefficient is positive
 posterior_samples_naive <- as.data.frame(naive_model)
 prob_positive_naive <- mean(posterior_samples_naive$b_Test > 0)
+median_effect_naive <- median(posterior_samples_naive$b_Test)
+odds_ratio_naive <- exp(median_effect_naive)
 ```
 
-This naive model suggests a high probability (`r round(prob_positive_naive*100, 1)`%) that the test has a positive effect on the log odds of being hired, giving us a degree of confidence that the test is providing a meaningful contribution to the hiring decision.   However, we have no idea how much of this effect is a direct causal effect.  There may be confounding variables biasing this estimate.  To determine what variables to control for, we need to define our causal model using a DAG.
+This naive model suggests a high probability (`r round(prob_positive_naive*100, 1)`%) that the test has a positive effect on the log odds of being hired.  The median effect of `r round(median_effect_naive, 2)`, when converted to an odds ratio, suggests that each additional point scored on the test increases the odds of being hired by `r round(odds_ratio_naive - 1, 2)*100`%.   This gives us a degree of confidence that the test is providing a meaningful contribution to the hiring decision.   However, we have no idea how much of this effect is a direct causal effect.  There may be confounding variables biasing this estimate.  To determine what variables to control for, we need to define our causal model using a DAG.
 
 We have a hypothesized causal model for how these variables relate to each other, as shown earlier in @fig-dagcomplex. We want to estimate the causal effect of `Test` on `Hire`. According to our earlier manual backdoor analysis, we should find that we are able to do this by controlling for either `GPA` alone, or for both `Int` and `Pres`.
 
@@ -506,7 +508,7 @@ library(dagitty)
 
 selection_dag_string <- "dag {
   GPA
-  Hire [Outcone]
+  Hire [Outcome]
   Pres
   Int
   Test [Exposure]
@@ -745,7 +747,15 @@ posterior_samples_causal <- as.matrix(model_causal)
 (prob_positive <- mean(posterior_samples_causal[,"b_Test"] > 0))
 ```
 
-This indicates that there is a `r round(prob_positive*100, 1)`% probability that the test score has a positive causal effect on the log odds of being hired.  This is a big difference from our earlier naive estimation, and gives us much lower confidence that the test is making a meaningful contribution to the hiring decision.   Controlling for our confounder `GPA` has had a major impact on our estimate.
+This indicates that there is a `r round(prob_positive*100, 1)`% probability that the test score has a positive causal effect on the log odds of being hired.  We can also determine the median effect of `Test` on `Hire`, and convert this to an odds ratio.
+
+```{r}
+# calculate the median effect of Test on Hire
+median_effect_causal <- median(posterior_samples_causal[,"b_Test"])
+(odds_ratio_causal <- exp(median_effect_causal))
+```
+
+The suggests a median causal effect of a `r round(odds_ratio_causal - 1, 2)*100`% increase in the odds of being hired for each additional point scored on the test, which is only about one-third of the effect suggested by our earlier naive model. The analysis that has been informed by our DAG gives us much lower confidence that the test is making a meaningful contribution to the hiring decision.   Controlling for our confounder `GPA` has had a major impact on our estimate.
 
 ## Causal inference using DAGs in Python
 
