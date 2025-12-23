@@ -194,8 +194,7 @@ Although the default priors are generally fit for purpose in the `brm()` functio
 
 This suggests that we could propose an informative prior for our Year 1 coefficient in our model.  We can do this using the `prior()` function in `brms`.  Let's specify a normal prior for the `Yr1` coefficient centered around 0 to reflect our belief that it has a weak or null effect on Final year scores.  Let's also specify a very narrow standard deviation to indicate a strong belief.
 
-To assign a prior to a specific parameter in the `prior()` function, we use the `class` and `coef` arguments.  The `class` argument indicates the type of parameter (`b` for slope coefficients, `Intercept` for the intercept, `sigma` for the residual standard deviation), while the `coef` argument specifies which `b` variable the prior applies to. 
-If needed, upper and lower bounds can be set on classes of parameters using the `ub` and `lb` arguments respectively.  For any parameters not explicitly assigned a prior, `brms` will use the default priors.
+To assign a prior to a specific parameter in the `prior()` function, we use the `class` and `coef` arguments.  The `class` argument indicates the type of parameter (`b` for slope coefficients, `Intercept` for the intercept, `sigma` for the residual standard deviation), while the `coef` argument specifies which `b` variable the prior applies to. If needed, upper and lower bounds can be set on classes of parameters using the `ub` and `lb` arguments respectively.  For any parameters not explicitly assigned a prior, `brms` will use the default priors.
 
 
 ```{r}
