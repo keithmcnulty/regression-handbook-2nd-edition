@@ -155,7 +155,7 @@ This output means that the following priors have been used in our initial model:
 
 *  **Intercept Coefficient**: A Student-$t$ distribution with 3 degrees of freedom, and with the mean and scale automatically determined based on the data.
 *  **'Slope' Coefficients (`class = b`)**: A Uniform distribution across all real numbers, each with equal probability.  This is effectively the "flat" prior, indicating no ingoing knowledge about the coefficients.
-*  **Residual standard deviation (`sigma`)**: A Student-$t$ distribution with 3 degrees of freedom, and with the scale automatically determined based on the data.  Note that the `lb` column for this prior contains zero.  The `lb` and `ub` columns set lower and upper bounds for the prior.  Therefore in this case we actually have a half-distribution with a lower bound of zero to reflect that fact that `sigma` must be positive.
+*  **Residual standard deviation (`sigma`)**: A Student-$t$ distribution with 3 degrees of freedom, and with the scale automatically determined based on the data.  Note that the `lb` column for this prior contains zero.  The `lb` and `ub` columns set lower and upper bounds for the prior^[Note that lower and upper bounds can only be set at the class level in `brms` and cannot be set for individual slope coefficient priors.].  Therefore in this case we actually have a half-distribution with a lower bound of zero to reflect that fact that `sigma` must be positive.
 
 ### Interpreting the Results {#sec-bayes-reg-interpret}
 
@@ -194,7 +194,7 @@ Although the default priors are generally fit for purpose in the `brm()` functio
 
 This suggests that we could propose an informative prior for our Year 1 coefficient in our model.  We can do this using the `prior()` function in `brms`.  Let's specify a normal prior for the `Yr1` coefficient centered around 0 to reflect our belief that it has a weak or null effect on Final year scores.  Let's also specify a very narrow standard deviation to indicate a strong belief.
 
-To assign a prior to a specific parameter in the `prior()` function, we use the `class` and `coef` arguments.  The `class` argument indicates the type of parameter (`b` for slope coefficients, `Intercept` for the intercept, `sigma` for the residual standard deviation), while the `coef` argument specifies which `b` variable the prior applies to.  For any parameters not explicitly assigned a prior, `brms` will use the default priors.
+To assign a prior to a specific parameter in the `prior()` function, we use the `class` and `coef` arguments.  The `class` argument indicates the type of parameter (`b` for slope coefficients, `Intercept` for the intercept, `sigma` for the residual standard deviation), while the `coef` argument specifies which `b` variable the prior applies to. If needed, upper and lower bounds can be set on classes of parameters using the `ub` and `lb` arguments respectively.  For any parameters not explicitly assigned a prior, `brms` will use the default priors.
 
 
 ```{r}
@@ -203,7 +203,6 @@ To assign a prior to a specific parameter in the `prior()` function, we use the 
 # define informative priors on the Yr1 coefficient
 priors <- c(
   prior(normal(0, 0.05), class = b, coef = Yr1)
-  # use lb and ub arguments to set bounds if needed
 )
 
 # run an informed model with this prior
@@ -362,7 +361,7 @@ There are a number of ways we can compare the fit of Bayesian linear models. Som
 
 We can calculate a Bayesian version of $R^2$. Unlike the single number in OLS regression, a set of values are drawn from our posterior coefficients, each allowing a calculation of the variance explained, and this provides a distribution for our $R^2$.   `brms` provides a convenient function `bayes_R2()` to compute this.  Let's use it to compare the fit of our models.
 
-::: {#bayes-r2-plot}
+::: {#fig-bayes-r2-plot}
 
 ```{r}
 # calculate full posterior R-squareds based on 1000 draws
@@ -391,7 +390,7 @@ Posterior distributions of Bayesian $R^2$ for our three models.  Note that the g
 
 :::
 
-In @fig-bayes-r2-plot,we can see that our simple model has a very poor fit compared to both full models, which seem to be very similar in fit.  
+In @fig-bayes-r2-plot, we can see that our simple model has a very poor fit compared to both full models, which seem to be very similar in fit.  
 
 ### LOO Cross-Validation
 
