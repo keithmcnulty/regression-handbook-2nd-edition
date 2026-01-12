@@ -127,6 +127,15 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-N7JZGMVRZK', { 'anonymize_ip': true});
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -158,6 +167,18 @@ window.Quarto = {
 };
 </script>
 
+<meta property="og:title" content="10&nbsp; Survival Analysis for Modeling Singular Events Over Time – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/survival_analysis_files/figure-html/unnamed-chunk-5-1.png">
+<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1344">
+<meta name="twitter:title" content="10&nbsp; Survival Analysis for Modeling Singular Events Over Time – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/survival_analysis_files/figure-html/unnamed-chunk-5-1.png">
+<meta name="twitter:image-height" content="960">
+<meta name="twitter:image-width" content="1344">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -685,7 +706,7 @@ Figure&nbsp;10.2: Schoenfeld test on proportional hazard assumption for <code>co
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Be patient. The program is computing ... 
-The program took 0.78 seconds </code></pre>
+The program took 0.79 seconds </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
@@ -830,7 +851,7 @@ Figure&nbsp;10.4: Survival curves by sentiment category in the <code>job_retenti
    number of observations = 3770
 number of events observed = 1354
    partial log-likelihood = -10724.52
-         time fit was run = 2025-12-17 23:41:22 UTC
+         time fit was run = 2026-01-12 14:41:05 UTC
 
 ---
                             coef exp(coef)  se(coef)  coef lower 95%  coef upper 95% exp(coef) lower 95% exp(coef) upper 95%
@@ -1039,7 +1060,7 @@ Collett, David. 2015. <em>Modelling Survival Data in Medical Research</em>.
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book-2nd-edition\.org\/");
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book\.org\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

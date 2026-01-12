@@ -5,6 +5,7 @@ project:
   - CNAME
   - .nojekyll
   - data/*
+  - www/*
 
 execute:
   warning: false
@@ -17,12 +18,16 @@ book:
   page-footer:
     right: |
       This book was built with <a href="https://quarto.org/">Quarto</a>.
+  image: www/cover/coverpage.png
   cover-image: www/cover/coverpage.png
   favicon: www/cover/coverpage-og.png
-  site-url: https://peopleanalytics-regression-book-2nd-edition.org/
+  twitter-card: true
+  open-graph: true
+  site-url: https://peopleanalytics-regression-book.org/
   repo-url: https://github.com/keithmcnulty/regression-handbook-2nd-edition
   repo-branch: main
   repo-actions: [edit, issue]
+  google-analytics: "G-N7JZGMVRZK"
   chapters:
     - index.qmd
     - foreword.qmd

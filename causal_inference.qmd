@@ -1,4 +1,4 @@
-# Causal Inference - Moving From Association to Causation
+# Causal Inference - Moving From Association to Causation {#sec-causal-inference}
 
 ```{r}
 #| echo: false

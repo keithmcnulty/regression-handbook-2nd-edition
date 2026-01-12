@@ -72,8 +72,29 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-N7JZGMVRZK', { 'anonymize_ip': true});
+</script>
 
 
+<meta property="og:title" content="16&nbsp; Further Exercises for Practice – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage.png">
+<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:image:height" content="1896">
+<meta property="og:image:width" content="1193">
+<meta name="twitter:title" content="16&nbsp; Further Exercises for Practice – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage.png">
+<meta name="twitter:image-height" content="1896">
+<meta name="twitter:image-width" content="1193">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -303,8 +324,9 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This final chapter contains a set of scenarios and exercises that will allow you to put into further practice some of the techniques you have learned in this book, and are supplementary to the exercises provided at the end of each of the earlier chapters. All the exercises are based on data that is available in the <code>peopleanalyticsdata</code> package in R, or alternatively can be downloaded from the internet. While the scenarios are fictitious, they are intended to represent typical questions and situations that arise when doing statistical modeling in people analytics.</p>
+<p>This final chapter contains a set of scenarios and exercises that will allow you to put into further practice some of the techniques you have learned in this book, and are supplementary to the exercises provided at the end of each of the earlier chapters. All the exercises are based on data that is available in the <code>peopleanalyticsdata</code> package in R or Python, or alternatively can be downloaded from the internet. While the scenarios are fictitious, they are intended to represent typical questions and situations that arise when doing statistical modeling in people analytics.</p>
 <p>As you work through these scenarios, I encourage you to document your work using either an R Markdown document or a Jupyter Notebook if you prefer. This will help you keep a record of your method, approach and code in case you need to put it into practice again in the future. It will also make it easy for you to share your work with others (for example by putting it in a Github repository), which will allow you to collaborate, discuss and open your work to critique. If you are starting out on your analytics journey, exposing your work to others is one of the best ways to learn. If you are more experienced, then there are others that will undoubtedly benefit from seeing how you went about solving these problems.</p>
+<p>If you have studied the later chapters of this book, I also encourage you to consider using some of the more advanced modeling techniques you have learned in those chapters to solve these problems. For example, experiment with taking smaller samples from the datasets and using Bayesian methods to express the uncertainty that comes with these smaller samples. Consider proposing a causal model for the data if you think one may be appropriate. Test whether the data supports your causal model, and estimate any notable causal effects you may be interested in.</p>
 <section id="analyzing-graduate-salaries" class="level2" data-number="16.1">
 <h2 data-number="16.1" class="anchored" data-anchor-id="analyzing-graduate-salaries"><span class="header-section-number">16.1</span> Analyzing graduate salaries</h2>
 <p>Graduate salary levels are important economic indicators of the value of tertiary education. They can provide important insight about the value of education to employers or to the economy as a whole. When studied in detail they can highlight which particular disciplines have higher or lower levels of demand for graduates, and they can be important factors in determining what subjects or majors students choose to specialize in.</p>
@@ -593,7 +615,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book-2nd-edition\.org\/");
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book\.org\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

@@ -2,7 +2,7 @@
 
 Welcome to the website for the book *Handbook of Regression Modeling in People Analytics (2nd Edition)* by [Keith McNulty](https://www.linkedin.com/in/keith-mcnulty/).  
 
-This new edition is to be published by Chapman & Hall/CRC Press in 2026.   The online version of this book is free to read here (thanks to Chapman & Hall/CRC Press), and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). If you have any feedback, please feel free to [file an issue on GitHub](https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues). Thank you!
+This new edition is to be published by Chapman & Hall/CRC Press later in 2026.  The first edition can still be purchased in print [direct from Chapman & Hall/CRC Press](https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742?utm_source=website&utm_medium=shared_link&utm_campaign=B027587_jm1_5ll_8pm_d765_handbookofregressionmodeling).   The online version of this book is free to read here (thanks to Chapman & Hall/CRC Press), and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). If you have any feedback, please feel free to [file an issue on GitHub](https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues). Thank you!
 
 
 ## Notes on data used in this book {.unnumbered}

@@ -127,6 +127,15 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-N7JZGMVRZK', { 'anonymize_ip': true});
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -158,6 +167,18 @@ window.Quarto = {
 };
 </script>
 
+<meta property="og:title" content="8&nbsp; Poisson, Quasi-Poisson and Negative Binomial Regression for Count Outcomes – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/poisson_nb_files/figure-html/unnamed-chunk-1-1.png">
+<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1344">
+<meta name="twitter:title" content="8&nbsp; Poisson, Quasi-Poisson and Negative Binomial Regression for Count Outcomes – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/poisson_nb_files/figure-html/unnamed-chunk-1-1.png">
+<meta name="twitter:image-height" content="960">
+<meta name="twitter:image-width" content="1344">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -988,8 +1009,8 @@ Model:                            GLM   Df Residuals:                      861
 Model Family:                 Poisson   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -4459.5
-Date:                Mon, 22 Dec 2025   Deviance:                       5799.6
-Time:                        13:32:17   Pearson chi2:                 5.99e+03
+Date:                Mon, 12 Jan 2026   Deviance:                       5799.6
+Time:                        14:39:28   Pearson chi2:                 5.99e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -1032,8 +1053,8 @@ Model:                            GLM   Df Residuals:                      861
 Model Family:        NegativeBinomial   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -2842.3
-Date:                Mon, 22 Dec 2025   Deviance:                       702.79
-Time:                        13:32:17   Pearson chi2:                     548.
+Date:                Mon, 12 Jan 2026   Deviance:                       702.79
+Time:                        14:39:29   Pearson chi2:                     548.
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -1185,7 +1206,7 @@ Hilbe, Joseph M. 2014. <em>Modeling Count Data</em>.
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book-2nd-edition\.org\/");
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book\.org\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/index.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/index.html</loc>
+    <lastmod>2026-01-12T13:40:28.066Z</lastmod>
+  </url>
+  <url>
+    <loc>https://peopleanalytics-regression-book.org/foreword.html</loc>
     <lastmod>2025-12-16T13:01:19.301Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/foreword.html</loc>
-    <lastmod>2025-12-16T13:01:19.301Z</lastmod>
+    <loc>https://peopleanalytics-regression-book.org/introduction.html</loc>
+    <lastmod>2026-01-12T14:36:29.220Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/introduction.html</loc>
-    <lastmod>2025-12-16T13:01:19.301Z</lastmod>
+    <loc>https://peopleanalytics-regression-book.org/importance.html</loc>
+    <lastmod>2026-01-12T15:04:49.335Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/importance.html</loc>
-    <lastmod>2025-12-16T13:01:19.301Z</lastmod>
-  </url>
-  <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/basic_r.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/basic_r.html</loc>
     <lastmod>2025-12-16T14:39:55.212Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/primer_stats.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/primer_stats.html</loc>
     <lastmod>2025-12-16T21:42:02.494Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/linear_regression.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/linear_regression.html</loc>
     <lastmod>2025-12-22T13:15:42.252Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/binomial_logistic_regression.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/binomial_logistic_regression.html</loc>
     <lastmod>2025-12-22T13:18:06.499Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/multinomial_regression.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/multinomial_regression.html</loc>
     <lastmod>2025-12-22T12:13:02.232Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/ordinal_regression.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/ordinal_regression.html</loc>
     <lastmod>2025-12-22T12:51:11.503Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/poisson_nb.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/poisson_nb.html</loc>
     <lastmod>2025-12-22T13:20:22.813Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/hierarchical_data.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/hierarchical_data.html</loc>
     <lastmod>2025-12-17T23:52:51.849Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/survival_analysis.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/survival_analysis.html</loc>
     <lastmod>2025-12-16T23:59:31.821Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/power_tests.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/power_tests.html</loc>
     <lastmod>2025-12-16T21:55:29.395Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/bayesian_inference.html</loc>
-    <lastmod>2025-12-23T14:01:13.984Z</lastmod>
+    <loc>https://peopleanalytics-regression-book.org/bayesian_inference.html</loc>
+    <lastmod>2025-12-23T14:06:46.055Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/bayesian_linear_regression.html</loc>
-    <lastmod>2025-12-23T13:43:06.727Z</lastmod>
+    <loc>https://peopleanalytics-regression-book.org/bayesian_linear_regression.html</loc>
+    <lastmod>2025-12-23T13:54:24.679Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/other_bayesian_regression.html</loc>
-    <lastmod>2025-12-23T13:12:55.952Z</lastmod>
+    <loc>https://peopleanalytics-regression-book.org/other_bayesian_regression.html</loc>
+    <lastmod>2026-01-12T12:22:27.996Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/causal_inference.html</loc>
-    <lastmod>2025-12-23T14:44:16.523Z</lastmod>
+    <loc>https://peopleanalytics-regression-book.org/causal_inference.html</loc>
+    <lastmod>2026-01-12T11:43:25.211Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/further.html</loc>
-    <lastmod>2025-12-16T13:01:19.301Z</lastmod>
+    <loc>https://peopleanalytics-regression-book.org/further.html</loc>
+    <lastmod>2026-01-12T12:38:14.477Z</lastmod>
   </url>
   <url>
-    <loc>https://peopleanalytics-regression-book-2nd-edition.org/bibliography.html</loc>
+    <loc>https://peopleanalytics-regression-book.org/bibliography.html</loc>
     <lastmod>2025-12-16T13:01:19.193Z</lastmod>
   </url>
 </urlset>

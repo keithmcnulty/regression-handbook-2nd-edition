@@ -1,4 +1,4 @@
-# Fitting Other Regression Models Using Bayesian Inference
+# Fitting Other Regression Models Using Bayesian Inference {#sec-other-bayes}
 
 ```{r}
 #| echo: false
