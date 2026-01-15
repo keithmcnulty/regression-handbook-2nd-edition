@@ -1,0 +1,72 @@
+name: Discussion or Question
+description: Ask a question or start a general discussion
+title: "[Discussion]: "
+labels: ["question", "discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about the content, concepts, or contributing? Start a discussion here!
+
+        **Note**: For bug reports, please use the Bug Report template. For feature suggestions, use the Feature Request template.
+
+  - type: dropdown
+    id: discussion-type
+    attributes:
+      label: Discussion Type
+      description: What type of question or discussion is this?
+      options:
+        - Question about book content
+        - Question about statistical concepts
+        - Question about contributing
+        - Clarification request
+        - General feedback
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: topic
+    attributes:
+      label: Topic or Chapter
+      description: "If related to specific content, which chapter or topic? (Optional)"
+      placeholder: "e.g., Chapter 7: Multinomial Regression"
+    validations:
+      required: false
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question or Discussion Point
+      description: What would you like to discuss or ask about?
+      placeholder: "I'm trying to understand..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Provide any additional context that might be helpful
+      placeholder: "I'm working on a project where... / I noticed that..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: attempted
+    attributes:
+      label: What Have You Tried?
+      description: "For questions: Have you tried to find an answer elsewhere? What have you already looked at?"
+      placeholder: "I've read Section X, checked the documentation..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and discussions for similar topics
+          required: true
+        - label: This is not a bug report (I would use the Bug Report template for that)
+          required: true

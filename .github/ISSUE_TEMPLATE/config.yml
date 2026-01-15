@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Book Website
+    url: https://peopleanalytics-regression-book-2nd-edition.org/
+    about: Visit the published book website
+  - name: Contributing Guidelines
+    url: https://github.com/keithmcnulty/regression-handbook-2nd-edition/blob/main/CONTRIBUTING.md
+    about: Read our contribution guidelines before opening an issue
