@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>6&nbsp; Multinomial Logistic Regression for Nominal Category Outcomes – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>6&nbsp; Multinomial Logistic Regression for Nominal Category Outcomes – Handbook of Regression Modeling in People Analytics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,13 +167,13 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="6&nbsp; Multinomial Logistic Regression for Nominal Category Outcomes – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:title" content="6&nbsp; Multinomial Logistic Regression for Nominal Category Outcomes – Handbook of Regression Modeling in People Analytics">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://peopleanalytics-regression-book.org/multinomial_regression_files/figure-html/unnamed-chunk-4-1.png">
-<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics">
 <meta property="og:image:height" content="960">
 <meta property="og:image:width" content="1344">
-<meta name="twitter:title" content="6&nbsp; Multinomial Logistic Regression for Nominal Category Outcomes – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta name="twitter:title" content="6&nbsp; Multinomial Logistic Regression for Nominal Category Outcomes – Handbook of Regression Modeling in People Analytics">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/multinomial_regression_files/figure-html/unnamed-chunk-4-1.png">
 <meta name="twitter:image-height" content="960">
@@ -205,7 +205,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Handbook of Regression Modeling in People Analytics (2nd edition)</a> 
+      <a href="./">Handbook of Regression Modeling in People Analytics</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
@@ -406,6 +406,7 @@ window.Quarto = {
 </header>
 
 
+<p></p>
 <p>In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function. In this chapter we look at how to extend this to the case when the outcome has a number of categories that do not have any order to them. When an outcome has this nominal categorical form, it does not have a sense of direction. There is no ‘better’ or ‘worse’‍, no ‘higher’ or ‘lower’‍, there is only ‘different’‍.</p>
 <section id="when-to-use-it" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="when-to-use-it"><span class="header-section-number">6.1</span> When to use it</h2>
@@ -528,6 +529,9 @@ Figure&nbsp;6.1: Pairplot of the <code>health_insurance</code> data set
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># summary</span></span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(A_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -598,10 +602,12 @@ position_level                    1.3692971</code></pre>
 <p>The <code>nnet</code> package in R contains a <code>multinom()</code> function for running a multinomial logistic regression model using neural network technology<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Before we can run the model we need to make sure our reference level is defined.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define reference by ensuring it is the first level of the factor</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">relevel</span>(health_insurance<span class="sc">$</span>product, <span class="at">ref =</span> <span class="st">"A"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check that A is now our reference</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(health_insurance<span class="sc">$</span>product)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">relevel</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  health_insurance<span class="sc">$</span>product, <span class="at">ref =</span> <span class="st">"A"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># check that A is now our reference</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(health_insurance<span class="sc">$</span>product)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "A" "B" "C"</code></pre>
 </div>
@@ -799,27 +805,30 @@ position_level   -0.3912014  -0.20908835</code></pre>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load health insurance data</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="op">=</span> pd.read_csv(url)</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># convert product to categorical as an outcome variable</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> pd.Categorical(health_insurance[<span class="st">'product'</span>])</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="st">https://peopleanalytics-regression-book.org/data/health_insurance.csv</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="op">=</span> pd.read_csv(url)</span>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummies for gender</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> pd.get_dummies(health_insurance[<span class="st">'gender'</span>], drop_first <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># convert product to categorical as an outcome variable</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> pd.Categorical(health_insurance[<span class="st">'product'</span>])</span>
 <span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="co"># replace back into input variables </span></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> health_insurance.drop([<span class="st">'product'</span>, <span class="st">'gender'</span>], axis <span class="op">=</span> <span class="dv">1</span>)</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.concat([X1, X2], axis <span class="op">=</span> <span class="dv">1</span>)</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co"># add a constant term to ensure intercept is calculated</span></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> sm.add_constant(X)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummies for gender</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> pd.get_dummies(health_insurance[<span class="st">'gender'</span>], drop_first <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="co"># replace back into input variables </span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> health_insurance.drop([<span class="st">'product'</span>, <span class="st">'gender'</span>], axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.concat([X1, X2], axis <span class="op">=</span> <span class="dv">1</span>)</span>
 <span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="co"># define model</span></span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.MNLogit(y, Xc.astype(<span class="bu">float</span>))</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="co"># add a constant term to ensure intercept is calculated</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> sm.add_constant(X)</span>
 <span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model</span></span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>insurance_model <span class="op">=</span> model.fit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="co"># define model</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.MNLogit(y, Xc.astype(<span class="bu">float</span>))</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model</span></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>insurance_model <span class="op">=</span> model.fit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see results summary</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(insurance_model.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -830,8 +839,8 @@ position_level   -0.3912014  -0.20908835</code></pre>
 Dep. Variable:                      y   No. Observations:                 1453
 Model:                        MNLogit   Df Residuals:                     1439
 Method:                           MLE   Df Model:                           12
-Date:                Mon, 12 Jan 2026   Pseudo R-squ.:                  0.5332
-Time:                        14:38:54   Log-Likelihood:                -744.68
+Date:                Sun, 22 Feb 2026   Pseudo R-squ.:                  0.5332
+Time:                        18:28:18   Log-Likelihood:                -744.68
 converged:                       True   LL-Null:                       -1595.3
 Covariance Type:            nonrobust   LLR p-value:                     0.000
 ==================================================================================
@@ -857,6 +866,7 @@ absent             0.0033      0.012      0.263      0.793      -0.021       0.0
 ==================================================================================</code></pre>
 </div>
 </div>
+<p></p>
 </section>
 <section id="learning-exercises" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">6.6</span> Learning exercises</h2>
@@ -882,6 +892,7 @@ absent             0.0033      0.012      0.263      0.793      -0.021       0.0
 <li>Carefully write down your interpretation of the odds ratios calculated in the previous question.</li>
 <li>Use the process described in <a href="#sec-elim" class="quarto-xref"><span>Section 6.4.1</span></a> to simplify the multinomial model in Question 3.</li>
 </ol>
+<p></p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>3&nbsp; Statistics Foundations – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>3&nbsp; Statistics Foundations – Handbook of Regression Modeling in People Analytics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,13 +167,13 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="3&nbsp; Statistics Foundations – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:title" content="3&nbsp; Statistics Foundations – Handbook of Regression Modeling in People Analytics">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://peopleanalytics-regression-book.org/primer_stats_files/figure-html/unnamed-chunk-14-1.png">
-<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics">
 <meta property="og:image:height" content="960">
 <meta property="og:image:width" content="1344">
-<meta name="twitter:title" content="3&nbsp; Statistics Foundations – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta name="twitter:title" content="3&nbsp; Statistics Foundations – Handbook of Regression Modeling in People Analytics">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/primer_stats_files/figure-html/unnamed-chunk-14-1.png">
 <meta name="twitter:image-height" content="960">
@@ -205,7 +205,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Handbook of Regression Modeling in People Analytics (2nd edition)</a> 
+      <a href="./">Handbook of Regression Modeling in People Analytics</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
@@ -414,6 +414,7 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s take a brief look at the first few rows of this data to make sure we know what is inside it.</p>
+<div style="page-break-after: always;"></div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(salespeople)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -552,14 +553,15 @@ window.Quarto = {
 </div>
 </div>
 <p>As can be seen, the difference in covariance is very small between the sample and population versions, and both confirm a positive relationship between sales and customer rating. However, we again see this issue that there is no intuitive sense of scale for this measure.</p>
-<p><strong>Pearson’s correlation</strong> coefficient divides the covariance by the product of the standard deviations of the two variables:</p>
+<p> <strong>Pearson’s correlation</strong> coefficient divides the covariance by the product of the standard deviations of the two variables:</p>
 <p><span class="math display">\[
 r_{x, y} = \frac{\mathrm{cov}(x, y)}{\sigma(x)\sigma(y)}
 \]</span> This creates a scale of <span class="math inline">\(-1\)</span> to <span class="math inline">\(1\)</span> for <span class="math inline">\(r_{x, y}\)</span>, which is an intuitive way of understanding both the direction and strength of the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, with <span class="math inline">\(-1\)</span> indicating that <span class="math inline">\(x\)</span> increases perfectly as <span class="math inline">\(y\)</span> decreases, <span class="math inline">\(1\)</span> indicating that <span class="math inline">\(x\)</span> increases perfectly as <span class="math inline">\(y\)</span> increases, and <span class="math inline">\(0\)</span> indicating that there is no relationship between the two.</p>
 <p>As before, there is a sample and population version of the correlation coefficient, and R calculates the sample version by default. Similar transformations can be used to determine a population correlation coefficient and over large samples the two measures converge.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate sample correlation between sales and customer_rate</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>customer_rate, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>customer_rate, </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.337805</code></pre>
 </div>
@@ -587,7 +589,7 @@ r_{x, y} = \frac{\mathrm{cov}(x, y)}{\sigma(x)\sigma(y)}
 <pre><code>[1] 0.2073609</code></pre>
 </div>
 </div>
-<p>In this case, both indicate a low to moderate correlation. Spearman’s rho or Kendall’s tau can also be used to correlate a ranked and a dichotomous variable, and this is known as a <strong>rank-biserial correlation</strong>.</p>
+<p>In this case, both indicate a low to moderate correlation. Spearman’s rho or Kendall’s tau can also be used to correlate a ranked and a dichotomous variable, and this is known as a <strong>rank-biserial correlation</strong>. </p>
 </section>
 </section>
 <section id="distribution-of-random-variables" class="level2" data-number="3.2">
@@ -665,10 +667,12 @@ SE = \frac{\sigma}{\sqrt{n}}
 <pre><code>[3.47995410046738, 3.81704589953262]</code></pre>
 </div>
 </div>
+<p></p>
 </section>
 </section>
 <section id="sec-hyp-tests" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="sec-hyp-tests"><span class="header-section-number">3.3</span> Hypothesis testing</h2>
+<p></p>
 <p>Observations about the distribution of statistics on samples of random variables allow us to construct tests for hypotheses of difference or similarity. Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not. Before we go through some technical examples of hypothesis testing, let’s overview the logic and intuition for how hypothesis testing works.</p>
 <p>The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of difference in a population based on the properties of a sample. Consistent with a high burden of proof, we start from the hypothesis that there is no difference, called the <em>null hypothesis</em>. We only reject the null hypothesis if the statistical properties of the sample data render it very unlikely to have occurred if the null hypothesis were true for the population, in which case we can consider the <em>alternative hypothesis</em> that a statistical difference does exist in the population.</p>
 <p>Most hypothesis tests can return a p-value, which is the maximum frequency of occurrence of the sample results (or results that are more extreme or unusual than the sample results) when the null hypothesis is true for the population. The analyst must decide on the level of p-value needed to reject the null hypothesis. This threshold is referred to as the significance level <span class="math inline">\(\alpha\)</span> (alpha). A common standard is to set <span class="math inline">\(\alpha\)</span> at 0.05. That is, we reject the null hypothesis if the p-value that we find for our sample results is less than 0.05. If we reject the null hypothesis at <span class="math inline">\(\alpha = 0.05\)</span>, this means that the results we observe in the sample are so extreme or unusual that they would only occur in repeated random sampling at most 1 in 20 times if the null hypothesis were true. An alpha of 0.05 is not the only standard used in research and practice, and in some fields of study smaller alphas are the norm, particularly if erroneous conclusions might have very serious consequences.</p>
@@ -894,7 +898,7 @@ X-squared = 25.895, df = 3, p-value = 1.003e-05</code></pre>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>url<span class="op">=</span><span class="st">"https://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
 <span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> pd.read_csv(url)</span>
 <span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mean sales</span></span>
@@ -966,61 +970,91 @@ customer_rate  0.337805       1.000000</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="co"># spearman's correlation</span></span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>stats.spearmanr(salespeople.sales, salespeople.performance, </span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>nan_policy<span class="op">=</span><span class="st">'omit'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>spearman <span class="op">=</span> stats.spearmanr(salespeople.sales, </span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>salespeople.performance, nan_policy<span class="op">=</span><span class="st">'omit'</span>)</span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a><span class="co"># view correlation and p-value</span></span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(spearman.statistic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>SignificanceResult(statistic=np.float64(0.27354459847452534), pvalue=np.float64(2.0065434379079837e-07))</code></pre>
+<pre><code>0.27354459847452534</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(spearman.pvalue)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.0065434379079837e-07</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kendall's tau</span></span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>stats.kendalltau(salespeople.sales, salespeople.performance, </span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>nan_policy<span class="op">=</span><span class="st">'omit'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kendall's tau</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>kendall <span class="op">=</span> stats.kendalltau(salespeople.sales, </span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>salespeople.performance, nan_policy<span class="op">=</span><span class="st">'omit'</span>)</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="co"># view correlation and p-value</span></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(kendall.statistic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>SignificanceResult(statistic=np.float64(0.20736088105812), pvalue=np.float64(2.7353258226376403e-07))</code></pre>
+<pre><code>0.20736088105812</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(kendall.pvalue)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.7353258226376403e-07</code></pre>
 </div>
 </div>
 <p>Common hypothesis testing tools are available in <code>scipy.stats</code>. Here is an example of how to perform Welch’s <span class="math inline">\(t\)</span>-test on a difference in means of samples of unequal variance.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">1</span>].sales</span>
-<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">4</span>].sales</span>
-<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="co"># welch's t-test with unequal variance</span></span>
-<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(perf4, perf1, equal_var<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ttest)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">1</span>].sales</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">4</span>].sales</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="co"># welch's t-test with unequal variance</span></span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(perf4, perf1, equal_var<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a><span class="co"># print t-statistic and p-value</span></span>
+<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ttest.statistic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>TtestResult(statistic=np.float64(4.629477606844271), pvalue=np.float64(1.0932443461577037e-05), df=np.float64(100.9768911762055))</code></pre>
+<pre><code>4.629477606844271</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ttest.pvalue)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.0932443461577037e-05</code></pre>
 </div>
 </div>
 <p>As seen above, hypothesis tests for non-zero correlation coefficients are performed automatically as part of <code>scipy.stats</code> correlation calculations.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate correlation and p-value </span></span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> salespeople.sales[<span class="op">~</span>np.isnan(salespeople.sales)]</span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>cust_rate <span class="op">=</span> salespeople.customer_rate[</span>
-<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">~</span>np.isnan(salespeople.customer_rate)</span>
-<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>cor <span class="op">=</span> stats.pearsonr(sales, cust_rate)</span>
-<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cor)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate correlation and p-value </span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> salespeople.sales[<span class="op">~</span>np.isnan(salespeople.sales)]</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>cust_rate <span class="op">=</span> salespeople.customer_rate[</span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">~</span>np.isnan(salespeople.customer_rate)</span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>cor <span class="op">=</span> stats.pearsonr(sales, cust_rate)</span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cor.statistic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>PearsonRResult(statistic=np.float64(0.337805044858678), pvalue=np.float64(8.647952212092207e-11))</code></pre>
+<pre><code>0.337805044858678</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cor.pvalue)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8.647952212092207e-11</code></pre>
 </div>
 </div>
 <p>Finally, a chi-square test of difference in frequency distribution can be performed on a contingency table as follows. The first value of the output is the <span class="math inline">\(\chi^2\)</span> statistic, and the second value is the p-value.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table for promoted versus performance</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>contingency <span class="op">=</span> pd.crosstab(salespeople.promoted, salespeople.performance)</span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perform chi-square test</span></span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>chi2_test <span class="op">=</span> stats.chi2_contingency(contingency)</span>
-<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(chi2_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table for promoted versus performance</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>contingency<span class="op">=</span>pd.crosstab(salespeople.promoted, salespeople.performance)</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perform chi-square test</span></span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>chi2_test<span class="op">=</span>stats.chi2_contingency(contingency)</span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(chi2_test.statistic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Chi2ContingencyResult(statistic=np.float64(25.895405268094862), pvalue=np.float64(1.0030629464566802e-05), dof=3, expected_freq=array([[40.62857143, 74.48571429, 84.64285714, 37.24285714],
-       [19.37142857, 35.51428571, 40.35714286, 17.75714286]]))</code></pre>
+<pre><code>25.895405268094862</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(chi2_test.pvalue)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.0030629464566802e-05</code></pre>
 </div>
 </div>
+<p></p>
 </section>
 <section id="learning-exercises" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">3.5</span> Learning exercises</h2>

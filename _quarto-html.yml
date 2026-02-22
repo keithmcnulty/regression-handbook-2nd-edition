@@ -1,0 +1,59 @@
+project:
+  output-dir: docs
+  resources:
+  - CNAME
+  - .nojekyll
+  - data/*
+  - www/*
+
+book:
+  title: "Handbook of Regression Modeling in People Analytics"
+  subtitle: "With Examples in R and Python (2nd Edition)"
+  reader-mode: true
+  page-footer:
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  image: www/cover/coverpage.png
+  cover-image: www/cover/coverpage.png
+  favicon: www/cover/coverpage-og.png
+  twitter-card: true
+  open-graph: true
+  site-url: https://peopleanalytics-regression-book.org/
+  repo-url: https://github.com/keithmcnulty/regression-handbook-2nd-edition
+  repo-branch: main
+  repo-actions: [edit, issue]
+  google-analytics: "G-N7JZGMVRZK"
+  chapters:
+    - index.qmd
+    - foreword.qmd
+    - introduction.qmd
+    - importance.qmd
+    - basic_r.qmd
+    - primer_stats.qmd
+    - linear_regression.qmd
+    - binomial_logistic_regression.qmd
+    - multinomial_regression.qmd
+    - ordinal_regression.qmd
+    - poisson_nb.qmd
+    - hierarchical_data.qmd
+    - survival_analysis.qmd
+    - power_tests.qmd
+    - bayesian_inference.qmd
+    - bayesian_linear_regression.qmd
+    - other_bayesian_regression.qmd
+    - causal_inference.qmd
+    - further.qmd
+    - bibliography.qmd
+
+format:
+  html:
+    theme:
+      - materia
+    code-link: false
+    crossref:
+      chapters: true
+    author-meta: "Keith McNulty"
+    callout-appearance: simple
+    bibliography: book.bib
+    engine: knitr
+

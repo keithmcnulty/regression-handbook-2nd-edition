@@ -1,6 +1,8 @@
 # Proportional Odds Logistic Regression for Ordered Category Outcomes {#sec-ord-reg}
 
-Often our outcomes will be categorical in nature, but they will also have an order to them.  These are sometimes known as *ordinal* outcomes. Some very common examples of this include ratings of some form, such as job performance ratings or survey responses on Likert scales. The appropriate modeling approach for these outcome types is ordinal logistic regression.  Surprisingly, this approach is frequently not understood or adopted by analysts.  Often they treat the outcome as a continuous variable and perform simple linear regression, which can lead to wildly inaccurate inferences.  Given the prevalence of ordinal outcomes in people analytics, it would serve analysts well to know how to run ordinal logistic regression models, how to interpret them and how to confirm their validity. 
+\index{proportional odds logistic regression|(}
+
+Often our outcomes will be categorical in nature, but they will also have an order to them.  \index{outcome variable!ordinal}These are sometimes known as *ordinal* outcomes. Some very common examples of this include ratings of some form, such as job performance ratings or survey responses on Likert scales. The appropriate modeling approach for these outcome types is ordinal logistic regression.  Surprisingly, this approach is frequently not understood or adopted by analysts.  Often they treat the outcome as a continuous variable and perform simple linear regression, which can lead to wildly inaccurate inferences.  Given the prevalence of ordinal outcomes in people analytics, it would serve analysts well to know how to run ordinal logistic regression models, how to interpret them and how to confirm their validity. 
 
 In fact, there are numerous known ways to approach the inferential modeling of ordinal outcomes, all of which build on the theory of linear, binomial and multinomial regression which we covered in previous chapters.  In this chapter, we will focus on the most commonly adopted approach: *proportional odds* logistic regression.  Proportional odds models (sometimes known as constrained cumulative logistic models) are more attractive than other approaches because of their ease of interpretation but cannot be used blindly without important checking of underlying assumptions.  
 
@@ -63,7 +65,7 @@ This approach leads to a highly interpretable model that provides a single set o
 
 ### Use cases for proportional odds logistic regression
 
-Proportional odds logistic regression can be used when there are more than two outcome categories that have an order.  An important underlying assumption is that no input variable has a disproportionate effect on a specific level of the outcome variable.  This is known as the proportional odds assumption.  Referring to @fig-prop-odds-int, this assumption means that the 'slope' of the logistic function is the same for all category cutoffs^[This also leads to another term for the assumption---the *parallel regression* assumption.].  If this assumption is violated, we cannot reduce the coefficients of the model to a single set across all outcome categories, and this modeling approach fails.  Therefore, testing the proportional odds assumption is an important validation step for anyone running this type of model.  
+\index{proportional odds logistic regression!proportional odds assumption}Proportional odds logistic regression can be used when there are more than two outcome categories that have an order.  An important underlying assumption is that no input variable has a disproportionate effect on a specific level of the outcome variable.  This is known as the proportional odds assumption.  Referring to @fig-prop-odds-int, this assumption means that the 'slope' of the logistic function is the same for all category cutoffs^[This also leads to another term for the assumption---the *parallel regression* assumption.].  If this assumption is violated, we cannot reduce the coefficients of the model to a single set across all outcome categories, and this modeling approach fails.  Therefore, testing the proportional odds assumption is an important validation step for anyone running this type of model.  
 
 Examples of problems that can utilize a proportional odds logistic regression approach include:
 
@@ -83,7 +85,7 @@ You are an analyst for a sports broadcaster who is doing a feature on player dis
 * `country` is the country in which the game took place---England or Germany.
 * `result` is the result of the game for the team of the player---'W' is win, 'L' is lose, 'D' is a draw/tie.
 
-Let's download the `soccer` data set and take a quick look at it.
+\index{data sets!soccer@\texttt{soccer}}Let's download the `soccer` data set and take a quick look at it.
 
 ```{r}
 # if needed, download data
@@ -195,7 +197,7 @@ By taking exponents we see that the impact of a unit change in $x_i$ on the odds
 
 ### Running a proportional odds logistic regression model
 
-The `MASS` package provides a function `polr()` for running a proportional odds logistic regression model on a data set in a similar way to our previous models.  The key (and obvious) requirement is that the outcome is an ordered factor.  Since we did our conversions in @sec-ord-walkthrough we are ready to run this model. We will start by running it on all input variables and let the `polr()` function handle our dummy variables automatically.
+\index{R!packages!MASS@\texttt{MASS}}The `MASS` package provides a function `polr()` for running a proportional odds logistic regression model on a data set in a similar way to our previous models.  The key (and obvious) requirement is that the outcome is an ordered factor.  Since we did our conversions in @sec-ord-walkthrough we are ready to run this model. We will start by running it on all input variables and let the `polr()` function handle our dummy variables automatically.
 
 ```{r}
 # run proportional odds model
@@ -210,7 +212,7 @@ model <- polr(
 summary(model)
 ```
 
-We can see that the summary returns a single set of coefficients on our input variables as we expect, with standard errors and t-statistics.  We also see that there are separate intercepts for the various levels of our outcomes, as we also expect.  In interpreting our model, we generally don't have a great deal of interest in the intercepts, but we will focus on the coefficients.  First we would like to obtain p-values, so we can add a p-value column using the conversion methods from the t-statistic which we learned in @sec-means-sig^[Note this is not totally necessary, as significance can be estimated from viewing the confidence intervals that are formed from two standard errors either side of the coefficient estimate.  However, we show how to calculate p-values here for precision purposes.].
+\index{proportional odds logistic regression!coefficients}We can see that the summary returns a single set of coefficients on our input variables as we expect, with standard errors and t-statistics.  We also see that there are separate intercepts for the various levels of our outcomes, as we also expect.  In interpreting our model, we generally don't have a great deal of interest in the intercepts, but we will focus on the coefficients.  First we would like to obtain p-values, so we can add a p-value column using the conversion methods from the t-statistic which we learned in @sec-means-sig^[Note this is not totally necessary, as significance can be estimated from viewing the confidence intervals that are formed from two standard errors either side of the coefficient estimate.  However, we show how to calculate p-values here for precision purposes.].
 
 ```{r}
 # get coefficients (it's in matrix form)
@@ -231,6 +233,8 @@ odds_ratio <- exp(coefficients[ ,"Value"])
 ```
 
 We can display all our critical statistics by combining them into a dataframe.
+
+\newpage
 
 ```{r}
 # combine with coefficient and p_value
@@ -266,14 +270,14 @@ Note that for an ordinal observation $y_i$, if $y_i \leq k$ and $y_i > k-1$, the
 head(fitted(model))
 ```
 
-It can be seen from this output how ordinal logistic regression models can be used in predictive analytics by classifying new observations into the ordinal category with the highest fitted probability. This also allows us to graphically understand the output of a proportional odds model.  @fig-ordgraph shows the output from a simpler proportional odds model fitted against the `n_yellow_25` and `n_red_25` input variables, with the fitted probabilities of each level of discipline from the referee plotted on the different colored surfaces.  We can see in most situations that no discipline is the most likely outcome and a red card is the least likely outcome.  Only at the upper ends of the scales do we see the likelihood of discipline overcoming the likelihood of no discipline, with a strong likelihood of red cards for those with an extremely poor recent disciplinary record.  
+\index{proportional odds logistic regression!predictions}It can be seen from this output how ordinal logistic regression models can be used in predictive analytics by classifying new observations into the ordinal category with the highest fitted probability. This also allows us to graphically understand the output of a proportional odds model.  @fig-ordgraph shows the output from a simpler proportional odds model fitted against the `n_yellow_25` and `n_red_25` input variables, with the fitted probabilities of each level of discipline from the referee plotted on the different colored surfaces.  We can see in most situations that no discipline is the most likely outcome and a red card is the least likely outcome.  Only at the upper ends of the scales do we see the likelihood of discipline overcoming the likelihood of no discipline, with a strong likelihood of red cards for those with an extremely poor recent disciplinary record.  
 
-::: {#fig-ordgraph .content-visible when-format="html"}
+::: {#fig-ordgraph}
 
 ```{r} 
 #| fig.align: "center"
 #| echo: false
- 
+#| eval: !expr knitr::is_html_output() 
 
 library(plotly)
 library(magrittr)
@@ -303,26 +307,22 @@ plot_ly(data = soccer) |>
 
 ```
 
-3D visualization of a simple proportional odds model for `discipline` fitted against `n_yellow_25` and `n_red_25` in the `soccer` data set.  Blue represents the probability of no discipline from the referee.  Yellow and red represent the probability of a yellow card and a red card, respectively.
-:::
-
-::: {#fig-ordgraph .content-visible when-format="pdf"}
-
-```{r} 
+```{r}
 #| fig.align: "center"
 #| echo: false
+#| eval: !expr knitr::is_latex_output() 
 
 knitr::include_graphics("www/07/ordinalsoccer.png")
-
 ```
 
 3D visualization of a simple proportional odds model for `discipline` fitted against `n_yellow_25` and `n_red_25` in the `soccer` data set.  Blue represents the probability of no discipline from the referee.  Yellow and red represent the probability of a yellow card and a red card, respectively.
 :::
 
 
+
 ### Model diagnostics
 
-Similar to binomial and multinomial models, pseudo-$R^2$ methods are available for assessing model fit, and AIC can be used to assess model parsimony.  Note that `DescTools::PseudoR2()` also offers AIC.
+\index{Pseudo-R-squared!in ordinal logistic regression}Similar to binomial and multinomial models, pseudo-$R^2$ methods are available for assessing model fit, and AIC can be used to assess model parsimony.  Note that `DescTools::PseudoR2()` also offers AIC.
 
 ```{r}
 # diagnostics of simpler model
@@ -332,26 +332,30 @@ DescTools::PseudoR2(
 )
 ```
 
-There are numerous tests of goodness-of-fit that can apply to ordinal logistic regression models, and this area is the subject of considerable recent research. The `generalhoslem` package in R contains routes to four possible tests, with two of them particularly recommended for ordinal models.  Each work in a similar way to the Hosmer-Lemeshow test discussed in Section @sec-logistic-gof, by dividing the sample into groups and comparing the observed versus the fitted outcomes using a chi-square test.  Since the null hypothesis is a good model fit, low p-values indicate potential problems with the model.   We run these tests below for reference. For more information, see @fagerland-hosmer, and for a really intensive treatment of ordinal data modeling @ordinal is recommended. 
+\index{proportional odds logistic regression!goodness-of-fit}There are numerous tests of goodness-of-fit that can apply to ordinal logistic regression models, and this area is the subject of considerable recent research. \index{R!packages!generalhoslem@\texttt{generalhoslem}}The `generalhoslem` package in R contains routes to four possible tests, with two of them particularly recommended for ordinal models.  Each work in a similar way to the Hosmer-Lemeshow test discussed in @sec-logistic-gof, by dividing the sample into groups and comparing the observed versus the fitted outcomes using a chi-square test.  Since the null hypothesis is a good model fit, low p-values indicate potential problems with the model.   We run these tests below for reference. For more information, see @fagerland-hosmer, and for a really intensive treatment of ordinal data modeling @ordinal is recommended. 
 
 
 ```{r}
 # lipsitz test 
-generalhoslem::lipsitz.test(model)
+lipsitz <- generalhoslem::lipsitz.test(model)
+
+# view statistic and p-value
+c(lipsitz$statistic, pvalue = lipsitz$p.value)
 ```
 
 
 ```{r}
 # pulkstenis-robinson test 
 # (requires the vector of categorical input variables as an argument)
-generalhoslem::pulkrob.chisq(model, catvars = cats)
+pr_test <- generalhoslem::pulkrob.chisq(model, catvars = cats)
+
+# view statistic and p-value
+c(pr_test$statistic, pvalue = pr_test$p.value)
 ```
-
-
 
 ## Testing the proportional odds assumption
 
-As we discussed earlier, the suitability of a proportional odds logistic regression model depends on the assumption that each input variable has a similar effect on the different levels of the ordinal outcome variable.  It is very important to check that this assumption is not violated before proceeding to declare the results of a proportional odds model valid.  There are two common approaches to validating the proportional odds assumption, and we will go through each of them here.  
+\index{proportional odds logistic regression!proportional odds assumption}As we discussed earlier, the suitability of a proportional odds logistic regression model depends on the assumption that each input variable has a similar effect on the different levels of the ordinal outcome variable.  It is very important to check that this assumption is not violated before proceeding to declare the results of a proportional odds model valid.  There are two common approaches to validating the proportional odds assumption, and we will go through each of them here.  
 
 ### Sighting the coefficients of stratified binomial models
 
@@ -404,9 +408,9 @@ Ignoring the intercept, which is not of concern here, the differences appear rel
 
 ### The Brant-Wald test {#sec-wald}
 
-In the previous method, some judgment is required to decide whether the coefficients of the stratified binomial models are 'different enough' to decide on violation of the proportional odds assumption.  For those requiring more formal support, an option is the Brant-Wald test.  Under this test, a generalized ordinal logistic regression model is approximated and compared to the calculated proportional odds model.  A generalized ordinal logistic regression model is simply a relaxing of the proportional odds model to allow for different coefficients at each level of the ordinal outcome variable.
+\index{Brant-Wald test}In the previous method, some judgment is required to decide whether the coefficients of the stratified binomial models are 'different enough' to decide on violation of the proportional odds assumption.  For those requiring more formal support, an option is the Brant-Wald test.  Under this test, a generalized ordinal logistic regression model is approximated and compared to the calculated proportional odds model.  A generalized ordinal logistic regression model is simply a relaxing of the proportional odds model to allow for different coefficients at each level of the ordinal outcome variable.
 
-The Wald test is conducted on the comparison of the proportional odds and generalized models. A Wald test is a hypothesis test of the significance of the difference in model coefficients, producing a chi-square statistic.  A low p-value in a Brant-Wald test is an indicator that the coefficient does not satisfy the proportional odds assumption.  The `brant` package in R provides an implementation of the Brant-Wald test, and in this case supports our judgment that the proportional odds assumption holds.
+The Wald test is conducted on the comparison of the proportional odds and generalized models. A Wald test is a hypothesis test of the significance of the difference in model coefficients, producing a chi-square statistic.  A low p-value in a Brant-Wald test is an indicator that the coefficient does not satisfy the proportional odds assumption.  \index{R!packages!brant@\texttt{brant}}The `brant` package in R provides an implementation of the Brant-Wald test, and in this case supports our judgment that the proportional odds assumption holds.
 
 
 ```{r}
@@ -418,17 +422,19 @@ A p-value of less than 0.05 on this test---particularly on the Omnibus plus at l
 
 ### Alternatives to proportional odds models
 
-The proportional odds model is by far the most utilized approach to modeling ordinal outcomes (not least because of neglect in the testing of the underlying assumptions).  But as we have learned, it is not always an appropriate model choice for ordinal outcomes.  When the test of proportional odds fails, we need to consider a strategy for remodeling the data.  If only one or two variables fail the test of proportional odds, a simple option is to remove those variables.  Whether or not we are comfortable doing this will depend very much on the impact on overall model fit.
+\index{proportional odds logistic regression!alternatives to}The proportional odds model is by far the most utilized approach to modeling ordinal outcomes (not least because of neglect in the testing of the underlying assumptions).  But as we have learned, it is not always an appropriate model choice for ordinal outcomes.  When the test of proportional odds fails, we need to consider a strategy for remodeling the data.  If only one or two variables fail the test of proportional odds, a simple option is to remove those variables.  Whether or not we are comfortable doing this will depend very much on the impact on overall model fit.
 
 In the event where the option to remove variables is unattractive, alternative models for ordinal outcomes should be considered.  The most common alternatives (which we will not cover in depth here, but are explored in @ordinal) are:
 
 * *Baseline* logistic model.  This model is the same as the multinomial regression model covered in the previous chapter, using the lowest ordinal value as the reference.
-* *Adjacent-category* logistic model.  This model compares each level of the ordinal variable to the next highest level, and it is a constrained version of the baseline logistic model. The `brglm2` package in R offers a function `bracl()` for calculating an adjacent category logistic model.
+* *Adjacent-category* logistic model.  This model compares each level of the ordinal variable to the next highest level, and it is a constrained version of the baseline logistic model. The `brglm2` package in R offers a function `bracl()` for calculating an adjacent category logistic model. 
 * *Continuation-ratio* logistic model.  This model compares each level of the ordinal variable to all lower levels.  This can be modeled using binary logistic regression techniques, but new variables need to be constructed from the data set to allow this. The R package `rms` has a function `cr.setup()` which is a utility for preparing an outcome variable for a continuation ratio model.
+
+\index{R!packages!brglm2@\texttt{brglm2}} \index{R!packages!rms@\texttt{rms}}
 
 ## Ordinal logistic regression using Python
 
-In Python, `statsmodels` offers an ordinal model based on proportional odds logistic regression.  It is important to define the order of your outcome categories before running this model^[Note that intercept coefficients are presented a little differently compared to `MASS::polr()` in R.  The base level intercept is similar, but to get higher level intercepts, their coefficients need to be exponentiated and added to the base level intercept.].
+\index{proportional odds logistic regression!using Python}\index{Python!packages!statsmodels@\texttt{statsmodels}}In Python, `statsmodels` offers an ordinal model based on proportional odds logistic regression.  It is important to define the order of your outcome categories before running this model^[Note that intercept coefficients are presented a little differently compared to `MASS::polr()` in R.  The base level intercept is similar, but to get higher level intercepts, their coefficients need to be exponentiated and added to the base level intercept.].
 
 
 ```{python}
@@ -445,12 +451,18 @@ soccer = pd.read_csv(url)
 soccer.discipline = soccer.discipline.fillna("None")
 
 # turn discipline column into ordered category
-cat = CategoricalDtype(categories=["None", "Yellow", "Red"], ordered=True)
+cat = CategoricalDtype(
+  categories=["None", "Yellow", "Red"], 
+  ordered=True
+)
 soccer.discipline = soccer.discipline.astype(cat)
 
 # run proportional odds logistic regression
 prop_odds_logit = OrderedModel.from_formula(
-  "discipline ~ 1 + n_yellow_25 + n_red_25 + position + result + country + level", 
+  """
+  discipline ~ 1 + n_yellow_25 + n_red_25 + position 
+  + result + country + level
+  """, 
   soccer, 
   distr='logit'
 )
@@ -458,11 +470,16 @@ soccer_model = prop_odds_logit.fit(method='bfgs')
 print(soccer_model.summary())
 ```
 
+\small
+
 ```{python}
 #| echo: false
 print(soccer_model.summary())
 ```
 
+\normalsize
+
+\index{proportional odds logistic regression|)}
 
 ## Learning exercises
 
@@ -508,3 +525,5 @@ Construct a model to determine how the data provided may help explain the `perfo
 9.  Use the Brant-Wald test to support or reject the hypothesis that the proportional odds assumption holds for your simplified model.
 10.  Write a full report on your model intended for an audience of people with limited knowledge of statistics.
 
+\index{ordinal logistic regression|see {proportional odds logistic regression}}
+\index{regression!ordinal|see {proportional odds logistic regression}}

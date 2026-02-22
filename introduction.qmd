@@ -1,4 +1,4 @@
-# Introduction {.unnumbered}
+# Introduction {.unnumbered .unlisted}
 
 As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term.  I would never take another.  I struggled with the subject, scored my lowest grade in it and swore I would never go anywhere near it again.  
 
@@ -20,7 +20,7 @@ I expect this book to continuously.  If you found this book or any part of it he
 
 I would like to thank the many individuals who have contributed to the content of this book by making suggestions, finding errors and suggesting clarifications.  Over the past five years since the first edition was published, those names have become too numerous to mention, but they have all played an important part and this book would not be where it is today without their generous time and effort.   My sincere thanks to my friend and colleague Alexis Fink for drawing on her years of people analytics experience to set the context for this book in her foreword.  Her constant encouragement and positivity, along with our shared passion to improve the science and study of work, has been an important motivator for me in creating this resource.  My thanks to the people analytics community for their constant encouragement and support in sharing theory, content and method, and to the R and Python communities for all the work they do in giving us amazing and constantly improving statistical software tools to work with. Finally, I would like to thank my family for their patience and understanding on the evenings and weekends I dedicated to the writing of this book, and for tolerating far too much dinner conversation on the topic of statistics.
 
-## Updates for the second edition {.unnumbered}
+## Updates for the second edition {.unnumbered .unlisted}
 
 Since the first edition of this book was published in 2021, I have been genuinely and pleasantly surprised by the level of interest it has generated, the many comments I have received from readers, and the widespread use of the book in both academic and practitioner settings.  I have also heeded the many requests to expand the content, and this second edition represents a substantial expansion of the first edition. 
 
@@ -32,3 +32,5 @@ Finally, I have added a chapter on causal inference methods, which are garnering
 
 Keith McNulty \
 January 2025
+
+\mainmatter

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Keith McNulty">
 
-<title>2&nbsp; The Basics of the R Programming Language – Handbook of Regression Modeling in People Analytics (2nd edition)</title>
+<title>2&nbsp; The Basics of the R Programming Language – Handbook of Regression Modeling in People Analytics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,13 +167,13 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="2&nbsp; The Basics of the R Programming Language – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:title" content="2&nbsp; The Basics of the R Programming Language – Handbook of Regression Modeling in People Analytics">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/R/rstudio_ide_screenshot.png">
-<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics">
 <meta property="og:image:height" content="1375">
 <meta property="og:image:width" content="1966">
-<meta name="twitter:title" content="2&nbsp; The Basics of the R Programming Language – Handbook of Regression Modeling in People Analytics (2nd edition)">
+<meta name="twitter:title" content="2&nbsp; The Basics of the R Programming Language – Handbook of Regression Modeling in People Analytics">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/R/rstudio_ide_screenshot.png">
 <meta name="twitter:image-height" content="1375">
@@ -205,7 +205,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Handbook of Regression Modeling in People Analytics (2nd edition)</a> 
+      <a href="./">Handbook of Regression Modeling in People Analytics</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
@@ -451,9 +451,8 @@ Figure&nbsp;2.1: The RStudio IDE
 </div>
 <p>To start using R, follow these steps:</p>
 <ol type="1">
-<li>Download and install the latest version of R from https://www.r-project.org/. Ensure that the version suits your operating system.</li>
-<li>Download the latest version of the RStudio Desktop IDE from https://posit.co/download/rstudio-desktop/. Consult the user guide at https://docs.posit.co/ide/user/ to help orient yourself to the features of RStudio.<br>
-</li>
+<li>Download and install the latest version of R from <code>https://www.r-project.org/</code>. Ensure that the version suits your operating system.</li>
+<li>Download the latest version of the RStudio Desktop IDE from <code>https://posit.co/download/rstudio-desktop/</code>. Consult the user guide at <code>https://docs.posit.co/ide/user/</code> to help orient yourself to the features of RStudio. &nbsp;</li>
 <li>Open RStudio and play around.</li>
 </ol>
 <p>The initial stages of using R can be challenging, mostly due to the need to become familiar with how R understands, stores and processes data. Extensive trial and error is a learning necessity. Perseverance is important in these early stages, as well as an openness to seek help from others either in person or via online forums. Try not to rely too much on Generative AI tools for help, as they can often lead to you missing important learning steps, and they can also generate error-prone code.</p>
@@ -901,7 +900,7 @@ Figure&nbsp;2.1: The RStudio IDE
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see fewer rows - arguments need to be in the right order if not named</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see fewer rows (arguments need to be in the right order if not named)</span></span>
 <span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(salespeople, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  promoted sales customer_rate performance
@@ -961,14 +960,14 @@ Figure&nbsp;2.2: Results of a search for the <code>head()</code> function in the
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create df_report function</span></span>
 <span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>df_report <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
 <span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"This dataframe contains"</span>, <span class="fu">nrow</span>(df), <span class="st">"rows and"</span>, </span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ncol</span>(df), <span class="st">"columns. There are"</span>, <span class="fu">sum</span>(<span class="fu">is.na</span>(df)), <span class="st">"NA entries."</span>)</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ncol</span>(df), <span class="st">"columns, with"</span>, <span class="fu">sum</span>(<span class="fu">is.na</span>(df)), <span class="st">"NA entries."</span>)</span>
 <span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can test our function by using the built-in <code>mtcars</code> data set in R.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">df_report</span>(mtcars)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "This dataframe contains 32 rows and 11 columns. There are 0 NA entries."</code></pre>
+<pre><code>[1] "This dataframe contains 32 rows and 11 columns, with 0 NA entries."</code></pre>
 </div>
 </div>
 </section>
@@ -1126,13 +1125,10 @@ Figure&nbsp;2.5: Simple box plot of <code>sales</code> grouped against <code>per
 </section>
 <section id="specialist-plotting-and-graphing-packages" class="level3" data-number="2.7.2">
 <h3 data-number="2.7.2" class="anchored" data-anchor-id="specialist-plotting-and-graphing-packages"><span class="header-section-number">2.7.2</span> Specialist plotting and graphing packages</h3>
-<p>By far the most commonly used specialist plotting and graphing package in R is <code>ggplot2</code>. <code>ggplot2</code> allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to. However, once learned, <code>ggplot2</code> can be an extremely powerful tool. Many of the illustratory figures used in this book are developed using <code>ggplot2</code> and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. A great learning resource for <code>ggplot2</code> is <span class="citation" data-cites="ggplot2">Wickham, Navarro, and Pedersen (<a href="bibliography.html#ref-ggplot2" role="doc-biblioref">2023</a>)</span>.</p>
+<p>By far the most commonly used specialist plotting and graphing package in R is <code>ggplot2</code>. <code>ggplot2</code> allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to. However, once learned, <code>ggplot2</code> can be an extremely powerful tool. Many of the illustratory figures used in this book are developed using <code>ggplot2</code> and while the code for these figures is sometimes not included for the sake of brevity, you can always find it in the source code of this book on Github<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. A great learning resource for <code>ggplot2</code> is <span class="citation" data-cites="ggplot2">Wickham, Navarro, and Pedersen (<a href="bibliography.html#ref-ggplot2" role="doc-biblioref">2023</a>)</span>.</p>
 <p>The <code>plotly</code> package allows the use of the <code>plotly</code> graphing library in R. This is an excellent package for interactive graphing and is used for 3D illustrations in this book. Output can be rendered in HTML—allowing the user to play with and explore the graphs interactively—or can be saved as static 2D images.</p>
 <p><code>GGally</code> is a package that extends <code>ggplot2</code> to allow easy combination of charts and graphs. This is particularly valuable for quicker exploratory data analysis. One of its most popular functions is <code>ggpairs()</code>, which produces a pairplot. A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal. <a href="#fig-basicpair" class="quarto-xref">Figure&nbsp;<span>2.6</span></a> is an example of a pairplot for the <code>salespeople</code> data set, which we will explore further in <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
-<div id="fig-basicpair" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-basicpair-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell" data-layout-align="center">
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
 <span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert performance and promotion to categorical</span></span>
@@ -1141,10 +1137,16 @@ Figure&nbsp;2.5: Simple box plot of <code>sales</code> grouped against <code>per
 <span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a><span class="co"># pairplot of salespeople</span></span>
 <span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(salespeople)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div id="fig-basicpair" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-basicpair-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div>
 <figure class="figure">
-<p><img src="basic_r_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="basic_r_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1160,7 +1162,7 @@ Figure&nbsp;2.6: Pairplot of the <code>salespeople</code> data set
 <section id="documenting-your-work-using-quarto" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="documenting-your-work-using-quarto"><span class="header-section-number">2.8</span> Documenting your work using Quarto</h2>
 <p>For anyone performing any sort of multivariable analysis using a statistical programming language, appropriate documentation and reproducibility of the work is essential to its success and longevity. If your code is not easily obtained or run by others, it is likely to have a very limited impact and lifetime. Learning how to create integrated documents that contain both text and code is critical to providing access to your code and narration of your work.</p>
-<p>Quarto is a package which allows you to create integrated documents containing both formatted text and executed code. It is, in my opinion, one of the best resources available currently for this purpose. This entire book has been created using Quarto. You can start a Quarto document in RStudio by installing the by opening a new Quarto document file, which will have the suffix <code>.qmd</code>.</p>
+<p>Quarto is a package which allows you to create integrated documents containing both formatted text and executed code. It is, in my opinion, one of the best resources available currently for this purpose. This entire book has been created using Quarto. You can start a Quarto document in RStudio by opening a new Quarto document file, which will have the suffix <code>.qmd</code>.</p>
 <p>Quarto documents always start with a particular heading type called a YAML header, which contains overall information on the document you are creating. Care must be taken with the precise formatting of the YAML header, as it is sensitive to spacing and indentation. Usually a basic YAML header is created for you in RStudio when you start a new <code>.qmd</code> file. Here is an example.</p>
 <pre><code>---
 title: "My new document"
@@ -1203,7 +1205,8 @@ head(salespeople)
 </div>
 </div>
 <p>The <code>{}</code> wrapping allows you to specify different languages for your code chunk. For example, if you wanted to run Python code instead of R code you can use <code>{python}</code>.</p>
-<p>You can set options for your code chunks inside a code block by starting your line with <code>#|</code>. For example, if you want the results of your code to be displayed, but without the code itself being displayed, you can start your code block with the line <code>#| echo: false</code>.</p>
+<p>You can set options for your code chunks inside a code block by starting your line with <code>#|</code>. For example, if you want the results of your code to be displayed, but without the code itself being displayed, you can start your code block with the line</p>
+<pre><code>#| echo: false</code></pre>
 <p>The process of compiling your Quarto code to produce a document is known as ‘rendering’. To create a rendered document, you simply need to click on the ‘Render’ button in RStudio that appears above your Quarto code.</p>
 <p>If you are not familiar with Quarto, I strongly encourage you to learn it alongside R and to challenge yourself to write up any practice exercises you take on in this book using Quarto. You can find a really helpful and thorough user guide for Quarto at https://quarto.org/.</p>
 </section>

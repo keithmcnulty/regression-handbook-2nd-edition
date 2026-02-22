@@ -247,9 +247,6 @@ plot(stratified_base, type.plot = "Survival",
 Baseline retention curves for the two sentiment categories in the `job_retention` data set
 :::
 
-`{r} if (knitr::is_latex_output()) '\\index{survival analysis|)}'`
-`{r} if (knitr::is_latex_output()) '\\newpage'`
-
 ## Survival analysis using Python
 
 The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).  

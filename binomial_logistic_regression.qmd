@@ -1,17 +1,17 @@
 # Binomial Logistic Regression for Binary Outcomes {#sec-bin-log-reg}
 
-In the previous chapter we looked at how to explain outcomes that have continuous scale, such as quantity, money, height or weight.  While there are a number of typical outcomes of this type in the people analytics domain, they are not the most common form of outcomes that are typically modeled.  Much more common are situations where the outcome of interest takes the form of a limited set of classes.  Binary (two class) problems are very common.  Hiring, promotion and attrition are often modeled as binary outcomes:  for example 'Promoted' or 'Not promoted'.  Multi-class outcomes like performance ratings on an ordinal scale, or survey responses on a Likert scale are often converted to binary outcomes by dividing the ratings into two groups, for example 'High' and 'Not High'. 
+\index{binomial logistic regression|(}In the previous chapter we looked at how to explain outcomes that have continuous scale, such as quantity, money, height or weight.  While there are a number of typical outcomes of this type in the people analytics domain, they are not the most common form of outcomes that are typically modeled.  Much more common are situations where the outcome of interest takes the form of a limited set of classes.  Binary (two class) problems are very common.  Hiring, promotion and attrition are often modeled as binary outcomes:  for example 'Promoted' or 'Not promoted'.  Multi-class outcomes like performance ratings on an ordinal scale, or survey responses on a Likert scale are often converted to binary outcomes by dividing the ratings into two groups, for example 'High' and 'Not High'. 
 
-In any situation where our outcome is binary, we are effectively working with likelihoods.  These are not generally linear in nature, and so we no longer have the comfort of our inputs being *directly* linearly related to our outcome.    Therefore direct linear regression methods such as Ordinary Least Squares regression are not well suited to outcomes of this type.  Instead, linear relationships can be inferred on *transformations* of the outcome variable, which gives us a path to building interpretable models.  Hence, binomial logistic regression is said to be in a class of *generalized linear models* or *GLMs*.  Understanding logistic regression and using it reliably in practice is not straightforward, but it is an invaluable skill to have in the people analytics domain.  The mathematics of this chapter is a little more involved but worth the time investment in order to build a competent understanding of how to interpret these types of models. 
+In any situation where our outcome is binary, we are effectively working with likelihoods.  These are not generally linear in nature, and so we no longer have the comfort of our inputs being *directly* linearly related to our outcome.    Therefore direct linear regression methods such as Ordinary Least Squares regression are not well suited to outcomes of this type.  Instead, linear relationships can be inferred on *transformations* of the outcome variable, which gives us a path to building interpretable models.  \index{GLM (generalized linear model)}Hence, binomial logistic regression is said to be in a class of *generalized linear models* or *GLMs*.  Understanding logistic regression and using it reliably in practice is not straightforward, but it is an invaluable skill to have in the people analytics domain.  The mathematics of this chapter is a little more involved but worth the time investment in order to build a competent understanding of how to interpret these types of models. \index{generalized linear model|see {GLM}}
 
 
 ## When to use it
 
 ### Origins and intuition of binomial logistic regression {#sec-logistic-origins}
 
-Imagine that we have a set of observations of a random variable that is binary or dichotomous in nature.  For convenience, let's call the two values that any observation can take 'success' and 'failure'.  Let's say that the probability of an observation being a success is $p$, and therefore the probability of an observation being a failure is $1 - p$.  Such a random variable is known as a *Bernoulli random variable*.
+\index{Bernoulli random variable}Imagine that we have a set of observations of a random variable that is binary or dichotomous in nature.  For convenience, let's call the two values that any observation can take 'success' and 'failure'.  Let's say that the probability of an observation being a success is $p$, and therefore the probability of an observation being a failure is $1 - p$.  Such a random variable is known as a *Bernoulli random variable*.
 
-Let's also imagine we take a sample of $n$ observations of a Bernoulli random variable.  Then the number of successes in the sample, which we will call $Y$, will follow a *binomial distribution* with parameters $n$ and $p$.  The probability of observing exactly $k$ successes in our sample is given by the formula:
+\index{binomial distribution (statistics)}Let's also imagine we take a sample of $n$ observations of a Bernoulli random variable.  Then the number of successes in the sample, which we will call $Y$, will follow a *binomial distribution* with parameters $n$ and $p$.  The probability of observing exactly $k$ successes in our sample is given by the formula:
 
 $$
 P(Y = k) = \binom{n}{k} p^k (1 - p)^{n - k}
@@ -44,7 +44,7 @@ ggplot2::ggplot(binom_data, aes(x = k, y = prob)) +
 Binomial distribution showing the probability of $k$ successes in 100 observations with a success probability of 0.3 
 :::
 
-Now, although the variable $Y$ here is discrete (can only take non-negative integer values), we can see that the shape of $Y$ resembles a normal distribution.  In fact, as long as $n$ is not very small and $p$ is not very biased^[I usually find that $n > 50$ and $0.2 < p < 0.8$ are decent rules of thumb for my needs.], the binomial distribution can be well approximated by a normal distribution with mean $np$ and variance $np(1 - p)$ (standard deviation $\sqrt{np(1-p)}$) as shown in @fig-binomial-normal-approx for $n = 100$ and $p = 0.3$.  
+\index{binomial distribution (statistics)!normal approximation}Now, although the variable $Y$ here is discrete (can only take non-negative integer values), we can see that the shape of $Y$ resembles a normal distribution.  In fact, as long as $n$ is not very small and $p$ is not very biased^[I usually find that $n > 50$ and $0.2 < p < 0.8$ are decent rules of thumb for my needs.], the binomial distribution can be well approximated by a normal distribution with mean $np$ and variance $np(1 - p)$ (standard deviation $\sqrt{np(1-p)}$) as shown in @fig-binomial-normal-approx for $n = 100$ and $p = 0.3$.  
 
 ::: {#fig-binomial-normal-approx}
 ```{r}
@@ -102,7 +102,7 @@ Cumulative binomial distribution with $n = 100$, $p = 0.3$ (blue bars) and norma
 
 We will be interested in modeling this cumulative probability of success, in order to understand how various input variables might influence it.  Because we know that it is well approximated by the normal distribution, we can utilize a function that has very similar characteristics to the normal distribution, but is easier to work with mathematically.
 
-The *logistic function* was first introduced by the Belgian mathematician Pierre François Verhulst in the early 1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population.  The formula for Verhulst's function was:
+\index{logistic function!origins}The *logistic function* was first introduced by the Belgian mathematician Pierre François Verhulst in the early 1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population.  The formula for Verhulst's function was:
 
 $$
 y = \frac{L}{1 + e^{-k(x - x_0)}}
@@ -145,7 +145,7 @@ The logistic function (blue dashed line) is very similar to a cumulative normal 
 
 ### Use cases for binomial logistic regression
 
-Binomial logistic regression can be used when the outcome of interest is binary or dichotomous in nature.  That is, it takes one of two values.  For example, one or zero, true or false, yes or no.  These classes are commonly described as 'positive' and 'negative' classes.  There is an underlying assumption that the cumulative probability of the outcome takes a shape similar to a cumulative normal distribution.
+\index{outcome variable!dichotomous}\index{outcome variable!binary}Binomial logistic regression can be used when the outcome of interest is binary or dichotomous in nature.  That is, it takes one of two values.  For example, one or zero, true or false, yes or no.  These classes are commonly described as 'positive' and 'negative' classes.  There is an underlying assumption that the cumulative probability of the outcome takes a shape similar to a cumulative normal distribution.
 
 Here are some example questions that could be approached using binomial logistic regression:
 
@@ -157,7 +157,7 @@ Here are some example questions that could be approached using binomial logistic
 
 You are an analyst for a large company consisting of regional sales teams across the country.  Twice every year, this company promotes some of its salespeople.  Promotion is at the discretion of the head of each regional sales team, taking into consideration financial performance, customer satisfaction ratings, recent performance ratings and personal judgment.  
 
-You are asked by the management of the company to conduct an analysis to determine how the factors of financial performance, customer ratings and performance ratings influence the likelihood of a given salesperson being promoted.  You are provided with a data set containing data for the last three years of salespeople considered for promotion.  The `salespeople` data set contains the following fields:
+You are asked by the management of the company to conduct an analysis to determine how the factors of financial performance, customer ratings and performance ratings influence the likelihood of a given salesperson being promoted.  You are provided with a data set containing data for the last three years of salespeople considered for promotion.  \index{data sets!salespeople@\texttt{salespeople}The `salespeople` data set contains the following fields:
 
 * `promoted`:  A binary value indicating 1 if the individual was promoted and 0 if not
 * `sales`: the sales (in thousands of dollars) attributed to the individual in the period of the promotion
@@ -188,10 +188,25 @@ summary(salespeople)
 
 First we see a small number of missing values, and we should remove those observations.  We see that about a third of individuals were promoted, that sales ranged from \$151k to \$945k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these, and then let's do a pairplot to get a quick view on some possible underlying relationships, as in @fig-log-pairplot.
 
+```{r} 
+#| eval: false
+library(GGally)
+
+# remove NAs
+salespeople <- salespeople[complete.cases(salespeople), ]
+
+# convert performance to ordered factor and promoted to categorical
+salespeople$performance <- ordered(salespeople$performance, 
+                                   levels = 1:4)
+salespeople$promoted <- as.factor(salespeople$promoted)
+
+# generate pairplot
+GGally::ggpairs(salespeople)
+```
+
 ::: {#fig-log-pairplot}
 ```{r} 
-#| fig.align: "center"
-
+#| echo: false
 library(GGally)
 
 # remove NAs
@@ -216,7 +231,7 @@ So we can see that some relationships with our outcome may exist here, but it's 
 
 ## Modeling probabilistic outcomes using a logistic function {#sec-mod-prob}
 
-Imagine that you have an outcome observation $y_i$ which takes a value of either 1 (true) or 0 (false).  The probability of $y_i$ being true, or $P(y_i = 1)$, obviously takes a value between 0 and 1.  Now imagine that some input observation $x_i$ has a positive effect on $P(y_i = 1)$.  Then you would naturally expect $P(y_i = 1)$ to increase as $x_i$ increases.
+\index{binomial logistic regression!simple}Imagine that you have an outcome observation $y_i$ which takes a value of either 1 (true) or 0 (false).  The probability of $y_i$ being true, or $P(y_i = 1)$, obviously takes a value between 0 and 1.  Now imagine that some input observation $x_i$ has a positive effect on $P(y_i = 1)$.  Then you would naturally expect $P(y_i = 1)$ to increase as $x_i$ increases.
 
 In our `salespeople` data set, let's plot our `promotion` outcome against the `sales` input.  This can be seen in @fig-prom-sales-plot.
 
@@ -241,7 +256,7 @@ It's clear that promotion is more likely with higher sales levels.  As we move a
 
 Referring back to @sec-logistic-origins, each $y_i$ observation is a Bernoulli random variable with a specific success probability $P(y_i = 1)$.  Therefore, over many observations of that variable, the total number of successes (promotions) will follow a binomial distribution.  As we saw in @fig-binomial-cum-prob, the cumulative probability of success in a binomial distribution takes an S-shape that can be well approximated by a logistic function.
 
-Therefore, we could try to model this cumulative probability using our logistic function, which we learned about in @sec-logistic-origins, such that the probability of our observation being a promotion $P(y_i = 1)$ has some relationship with our input observation of `sales` $x_i$.  For example, let's plot the logistic function 
+\index{logistic function!as a model for probability}Therefore, we could try to model this cumulative probability using our logistic function, which we learned about in @sec-logistic-origins, such that the probability of our observation being a promotion $P(y_i = 1)$ has some relationship with our input observation of `sales` $x_i$.  For example, let's plot the logistic function 
 
 $$
 P(y_i = 1) = \frac{1}{1 + e^{-k(x_i - x_{0i})}}
@@ -311,9 +326,9 @@ $$
 
 The right-hand side should look familiar from the previous chapter on linear regression, meaning there is something here we can model linearly.  But what is the left-hand side?
 
-$P(y_i = 1)$ is the probability that our outcome observation is true (the individual was promoted), while $P(y_i = 0)$ is the probability that our outcome observation is false (the individual was not promoted).  You may be familiar from sports like horse racing or other gambling situations that the ratio of these two represents the *odds* of success.  For example, if a given horse has odds of 1:4 in a race, this means that there is a 20% probability they will win and an 80% probability they will not^[Often in sports the odds are expressed in the reverse order, but the concept is the same.].
+\index{odds}$P(y_i = 1)$ is the probability that our outcome observation is true (the individual was promoted), while $P(y_i = 0)$ is the probability that our outcome observation is false (the individual was not promoted).  You may be familiar from sports like horse racing or other gambling situations that the ratio of these two represents the *odds* of success.  For example, if a given horse has odds of 1:4 in a race, this means that there is a 20% probability they will win and an 80% probability they will not^[Often in sports the odds are expressed in the reverse order, but the concept is the same.].
 
-Therefore we can conclude that the natural logarithm of the odds of $y_i$---usually termed the *log odds* of $y_i$---is linear in $x_i$, and therefore we can model the log odds of $y_i$ using similar linear regression methods to those studied in @sec-linear-reg-ols^[In this case, a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*.].
+\index{log odds}Therefore we can conclude that the natural logarithm of the odds of $y_i$---usually termed the *log odds* of $y_i$---is linear in $x_i$, and therefore we can model the log odds of $y_i$ using similar linear regression methods to those studied in @sec-linear-reg-ols^[In this case, a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*.].
 
 ### Modeling the log odds and interpreting the coefficients
 
@@ -328,7 +343,7 @@ sales_model <- glm(formula = promoted ~ sales,
 sales_model$coefficients
 ```
 
-We can interpret the coefficients as follows:
+\index{binomial logistic regression!coefficients}We can interpret the coefficients as follows:
 
 1. The `(Intercept)` coefficient is the value of the log odds with zero input value of $x$---it is the log odds of promotion if you made no sales.  
 
@@ -340,7 +355,7 @@ $$
 \frac{P(y_i = 1)}{P(y_i = 0)} = e^{\beta_0 + \beta_1x_i} = e^{\beta_0}(e^{\beta_1})^{x_i}
 $$
 
-From this, we can interpret that $e^{\beta_0}$ represents the base odds of promotion assuming no sales, and that for every additional unit sales, those base odds are multiplied by $e^{\beta_1}$.  Given this multiplicative effect that $e^{\beta_1}$ has on the odds, it is known as an *odds ratio*.  
+\index{odds ratio}From this, we can interpret that $e^{\beta_0}$ represents the base odds of promotion assuming no sales, and that for every additional unit sales, those base odds are multiplied by $e^{\beta_1}$.  Given this multiplicative effect that $e^{\beta_1}$ has on the odds, it is known as an *odds ratio*.  
 
 ```{r}
 # convert log odds to base odds and odds ratio
@@ -351,7 +366,7 @@ So we can see that the base odds of promotion with zero sales is very close to z
 
 ### Odds versus probability
 
-It is worth spending a little time understanding the concept of odds and how it relates to probability.  It is extremely common for these two terms to be used synonymously, and this can lead to serious misunderstandings when interpreting a logistic regression model.
+\index{odds}It is worth spending a little time understanding the concept of odds and how it relates to probability.  It is extremely common for these two terms to be used synonymously, and this can lead to serious misunderstandings when interpreting a logistic regression model.
 
 If a certain event has a probability of 0.1, then this means that its odds are 1:9, or 0.111.  If the probability is 0.5, then the odds are 1, if the probability is 0.9, then the odds are 9, and if the probability is 0.99, the odds are 99.  As we approach a probability of 1, the odds become exponentially large, as illustrated in @fig-odds-prob):
 
@@ -410,7 +425,7 @@ $$
 
 ## Running a multiple binomial logistic regression model
 
-The derivations in the previous section extend to multivariable data.  Let $y_i$ be a dichotomous outcome observation, and let $x_{i1}, x_{i2}, \cdots, x_{ip}$ be our corresponding input observations.  Then
+\index{binomial logistic regression!multiple}The derivations in the previous section extend to multivariable data.  Let $y_i$ be a dichotomous outcome observation, and let $x_{i1}, x_{i2}, \cdots, x_{ip}$ be our corresponding input observations.  Then
 
 $$
 \ln\left(\frac{P(y_i = 1)}{P(y_i = 0)}\right) = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \cdots + \beta_px_{ip}
@@ -440,7 +455,7 @@ Let's put this into practice.
 
 Let's use a binomial logistic regression model to understand how each of the three inputs in our `salespeople` data set influence the likelihood of promotion.
 
-First, as we learned previously, it is good practice to convert the categorical `performance` variable to a dummy variable^[Note that most standard modeling functions have a built-in capability to deal with categorical variables, meaning that it's often not necessary to explicitly construct dummies.  However, it is shown here for completion sake.  You may wish to try running the subsequent code without explicitly constructing dummies, but note that constructing your own dummies gives you greater control over how they are labeled in any modeling output.]. 
+\index{dummy variables!in logistic regression}\index{input variables!categorical}First, as we learned previously, it is good practice to convert the categorical `performance` variable to a dummy variable^[Note that most standard modeling functions have a built-in capability to deal with categorical variables, meaning that it's often not necessary to explicitly construct dummies.  However, it is shown here for completion sake.  You may wish to try running the subsequent code without explicitly constructing dummies, but note that constructing your own dummies gives you greater control over how they are labeled in any modeling output.]. 
 
 ```{r}
 library(makedummies)
@@ -453,7 +468,7 @@ head(salespeople_dummies)
 ```
 
 
-Now we can run our model (using the formula `promoted ~ .` to mean regressing `promoted` against everything else) and view our coefficients.
+\index{binomial logistic regression!coefficients}Now we can run our model (using the formula `promoted ~ .` to mean regressing `promoted` against everything else) and view our coefficients.
 
 ```{r}
 # run binomial glm
@@ -506,12 +521,13 @@ simpler_model <- glm(formula = promoted ~ sales + customer_rate,
 
 As in the previous chapter, again we have the luxury of a three-dimensional model, so we can visualize it in @fig-log-reg-3d, revealing a 3D sigmoid curve which 'twists' to reflect the relative influence of `sales` and `customer_rate` on the outcome.
 
-::: {#fig-log-reg-3d .content-visible when-format="html"}
+::: {#fig-log-reg-3d}
 
 ```{r} 
 #| fig.pos: "!h"
 #| fig.align: "center" 
 #| echo: false
+#| eval: !expr knitr::is_html_output() 
 
 
 library(plotly)
@@ -528,19 +544,13 @@ plot_ly(data = salespeople) |>
 
 ```
 
-3D visualization of the fitted `simpler_model` against the `salespeople` data
-:::
-
-
-::: {#fig-log-reg-3d .content-visible when-format="pdf"}
-
-```{r} 
+```{r}
 #| fig.pos: "!h"
 #| fig.align: "center" 
 #| echo: false
+#| eval: !expr knitr::is_latex_output() 
 
 knitr::include_graphics("www/05/binomial.png")
-
 ```
 
 3D visualization of the fitted `simpler_model` against the `salespeople` data
@@ -556,7 +566,7 @@ summary(simpler_model)
 
 Note that, unlike what we saw for linear regression in @sec-lin-good-fit, our summary does not provide a statistic on overall model fit or goodness-of-fit.  The main reason for this is that there is no clear unified point of view in the statistics community on a single appropriate measure for model fit in the case of logistic regression.  Nevertheless, a number of options are available to analysts for estimating fit and goodness-of-fit for these models.
 
-*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here:
+\index{Pseudo-R-squared!in binomial logistic regression}*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here:
 
 * McFadden's $R^2$ works by comparing the likelihood function of the fitted model with that of a random model and using this to estimate the explained variance in the outcome.
 * Cox and Snell's $R^2$ works by applying a 'sum of squares' analogy to the likelihood functions to align more closely with the precise methodology for calculating $R^2$ in linear regression.  However, this usually means that the maximum value is less than 1 and in certain circumstances substantially less than 1, which can be problematic and unintuitive for an $R^2$.
@@ -576,9 +586,9 @@ DescTools::PseudoR2(
 
 We see that the Cox and Snell variant is notably lower than the other estimates, which is consistent with the known issues with its upper bound.  However, the other estimates are reasonably aligned and suggest a strong fit.
 
-Goodness-of-fit tests for logistic regression models compare the predictions to the observed outcome and test the null hypothesis that they are similar.  This means that, unlike in linear regression, a low p-value indicates a poor fit.  One commonly used method is the Hosmer-Lemeshow test, which divides the observations into a number of groups (usually 10) according to their fitted probabilities, calculates the proportion of each group that is positive and then compares this to the expected proportions based on the model prediction using a Chi-squared test.  However, this method has limitations.  It is particularly problematic for situations where there is a low sample size and can return highly varied results based on the number of groups used.  It is therefore recommended to use a range of goodness-of-fit tests, and not rely entirely on any one specific approach.
+\index{binomial logistic regression!goodness-of-fit tests}Goodness-of-fit tests for logistic regression models compare the predictions to the observed outcome and test the null hypothesis that they are similar.  This means that, unlike in linear regression, a low p-value indicates a poor fit.  One commonly used method is the Hosmer-Lemeshow test, which divides the observations into a number of groups (usually 10) according to their fitted probabilities, calculates the proportion of each group that is positive and then compares this to the expected proportions based on the model prediction using a Chi-squared test.  However, this method has limitations.  It is particularly problematic for situations where there is a low sample size and can return highly varied results based on the number of groups used.  It is therefore recommended to use a range of goodness-of-fit tests, and not rely entirely on any one specific approach.
 
-In R, the `generalhoslem` package can perform the popular Hosmer-Lemeshow test of goodness of fit for logistic regression models, and is recommended for exploration.  Here is an example using the `logitgof()` function for assessing goodness-of-fit, which uses 10 groups as default. 
+\index{R!packages!generalhoslem@\texttt{generalhoslem}}In R, the `generalhoslem` package can perform the popular Hosmer-Lemeshow test of goodness of fit for logistic regression models, and is recommended for exploration.  Here is an example using the `logitgof()` function for assessing goodness-of-fit, which uses 10 groups as default. 
 
 ```{r}
 library(generalhoslem)
@@ -600,9 +610,9 @@ Various measures of predictive accuracy can also be used to assess a binomial lo
 
 ### Model parsimony
 
-We saw that in both our linear regression and our logistic regression approach, we decided to drop variables from our model when we determined that they had no significant effect on the outcome.  The principle of *Occam's Razor* states that---all else being equal---the simplest explanation is the best.  In this sense, a model that contains information that does not contribute to its primary inference objective is more complex than it needs to be.  Such a model increases the communication burden in explaining its results to others, with no notable analytic benefit in return.
+\index{parsimony}We saw that in both our linear regression and our logistic regression approach, we decided to drop variables from our model when we determined that they had no significant effect on the outcome.  The principle of *Occam's Razor* states that---all else being equal---the simplest explanation is the best.  In this sense, a model that contains information that does not contribute to its primary inference objective is more complex than it needs to be.  Such a model increases the communication burden in explaining its results to others, with no notable analytic benefit in return.
 
-*Parsimony* describes the concept of being careful with resources or with information.  A model could be described as more parsimonious if it can achieve the same (or very close to the same) fit with a smaller number of inputs.  The *Akaike Information Criterion* or *AIC* is a measure of model parsimony that is computed for log-likelihood models like logistic regression models, with a lower AIC indicating a more parsimonious model.  AIC is often calculated as standard in summary reports of logistic regression models but can also be calculated independently.  Let's compare the different iterations of our model in this chapter using AIC.
+*Parsimony* describes the concept of being careful with resources or with information.  A model could be described as more parsimonious if it can achieve the same (or very close to the same) fit with a smaller number of inputs.  \index{AIC (Akaike Information Criterion)}The *Akaike Information Criterion* or *AIC* is a measure of model parsimony that is computed for log-likelihood models like logistic regression models, with a lower AIC indicating a more parsimonious model.  AIC is often calculated as standard in summary reports of logistic regression models but can also be calculated independently.  Let's compare the different iterations of our model in this chapter using AIC. \index{Akaike Information Criterion|see {AIC}}
 
 ```{r}
 # sales only model
@@ -620,7 +630,7 @@ Model parsimony becomes a substantial concern when there is a large number of in
 
 ## Other considerations in binomial logistic regression
 
-To predict from new data, just use the `predict()` function as in the previous chapter.  This function recognizes the type of model being used---in this case a generalized linear model---and adjusts its prediction approach accordingly. In particular, if you want to return the probability of the new observations being promoted, you need to use `type = "response"` as an argument.
+\index{binomial logistic regression!predictions}To predict from new data, just use the `predict()` function as in the previous chapter.  This function recognizes the type of model being used---in this case a generalized linear model---and adjusts its prediction approach accordingly. In particular, if you want to return the probability of the new observations being promoted, you need to use `type = "response"` as an argument.
 
 ```{r}
 # define new observations
@@ -631,9 +641,9 @@ To predict from new data, just use the `predict()` function as in the previous c
 predict(simpler_model, new_data, type = "response")
 ```
 
-Many of the principles covered in the previous chapter on linear regression are equally important in logistic regression.  For example, input variables should be managed in a similar way.  Collinearity and multicollinearity should be of concern.  Interaction of input variables can be modeled.  For the most part, analysts should be aware of the fundamental mathematical transformations which take place in a logistic regression model when they consider some of these issues (another reason to ensure that the mathematics covered earlier in this chapter is well understood).  For example, while coefficients in linear regression have a direct additive impact on $y$, in logistic regression they have a direct additive impact on the log odds of $y$, or alternatively their exponents have a direct multiplicative impact on the odds of $y$.  Therefore coefficient overestimation such as that which can occur when collinearity is not managed can result in inferences that could substantially overstate the importance or effect of input variables.
+Many of the principles covered in the previous chapter on linear regression are equally important in logistic regression.  For example, input variables should be managed in a similar way.  \index{collinearity}Collinearity and \index{multicollinearity}multicollinearity should be of concern.  Interaction of input variables can be modeled.  For the most part, analysts should be aware of the fundamental mathematical transformations which take place in a logistic regression model when they consider some of these issues (another reason to ensure that the mathematics covered earlier in this chapter is well understood).  For example, while coefficients in linear regression have a direct additive impact on $y$, in logistic regression they have a direct additive impact on the log odds of $y$, or alternatively their exponents have a direct multiplicative impact on the odds of $y$.  Therefore coefficient overestimation such as that which can occur when collinearity is not managed can result in inferences that could substantially overstate the importance or effect of input variables.
 
-Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness-of-fit.  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large-enough samples.  We can see in @fig-pearson-resids that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
+\index{Pearson residuals}Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness-of-fit.  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large-enough samples.  We can see in @fig-pearson-resids that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
 
 
 ::: {#fig-pearson-resids}
@@ -648,15 +658,16 @@ Distribution of Pearson residuals in `simpler_model`
 
 ## Binomial logistic regression using Python
 
-In Python, binomial logistic regression models can be generated in a similar way to OLS linear regression models using the `statsmodels` formula API, calling the binomial family from the general `statsmodels` API.
+\index{binomial logistic regression!using Python}\index{Python!packages!statsmodels@\texttt{statsmodels}}In Python, binomial logistic regression models can be generated in a similar way to OLS linear regression models using the `statsmodels` formula API, calling the binomial family from the general `statsmodels` API.
 
 ```{python}
+#| eval: false
 import pandas as pd
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 # obtain salespeople data
-url = "https://peopleanalytics-regression-book.org/data/salespeople.csv"
+url="https://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople = pd.read_csv(url)
 
 # define model
@@ -673,6 +684,35 @@ promotion_model = model.fit()
 print(promotion_model.summary())
 ```
 
+\small
+
+```{python}
+#| echo: false
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# obtain salespeople data
+url="https://peopleanalytics-regression-book.org/data/salespeople.csv"
+salespeople = pd.read_csv(url)
+
+# define model
+model = smf.glm(formula = "promoted ~ sales + customer_rate", 
+                data = salespeople, 
+                family = sm.families.Binomial())
+
+
+# fit model
+promotion_model = model.fit()
+
+
+# see results summary
+print(promotion_model.summary())
+```
+
+\normalsize
+
+\index{binomial logistic regression|)}
 
 ## Learning exercises
 
@@ -702,7 +742,7 @@ print(promotion_model.summary())
 
 ### Data exercises
 
-A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  Load the `charity_donation` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/charity_donation.csv].  It contains the following data:
+\index{data sets!charity\_donation@\texttt{charity\_donation}}A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  Load the `charity_donation` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/charity_donation.csv].  It contains the following data:
 
 * `n_donations`:  The total number of times the individual donated previous to the month being studied.
 * `total_donations`: The total amount of money donated by the individual previous to the month being studied
@@ -722,4 +762,6 @@ A nature preservation charity has asked you to analyze some data to help them un
 7. Calculate a variety of Pseudo-$R^2$ variants for your model.  How would you explain these to someone with no statistics expertise?
 8. Report the conclusions of your modeling exercise to the charity by writing a simple explanation that assumes no knowledge of statistics.
 9. **Extension:**  Using a variety of methods of your choice, test the hypothesis that your model fits the data.  How conclusive are your tests?
+
+\index{regression!binomial|see {binomial logistic regression}}
 

@@ -1,4 +1,4 @@
-# Foreword by Alexis Fink {.unnumbered}
+# Foreword by Alexis Fink {.unnumbered .unlisted}
 
 *This is the original foreword to the 1st edition of the book.  It will be revised prior to the finalization of the 2nd edition.*
 
@@ -37,7 +37,16 @@ them. This work is human and technical and important and exciting and deeply gra
 you will find this *Handbook of Regression Modeling in People Analytics* helps you uncover new
 truths and create positive impacts in your own work.
 
+::: {.content-visible unless-format="pdf"}
 [Alexis A. Fink](https://www.linkedin.com/in/alexisfink/) \
 December 2020
+:::
+
+::: {.content-visible when-format="pdf"}
+Alexis A. Fink \
+December 2020
+:::
+
+
 
 ***Alexis A. Fink, PhD** is a leading figure in people analytics and has led major people analytics teams at Microsoft and Intel before her current role as Vice President of People Analytics and Workforce Strategy at Facebook.  She is a Fellow of the Society for Industrial and Organizational Psychology and is a frequent author, journal editor and research leader in her field.*

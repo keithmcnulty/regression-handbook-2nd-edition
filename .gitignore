@@ -19,6 +19,7 @@ r/libs/
 *.ps
 *.toc
 *.zip
+*.pdf
 book_submit/
 misc/
 other/
@@ -33,3 +34,6 @@ Rplot*
 /docs/env/
 **/*.quarto_ipynb
 /models/
+Handbook-of-Regression-Modeling-in-People-Analytics.*
+*_files/
+*-latex.yml
