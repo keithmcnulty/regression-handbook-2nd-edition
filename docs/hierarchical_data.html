@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Keith McNulty">
+
+<title>9&nbsp; Modeling Explicit and Latent Hierarchy in Data – Handbook of Regression Modeling in People Analytics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./survival_analysis.html" rel="next">
+<link href="./poisson_nb.html" rel="prev">
+<link href="./www/cover/coverpage-og.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-108e51fa0b95596792f9f0eaa63a27ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-N7JZGMVRZK', { 'anonymize_ip': true});
+</script>
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.11.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="9&nbsp; Modeling Explicit and Latent Hierarchy in Data – Handbook of Regression Modeling in People Analytics">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/hierarchical_data_files/figure-html/unnamed-chunk-15-1.png">
+<meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1344">
+<meta name="twitter:title" content="9&nbsp; Modeling Explicit and Latent Hierarchy in Data – Handbook of Regression Modeling in People Analytics">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/hierarchical_data_files/figure-html/unnamed-chunk-15-1.png">
+<meta name="twitter:image-height" content="960">
+<meta name="twitter:image-width" content="1344">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./hierarchical_data.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Handbook of Regression Modeling in People Analytics</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./foreword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword by Alexis Fink</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Importance of Regression in People Analytics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basic_r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Basics of the R Programming Language</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./primer_stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistics Foundations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Regression for Continuous Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./binomial_logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Binomial Logistic Regression for Binary Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./multinomial_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Multinomial Logistic Regression for Nominal Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ordinal_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Odds Logistic Regression for Ordered Category Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poisson_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson, Quasi-Poisson and Negative Binomial Regression for Count Outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hierarchical_data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survival_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./power_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Power Analysis for Estimating Required Sample Sizes for Modeling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian Inference - A Modern Alternative to Classical Statistical Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Linear Regression Using Bayesian Inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./other_bayesian_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Fitting Other Regression Models Using Bayesian Inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./causal_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Causal Inference - Moving From Association to Causation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./further.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Further Exercises for Practice</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-mixed" id="toc-sec-mixed" class="nav-link active" data-scroll-target="#sec-mixed"><span class="header-section-number">9.1</span> Mixed models for explicit hierarchy in data</a>
+  <ul class="collapse">
+  <li><a href="#fixed-and-random-effects" id="toc-fixed-and-random-effects" class="nav-link" data-scroll-target="#fixed-and-random-effects"><span class="header-section-number">9.1.1</span> Fixed and random effects</a></li>
+  <li><a href="#running-a-mixed-model" id="toc-running-a-mixed-model" class="nav-link" data-scroll-target="#running-a-mixed-model"><span class="header-section-number">9.1.2</span> Running a mixed model</a></li>
+  <li><a href="#mixed-effects-models-using-python" id="toc-mixed-effects-models-using-python" class="nav-link" data-scroll-target="#mixed-effects-models-using-python"><span class="header-section-number">9.1.3</span> Mixed effects models using Python</a></li>
+  </ul></li>
+  <li><a href="#sec-struc-eq-model" id="toc-sec-struc-eq-model" class="nav-link" data-scroll-target="#sec-struc-eq-model"><span class="header-section-number">9.2</span> Structural equation models for latent hierarchy in data</a>
+  <ul class="collapse">
+  <li><a href="#running-and-assessing-the-measurement-model" id="toc-running-and-assessing-the-measurement-model" class="nav-link" data-scroll-target="#running-and-assessing-the-measurement-model"><span class="header-section-number">9.2.1</span> Running and assessing the measurement model</a></li>
+  <li><a href="#running-and-interpreting-the-structural-model" id="toc-running-and-interpreting-the-structural-model" class="nav-link" data-scroll-target="#running-and-interpreting-the-structural-model"><span class="header-section-number">9.2.2</span> Running and interpreting the structural model</a></li>
+  <li><a href="#structural-equation-models-using-python" id="toc-structural-equation-models-using-python" class="nav-link" data-scroll-target="#structural-equation-models-using-python"><span class="header-section-number">9.2.3</span> Structural equation models using Python</a></li>
+  </ul></li>
+  <li><a href="#learning-exercises" id="toc-learning-exercises" class="nav-link" data-scroll-target="#learning-exercises"><span class="header-section-number">9.3</span> Learning exercises</a>
+  <ul class="collapse">
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="header-section-number">9.3.1</span> Discussion questions</a></li>
+  <li><a href="#data-exercises" id="toc-data-exercises" class="nav-link" data-scroll-target="#data-exercises"><span class="header-section-number">9.3.2</span> Data exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/hierarchical_data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-hierarchical-data" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modeling Explicit and Latent Hierarchy in Data</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>So far in this book we have learned all of the most widely used and foundational regression techniques for inferential modeling. Starting with this chapter, we will look at situations where we need to adapt or combine techniques to address certain inference goals or data characteristics. In this chapter we look at some situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.</p>
+<p>It is very often the case that data has an explicit hierarchy. For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups. Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual. For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping. This requires a model which has a mixture of random effects and fixed effects—called a <em>mixed model</em>.</p>
+<p>Separately, it can be the case that data we are given could have a latent hierarchy. The input variables in the data might be measures of a smaller set of higher-level latent constructs, and we may have a more interpretable model if we hypothesize, confirm and model those latent constructs against our outcome of interest rather than using a larger number of explicit input variables. Latent variable modeling is a common technique to address this situation, and in this chapter we will review a form of latent variable modeling called <em>structural equation modeling</em>, which is very effective especially in making inferences from survey instruments with large numbers of items.</p>
+<p>These topics are quite broad, and there are many different approaches, techniques and terms involved in mixed modeling and latent variable modeling. In this chapter we will only cover some of the simpler approaches, which would suffice for the majority of common situations in people analytics. For a deeper treatment of these topics, see <span class="citation" data-cites="jiang">Jiang (<a href="bibliography.html#ref-jiang" role="doc-biblioref">2007</a>)</span> for mixed models and <span class="citation" data-cites="bartholomew">Bartholomew, Knott, and Moustaki (<a href="bibliography.html#ref-bartholomew" role="doc-biblioref">2011</a>)</span> or <span class="citation" data-cites="skrondal">Skrondal and Rabe-Hesketh (<a href="bibliography.html#ref-skrondal" role="doc-biblioref">2004</a>)</span> for latent variable models.</p>
+<section id="sec-mixed" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="sec-mixed"><span class="header-section-number">9.1</span> Mixed models for explicit hierarchy in data</h2>
+<p></p>
+<p>The most common explicit hierarchies that we see in data are group-based and time-based. A group-based hierarchy occurs when we are taking observations that belong to different groups. For example, in our first walkthrough example in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a>, we modeled final examination performance against examination performance for the previous three years. In this case we considered each student observation to be independent and identically distributed, and we ran a linear regression model on all the students. If we were to receive additional information that these students were actually a mix of students in different degree programs, then we may wish to take this into account in how we model the problem—that is, we would want to assume that each student observation is only independent and identically distributed within each degree program.</p>
+<p>Similarly, a time-based hierarchy occurs when we have multiple observations of the same subject taken at different times. For example, if we are conducting a weekly survey on the same people over the course of a year, and we are modeling how answers to some questions might depend on answers to others, we may wish to consider the effect of the person on this model.</p>
+<p>Both of these situations introduce a new grouping variable into the problem we are modeling, thus creating a hierarchy. It is not hard to imagine that analyzing each group may produce different statistical properties compared to analyzing the entire population—for example, there could be correlations between the data inside groups which are less evident when looking at the overall population. Therefore in some cases a model may provide more useful inferences if this grouping is taken into account.</p>
+<section id="fixed-and-random-effects" class="level3" data-number="9.1.1">
+<h3 data-number="9.1.1" class="anchored" data-anchor-id="fixed-and-random-effects"><span class="header-section-number">9.1.1</span> Fixed and random effects</h3>
+<p>Let’s imagine that we have a set of observations consisting of a continuous outcome variable <span class="math inline">\(y\)</span> and input variables <span class="math inline">\(x_1, x_2, \dots, x_p\)</span>. Let’s also assume that we have an additional data point for each observation where we assign it to a group <span class="math inline">\(G\)</span>. We are asked to determine the relationship between the outcome and the input variables. One option is to develop a linear model <span class="math inline">\(y = \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon\)</span>, ignoring the group data. In this model, we assume that the coefficients all have a <em>fixed effect</em> on the input variables—that is, they act on every observation in the same way. This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled, or if we are comfortable making inferences about variables at the observation level only.</p>
+<p>If, however, there is a belief that group membership may have an effect on the relationship being modeled, and if we are interested in interpreting our model at the group and observation level, then we need to adjust our model to a mixed model for more accurate and reliable inference. The most common adjustment is a <em>random intercept</em>. In this situation, we imagine that group membership has an effect on the ‘starting point’ of the relationship: the intercept. Therefore, for a given observation <span class="math inline">\(y = \alpha_G + \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon\)</span>, where <span class="math inline">\(\alpha_G\)</span> is a random effect with a mean of zero associated with the group that the observation is a member of. This can be restated as:</p>
+<p><span class="math display">\[
+y = \beta_G + \beta_1x_1 + \dots + \beta_px_p + \epsilon
+\]</span></p>
+<p>where <span class="math inline">\(\beta_G = \alpha_G + \beta_0\)</span>, which is a random intercept with a mean of <span class="math inline">\(\beta_0\)</span>.</p>
+<p>This model is very similar to a standard linear regression model, except instead of having a fixed intercept, we have an intercept that varies by group. Therefore, we will essentially have two ‘levels’ in our model: one at the observation level to describe <span class="math inline">\(y\)</span> and one at the group level to describe <span class="math inline">\(\beta_G\)</span>. For this reason mixed models are sometimes known as <em>multilevel models</em>.</p>
+<p>It is not too difficult to see how this approach can be extended. For example, suppose that we believe the groups also have an effect on the coefficient of the input variable <span class="math inline">\(x_1\)</span> as well as the intercept. Then</p>
+<p><span class="math display">\[
+y = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + \dots + \beta_px_p
+\]</span> where <span class="math inline">\(\beta_{G0}\)</span> is a random intercept with a mean of <span class="math inline">\(\beta_0\)</span>, and <span class="math inline">\(\beta_{G1}\)</span> is a <em>random slope</em> with a mean of <span class="math inline">\(\beta_1\)</span>. In this case, a mixed model would return the estimated coefficients at the observation level and the statistics for the random effects <span class="math inline">\(\beta_{G0}\)</span> and <span class="math inline">\(\beta_{G1}\)</span> at the group level.</p>
+<p>Finally, our model does not need to be linear for this to apply. This approach also extends to logistic models and other generalized linear models. For example, if <span class="math inline">\(y\)</span> was a binary outcome variable and our model was a binomial logistic regression model, our last equation would translate to</p>
+<p><span class="math display">\[
+\mathrm{ln}\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + \dots + \beta_px_p
+\]</span></p>
+</section>
+<section id="running-a-mixed-model" class="level3" data-number="9.1.2">
+<h3 data-number="9.1.2" class="anchored" data-anchor-id="running-a-mixed-model"><span class="header-section-number">9.1.2</span> Running a mixed model</h3>
+<p>Let’s look at a fun and straightforward example of how mixed models can be useful. The <code>speed_dating</code> data set is a set of information captured during experiments with speed dating by students at Columbia University in New York<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Each row represents one meeting between an individual and a partner of the opposite sex. The data contains the following fields:</p>
+<ul>
+<li><code>iid</code> is an id number for the individual.</li>
+<li><code>gender</code> is the gender of the individual with 0 as Female and 1 as Male.</li>
+<li><code>match</code> indicates that the meeting resulted in a match.</li>
+<li><code>samerace</code> indicates that both the individual and the partner were of the same race.</li>
+<li><code>race</code> is the race of the individual, with race coded as follows: Black/African American=1, European/Caucasian-American=2, Latino/Hispanic American=3, Asian/Pacific Islander/Asian-American=4, Native American=5, Other=6.</li>
+<li><code>goal</code> is the reason why the individual is participating in the event, coded as follows: Seemed like a fun night out=1, To meet new people=2, To get a date=3, Looking for a serious relationship=4, To say I did it=5, Other=6.</li>
+<li><code>dec</code> is a binary rating from the individual as to whether they would like to see their partner again (1 is Yes and 0 is No).</li>
+<li><code>attr</code> is the individual’s rating out of 10 on the attractiveness of the partner.</li>
+<li><code>intel</code> is the individual’s rating out of 10 on the intelligence level of the partner.</li>
+<li><code>prob</code> is the individual’s rating out of 10 on whether they believe the partner will want to see them again.</li>
+<li><code>agediff</code> is the absolute difference in the ages of the individual and the partner.</li>
+</ul>
+<p>This data can be explored in numerous ways, but we will focus here on modeling options. We are interested in the binary outcome <code>dec</code> (the decision of the individual), and we would like to understand how it relates to the age difference, the racial similarity and the ratings on <code>attr</code>, <code>intel</code> and <code>prob</code>. First, let’s assume that we don’t care about how an individual makes up their mind about their speed date, and that we are only interested in the dynamics of speed date decisions. Then we would simply run a binomial logistic regression on our data set, ignoring <code>iid</code> and other grouping variables like <code>race</code>, <code>goal</code> and <code>gender</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/speed_dating.csv"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run standard binomial model</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">glm</span>(dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> speed_dating, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dec ~ agediff + samerace + attr + intel + prob, 
+    family = "binomial", data = speed_dating)
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -5.812900   0.184340 -31.534   &lt;2e-16 ***
+agediff     -0.010518   0.009029  -1.165   0.2440    
+samerace    -0.093422   0.055710  -1.677   0.0936 .  
+attr         0.661139   0.019382  34.111   &lt;2e-16 ***
+intel       -0.004485   0.020763  -0.216   0.8290    
+prob         0.270553   0.014565  18.575   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 10647.3  on 7788  degrees of freedom
+Residual deviance:  8082.9  on 7783  degrees of freedom
+  (589 observations deleted due to missingness)
+AIC: 8094.9
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<p>In general, we see that the factors which significantly influence the speed dating decision seem to be the attractiveness of the partner and the feeling of reciprocation of interest from the partner, and that age difference, racial similarity and intelligence do not seem to play a significant role at the level of the speed date itself.</p>
+<p>Now let’s say that we are interested in how a given <em>individual</em> weighs up these factors in coming to a decision. Different individuals may have different ingoing criteria for making speed dating decisions. As a result, each individual may have varying base likelihoods of a positive decision, and each individual may be affected by the input variables in different ways as they come to their decision. Therefore we will need to assign random effects for individuals based on <code>iid</code>. The <code>lme4</code> package in R contains functions for performing mixed linear regression models and mixed generalized linear regression models. These functions take formulas with additional terms to define the random effects to be estimated. The function for a linear model is <code>lmer()</code> and for a generalized linear model is <code>glmer()</code>.</p>
+<p>In the simple case, let’s assume that each individual has a different ingoing base likelihood of making a positive decision on a speed date. We will therefore model a random intercept according to the <code>iid</code> of the individual. Here we would use the formula <code>dec ~ agediff + samerace + attr + intel + prob + (1 | iid)</code>, where <code>(1 | iid)</code> means ‘a random effect for <code>iid</code> on the intercept of the model’.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run binomial mixed effects model</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>iid_intercept_model <span class="ot">&lt;-</span> lme4<span class="sc">:::</span><span class="fu">glmer</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> speed_dating,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"binomial"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view summary without correlation table of fixed effects</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(iid_intercept_model, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">correlation =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [glmerMod]
+ Family: binomial  ( logit )
+Formula: dec ~ agediff + samerace + attr + intel + prob + (1 | iid)
+   Data: speed_dating
+
+      AIC       BIC    logLik -2*log(L)  df.resid 
+   6420.3    6469.0   -3203.1    6406.3      7782 
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-25.6966  -0.3644  -0.0606   0.3608  25.0369 
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ iid    (Intercept) 5.18     2.276   
+Number of obs: 7789, groups:  iid, 541
+
+Fixed effects:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -12.88882    0.42138 -30.587  &lt; 2e-16 ***
+agediff      -0.03671    0.01401  -2.621  0.00877 ** 
+samerace      0.20187    0.08140   2.480  0.01314 *  
+attr          1.07894    0.03334  32.364  &lt; 2e-16 ***
+intel         0.31592    0.03472   9.098  &lt; 2e-16 ***
+prob          0.61998    0.02873  21.581  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>We can see the two levels of results in this summary. The fixed effects level gives the coefficients of the model at an observation (speed date) level, and the random effects tell us how the intercept (or base likelihood) of that model can vary according to the individual. We see that there is considerable variance in the intercept from individual to individual, and taking this into account, we now see that the decision of an individual on a given date is significantly influenced by all the factors in this model. If we had stuck with the simple binomial model, the effects of age difference, racial similarity and intelligence at an individual level would have gotten lost, and we could have reached the erroneous conclusion that none of these really matter in speed dating.</p>
+<p>To illustrate this graphically, <a href="#fig-fullbin" class="quarto-xref">Figure&nbsp;<span>9.1</span></a> shows the <code>speed_dating</code> data for a subset of the three individuals with IIDs 252, 254 and 256. The curve represents a plain binomial logistic regression model fitted on the <code>attr</code> and <code>prob</code> input variables, irrelevant of the IID of the individual.</p>
+<div id="fig-fullbin" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fullbin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-3b4418d56ede0c473ccc" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-3b4418d56ede0c473ccc">{"x":{"visdat":{"49155d5a8964":["function () ","plotlyVisDat"]},"cur_data":"49155d5a8964","attrs":{"49155d5a8964":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"49155d5a8964.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":{},"x":{},"y":{},"type":"mesh3d","name":"Fitted values","intensity":{},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"colorbar":{"title":"dec<br />fit","ticklen":2},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"z":[0.55167007063019591,0.3654395656688369,0.094743988866070522,0.0076437647799771167,0.00376883465796064,0.15568246920311818,0.3654395656688369,0.15568246920311818,0.3654395656688369,0.010615198959612594,0.016978072964557313,0.015440957465234403,0.021378171308672672,0.03242328287917183,0.021378171308672672,0.021378171308672672,0.21230551138277351,0.008018436174417283,0.15568246920311818,0.069886456900002586,0.061046668573535107,0.12723350885371629,0.016191584810136044,0.13268628089808338,0.23750783493997599,0.31286361463819889,0.03242328287917183,0.31286361463819889,0.090687426860997913,0.033970982865853032,0.17566216508312368,0.37669483555133809,0.033970982865853032,0.011133885830642606,0.090687426860997913,0.02349222167396783,0.090687426860997913,0.090687426860997913,0.069886456900002586,0.090687426860997913,0.23750783493997599,0.016191584810136044,0.64268729092811161,0.37669483555133809,0.12723350885371629,0.37669483555133809,0.22888419123772749,0.12197330613814529,0.56356704648254774,0.37669483555133809,0.22888419123772749,0.37669483555133809,0.45705471848342205,0.46904597614716526,0.46904597614716526,0.063870491926204781,0.024624454064771668,0.22888419123772749,0.64268729092811161,0.30258968271451397,0.090687426860997913,0.46904597614716526,0.04669526900072276],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2,6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4,7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6,5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3,8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values","intensity":[0.55167007063019591,0.3654395656688369,0.094743988866070522,0.0076437647799771167,0.00376883465796064,0.15568246920311818,0.3654395656688369,0.15568246920311818,0.3654395656688369,0.010615198959612594,0.016978072964557313,0.015440957465234403,0.021378171308672672,0.03242328287917183,0.021378171308672672,0.021378171308672672,0.21230551138277351,0.008018436174417283,0.15568246920311818,0.069886456900002586,0.061046668573535107,0.12723350885371629,0.016191584810136044,0.13268628089808338,0.23750783493997599,0.31286361463819889,0.03242328287917183,0.31286361463819889,0.090687426860997913,0.033970982865853032,0.17566216508312368,0.37669483555133809,0.033970982865853032,0.011133885830642606,0.090687426860997913,0.02349222167396783,0.090687426860997913,0.090687426860997913,0.069886456900002586,0.090687426860997913,0.23750783493997599,0.016191584810136044,0.64268729092811161,0.37669483555133809,0.12723350885371629,0.37669483555133809,0.22888419123772749,0.12197330613814529,0.56356704648254774,0.37669483555133809,0.22888419123772749,0.37669483555133809,0.45705471848342205,0.46904597614716526,0.46904597614716526,0.063870491926204781,0.024624454064771668,0.22888419123772749,0.64268729092811161,0.30258968271451397,0.090687426860997913,0.46904597614716526,0.04669526900072276],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fullbin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: 3D visualization of the fitted plain binomial <code>model</code> against a subset of the <code>speed_dating</code> data for three specific <code>iid</code>s
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-mixedbin" class="quarto-xref">Figure&nbsp;<span>9.2</span></a> shows the three separate curves for each IID generated by a mixed binomial logistic regression model with a random intercept fitted on the same two input variables. Here, we can see that different individuals process the two inputs in their decision making in different ways, leading to different individual formulas which determine the likelihood of a positive decision. While a plain binomial regression model will find the best single formula from the data irrelevant of the individual, a mixed model allows us to take these different individual formulas into account in determining the effects of the input variables.</p>
+<div id="fig-mixedbin" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mixedbin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-b25a1db8707b6b76725c" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-b25a1db8707b6b76725c">{"x":{"visdat":{"49151ddd390f":["function () ","plotlyVisDat"]},"cur_data":"49151ddd390f","attrs":{"49151ddd390f":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"49151ddd390f.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.9680650183617111,0.80842174438606706,0.45289843695702214,0.0018978990889644992,0.0006037627979087382,0.17976697031377242,0.80842174438606706,0.17976697031377242,0.80842174438606706,0.0022280549722641816,0.030233470249831286,0.0059494405563266847,0.0069794684660877612,0.041222249454937521,0.0069794684660877612,0.0069794684660877612,0.37004536198269883,0.0043210971345476207,0.17976697031377242,0.41346029875330337,0.055974521206295758],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"inherit":true},"49151ddd390f.2":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.076126920791359812,0.0011564804812837495,0.15829353889248543,0.371832581861119,0.61337988153269973,0.0036310359620276593,0.61337988153269973,0.029826501535233675,0.0082487792059811309,0.18089909671523016,0.44943880389456481,0.0082487792059811309,0.00043179761682849896,0.029826501535233675,0.0030936292446062988,0.029826501535233675,0.029826501535233675,0.056380622948109853,0.029826501535233675,0.371832581861119,0.0011564804812837495],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"inherit":true},"49151ddd390f.3":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.57040208752553612,0.13598680460973023,0.015638390215405099,0.13598680460973023,0.047622899135072186,0.006912708217580066,0.53065638383708336,0.13598680460973023,0.047622899135072186,0.13598680460973023,0.15599718295178946,0.29668679038390089,0.29668679038390089,0.002206642112078942,0.0013636699093278436,0.047622899135072186,0.57040208752553612,0.11818381226705818,0.0058924743023204169,0.29668679038390089,0.0018796532348992711],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"z":[0.9680650183617111,0.80842174438606706,0.45289843695702214,0.0018978990889644992,0.0006037627979087382,0.17976697031377242,0.80842174438606706,0.17976697031377242,0.80842174438606706,0.0022280549722641816,0.030233470249831286,0.0059494405563266847,0.0069794684660877612,0.041222249454937521,0.0069794684660877612,0.0069794684660877612,0.37004536198269883,0.0043210971345476207,0.17976697031377242,0.41346029875330337,0.055974521206295758],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","frame":null},{"z":[0.076126920791359812,0.0011564804812837495,0.15829353889248543,0.371832581861119,0.61337988153269973,0.0036310359620276593,0.61337988153269973,0.029826501535233675,0.0082487792059811309,0.18089909671523016,0.44943880389456481,0.0082487792059811309,0.00043179761682849896,0.029826501535233675,0.0030936292446062988,0.029826501535233675,0.029826501535233675,0.056380622948109853,0.029826501535233675,0.371832581861119,0.0011564804812837495],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","frame":null},{"z":[0.57040208752553612,0.13598680460973023,0.015638390215405099,0.13598680460973023,0.047622899135072186,0.006912708217580066,0.53065638383708336,0.13598680460973023,0.047622899135072186,0.13598680460973023,0.15599718295178946,0.29668679038390089,0.29668679038390089,0.002206642112078942,0.0013636699093278436,0.047622899135072186,0.57040208752553612,0.11818381226705818,0.0058924743023204169,0.29668679038390089,0.0018796532348992711],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mixedbin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: 3D visualization of the individual-level binomial models created by <code>iid_intercept_model</code> against a subset of the <code>speed_dating</code> data for three specific <code>iid</code>s
+</figcaption>
+</figure>
+</div>
+<p>If we believe that different individuals are influenced differently by one or more of the various decision factors they consider during a speed date, we can extend our random effects to the slope coefficients of our model. For example we could use <code>(1 + agediff | iid)</code> to model a random effect of <code>iid</code> on the intercept and the <code>agediff</code> coefficient. Similarly, if we wanted to consider two grouping variables—like <code>iid</code> and <code>goal</code>—on the intercept, we could add both <code>(1 | iid)</code> and <code>(1 | goal)</code> to our model formula.</p>
+</section>
+<section id="mixed-effects-models-using-python" class="level3" data-number="9.1.3">
+<h3 data-number="9.1.3" class="anchored" data-anchor-id="mixed-effects-models-using-python"><span class="header-section-number">9.1.3</span> Mixed effects models using Python</h3>
+<p>The <code>pymer4</code> package provides a simple implementation of linear and generalized linear mixed effects models. The <code>glmer()</code> function is used for generalized linear mixed models, and the specific model is defined by the <code>family</code> parameter. This package is implemented in R under the hood, and also requires Polars rather than Pandas DataFrames. To avoid issues related to the back-end R code, it is recommended that you explicitly remove all rows containing <code>NaN</code> values before fitting a model, or else perform imputation to fill these values.</p>
+<p>To recreate our random intercept model from the previous section using <code>pymer4</code>, we would use the following code:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymer4.models <span class="im">import</span> glmer</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">https://peopleanalytics-regression-book.org/data/speed_dating.csv</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># load data and drop rows with NaN values, then convert to Polars</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="op">=</span> pd.read_csv(url).dropna()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="op">=</span> pl.DataFrame(speed_dating) </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># fit binomial mixed effects model</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> glmer(</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"dec ~ agediff + samerace + attr + intel + prob + (1 | iid)"</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  data <span class="op">=</span> speed_dating, </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  family <span class="op">=</span> <span class="st">'binomial'</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>model.fit()</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># view the table of results</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(model.summary()._tbl_data)[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">9</span>]]</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> [<span class="st">"Effect"</span>, <span class="st">"Parameter"</span>, <span class="st">"Estimate"</span>, </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="st">"z value"</span>, <span class="st">"Pr(&gt;|z|)"</span>, <span class="st">"Signif. Code"</span>]</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>           Effect    Parameter   Estimate    z value  Pr(&gt;|z|) Signif. Code
+0          iid-sd  (Intercept)   2.278032        NaN      None         None
+1            None         None        NaN        NaN      None         None
+2  Fixed Effects:         None        NaN        NaN      None         None
+3            None  (Intercept) -12.893847 -30.548174     &lt;.001          ***
+4            None      agediff  -0.036687  -2.618721  0.008826           **
+5            None     samerace   0.198032   2.431242   0.01505            *
+6            None         attr    1.07863  32.334247     &lt;.001          ***
+7            None        intel   0.316896   9.113065     &lt;.001          ***
+8            None         prob   0.619761  21.566648     &lt;.001          ***</code></pre>
+</div>
+</div>
+<p> </p>
+</section>
+</section>
+<section id="sec-struc-eq-model" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="sec-struc-eq-model"><span class="header-section-number">9.2</span> Structural equation models for latent hierarchy in data</h2>
+<p></p>
+<p>In this section we will focus entirely on survey data use cases, as this is the most common application of structural equation modeling in people analytics. However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications. Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.</p>
+<p>It is a frequent occurrence with surveys conducted on large samples of people, such as a public survey or a large company survey, that attempts to run regression models can be problematic due to the large number of survey questions or items. Often many of the items are highly correlated, and even if they were not, high dimensionality makes interpretability very challenging. Decision-makers are not usually interested in explanations that involve 50 or 100 variables.</p>
+<p>Usually, such a large number of survey items are not each independently measuring a different construct. Many of the items can be considered to be addressing similar thematic constructs. For example, the items ‘I believe I am compensated well’ and ‘I am happy with the benefits offered by my employer’ could both be considered to be related to employee rewards. In some cases, survey instruments can be explicitly constructed around these themes, and in other cases, surveys have grown organically over time to include a disorganized set of items that could be grouped into themes after the fact.</p>
+<p>It is a common request for an analyst to model a certain outcome using the many items in a complex survey as input variables. In some cases the outcome being modeled is an item in the survey itself—usually some overall measure of sentiment—or in other cases the outcome could be independent of the survey instrument, for example future attrition from the organization. In this situation, a model using the themes as input variables is likely to be a lot more useful and interpretable than a model using the items as input variables.</p>
+<p><em>Structural equation modeling</em> is a technique that allows an analyst to hypothesize a smaller set of latent variables or factors that explain the responses to the survey items themselves (the ‘measured variables’), and then regresses the outcome of interest against these latent factors. It is a two-part approach, each part being a separate model in and of itself, as follows:</p>
+<ol type="1">
+<li><p><em>Measurement model</em>: This is focused on how well the hypothesized factors explain the responses to the survey items using a technique called factor analysis. In the most common case, where a subject matter expert has pre-organized the items into several groups corresponding to hypothesized latent variables, the process is called <em>confirmatory factor analysis</em>, and the objective is to confirm that the groupings represent a high-quality measurement model, adjusting as necessary to refine the model. In the simplest case, items are fitted into separate independent themes with no overlap.</p></li>
+<li><p><em>Structural model</em>: Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed factors relate to the outcome of interest.</p></li>
+</ol>
+<p>As a walkthrough example, we will work with the <code>politics_survey</code> data set.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/politics_survey.csv"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>politics_survey <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This data set represents the results of a survey conducted by a political party on a set of approximately 2100 voters. The results are on a Likert scale of 1 to 4 where 1 indicates strong negative sentiment with a statement and 4 indicates strong positive sentiment. Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:</p>
+<ol type="1">
+<li><code>Overall</code> represents the overall intention to vote for the party in the next election.</li>
+<li>Items beginning with <code>Pol</code> are considered to be related to the policies of the political party.</li>
+<li>Items beginning with <code>Hab</code> are considered to be related to prior voting habits in relation to the political party.</li>
+<li>Items beginning with <code>Loc</code> are considered to be related to interest in local issues around where the respondent resided.</li>
+<li>Items beginning with <code>Env</code> are considered to be related to interest in environmental issues.</li>
+<li>Items beginning with <code>Int</code> are considered to be related to interest in international issues.</li>
+<li>Items beginning with <code>Pers</code> are considered to be related to the personalities of the party representatives/leaders.</li>
+<li>Items beginning with <code>Nat</code> are considered to be related to interest in national issues.</li>
+<li>Items beginning with <code>Eco</code> are considered to be related to interest in economic issues.</li>
+</ol>
+<p>Let’s take a quick look at the data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(politics_survey)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Overall Pol1 Pol2 Pol3 Hab1 Hab2 Hab3 Loc1 Loc2 Loc3 Loc4 Env1 Env2 Int1 Int2
+1       3    2    2    2    2    2    2    3    3    2    2    2    3    3    3
+2       4    4    4    4    4    4    4    4    4    4    4    4    4    4    3
+3       4    4    4    4    3    2    2    4    4    4    4    4    4    4    4
+4       3    4    4    4    3    2    2    4    3    3    4    4    4    4    3
+5       3    3    3    4    4    3    3    3    4    3    3    4    4    3    4
+6       4    3    3    4    3    2    3    3    3    2    2    3    3    4    3
+  Pers1 Pers2 Pers3 Nat1 Nat2 Nat3 Eco1 Eco2
+1     3     4     4    3    3    4    3    3
+2     4     4     4    4    4    4    3    4
+3     4     4     4    4    4    4    4    4
+4     2     3     3    4    4    2    4    4
+5     4     3     3    4    3    4    3    3
+6     3     4     3    3    4    3    4    4</code></pre>
+</div>
+</div>
+<p>The outcome of interest here is the <code>Overall</code> rating. Our first aim is to confirm that the eight factors suggested by the subject matter experts represent a satisfactory measurement model (that they reasonably explain the responses to the 22 items), adjusting or refining if needed. Assuming we can confirm a satisfactory measurement model, our second aim is to run a structural model to determine how each factor relates to the overall intention to vote for the party in the next election.</p>
+<section id="running-and-assessing-the-measurement-model" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="running-and-assessing-the-measurement-model"><span class="header-section-number">9.2.1</span> Running and assessing the measurement model</h3>
+<p>The proposed measurement model can be seen in <a href="#fig-semplot" class="quarto-xref">Figure&nbsp;<span>9.3</span></a>. In this path diagram, we see the eight latent variables or factors (circles) and how they map to the individual measured items (squares) in the survey using single headed arrows. Here we are making a simplifying assumption that each latent variable influences an independent group of survey items. The diagram also notes that the latent variables may be correlated with each other, as indicated by the double-headed arrows at the top. Dashed-line paths indicate that a specific item will be used to scale the variance of the latent factor.</p>
+<div id="fig-semplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-semplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="hierarchical_data_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-semplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.3: Simple path diagram showing proposed measurement model for <code>politics_survey</code>
+</figcaption>
+</figure>
+</div>
+<p>The <code>lavaan</code> package in R is a specialized package for running analysis on latent variables. The function <code>cfa()</code> can be used to perform a confirmatory factor analysis on a specified measurement model. The measurement model can be specified using an appropriately commented and formatted text string as follows. Note the <code>=~</code> notation, and note also that each factor is defined on a new line.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define measurement model</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>meas_mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st"># measurement model</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2 + Pol3</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">Loc =~ Loc1 + Loc2 + Loc3</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="st">Pers =~ Pers1 + Pers2 + Pers3</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2 + Nat3</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>With the measurement model defined, the confirmatory factor analysis can be run and a summary viewed. The <code>lavaan</code> summary functions used in this section produce quite large outputs. We will proceed to highlight which parts of this output are important in interpreting and refining the model.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>cfa_meas_mod <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="at">model =</span> meas_mod, <span class="at">data =</span> politics_survey)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(cfa_meas_mod, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-20 ended normally after 108 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        70
+
+  Number of observations                          2108
+
+Model Test User Model:
+                                                      
+  Test statistic                               838.914
+  Degrees of freedom                               161
+  P-value (Chi-square)                           0.000
+
+Model Test Baseline Model:
+
+  Test statistic                             17137.996
+  Degrees of freedom                               210
+  P-value                                        0.000
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.960
+  Tucker-Lewis Index (TLI)                       0.948
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -37861.518
+  Loglikelihood unrestricted model (H1)     -37442.061
+                                                      
+  Akaike (AIC)                               75863.036
+  Bayesian (BIC)                             76258.780
+  Sample-size adjusted Bayesian (SABIC)      76036.383
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.045
+  90 Percent confidence interval - lower         0.042
+  90 Percent confidence interval - upper         0.048
+  P-value H_0: RMSEA &lt;= 0.050                    0.998
+  P-value H_0: RMSEA &gt;= 0.080                    0.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.035
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  Pol =~                                                                
+    Pol1              1.000                               0.568    0.772
+    Pol2              0.883    0.032   27.431    0.000    0.501    0.737
+    Pol3              0.488    0.024   20.575    0.000    0.277    0.512
+  Hab =~                                                                
+    Hab1              1.000                               0.623    0.755
+    Hab2              1.207    0.032   37.980    0.000    0.752    0.887
+    Hab3              1.138    0.031   36.603    0.000    0.710    0.815
+  Loc =~                                                                
+    Loc1              1.000                               0.345    0.596
+    Loc2              1.370    0.052   26.438    0.000    0.473    0.827
+    Loc3              1.515    0.058   26.169    0.000    0.523    0.801
+  Env =~                                                                
+    Env1              1.000                               0.408    0.809
+    Env2              0.605    0.031   19.363    0.000    0.247    0.699
+  Int =~                                                                
+    Int1              1.000                               0.603    0.651
+    Int2              1.264    0.060   20.959    0.000    0.762    0.869
+  Pers =~                                                               
+    Pers1             1.000                               0.493    0.635
+    Pers2             1.048    0.041   25.793    0.000    0.517    0.770
+    Pers3             0.949    0.039   24.440    0.000    0.468    0.695
+  Nat =~                                                                
+    Nat1              1.000                               0.522    0.759
+    Nat2              0.991    0.032   31.325    0.000    0.518    0.744
+    Nat3              0.949    0.035   27.075    0.000    0.495    0.638
+  Eco =~                                                                
+    Eco1              1.000                               0.525    0.791
+    Eco2              1.094    0.042   26.243    0.000    0.575    0.743
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  Pol ~~                                                                
+    Hab               0.165    0.011   14.947    0.000    0.466    0.466
+    Loc               0.106    0.007   15.119    0.000    0.540    0.540
+    Env               0.089    0.007   12.101    0.000    0.385    0.385
+    Int               0.146    0.012   12.248    0.000    0.425    0.425
+    Pers              0.162    0.010   15.699    0.000    0.577    0.577
+    Nat               0.177    0.010   17.209    0.000    0.596    0.596
+    Eco               0.150    0.010   15.123    0.000    0.504    0.504
+  Hab ~~                                                                
+    Loc               0.069    0.006   11.060    0.000    0.323    0.323
+    Env               0.051    0.007    7.161    0.000    0.200    0.200
+    Int               0.134    0.012   11.395    0.000    0.357    0.357
+    Pers              0.121    0.010   12.619    0.000    0.393    0.393
+    Nat               0.105    0.009   11.271    0.000    0.324    0.324
+    Eco               0.089    0.009    9.569    0.000    0.273    0.273
+  Loc ~~                                                                
+    Env               0.076    0.005   15.065    0.000    0.541    0.541
+    Int               0.091    0.007   12.192    0.000    0.438    0.438
+    Pers              0.098    0.007   14.856    0.000    0.574    0.574
+    Nat               0.116    0.007   16.780    0.000    0.642    0.642
+    Eco               0.090    0.006   14.354    0.000    0.496    0.496
+  Env ~~                                                                
+    Int               0.075    0.008    9.506    0.000    0.303    0.303
+    Pers              0.075    0.007   11.482    0.000    0.375    0.375
+    Nat               0.093    0.007   13.616    0.000    0.439    0.439
+    Eco               0.078    0.007   11.561    0.000    0.365    0.365
+  Int ~~                                                                
+    Pers              0.156    0.012   13.349    0.000    0.525    0.525
+    Nat               0.186    0.012   14.952    0.000    0.592    0.592
+    Eco               0.137    0.011   12.374    0.000    0.432    0.432
+  Pers ~~                                                               
+    Nat               0.185    0.010   17.898    0.000    0.717    0.717
+    Eco               0.153    0.010   15.945    0.000    0.590    0.590
+  Nat ~~                                                                
+    Eco               0.196    0.010   19.440    0.000    0.715    0.715
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .Pol1              0.219    0.012   19.015    0.000    0.219    0.404
+   .Pol2              0.211    0.010   21.455    0.000    0.211    0.457
+   .Pol3              0.216    0.007   29.384    0.000    0.216    0.737
+   .Hab1              0.293    0.011   25.855    0.000    0.293    0.430
+   .Hab2              0.153    0.011   14.434    0.000    0.153    0.213
+   .Hab3              0.254    0.012   21.814    0.000    0.254    0.335
+   .Loc1              0.217    0.007   29.063    0.000    0.217    0.645
+   .Loc2              0.103    0.006   18.226    0.000    0.103    0.316
+   .Loc3              0.153    0.007   20.463    0.000    0.153    0.358
+   .Env1              0.088    0.008   10.643    0.000    0.088    0.345
+   .Env2              0.064    0.003   18.407    0.000    0.064    0.511
+   .Int1              0.495    0.021   23.182    0.000    0.495    0.576
+   .Int2              0.188    0.025    7.653    0.000    0.188    0.244
+   .Pers1             0.361    0.013   27.065    0.000    0.361    0.597
+   .Pers2             0.184    0.009   20.580    0.000    0.184    0.408
+   .Pers3             0.234    0.009   24.865    0.000    0.234    0.517
+   .Nat1              0.201    0.009   23.320    0.000    0.201    0.425
+   .Nat2              0.215    0.009   24.119    0.000    0.215    0.446
+   .Nat3              0.357    0.013   27.981    0.000    0.357    0.593
+   .Eco1              0.165    0.010   16.244    0.000    0.165    0.374
+   .Eco2              0.268    0.013   20.071    0.000    0.268    0.448
+    Pol               0.323    0.018   18.035    0.000    1.000    1.000
+    Hab               0.389    0.020   19.276    0.000    1.000    1.000
+    Loc               0.119    0.009   13.906    0.000    1.000    1.000
+    Env               0.166    0.011   15.560    0.000    1.000    1.000
+    Int               0.364    0.026   13.846    0.000    1.000    1.000
+    Pers              0.243    0.017   14.619    0.000    1.000    1.000
+    Nat               0.273    0.015   18.788    0.000    1.000    1.000
+    Eco               0.276    0.015   17.974    0.000    1.000    1.000</code></pre>
+</div>
+</div>
+<p>This is a large set of results, but we can focus in on some important parameters to examine. First, we note that the results did not come attached to a warning. One particular warning to look out for relates to the covariance matrix being non-positive definite. This renders some of the attempted measurement invalid and is usually caused by too small a sample size for the complexity of the measurement model. Since we did not receive this warning, we can proceed safely.</p>
+<p>Second, we examine the fit statistics. Numerous statistics are reported<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, but for larger samples such as this data set, the following measures should be examined:</p>
+<ul>
+<li><p>CFI and TLI, which compare the proposed model to a baseline (null or random) model to determine if it is better. Ideally we look for both of these measures to exceed 0.95. We see that our measurement model comes very close to meeting these criteria.</p></li>
+<li><p>RMSEA should ideally be less than 0.06, which is met by our measurement model.</p></li>
+<li><p>SRMR should ideally be less than 0.08, which is met by our measurement model.</p></li>
+</ul>
+<p>Finally, the parameter estimates for the latent variables should be examined. In particular the <code>Std.all</code> column which is similar to standardized regression coefficients. These parameters are commonly known as factor loadings—they can be interpreted as the extent to which the item response is explained by the proposed latent variable. In general, factor loadings of 0.7 or above are considered reasonable. Factor loadings less than this may be introducing unacceptable measurement error. One option if this occurs is to drop the item completely from the measurement model, or to explore an alternative measurement model with the item assigned to another latent variable. In any case the analyst will need to balance these considerations against the need to have factors measured against multiple items wherever possible in order to minimize other aspects of measurement error.</p>
+<p>In our case we could consider dropping <code>Pol3</code>, <code>Loc1</code>, <code>Pers1</code> and <code>Nat3</code> from the measurement model as they have factor loadings of less than 0.7 and are in factors that contain three items. We will fit this revised measurement model, and rather than printing the entire output again, we will focus here on our CFI, TLI, RMSEA and SRMR statistics to see if they have improved. It is advisable, however, that factor loadings are also checked, especially where primary items that scale the variance of latent factors have been removed.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>meas_mod_revised <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="st"># measurement model</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="st">Loc =~ Loc2 + Loc3</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="st">Pers =~ Pers2 + Pers3</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>cfa_meas_mod_rev <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="at">model =</span> meas_mod_revised, </span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                                <span class="at">data =</span> politics_survey)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>fits <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">fitmeasures</span>(cfa_meas_mod_rev)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>fits[<span class="fu">c</span>(<span class="st">"cfi"</span>, <span class="st">"tli"</span>, <span class="st">"rmsea"</span>, <span class="st">"srmr"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       cfi        tli      rmsea       srmr 
+0.97804888 0.96719394 0.03966962 0.02736629 </code></pre>
+</div>
+</div>
+<p>We now see that our measurement model comfortably meets all fit requirements. In our case we chose to completely drop four items from the model. Analysts may wish to experiment with relaxing criteria on dropping items, or on reassigning items to other factors to achieve a good balance between fit and factor measurement reliability.</p>
+</section>
+<section id="running-and-interpreting-the-structural-model" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="running-and-interpreting-the-structural-model"><span class="header-section-number">9.2.2</span> Running and interpreting the structural model</h3>
+<p>With a satisfactory measurement model, the structural model is a simple regression formula. The <code>sem()</code> function in <code>lavaan</code> can be used to perform a full structural equation model including the measurement model and structural model. Like for <code>cfa()</code>, an extensive output can be expected from this function, but assuming that our measurement model is satisfactory, our key interest is now in the structural model elements of this output.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define full SEM using revised measurement model</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>full_sem <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="st"># measurement model</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="st">Loc =~ Loc2 + Loc3</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="st">Pers =~ Pers2 + Pers3</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="st"># structural model</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="st">Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># run full SEM </span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>full_model <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">sem</span>(<span class="at">model =</span> full_sem, <span class="at">data =</span> politics_survey)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(full_model, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-20 ended normally after 99 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        71
+
+  Number of observations                          2108
+
+Model Test User Model:
+                                                      
+  Test statistic                               465.318
+  Degrees of freedom                               100
+  P-value (Chi-square)                           0.000
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  Pol =~                                                                
+    Pol1              1.000                               0.626    0.850
+    Pol2              0.714    0.029   25.038    0.000    0.447    0.657
+  Hab =~                                                                
+    Hab1              1.000                               0.630    0.763
+    Hab2              1.184    0.031   38.592    0.000    0.746    0.879
+    Hab3              1.127    0.030   37.058    0.000    0.710    0.816
+  Loc =~                                                                
+    Loc2              1.000                               0.461    0.806
+    Loc3              1.179    0.036   32.390    0.000    0.544    0.833
+  Env =~                                                                
+    Env1              1.000                               0.411    0.815
+    Env2              0.596    0.031   19.281    0.000    0.245    0.695
+  Int =~                                                                
+    Int1              1.000                               0.605    0.653
+    Int2              1.256    0.062   20.366    0.000    0.760    0.867
+  Pers =~                                                               
+    Pers2             1.000                               0.520    0.774
+    Pers3             0.939    0.036   25.818    0.000    0.488    0.726
+  Nat =~                                                                
+    Nat1              1.000                               0.511    0.742
+    Nat2              1.033    0.034   29.958    0.000    0.527    0.758
+  Eco =~                                                                
+    Eco1              1.000                               0.529    0.797
+    Eco2              1.078    0.042   25.716    0.000    0.570    0.737
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  Overall ~                                                             
+    Pol               0.330    0.036    9.281    0.000    0.206    0.307
+    Hab               0.255    0.024   10.614    0.000    0.161    0.240
+    Loc               0.224    0.047    4.785    0.000    0.103    0.154
+    Env              -0.114    0.042   -2.738    0.006   -0.047   -0.070
+    Int               0.046    0.028    1.605    0.108    0.028    0.041
+    Pers              0.112    0.047    2.383    0.017    0.058    0.087
+    Nat               0.122    0.071    1.728    0.084    0.063    0.093
+    Eco               0.002    0.043    0.041    0.967    0.001    0.001
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  Pol ~~                                                                
+    Hab               0.183    0.012   15.476    0.000    0.465    0.465
+    Loc               0.156    0.009   16.997    0.000    0.540    0.540
+    Env               0.096    0.008   12.195    0.000    0.374    0.374
+    Int               0.162    0.013   12.523    0.000    0.427    0.427
+    Pers              0.171    0.011   15.975    0.000    0.525    0.525
+    Nat               0.195    0.011   17.798    0.000    0.610    0.610
+    Eco               0.167    0.011   15.752    0.000    0.506    0.506
+  Hab ~~                                                                
+    Loc               0.091    0.008   11.218    0.000    0.315    0.315
+    Env               0.052    0.007    7.199    0.000    0.200    0.200
+    Int               0.138    0.012   11.426    0.000    0.361    0.361
+    Pers              0.112    0.010   11.484    0.000    0.341    0.341
+    Nat               0.105    0.010   11.045    0.000    0.327    0.327
+    Eco               0.091    0.009    9.608    0.000    0.273    0.273
+  Loc ~~                                                                
+    Env               0.103    0.006   16.413    0.000    0.544    0.544
+    Int               0.120    0.010   12.529    0.000    0.429    0.429
+    Pers              0.130    0.008   16.209    0.000    0.542    0.542
+    Nat               0.153    0.008   18.203    0.000    0.648    0.648
+    Eco               0.117    0.008   14.985    0.000    0.479    0.479
+  Env ~~                                                                
+    Int               0.075    0.008    9.505    0.000    0.303    0.303
+    Pers              0.075    0.007   11.058    0.000    0.351    0.351
+    Nat               0.091    0.007   13.181    0.000    0.434    0.434
+    Eco               0.079    0.007   11.583    0.000    0.364    0.364
+  Int ~~                                                                
+    Pers              0.153    0.012   13.118    0.000    0.486    0.486
+    Nat               0.173    0.012   14.159    0.000    0.560    0.560
+    Eco               0.138    0.011   12.293    0.000    0.431    0.431
+  Pers ~~                                                               
+    Nat               0.192    0.010   18.922    0.000    0.724    0.724
+    Eco               0.156    0.010   16.369    0.000    0.567    0.567
+  Nat ~~                                                                
+    Eco               0.192    0.010   18.968    0.000    0.710    0.710
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .Pol1              0.150    0.013   11.205    0.000    0.150    0.277
+   .Pol2              0.263    0.010   25.479    0.000    0.263    0.569
+   .Hab1              0.285    0.011   25.570    0.000    0.285    0.418
+   .Hab2              0.163    0.010   15.746    0.000    0.163    0.227
+   .Hab3              0.253    0.011   22.046    0.000    0.253    0.334
+   .Loc2              0.114    0.006   18.168    0.000    0.114    0.350
+   .Loc3              0.130    0.008   15.729    0.000    0.130    0.306
+   .Env1              0.085    0.008   10.227    0.000    0.085    0.336
+   .Env2              0.064    0.003   18.701    0.000    0.064    0.518
+   .Int1              0.492    0.022   22.597    0.000    0.492    0.574
+   .Int2              0.192    0.025    7.547    0.000    0.192    0.249
+   .Pers2             0.181    0.010   17.472    0.000    0.181    0.401
+   .Pers3             0.215    0.010   21.151    0.000    0.215    0.474
+   .Nat1              0.213    0.009   22.690    0.000    0.213    0.450
+   .Nat2              0.205    0.010   21.502    0.000    0.205    0.425
+   .Eco1              0.160    0.010   15.413    0.000    0.160    0.364
+   .Eco2              0.273    0.014   20.156    0.000    0.273    0.457
+   .Overall           0.242    0.008   29.506    0.000    0.242    0.537
+    Pol               0.392    0.020   19.235    0.000    1.000    1.000
+    Hab               0.397    0.020   19.581    0.000    1.000    1.000
+    Loc               0.213    0.011   19.724    0.000    1.000    1.000
+    Env               0.169    0.011   15.606    0.000    1.000    1.000
+    Int               0.366    0.027   13.699    0.000    1.000    1.000
+    Pers              0.270    0.015   17.514    0.000    1.000    1.000
+    Nat               0.261    0.015   17.787    0.000    1.000    1.000
+    Eco               0.280    0.016   17.944    0.000    1.000    1.000</code></pre>
+</div>
+</div>
+<p>The <code>Std.all</code> column of the <code>Regressions</code> section of the output provides the fundamentals of the structural model—these are standardized estimates which can be approximately interpreted as the proportion of the variance of the outcome that is explained by each factor. Here we can make the following interpretations:</p>
+<ol type="1">
+<li><p>Policies, habit and interest in local issues represent the three strongest drivers of likelihood of voting for the party at the next election, and explain approximately 70% of the overall variance in the outcome.</p></li>
+<li><p>Interest in national or international issues, and interest in the economy each have no significant relationship with likelihood to vote for the party at the next election.</p></li>
+<li><p>Interest in the environment has a significant negative relationship with likelihood to vote for the party at the next election.</p></li>
+</ol>
+<div id="fig-fullsemplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fullsemplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="hierarchical_data_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fullsemplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.4: Path diagram for full structural equation model on <code>politics_survey</code>
+</figcaption>
+</figure>
+</div>
+<p>The full structural equation model can be seen in <a href="#fig-fullsemplot" class="quarto-xref">Figure&nbsp;<span>9.4</span></a>. This simple example illustrates the value of structural equation modeling in both reducing the dimensions of a complex regression problem and in developing more intuitive and interpretable results for stakeholders. The underlying theory of latent variable modeling, and its implementation in the <code>lavaan</code> package, offer much more flexibility and parameter control options than illustrated here and further exploration is highly recommended. <span class="citation" data-cites="bartholomew">Bartholomew, Knott, and Moustaki (<a href="bibliography.html#ref-bartholomew" role="doc-biblioref">2011</a>)</span> and <span class="citation" data-cites="skrondal">Skrondal and Rabe-Hesketh (<a href="bibliography.html#ref-skrondal" role="doc-biblioref">2004</a>)</span> are excellent resources for a deeper study of the theory and a wider range of case examples.</p>
+</section>
+<section id="structural-equation-models-using-python" class="level3" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="structural-equation-models-using-python"><span class="header-section-number">9.2.3</span> Structural equation models using Python</h3>
+<p>The <code>semopy</code> package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the <code>lavaan</code> package in R. However, its reporting is not as intuitive compared to <code>lavaan</code>. A full tutorial is available <a href="https://semopy.com/tutorial.html">here</a>. Here is an example of how to run the same model as that studied in <a href="#sec-struc-eq-model" class="quarto-xref"><span>Section 9.2</span></a> using <code>semopy</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> semopy <span class="im">import</span> Model</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="st">https://peopleanalytics-regression-book.org/data/politics_survey.csv</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>politics_survey <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># define full measurement and structural model</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>measurement_model <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="st"># measurement model</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="st">Loc =~ Loc2 + Loc3</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="st">Pers =~ Pers2 + Pers3</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="st"># structural model</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="st">Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>full_model <span class="op">=</span> Model(measurement_model)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model to data and inspect</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>full_model.fit(politics_survey)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Then to inspect the results:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect the results of SEM (first few rows)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>full_model.inspect().head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   lval op rval  Estimate  Std. Err    z-value p-value
+0  Pol1  ~  Pol  1.000000         -          -       -
+1  Pol2  ~  Pol  0.713719  0.028505  25.038173     0.0
+2  Hab1  ~  Hab  1.000000         -          -       -
+3  Hab2  ~  Hab  1.183981  0.030679  38.592255     0.0
+4  Hab3  ~  Hab  1.127639  0.030429  37.057838     0.0</code></pre>
+</div>
+</div>
+<p> </p>
+</section>
+</section>
+<section id="learning-exercises" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="learning-exercises"><span class="header-section-number">9.3</span> Learning exercises</h2>
+<section id="discussion-questions" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">9.3.1</span> Discussion questions</h3>
+<ol type="1">
+<li>Describe some common forms of explicit hierarchies in data. Can you think of some data sets that you have worked with recently that contain an explicit hierarchy?</li>
+<li>Describe the meaning of ‘fixed effect’ and ‘random effect’ in a mixed regression model.</li>
+<li>Which parameter in a mixed regression model is most commonly used when applying a random effect?</li>
+<li>Describe why mixed models are sometimes referred to as multilevel models.</li>
+<li>In a two-level mixed model, describe the two levels of statistics that are produced and how to interpret these statistics.</li>
+<li>In latent variable modeling, what is the difference between a latent variable and a measured variable?</li>
+<li>Describe some reasons why latent variable modeling can be valuable in practice.</li>
+<li>Describe the two components of a structural equation model. What is the purpose of each component?</li>
+<li>What are the steps involved in a confirmatory factor analysis on a sufficiently large data set? Describe some fit criteria and the ideal standards for those criteria.</li>
+<li>Describe a process for refining a factor analysis based on fit criteria and factor loadings. What considerations should be addressed during this process?</li>
+</ol>
+</section>
+<section id="data-exercises" class="level3" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">9.3.2</span> Data exercises</h3>
+<p>For Exercises 1–4, use the <code>speed_dating</code> set used earlier in this chapter<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<ol type="1">
+<li>Split the data into two sets according to the gender of the participant. Run standard binomial logistic regression models on each set to determine the relationship between the <code>dec</code> decision outcome and the input variables <code>samerace</code>, <code>agediff</code>, <code>attr</code>, <code>intel</code> and <code>prob</code>.</li>
+<li>Run similar mixed models on these sets with a random intercept for <code>iid</code>.</li>
+<li>What different conclusions can you make in comparing the mixed models with the standard models?</li>
+<li>Experiment with some random slope effects to see if they reveal anything new about the input variables.</li>
+</ol>
+<p>For exercises 5–10, load the <code>employee_survey</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:</p>
+<ul>
+<li><code>Happiness</code> is an overall measure of the employees current sentiment about their job.</li>
+<li>Items beginning with <code>Ben</code> relate to employment benefits.</li>
+<li>Items beginning with <code>Work</code> relate to the general work environment.</li>
+<li>Items beginning with <code>Man</code> relate to perceptions of management.</li>
+<li>Items beginning with <code>Car</code> relate to perceptions of career prospects.</li>
+</ul>
+<ol start="5" type="1">
+<li>Write out the proposed measurement model, defining the latent factors in terms of the measured items.</li>
+<li>Run a confirmatory factor analysis on the proposed measurement model. Examine the fit and the factor loadings.</li>
+<li>Experiment with the removal of measured items from the measurement model in order to improve the overall fit.</li>
+<li>Once satisfied with the fit of the measurement model, run a full structural equation model on the data.</li>
+<li>Interpret the results of the structural model. Which factors appear most related to overall employee sentiment? Approximately what proportion of the variance in overall sentiment does the model explain?</li>
+<li>If you dropped measured items from your measurement model, experiment with assigning them to other factors to see if this improves the fit of the model. What statistics would you use to compare different measurement models?</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-bartholomew" class="csl-entry" role="listitem">
+Bartholomew, David J., Martin Knott, and Irini Moustaki. 2011. <em>Latent Variable Models and Factor Analysis: A Unified Approach</em>.
+</div>
+<div id="ref-jiang" class="csl-entry" role="listitem">
+Jiang, Jiming. 2007. <em>Linear and Generalized Linear Mixed Models and Their Applications</em>.
+</div>
+<div id="ref-skrondal" class="csl-entry" role="listitem">
+Skrondal, Anders, and Sophia Rabe-Hesketh. 2004. <em>Generalized Latent Variable Modeling: Multilevel, Longitudinal, and Structural Equation Models</em>.
+</div>
+</div>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>I have simplified the data set, and the full version can be found at https://www.openml.org/search?type=data&amp;exact_name=SpeedDating<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Other reported measures include chi-square statistical tests of perfect fit for the measurement model and for the baseline model, and AIC and BIC. While these generally are not very helpful in determining the quality of a specific measurement model, they are valuable for comparing different measurement model options.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>https://peopleanalytics-regression-book.org/data/speed_dating.csv<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a href="https://peopleanalytics-regression-book.org/data/employee_survey.csv" class="uri">https://peopleanalytics-regression-book.org/data/employee_survey.csv</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/peopleanalytics-regression-book\.org\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./poisson_nb.html" class="pagination-link" aria-label="Poisson, Quasi-Poisson and Negative Binomial Regression for Count Outcomes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Poisson, Quasi-Poisson and Negative Binomial Regression for Count Outcomes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./survival_analysis.html" class="pagination-link" aria-label="Survival Analysis for Modeling Singular Events Over Time">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Survival Analysis for Modeling Singular Events Over Time</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/edit/main/hierarchical_data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/keithmcnulty/regression-handbook-2nd-edition/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
