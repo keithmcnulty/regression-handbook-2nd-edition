@@ -6,7 +6,7 @@ The philosophy underlying this approach is that the population parameter that we
 
 In this chapter we are going to 'flip the script' on this philosophy.  Instead of our population parameter being a fixed unknown value which we estimate through many repeated samples of data, we are going to treat our population parameter as a random variable that can take on a range of possible values, each with some probability, and we will treat our data as fixed.  This leads us to a different way of thinking about statistical inference, and provides us with a toolkit that has more flexibility than classical statistics.  In particular, we can incorporate prior knowledge or beliefs about our parameters into our analyses, we can make direct probability statements about our parameters given the data we have availalable, and we can continuously update our beliefs about parameters as new data becomes available.
 
-The critical theorem from probability theory that underpins this approach is *Bayes' Theorem*, named after the Reverend Thomas Bayes, an 18th century statistician and theologian.  As we will see, Bayes' Theorem provides us with a mathematical way to combine our prior beliefs about a parameter with the evidence provided by our data to arrive at an updated *posterior* belief about the parameter.  This mechanism is the essence of *Bayesian inference*.  
+\index{Bayes' Theorem}The critical theorem from probability theory that underpins this approach is *Bayes' Theorem*, named after the Reverend Thomas Bayes, an 18th century statistician and theologian.  As we will see, Bayes' Theorem provides us with a mathematical way to combine our prior beliefs about a parameter with the evidence provided by our data to arrive at an updated *posterior* belief about the parameter.  \index{Bayesian inference}This mechanism is the essence of *Bayesian inference*.  
 
 Bayesian inference has become increasingly popular in recent years.  There are a number of philosophical and epistemological reasons behind the recent growth in its use and application, but a key practical enabler for this growth has been the rapid development in computational technology in the early 21st century. Techniques used in Bayesian inference require simulation of data, which can demand substantially more computational resources compared to classical approaches. Only in the past two decades has widespread computational power become available that has made it more feasible to apply Bayesian methods to large datasets.  Bayesian approaches are now widely used in fields such as epidemiology, econometrics, ecology, anthropology and the social sciences, to name but a small few.  All of the methods that we have learned so far using classical statistics have Bayesian counterparts.  
 
@@ -16,9 +16,11 @@ In this chapter we will explore the fundamental mechanics of how Bayesian infere
 
 ## Bayes' Theorem and the mechanics of Bayesian Inference
 
+\index{Bayesian inference|(}
+
 Recall that in earlier chapters we adopted a frequentist approach to statistical inference, where we treated our data as random and our parameters as fixed but unknown.  In effect, this approach asks the question: *Given a fixed but unknown parameter (such as a population mean), what is the probability of observing the sample data that we have collected?*.  Using probability notation, if we call our parameter $\theta$ and our observed data $D$, we can express this question as $P(D \mid \theta)$, which is known as the *likelihood* of the data given the parameter.   
 
-In Bayesian inference, we reverse this question to ask: *Given the fixed data that we have observed, what is the probability that the parameter we are interested in has a certain value?*  That is, we are interested in $P(\theta \mid D)$, which we call the *posterior* probability of the parameter given the data.  Bayes' Theorem provides us with a way to calculate this posterior probability by combining our prior beliefs about the parameter with the likelihood of the observed data.  Bayes' Theorem is expressed mathematically as follows:
+In Bayesian inference, we reverse this question to ask: *Given the fixed data that we have observed, what is the probability that the parameter we are interested in has a certain value?*  That is, we are interested in $P(\theta \mid D)$, which we call the *posterior* probability of the parameter given the data.  Bayes' Theorem provides us with a way to calculate this posterior probability by combining our prior beliefs about the parameter with the likelihood of the observed data.  \index{Bayes' Theorem}Bayes' Theorem is expressed mathematically as follows:
 
 $$P(\theta \mid D) = \frac{P(D \mid \theta) P(\theta)}{P(D)}$$
 
@@ -28,6 +30,10 @@ Where:
 - $P(D \mid \theta)$ is the *likelihood* of the data $D$ given the parameter $\theta$.
 - $P(\theta)$ is the *prior* probability of the parameter $\theta$ before observing the data.
 - $P(D)$ is the *marginal likelihood* or *evidence*, which is the total probability of observing the data $D$ under all possible values of $\theta$.  Using $P(D)$ as a denominator in the formula for the posterior ensures that the posterior probabilities sum to 1 across all possible values of $\theta$.
+
+\index{Bayesian inference!posterior probability (distribution)}
+\index{Bayesian inference!likelihood function}
+\index{Bayesian inference!prior probability (distribution)}
 
 In practice, when performing Bayesian inference, we often focus on the numerator of Bayes' Theorem, $P(D \mid \theta) P(\theta)$, since the denominator $P(D)$ is a normalizing constant that does not depend on $\theta$.  Therefore, we can also express the posterior probability as being *proportional* to the product of the likelihood and the prior.  That is: 
 
@@ -41,7 +47,7 @@ You have been asked to help a group of learning experts at a technology company 
 
 ### Defining the prior belief $P(\theta)$
 
-In Bayesian inference, we start by defining our *prior* belief about the parameter of interest before observing any data.  In this case, our parameter of interest is the pass rate for the certification exam among engineers who complete the training program.  Since our parameter involves a specified proportion of passes and fails in the certification exam, we can use a *Beta distribution* to represent our prior belief.  A Beta distribution is a continuous probability distribution defined on the interval [0, 1], which makes it suitable for modeling proportions and probabilities.
+In Bayesian inference, we start by defining our *prior* belief about the parameter of interest before observing any data.  In this case, our parameter of interest is the pass rate for the certification exam among engineers who complete the training program.  Since our parameter involves a specified proportion of passes and fails in the certification exam, we can use a \index{Beta distribution (statistics)}*Beta distribution* to represent our prior belief.  A Beta distribution is a continuous probability distribution defined on the interval [0, 1], which makes it suitable for modeling proportions and probabilities.
 
 If we call our pass rate parameter $\theta$, where $0 \leq \theta \leq 1$, we can define our prior belief about $\theta$ using a Beta distribution with shape parameters $\alpha$ and $\beta$, where $\alpha$ and $\beta$ represent the number of passes and fails respectively.  That is:
 
@@ -49,7 +55,7 @@ $$
 \theta \sim \text{Beta}(\alpha, \beta)
 $$
 
-Now we need to decide on the shape parameters $\alpha$ and $\beta$ for our prior distribution.  If we have absolutely no information on the pass rate, we might choose a uniform prior with $\alpha = 1$ and $\beta = 1$, which reflects complete uncertainty about the pass rate.  This kind of prior belief is called a **non-informative prior**.  You can see the shape of this prior distribution in @fig-pass-noninform, where it assumes that all values of $\theta$ are equally likely.
+Now we need to decide on the shape parameters $\alpha$ and $\beta$ for our prior distribution.  If we have absolutely no information on the pass rate, we might choose a uniform prior with $\alpha = 1$ and $\beta = 1$, which reflects complete uncertainty about the pass rate.  \index{Bayesian inference!non-informative prior}This kind of prior belief is called a **non-informative prior**.  You can see the shape of this prior distribution in @fig-pass-noninform, where it assumes that all values of $\theta$ are equally likely.
 
 ::: {#fig-pass-noninform}
 
@@ -69,7 +75,7 @@ prior_df <- data.frame(theta_values, prior_distribution)
 ggplot(prior_df, aes(x = theta_values, y = prior_distribution)) +
   geom_line(color = "purple") +
   geom_area(fill = "purple", alpha = 0.4) +
-  labs(x = "Pass Rate (θ)",
+  labs(x = expression(theta),
        y = "Density") +
   theme_minimal()
 
@@ -81,7 +87,7 @@ Non-informative Beta(1, 1) (uniform) prior on the distribution of the pass rate 
 
 
 
-However, we do have some information from market research that suggests a high pass rate is likely, so we could choose an **informative prior** that reflects this belief.  Based on the market research, we might choose $\alpha = 8$ and $\beta = 2$, which reflects our belief that the pass rate is likely to be high (around 80-90%), but with some uncertainty.  Our informative prior distribution can therefore be expressed as:
+However, we do have some information from market research that suggests a high pass rate is likely, so we could choose an \index{Bayesian inference!informative prior}**informative prior** that reflects this belief.  Based on the market research, we might choose $\alpha = 8$ and $\beta = 2$, which reflects our belief that the pass rate is likely to be high (around 80-90%), but with some uncertainty.  Our informative prior distribution can therefore be expressed as:
 
 $$
 \theta \sim \text{Beta}(8, 2)
@@ -93,26 +99,50 @@ Let's simulate and plot this prior distribution to visualize our initial beliefs
 # create a vector with 1000 possible values for theta between 0 and 1
 theta_values <- seq(0, 1, length.out = 1000)
 
-# simulate the prior distribution using a Beta distribution with alpha = 8 and beta = 2
+# simulate the prior distribution using a Beta distribution 
+# with alpha = 8 and beta = 2
 unnormalized_prior <- dbeta(theta_values, shape1 = 8, shape2 = 2)
 ```
 
 This has provided us with the probability density function (PDF) values across our 1000 values of $\theta$.  Let's now plot our simulated prior distribution to visualize our initial beliefs about the pass rate before observing any data, as in @fig-pass-prior.
 
-::: {#fig-pass-prior}
-
 ```{r}
+#| eval: false
 # load ggplot2 for plotting
 library(ggplot2)
-
 # create a data frame for plotting
-prior_df <- data.frame(theta = theta_values, density = unnormalized_prior)
+prior_df <- data.frame(
+  theta = theta_values, 
+  density = unnormalized_prior
+)
 
 # plot the prior distribution
 ggplot(prior_df, aes(x = theta, y = density)) +
   geom_line(color = "blue") +
   geom_area(fill = "blue", alpha = 0.4) +
-  labs(x = "Pass Rate (θ)",
+  labs(x = expression(theta),
+       y = "Density") +
+  theme_minimal()
+```
+
+::: {#fig-pass-prior}
+
+```{r}
+#| echo: false
+# load ggplot2 for plotting
+library(ggplot2)
+
+# create a data frame for plotting
+prior_df <- data.frame(
+  theta = theta_values, 
+  density = unnormalized_prior
+)
+
+# plot the prior distribution
+ggplot(prior_df, aes(x = theta, y = density)) +
+  geom_line(color = "blue") +
+  geom_area(fill = "blue", alpha = 0.4) +
+  labs(x = expression(theta),
        y = "Density") +
   theme_minimal()
 
@@ -125,9 +155,9 @@ Comparing to the non-informative prior in @fig-pass-noninform, we can see that t
 
 Now, before we proceed, let's ensure we understand an important property about probability distributions and how we sample from them.  There are two main types of probability distributions:  
 
-1. **Probability Mass Functions (PMFs)**: These are used for discrete random variables, where the variable can only take on specific, distinct values.  The PMF gives the probability of the variable taking on each specific value.  In this case, the probabilities for all possible values must sum to 1.  The Binomial distribution that we saw in @sec-bin-log-reg is an example of a PMF.
+1. **Probability Mass Functions (PMFs)**: These are used for discrete random variables, where the variable can only take on specific, distinct values.  The PMF gives the probability of the variable taking on each specific value.  In this case, the probabilities for all possible values must sum to 1.  The Binomial distribution that we saw in @sec-bin-log-reg is an example of a PMF. \index{Probability Mass Function (PMF)}\index{PMF (Probability Mass Function)|see {Probability Mass Function (PMF)}}
 
-2. **Probability Density Functions (PDFs)**: These are used for continuous random variables, where the variable can take on any value within a range.  The PDF describes the relative likelihood of the variable taking on a specific value.  However, because there are infinitely many possible values in a continuous range, the probability of the variable taking on any specific value is technically zero.  Instead, we can calculate the probability of the variable falling within a certain interval by integrating the PDF over that interval.  The total area under the PDF curve across all possible values must equal 1, but this is calculated using an integral rather than a discrete sum.
+2. **Probability Density Functions (PDFs)**: These are used for continuous random variables, where the variable can take on any value within a range.  The PDF describes the relative likelihood of the variable taking on a specific value.  However, because there are infinitely many possible values in a continuous range, the probability of the variable taking on any specific value is technically zero.  Instead, we can calculate the probability of the variable falling within a certain interval by integrating the PDF over that interval.  The total area under the PDF curve across all possible values must equal 1, but this is calculated using an integral rather than a discrete sum. \index{Probability Density Function (PDF)}\index{PDF (Probability Density Function)|see {Probability Density Function (PDF)}}
 
 When we sample from a PDF, we are taking discrete values, and hence we are effectively creating a PMF from the PDF.  This means that if we want to have explicit probabilities for each value, we need to ensure that the sampled values sum to 1.  In our case, since we are simulating the prior distribution using a continuous Beta distribution (which is a PDF), we can treat the simulated values as a PMF by normalizing them if needed.  It is very simple to normalize a set of sampled values from a PDF---you just divide each value by the total sum of all values. Normalizing does not change the relative shape of the distribution, it just changes the scale to ensure that everything sums to 1. 
 
@@ -140,7 +170,7 @@ prior_distribution <- unnormalized_prior/sum(unnormalized_prior)
 
 ### Defining the likelihood $P(D \mid \theta)$
 
-Next, we need to define the *likelihood* of the observed data given our parameter of interest.  Our observed data from the first learning program consists of 12 passes and 8 fails among the 20 engineers who completed the training program.  Since our data involves counts of passes and fails, recall from @sec-bin-log-reg that we can use a *Binomial distribution* to model the likelihood of observing this data given different values of the pass rate $\theta$.  In this case, the likelihood function can be expressed as:
+Next, we need to define the *likelihood* of the observed data given our parameter of interest.  Our observed data from the first learning program consists of 12 passes and 8 fails among the 20 engineers who completed the training program.  Since our data involves counts of passes and fails, recall from @sec-bin-log-reg that we can use a \index{binomial distribution (statistics)}*Binomial distribution* to model the likelihood of observing this data given different values of the pass rate $\theta$.  In this case, the likelihood function can be expressed as:
 
 $$
 P(D \mid \theta) = \binom{20}{12} \theta^{12}(1 - \theta)^{8}
@@ -155,16 +185,37 @@ likelihood_function <- dbinom(12, size = 20, prob = theta_values)
 
 Let's now plot our simulated likelihood function in @fig-pass-likelihood. Note, importantly, that the likelihood function is not a probability distribution and does not need to sum to 1 across all our values of $\theta$.
 
-::: {#fig-pass-likelihood}
 ```{r}
+#| eval: false
 # create a data frame for plotting
-likelihood_df <- data.frame(theta = theta_values, likelihood = likelihood_function)
+likelihood_df <- data.frame(
+  theta = theta_values, 
+  likelihood = likelihood_function
+)
 
 # plot the likelihood function
 ggplot(likelihood_df, aes(x = theta, y = likelihood)) +
   geom_line(color = "magenta") +
   geom_area(fill = "magenta", alpha = 0.4) +
-  labs(x = "Pass Rate (θ)",
+  labs(x = expression(theta),
+       y = "Likelihood") +
+  theme_minimal()
+```
+
+::: {#fig-pass-likelihood}
+```{r}
+#| echo: false
+# create a data frame for plotting
+likelihood_df <- data.frame(
+  theta = theta_values, 
+  likelihood = likelihood_function
+)
+
+# plot the likelihood function
+ggplot(likelihood_df, aes(x = theta, y = likelihood)) +
+  geom_line(color = "magenta") +
+  geom_area(fill = "magenta", alpha = 0.4) +
+  labs(x = expression(theta),
        y = "Likelihood") +
   theme_minimal()
 ```
@@ -177,25 +228,50 @@ Likelihood of observing 12 passes out of 20 engineers for different values of pa
 Now that we have defined our prior belief and the likelihood of the observed data, we can use Bayes' Theorem to calculate the *posterior* distribution of the pass rate $\theta$ given the observed data.  Here we will take all 1000 simulated values of $\theta$ and apply Bayes' theorem across each of them to calculate the posterior probability that $\theta$ is our population pass rate given the data we have observed.  We multiply the prior distribution and the likelihood function for each value of $\theta$, and then normalize the result to ensure that the posterior distribution sums to 1:
 
 ```{r}
-# calculate the unnormalized posterior distribution (numerator of Bayes' Theorem)
+# calculate the unnormalized posterior distribution 
+# (numerator of Bayes' Theorem)
 unnormalized_posterior <- prior_distribution * likelihood_function
 
-# normalize the posterior distribution (divide by total area to ensure it integates to 1)
-posterior_distribution <- unnormalized_posterior / sum(unnormalized_posterior)
+# normalize the posterior distribution 
+# (divide by total area to ensure it integates to 1)
+posterior_distribution <- unnormalized_posterior / 
+  sum(unnormalized_posterior)
 ```
 
 Let's now plot our calculated posterior distribution $P(\theta \mid D)$ to visualize our updated beliefs about the pass rate $\theta$ after observing the data, as in @fig-pass-posterior.
 
-::: {#fig-pass-posterior}
 ```{r}
+#| eval: false
 # create a data frame for plotting
-posterior_df <- data.frame(theta = theta_values, density = posterior_distribution)
+posterior_df <- data.frame(
+  theta = theta_values, 
+  density = posterior_distribution
+)
 
 # plot the posterior distribution
 ggplot(posterior_df, aes(x = theta, y = density)) +
   geom_line(color = "cyan") +
   geom_area(fill = "cyan", alpha = 0.4) +
-  labs(x = "Pass Rate (θ)",
+  labs(x = expression(theta),
+       y = "Density") +
+  theme_minimal()
+
+```
+
+::: {#fig-pass-posterior}
+```{r}
+#| echo: false
+# create a data frame for plotting
+posterior_df <- data.frame(
+  theta = theta_values, 
+  density = posterior_distribution
+)
+
+# plot the posterior distribution
+ggplot(posterior_df, aes(x = theta, y = density)) +
+  geom_line(color = "cyan") +
+  geom_area(fill = "cyan", alpha = 0.4) +
+  labs(x = expression(theta),
        y = "Density") +
   theme_minimal()
 
@@ -223,7 +299,7 @@ ggplot(combined_df, aes(x = theta, y = density, color = Type, fill = Type)) +
   geom_area(alpha = 0.4, position = "identity") +
   scale_color_manual(values = c("magenta", "cyan", "blue")) +
   scale_fill_manual(values = c("magenta", "cyan", "blue")) +
-  labs(x = "Pass Rate (θ)",
+  labs(x = expression(theta),
        y = "Probability",
        fill = "Type") +
   theme_minimal() +
@@ -236,12 +312,12 @@ Prior, Normalized Likelihood and Posterior probabilities of pass rate ($\theta$)
 
 ### Bayesian Updating {#sec-bayes-updating}
 
-One of the powerful features of Bayesian inference is the ability to continuously update our beliefs about a parameter as new data becomes available.  In our example, suppose that after some time, an additional 30 engineers complete the training program, and of those, 25 pass the certification exam while 5 fail.  We can use our current posterior distribution as the new prior distribution and incorporate this new data to update our beliefs about the pass rate $\theta$.  A common saying in Bayesian statistics is that *today's posterior is tomorrow's prior*^[@lindley].
+\index{Bayesian inference!Bayesian updating}One of the powerful features of Bayesian inference is the ability to continuously update our beliefs about a parameter as new data becomes available.  In our example, suppose that after some time, an additional 30 engineers complete the training program, and of those, 25 pass the certification exam while 5 fail.  We can use our current posterior distribution as the new prior distribution and incorporate this new data to update our beliefs about the pass rate $\theta$.  A common saying in Bayesian statistics is that *today's posterior is tomorrow's prior*^[@lindley].
 
 To perform this Bayesian updating, we can follow the same steps as before.  First, we will define our new prior distribution using the current posterior distribution.  Then, we will define the likelihood of the new observed data using a Binomial distribution.  Finally, we will calculate the new posterior distribution by combining the new prior and the new likelihood using Bayes' Theorem, as in @fig-post-update.
 
-::: {#fig-post-update}
 ```{r}
+#| eval: false
 # new observed data
 new_passes <- 25
 new_fails <- 5
@@ -250,21 +326,69 @@ new_fails <- 5
 new_prior_distribution <- posterior_distribution
 
 # simulate the likelihood function for the new observed data
-new_likelihood_function <- dbinom(new_passes, size = new_passes + new_fails, prob = theta_values)
+new_likelihood_function <- dbinom(
+  new_passes, 
+  size = new_passes + new_fails, 
+  prob = theta_values
+)
 
 # calculate the unnormalized new posterior distribution
-unnormalized_new_posterior <- new_prior_distribution * new_likelihood_function
+unnormalized_new_posterior <- new_prior_distribution * 
+  new_likelihood_function
 
 # normalize the new posterior distribution
-new_posterior_distribution <- unnormalized_new_posterior / sum(unnormalized_new_posterior)
+new_posterior_distribution <- unnormalized_new_posterior / 
+  sum(unnormalized_new_posterior)
 
 # plot the new posterior distribution
-new_posterior_df <- data.frame(theta = theta_values, density = new_posterior_distribution)
+new_posterior_df <- data.frame(
+  theta = theta_values, 
+  density = new_posterior_distribution
+)
 
 ggplot(new_posterior_df, aes(x = theta, y = density)) +
   geom_line(color = "purple") +
   geom_area(fill = "purple", alpha = 0.4) +
-  labs(x = "Pass Rate (θ)",
+  labs(x = expression(theta),
+       y = "Probability") +
+  theme_minimal()
+```
+
+::: {#fig-post-update}
+```{r}
+#| echo: false
+# new observed data
+new_passes <- 25
+new_fails <- 5
+
+# define new prior distribution using current posterior distribution
+new_prior_distribution <- posterior_distribution
+
+# simulate the likelihood function for the new observed data
+new_likelihood_function <- dbinom(
+  new_passes, 
+  size = new_passes + new_fails, 
+  prob = theta_values
+)
+
+# calculate the unnormalized new posterior distribution
+unnormalized_new_posterior <- new_prior_distribution * 
+  new_likelihood_function
+
+# normalize the new posterior distribution
+new_posterior_distribution <- unnormalized_new_posterior / 
+  sum(unnormalized_new_posterior)
+
+# plot the new posterior distribution
+new_posterior_df <- data.frame(
+  theta = theta_values, 
+  density = new_posterior_distribution
+)
+
+ggplot(new_posterior_df, aes(x = theta, y = density)) +
+  geom_line(color = "purple") +
+  geom_area(fill = "purple", alpha = 0.4) +
+  labs(x = expression(theta),
        y = "Probability") +
   theme_minimal()
 ```
@@ -283,18 +407,26 @@ We can calculate summary statistics of our posterior distribution to better stat
 (mean_posterior <- sum(theta_values * new_posterior_distribution))
 
 # calculate the median of the new posterior distribution
-(median_posterior <- theta_values[which(cumsum(new_posterior_distribution) >= 0.5)[1]])
+(median_posterior <- theta_values[
+  which(cumsum(new_posterior_distribution) >= 0.5)[1]
+])
 
 # calculate the mode of the posterior distribution
-(mode_posterior <- theta_values[which.max(new_posterior_distribution)])
+(mode_posterior <- theta_values[
+  which.max(new_posterior_distribution)
+])
 ```
 
-Additionally, given that we have determined a specific distribution for the pass rate $\theta$, we can calculate *credible intervals* to express the uncertainty around our estimate.  A credible interval is an interval within which the parameter is believed to lie with a certain probability, based on the posterior distribution.  For example, a 95% credible interval for the pass rate $\theta$ would indicate that there is a 95% probability that the true pass rate lies within this interval, given the observed data.  We can calculate the 95% credible interval for our updated posterior distribution using the `quantile()` function in R:
+Additionally, given that we have determined a specific distribution for the pass rate $\theta$, we can calculate \index{credible interval}*credible intervals* to express the uncertainty around our estimate.  A credible interval is an interval within which the parameter is believed to lie with a certain probability, based on the posterior distribution.  For example, a 95% credible interval for the pass rate $\theta$ would indicate that there is a 95% probability that the true pass rate lies within this interval, given the observed data.  We can calculate the 95% credible interval for our updated posterior distribution using the `quantile()` function in R:
 
 
 ```{r}
-# calculate the 95% credible interval for the updated posterior distribution
-interval_boundaries <- quantile(new_posterior_distribution, probs = c(0.025, 0.975))
+# calculate the 95% credible interval for 
+# the updated posterior distribution
+interval_boundaries <- quantile(
+  new_posterior_distribution, 
+  probs = c(0.025, 0.975)
+)
 
 # Cumulative sum of probability
 cumsum_posterior <- cumsum(new_posterior_distribution)
@@ -303,18 +435,26 @@ cumsum_posterior <- cumsum(new_posterior_distribution)
 lower_bound <- theta_values[which(cumsum_posterior >= 0.025)[1]]
 upper_bound <- theta_values[which(cumsum_posterior >= 0.975)[1]]
 
-paste0("95% Credible Interval: [", round(lower_bound, 2), ", ", round(upper_bound, 2), "]")
+paste0(
+  "95% Credible Interval: [", 
+  round(lower_bound, 2), ", ", 
+  round(upper_bound, 2), "]"
+)
 ```
 
 Note that credible intervals are quite different from the confidence intervals we have seen in previous chapters using classical statistics.  A 95% confidence interval indicates that if we were to repeat our sampling process many times, 95% of the calculated confidence intervals would contain the true parameter value.  In contrast, a 95% credible interval indicates that there is a 95% probability that the true parameter value lies within the interval, given the observed data and our prior beliefs.  This distinction highlights one of the key differences between Bayesian and frequentist approaches to statistical inference.
 
 ### Computational Methods for Bayesian Inference
 
-It is clear from our example above that, different from classical statistics, Bayesian inference focuses on deriving the entire posterior distribution of a parameter rather than just point estimates and confidence intervals.  This requires that simulations are used to approximate the posterior distribution, and this explains why Bayesian inference is significantly more computationally demanding.  In our walkthrough example, we have used one of the simpler methods of simulation known as *grid approximation*, where we evaluated the prior, likelihood and posterior based a grid of possible values for the parameter $\theta$.  This method works well for simple models with a single parameter, but it can become computationally infeasible for more complex models with multiple parameters.   
+It is clear from our example above that, different from classical statistics, Bayesian inference focuses on deriving the entire posterior distribution of a parameter rather than just point estimates and confidence intervals.  This requires that simulations are used to approximate the posterior distribution, and this explains why Bayesian inference is significantly more computationally demanding.  In our walkthrough example, we have used one of the simpler methods of simulation known as \index{Bayesian inference!grid approximation}*grid approximation*, where we evaluated the prior, likelihood and posterior based a grid of possible values for the parameter $\theta$.  This method works well for simple models with a single parameter, but it can become computationally infeasible for more complex models with multiple parameters.   
 
-In practice, calculating posterior distributions analytically can be challenging, especially for complex models or large datasets.  As a result, Bayesian inference often relies on specialized computational methods to simulate posterior distributions.  These methods generate samples from the posterior distributions which can then be used to estimate summary statistics and credible intervals for the parameters of interest.  There are several modern software packages now available providing user-friendly interfaces for specifying and estimating Bayesian models, making it easier for practitioners to apply Bayesian methods to real-world problems.  We will use the `stan` software package^[Named after the mathematician Stanislaw Ulam, who was one of the inventors of the Monte Carlo method, a key computational method used in Bayesian statistics.] to perform Bayesian inference in this and subsequent chapters, often via the `brms` package and other common R packages.
+In practice, calculating posterior distributions analytically can be challenging, especially for complex models or large datasets.  As a result, Bayesian inference often relies on specialized computational methods to simulate posterior distributions.  These methods generate samples from the posterior distributions which can then be used to estimate summary statistics and credible intervals for the parameters of interest.  There are several modern software packages now available providing user-friendly interfaces for specifying and estimating Bayesian models, making it easier for practitioners to apply Bayesian methods to real-world problems.  We will use the \index{stan (software)@\texttt{stan} (software)}`stan` software package^[Named after the mathematician Stanislaw Ulam, who was one of the inventors of the Monte Carlo method, a key computational method used in Bayesian statistics.] to perform Bayesian inference in this and subsequent chapters, often via the \index{R!packages!brms@\texttt{brms}}`brms` package and other common R packages.
+
+\index{Bayesian inference|)}
 
 ## Bayesian hypothesis testing {#sec-bayes-hyp-test}
+
+\index{hypothesis testing!Bayesian|(}
 
 In classical statistics, we rely heavily on the $p$-value to test hypotheses. We set up a null hypothesis (usually that there is no effect or no difference) and an alternative hypothesis. If the $p$-value falls below a defined $\alpha$ (usually 0.05), we reject the null hypothesis. However, as we discussed in previous chapters, the $p$-value is often misunderstood. It tells us the frequency of observing data at least as extreme as ours over many random repeated samples, *assuming the null hypothesis is true*, that is $P(D \mid H_0)$. It does **not** tell us the probability that the hypothesis itself is true.
 
@@ -339,7 +479,7 @@ $$
 \frac{P(H_1 \mid D)}{P(H_0 \mid D)} = \frac{P(D \mid H_1)}{P(D \mid H_0)} \times \frac{P(H_1)}{P(H_0)}
 $$
 
-The left side of this equation is known as the **posterior odds** of $H_1$, while the right side consists of two components: the **Bayes Factor** (the first term) and the **prior odds** (the second term). The Bayes Factor is a multiple which quantifies how much more likely the data is under one hypothesis compared to the other, while the prior odds represent our initial beliefs about the relative plausibility of the two hypotheses before observing the data. For example, if we have no prior preference for either hypothesis, the prior odds would be 1. Then if the Bayes Factor is 5, the posterior odds would also be 5, meaning that after observing the data, the Alternative Hypothesis is 5 times more likely than the Null Hypothesis.
+The left side of this equation is known as the **posterior odds** of $H_1$, while the right side consists of two components: the \index{Bayes factor}**Bayes Factor** (the first term) and the **prior odds** (the second term). The Bayes Factor is a multiple which quantifies how much more likely the data is under one hypothesis compared to the other, while the prior odds represent our initial beliefs about the relative plausibility of the two hypotheses before observing the data. For example, if we have no prior preference for either hypothesis, the prior odds would be 1. Then if the Bayes Factor is 5, the posterior odds would also be 5, meaning that after observing the data, the Alternative Hypothesis is 5 times more likely than the Null Hypothesis.
 
 If we are comparing an Alternative Hypothesis ($H_1$) against a Null Hypothesis ($H_0$), the Bayes Factor is usually denoted as $BF_{10}$:
 
@@ -360,7 +500,9 @@ A common rule of thumb^[@jeffreys] for interpreting Bayes Factors which favor th
 *   **10-30**: Strong evidence
 *   **>30**: Very strong evidence
 
-To implement Bayesian hypothesis tests in R, we will utilize the `BayesFactor` package. This package allows us to perform statistical hypothesis tests within a Bayesian framework without needing to write complex custom simulations from scratch.  These tests use standard minimally informed priors for the specific tests being used.  To illustrate these Bayesian tests, we will use the same examples of hypothesis tests on our `salespeople` data set as we used in @sec-found-stats for classical statistics, but now using smaller subsets of this data. Let's download that set first.
+To implement Bayesian hypothesis tests in R, we will utilize the \index{R!packages!BayesFactor@\texttt{BayesFactor}}`BayesFactor` package. This package allows us to perform statistical hypothesis tests within a Bayesian framework without needing to write complex custom simulations from scratch.  These tests use standard minimally informed priors for the specific tests being used.  To illustrate these Bayesian tests, we will use the same examples of hypothesis tests on our \index{data sets!salespeople@\texttt{salespeople}}`salespeople` data set as we used in @sec-found-stats for classical statistics, but now using smaller subsets of this data. Let's download that set first.
+
+\small
 
 ```{r}
 # if needed, use online url to download salespeople data
@@ -370,6 +512,8 @@ salespeople <- read.csv(url)
 # remove NAs
 salespeople <- salespeople[complete.cases(salespeople), ]
 ```
+
+\normalsize
 
 ### Bayesian $t$-test for difference in means between two independent groups {#sec-bayes-ttest}
 
@@ -420,15 +564,33 @@ head(posterior_samples)
 
 The key column we are interested in is the `beta (1 - 4)` column, which represents the difference in sales between low performing (`performance = 1`) and high performing (`performance = 4`) salespeople for each sample iteration.  A negative value indicates that high performing salespeople have higher sales than low performing salespeople.  We can use this data to plot our posterior as in @fig-bayes-ttest, negating our data to show a more intuitive difference between high performing and low performing salespeople.
 
-
-::: {#fig-bayes-ttest}
 ```{r}
+#| eval: false
 # create a data frame for plotting
 posterior_df <- data.frame(
   sales_diff = as.vector(-posterior_samples[ ,"beta (1 - 4)"])
 )
 
-# plot posterior distributions of sales for low and high performing salespeople
+# plot posterior distributions of sales for 
+# low and high performing salespeople
+ggplot(posterior_df, aes(x = sales_diff)) +
+  geom_density(alpha = 0.5, color = "blue", fill = "blue") +
+  labs(x = "Sales Difference",
+       y = "Probability") +
+  theme_minimal()
+
+```
+
+::: {#fig-bayes-ttest}
+```{r}
+#| echo: false
+# create a data frame for plotting
+posterior_df <- data.frame(
+  sales_diff = as.vector(-posterior_samples[ ,"beta (1 - 4)"])
+)
+
+# plot posterior distributions of sales for 
+# low and high performing salespeople
 ggplot(posterior_df, aes(x = sales_diff)) +
   geom_density(alpha = 0.5, color = "blue", fill = "blue") +
   labs(x = "Sales Difference",
@@ -441,19 +603,47 @@ Posterior distribution of sales difference between high and low performing sales
 :::
 
 
-We can also calculate summary statistics and credible intervals for the posterior distribution of the sales difference between high and low performing salespeople, using the convenient `describe_posterior()` function from the `bayestestR` package.
+We can also calculate summary statistics and credible intervals for the posterior distribution of the sales difference between high and low performing salespeople, using the convenient `describe_posterior()` function from the \index{R!packages!bayestestR@\texttt{bayestestR}}`bayestestR` package.
 
 ```{r}
+#| eval: false
 library(bayestestR)
 (posterior_summary <- describe_posterior(-posterior_samples))
 ```
 
-The output shows the posterior median sales difference (row `beta (1 - 4)`) between high and low performing salespeople is approximately `r round(posterior_summary$Median[2], 2)`, with a 95% credible interval provided.  This allows us to say that there is a 95% probability that the difference in sales between high and low performing salespeople is within this range given the data that we observe.   The `pd` column provides a 'probability of direction'.  Using this column, we can explicitly say that there is a `r round(posterior_summary$pd[2], 2)` probability that the sales difference is greater than zero given the data we observe^[The output here is agnostic to direction, and will always return the probability of the most likely direction, akin to a one-tailed test without a specified direction.].  We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis.  We see that there is no overlap between the 95% credible interval and the ROPE.
+\tiny
 
-One visual way of representing both the posterior distribution and its summary statistics is to use a *halfeye plot* (via the `ggdist` package), as in @fig-bayes-ttest-halfeye.  A halfeye plot combines a density plot of the posterior distribution with a point and interval summary of the distribution.  By default, the point estimate is the median (this can be adjusted to mean and mode using the `point_interval` argument), and the intervals are the 66% credible interval and the 95% credible interval (these can be adjusted using the `.width` argument).  
+```{r}
+#| echo: false
+library(bayestestR)
+(posterior_summary <- describe_posterior(-posterior_samples))
+```
+
+\normalsize
+
+The output shows the posterior median sales difference (row `beta (1 - 4)`) between high and low performing salespeople is approximately `r round(posterior_summary$Median[2], 2)`, with a 95% credible interval provided.  This allows us to say that there is a 95% probability that the difference in sales between high and low performing salespeople is within this range given the data that we observe.   The `pd` column provides a 'probability of direction'.  Using this column, we can explicitly say that there is a `r round(posterior_summary$pd[2], 2)` probability that the sales difference is greater than zero given the data we observe^[The output here is agnostic to direction, and will always return the probability of the most likely direction, akin to a one-tailed test without a specified direction.].  \index{Region of Practical Equivalence (ROPE)}\index{ROPE (Region of Practical Equivalence)|see {Region of Practical Equivalence (ROPE)}}We also see a comparison with a ROPE (Region of Practical Equivalence) around zero, which is an indication of the practical range of values associated with the null hypothesis.  We see that there is no overlap between the 95% credible interval and the ROPE.
+
+\index{halfeye plot}\index{R!packages!ggdist@\texttt{ggdist}}One visual way of representing both the posterior distribution and its summary statistics is to use a *halfeye plot* (via the `ggdist` package), as in @fig-bayes-ttest-halfeye.  A halfeye plot combines a density plot of the posterior distribution with a point and interval summary of the distribution.  By default, the point estimate is the median (this can be adjusted to mean and mode using the `point_interval` argument), and the intervals are the 66% credible interval and the 95% credible interval (these can be adjusted using the `.width` argument).  
+
+```{r}
+#| eval: false
+# load ggdist package for halfeye plots
+library(ggdist)
+
+# plot halfeye of posterior distribution of sales difference
+ggplot(posterior_df, aes(x = sales_diff)) +
+  stat_halfeye(
+    fill = "lightblue",
+    color = "blue",
+  ) +
+  labs(x = "Sales Difference",
+       y = "Probability") +
+  theme_minimal()
+```
 
 ::: {#fig-bayes-ttest-halfeye}
 ```{r}
+#| echo: false
 # load ggdist package for halfeye plots
 library(ggdist)
 
@@ -475,7 +665,11 @@ To adapt the `ttestBF()` function to do a one-tailed test, you can use the `null
 
 ```{r}
 # run a one-tailed Bayesian t-test
-ttestBF(formula = sales ~ performance, data = df_sales, nullInterval = c(0, Inf))
+ttestBF(
+  formula = sales ~ performance, 
+  data = df_sales, 
+  nullInterval = c(0, Inf)
+)
 ```
 
 We can see that, when our Alternative Hypothesis is that high performing salespeople have higher sales than low performing salespeople (the second hypothesis presented), the Bayes Factor $BF_{10}$ is just over 6, indicating the data moderately supports this hypothesis.  The opposite hypothesis (that low performing salespeople have higher sales than high performing salespeople) has a correspondingly low Bayes Factor, indicating the data provides moderate evidence against this hypothesis.
@@ -494,24 +688,69 @@ First, we will run a Bayesian correlation test to assess the evidence for a non-
 
 ```{r}
 # run a Bayesian correlation test
-correlationBF(sample_salespeople$sales, sample_salespeople$customer_rate)
+correlationBF(
+  sample_salespeople$sales, 
+  sample_salespeople$customer_rate
+)
 ```
 
 We see that the Bayes Factor $BF_{10}$ suggests strong evidence from the data supporting the Alternative Hypothesis $H_1$.   We can visualize our posterior distribution of the correlation coefficient using a halfeye plot as before.
 
-::: {#fig-bayes-corr}
 ```{r}
-# run Bayesian correlation test and extract posterior samples over 10000 simulations
+#| eval: false
+# run Bayesian correlation test and extract posterior samples 
+# over 10000 simulations
 set.seed(42)
-bf_corr_result <- correlationBF(sample_salespeople$sales, sample_salespeople$customer_rate)
-posterior_corr_samples <- posterior(bf_corr_result, iterations = 10000)
+bf_corr_result <- correlationBF(
+  sample_salespeople$sales, 
+  sample_salespeople$customer_rate
+)
+
+posterior_corr_samples <- posterior(
+  bf_corr_result, 
+  iterations = 10000
+)
 
 # create a data frame for plotting
 posterior_corr_df <- data.frame(
   correlation = as.vector(posterior_corr_samples[ ,"rho"])
 )
 
-# create a halfeye plot of posterior distribution of correlation coefficient
+# create a halfeye plot of posterior distribution 
+# of correlation coefficient
+ggplot(posterior_corr_df, aes(x = correlation)) +
+  stat_halfeye(
+    fill = "pink",
+    color = "red",
+  ) +
+  labs(x = "Correlation Coefficient",
+       y = "Density") +
+  theme_minimal()
+```
+
+::: {#fig-bayes-corr}
+```{r}
+#| echo: false
+# run Bayesian correlation test and extract posterior samples 
+# over 10000 simulations
+set.seed(42)
+bf_corr_result <- correlationBF(
+  sample_salespeople$sales, 
+  sample_salespeople$customer_rate
+)
+
+posterior_corr_samples <- posterior(
+  bf_corr_result, 
+  iterations = 10000
+)
+
+# create a data frame for plotting
+posterior_corr_df <- data.frame(
+  correlation = as.vector(posterior_corr_samples[ ,"rho"])
+)
+
+# create a halfeye plot of posterior distribution 
+# of correlation coefficient
 ggplot(posterior_corr_df, aes(x = correlation)) +
   stat_halfeye(
     fill = "pink",
@@ -573,33 +812,100 @@ contingencyTableBF(contingency, sampleType = "jointMulti")
 
 Here we see a Bayes Factor $BF_{10}$ which indicates very strong evidence from the data in favor of the Alternative Hypothesis ($H_1$) that the categories are not independent and there is a difference in promotion rates between performance rating groups.  We can visualize the posterior distributions of the promotion rates using a halfeye plot, as in @fig-bayes-chi.  This requires some manipulation of the data that is produced when our posterior is simulated.
 
-::: {#fig-bayes-chi}
 ```{r}
-# run Bayesian contingency table test and extract posterior samples over 10000 simulations
+#| eval: false
+# run Bayesian contingency table test and extract 
+# posterior samples over 10000 simulations
 set.seed(42)
-bf_contingency_result <- contingencyTableBF(contingency, sampleType = "jointMulti")
-posterior_contingency_samples <- posterior(bf_contingency_result, iterations = 10000) |> 
+bf_contingency_result <- contingencyTableBF(
+  contingency, 
+  sampleType = "jointMulti"
+)
+
+posterior_contingency_samples <- posterior(
+  bf_contingency_result, 
+  iterations = 10000) |> 
   as.data.frame()
 
 # calculate relative promotion rates within each performance category
 for (i in 1:4) {
-  posterior_contingency_samples[, paste0("pi[", i, "]")] <- posterior_contingency_samples[, paste0("pi[2,", i, "]")] / 
-    (posterior_contingency_samples[, paste0("pi[1,", i, "]")] + posterior_contingency_samples[, paste0("pi[2,", i, "]")])
+  posterior_contingency_samples[, paste0("pi[", i, "]")] <- 
+    posterior_contingency_samples[, paste0("pi[2,", i, "]")] / 
+    (posterior_contingency_samples[, paste0("pi[1,", i, "]")] + 
+       posterior_contingency_samples[, paste0("pi[2,", i, "]")])
 }
   
 
 # create data frame for halfeye plot
 posterior_contingency_df <- data.frame(
-  promotion_rate = c(as.vector(posterior_contingency_samples[, "pi[1]"]),
-                     as.vector(posterior_contingency_samples[, "pi[2]"]),
-                     as.vector(posterior_contingency_samples[, "pi[3]"]),
-                     as.vector(posterior_contingency_samples[, "pi[4]"])),
-  performance_rating = rep(1:4, each = nrow(posterior_contingency_samples))
+  promotion_rate = c(
+    as.vector(posterior_contingency_samples[, "pi[1]"]),
+    as.vector(posterior_contingency_samples[, "pi[2]"]),
+    as.vector(posterior_contingency_samples[, "pi[3]"]),
+    as.vector(posterior_contingency_samples[, "pi[4]"])),
+  performance_rating = rep(
+    1:4, 
+    each = nrow(posterior_contingency_samples))
 )
 
 
 # plot posterior distributions of promotion rates using halfeye plot
-ggplot(posterior_contingency_df, aes(x = promotion_rate, y = as.factor(performance_rating))) +
+ggplot(
+  posterior_contingency_df, 
+  aes(x = promotion_rate, y = as.factor(performance_rating))
+) +
+  stat_halfeye(
+    fill = "lightblue",
+    color = "blue"
+  ) +
+  labs(x = "Promotion Rate",
+       y = "Performance Rating") +
+  theme_minimal()
+```
+
+::: {#fig-bayes-chi}
+```{r}
+#| echo: false
+# run Bayesian contingency table test and extract 
+# posterior samples over 10000 simulations
+set.seed(42)
+bf_contingency_result <- contingencyTableBF(
+  contingency, 
+  sampleType = "jointMulti"
+)
+
+posterior_contingency_samples <- posterior(
+  bf_contingency_result, 
+  iterations = 10000) |> 
+  as.data.frame()
+
+# calculate relative promotion rates within each performance category
+for (i in 1:4) {
+  posterior_contingency_samples[, paste0("pi[", i, "]")] <- 
+    posterior_contingency_samples[, paste0("pi[2,", i, "]")] / 
+    (posterior_contingency_samples[, paste0("pi[1,", i, "]")] + 
+       posterior_contingency_samples[, paste0("pi[2,", i, "]")])
+}
+  
+
+# create data frame for halfeye plot
+posterior_contingency_df <- data.frame(
+  promotion_rate = c(
+    as.vector(posterior_contingency_samples[, "pi[1]"]),
+    as.vector(posterior_contingency_samples[, "pi[2]"]),
+    as.vector(posterior_contingency_samples[, "pi[3]"]),
+    as.vector(posterior_contingency_samples[, "pi[4]"])),
+  performance_rating = rep(
+    1:4, 
+    each = nrow(posterior_contingency_samples))
+)
+
+
+# plot posterior distributions of promotion rates using halfeye plot
+ggplot(
+  posterior_contingency_df, 
+  aes(x = promotion_rate, y = as.factor(performance_rating))
+) +
   stat_halfeye(
     fill = "lightblue",
     color = "blue"
@@ -616,14 +922,14 @@ Visualizing the posteriors in this way gives us additional information regarding
 
 ### Bayesian hypothesis testing using Python
 
-The `pingouin` package in Python offers very simple functions for Bayes Factor estimations against a null hypothesis.  These functions accept the relevant statistics (eg a $t$-statistic for a $t$-test as well as the size of both groups) and returns the Bayes Factor.  For example, to calculate our $t$-test Bayes Factor as in @sec-bayes-ttest, we would first determine the $t$-statistic for the difference in means of the two groups as follows^[Note that setting the same random seed in both R and Python does not produce the same randomization process, so you can expect analyses to differ between the two languages when randomization is required.]:
+\index{hypothesis testing!Bayesian!using Python}\index{Python!packages!pingouin@\texttt{pingouin}}The `pingouin` package in Python offers very simple functions for Bayes Factor estimations against a null hypothesis.  These functions accept the relevant statistics (eg a $t$-statistic for a $t$-test as well as the size of both groups) and returns the Bayes Factor.  For example, to calculate our $t$-test Bayes Factor as in @sec-bayes-ttest, we would first determine the $t$-statistic for the difference in means of the two groups as follows^[Note that setting the same random seed in both R and Python does not produce the same randomization process, so you can expect analyses to differ between the two languages when randomization is required.]:
 
 ```{python}
 import pingouin as pg
 import pandas as pd
 
 # load salespeople data
-url = "https://peopleanalytics-regression-book.org/data/salespeople.csv"
+url="https://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople = pd.read_csv(url).dropna()
 
 # take samples of 10 people with performance ratings 1 and 4
@@ -652,7 +958,10 @@ And similarly, to calculate the Bayes Factor for the correlation test as in @sec
 sample_salespeople = salespeople.sample(10, random_state=42)
 
 # calculate the correlation coefficient
-corr_result = pg.corr(sample_salespeople['sales'], sample_salespeople['customer_rate'])
+corr_result = pg.corr(
+  sample_salespeople['sales'], 
+  sample_salespeople['customer_rate']
+)
 
 corr_coefficient = corr_result['r'].values[0]
 
@@ -662,56 +971,41 @@ bf_10_corr = pg.bayesfactor_pearson(corr_coefficient, n)
 print(round(bf_10_corr, 2))
 ```
 
+\index{hypothesis testing!Bayesian|)}
+
 ## Learning exercises
 
 ### Discussion questions
 
 1.  In classical (frequentist) statistics, the population parameter (e.g., the true mean of a population) is considered a fixed, unknown constant. How does the Bayesian approach view the population parameter differently? How does this change the way we interpret the results of an analysis?
-
 2.  State Bayes' Theorem and explain each of its components in the context of Bayesian inference.
-
 3.  Explain the difference between an **informative prior** and a **non-informative prior**. Why might each be used in different scenarios? Provide an example of when you might choose one over the other.
-
 4.  Which of the three components of Bayes' Theorem (prior, likelihood, posterior) are probability distributions?  Which are not? Explain why.
-
 5.  "Today's posterior is tomorrow's prior." Explain this concept and how it applies to Bayesian updating.
-
 6.  How does the interpretation of a *Credible* Interval differ from a *Confidence* Interval?
-
 7.  Why does Bayesian inference allow us to make direct statements about the probability of our parameter taking specific values?
-
 8.  Explain the meaning of the Bayes Factor $BF_{10}$ in the context of hypothesis testing. 
-
 9.  If you calculate a Bayes Factor $BF_{10}$ of 12.5, how would you interpret this according to the classification scheme provided in this chapter?
-
 10.  What is a halfeye plot and what are the key components it displays?  Why are halfeye plots useful for visualizing posterior distributions?
 
 ### Data exercises
 
-Load the `ugtests` data set which we used in @sec-linear-reg-ols via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/ugtests.csv]. Remind yourself of what this data set contains.
+\index{data sets!ugtests@\texttt{ugtests}}Load the `ugtests` data set which we used in @sec-linear-reg-ols via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/ugtests.csv]. Remind yourself of what this data set contains.
 
 For questions 1 to 5, focus on the Year 1 examination scores.  Take a random sample of 20 students from the data set to use as your first set of observed data, and remove these from the full data.  Then take another random sample of 30 students from the remaining data set to use as your second set of observed data for Bayesian updating.  
 
 1.  The academic administrator informs you that a minimum score of 40 represents a Pass.  It is their belief that 'somewhere around 7 in 10' students will pass the Year 1 examination.  Simulate an informative prior distribution for the pass rate based on this belief.  Plot the prior distribution.
-
-2.  Using your first set of observed data, simulate the likelihood function for the pass rate given the data in your first sample.  
-
+2.  Using your first set of observed data, simulate the likelihood function for the pass rate given the data in your first sample.
 3.  Use your work from questions 1 and 2 to calculate the posterior distribution for the Year 1 pass rate given the data in your first sample.  Plot the prior, likelihood and posterior together on a standardized plot to compare them.
-
 4.  Using the posterior distribution from question 3 as your new prior, and using your second sample of observed data, calculate the updated posterior distribution for the Year 1 pass rate.  Plot the updated posterior distribution.
-
 5.  Calculate summary statistics (mean, median, mode) and a 95% credible interval for the updated posterior distribution from Question 4.
 
 For questions 6 to 10, take a random sample of 50 rows from the full `ugtests` data set and treat this as your observed data.  
 
 6.  Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers.  Use a Bayesian $t$-test to perform this test.  Report and interpret the Bayes Factor.  
-
 7.  Visualize the posterior distribution of the difference in Year 2 score means between the two groups using a halfeye plot.  
-
 8.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in Year 2 scores between the two groups. 
-
 9.  Test the hypothesis that there is a correlation between Year 2 and Final Year examination scores using a Bayesian correlation test.  Report and interpret the Bayes Factor.
-
 10.  Visualize the posterior distribution of the correlation coefficient using a halfeye plot.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the correlation coefficient.  Write a summary of your findings from questions 6 to 10.
 
 

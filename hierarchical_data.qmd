@@ -4,11 +4,13 @@ So far in this book we have learned all of the most widely used and foundational
 
 It is very often the case that data has an explicit hierarchy. For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups. Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual. For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping. This requires a model which has a mixture of random effects and fixed effects---called a *mixed model*.
 
-Separately, it can be the case that data we are given could have a latent hierarchy. The input variables in the data might be measures of a smaller set of higher-level latent constructs, and we may have a more interpretable model if we hypothesize, confirm and model those latent constructs against our outcome of interest rather than using a larger number of explicit input variables. Latent variable modeling is a common technique to address this situation, and in this chapter we will review a form of latent variable modeling called *structural equation modeling*, which is very effective especially in making inferences from survey instruments with large numbers of items.
+\index{hierarchical data}Separately, it can be the case that data we are given could have a latent hierarchy. The input variables in the data might be measures of a smaller set of higher-level latent constructs, and we may have a more interpretable model if we hypothesize, confirm and model those latent constructs against our outcome of interest rather than using a larger number of explicit input variables. Latent variable modeling is a common technique to address this situation, and in this chapter we will review a form of latent variable modeling called *structural equation modeling*, which is very effective especially in making inferences from survey instruments with large numbers of items.
 
 These topics are quite broad, and there are many different approaches, techniques and terms involved in mixed modeling and latent variable modeling. In this chapter we will only cover some of the simpler approaches, which would suffice for the majority of common situations in people analytics. For a deeper treatment of these topics, see @jiang for mixed models and @bartholomew or @skrondal for latent variable models.
 
 ## Mixed models for explicit hierarchy in data {#sec-mixed}
+
+\index{mixed models|(}
 
 The most common explicit hierarchies that we see in data are group-based and time-based. A group-based hierarchy occurs when we are taking observations that belong to different groups. For example, in our first walkthrough example in @sec-linear-reg-ols, we modeled final examination performance against examination performance for the previous three years. In this case we considered each student observation to be independent and identically distributed, and we ran a linear regression model on all the students. If we were to receive additional information that these students were actually a mix of students in different degree programs, then we may wish to take this into account in how we model the problem---that is, we would want to assume that each student observation is only independent and identically distributed within each degree program.
 
@@ -18,9 +20,9 @@ Both of these situations introduce a new grouping variable into the problem we a
 
 ### Fixed and random effects
 
-Let's imagine that we have a set of observations consisting of a continuous outcome variable $y$ and input variables $x_1, x_2, \dots, x_p$. Let's also assume that we have an additional data point for each observation where we assign it to a group $G$. We are asked to determine the relationship between the outcome and the input variables. One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, ignoring the group data. In this model, we assume that the coefficients all have a *fixed effect* on the input variables---that is, they act on every observation in the same way. This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled, or if we are comfortable making inferences about variables at the observation level only.
+Let's imagine that we have a set of observations consisting of a continuous outcome variable $y$ and input variables $x_1, x_2, \dots, x_p$. Let's also assume that we have an additional data point for each observation where we assign it to a group $G$. We are asked to determine the relationship between the outcome and the input variables. One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, ignoring the group data. \index{mixed models!fixed effects}In this model, we assume that the coefficients all have a *fixed effect* on the input variables---that is, they act on every observation in the same way. This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled, or if we are comfortable making inferences about variables at the observation level only.
 
-If, however, there is a belief that group membership may have an effect on the relationship being modeled, and if we are interested in interpreting our model at the group and observation level, then we need to adjust our model to a mixed model for more accurate and reliable inference. The most common adjustment is a *random intercept*. In this situation, we imagine that group membership has an effect on the 'starting point' of the relationship: the intercept. Therefore, for a given observation $y = \alpha_G + \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, where $\alpha_G$ is a random effect with a mean of zero associated with the group that the observation is a member of. This can be restated as:
+\index{mixed models!random effects}If, however, there is a belief that group membership may have an effect on the relationship being modeled, and if we are interested in interpreting our model at the group and observation level, then we need to adjust our model to a mixed model for more accurate and reliable inference. The most common adjustment is a *random intercept*. In this situation, we imagine that group membership has an effect on the 'starting point' of the relationship: the intercept. Therefore, for a given observation $y = \alpha_G + \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, where $\alpha_G$ is a random effect with a mean of zero associated with the group that the observation is a member of. This can be restated as:
 
 $$
 y = \beta_G + \beta_1x_1 + \dots + \beta_px_p + \epsilon
@@ -45,7 +47,7 @@ $$
 
 ### Running a mixed model
 
-Let's look at a fun and straightforward example of how mixed models can be useful. The `speed_dating` data set is a set of information captured during experiments with speed dating by students at Columbia University in New York^[I have simplified the data set, and the full version can be found at https://www.openml.org/search?type=data&exact_name=SpeedDating]. Each row represents one meeting between an individual and a partner of the opposite sex. The data contains the following fields:
+\index{data sets!speed\_dating@\texttt{speed\_dating}}Let's look at a fun and straightforward example of how mixed models can be useful. The `speed_dating` data set is a set of information captured during experiments with speed dating by students at Columbia University in New York^[I have simplified the data set, and the full version can be found at https://www.openml.org/search?type=data&exact_name=SpeedDating]. Each row represents one meeting between an individual and a partner of the opposite sex. The data contains the following fields:
 
 -   `iid` is an id number for the individual.
 -   `gender` is the gender of the individual with 0 as Female and 1 as Male.
@@ -61,6 +63,7 @@ Let's look at a fun and straightforward example of how mixed models can be usefu
 
 This data can be explored in numerous ways, but we will focus here on modeling options. We are interested in the binary outcome `dec` (the decision of the individual), and we would like to understand how it relates to the age difference, the racial similarity and the ratings on `attr`, `intel` and `prob`. First, let's assume that we don't care about how an individual makes up their mind about their speed date, and that we are only interested in the dynamics of speed date decisions. Then we would simply run a binomial logistic regression on our data set, ignoring `iid` and other grouping variables like `race`, `goal` and `gender`.
 
+\small
 
 ```{r}
 # if needed, get data
@@ -68,7 +71,7 @@ url <- "https://peopleanalytics-regression-book.org/data/speed_dating.csv"
 speed_dating <- read.csv(url)
 ```
 
-
+\normalsize
 
 ```{r}
 # run standard binomial model
@@ -81,7 +84,7 @@ summary(model)
 
 In general, we see that the factors which significantly influence the speed dating decision seem to be the attractiveness of the partner and the feeling of reciprocation of interest from the partner, and that age difference, racial similarity and intelligence do not seem to play a significant role at the level of the speed date itself.
 
-Now let's say that we are interested in how a given *individual* weighs up these factors in coming to a decision. Different individuals may have different ingoing criteria for making speed dating decisions. As a result, each individual may have varying base likelihoods of a positive decision, and each individual may be affected by the input variables in different ways as they come to their decision. Therefore we will need to assign random effects for individuals based on `iid`. The `lme4` package in R contains functions for performing mixed linear regression models and mixed generalized linear regression models. These functions take formulas with additional terms to define the random effects to be estimated. The function for a linear model is `lmer()` and for a generalized linear model is `glmer()`.
+Now let's say that we are interested in how a given *individual* weighs up these factors in coming to a decision. Different individuals may have different ingoing criteria for making speed dating decisions. As a result, each individual may have varying base likelihoods of a positive decision, and each individual may be affected by the input variables in different ways as they come to their decision. Therefore we will need to assign random effects for individuals based on `iid`. \index{R!packages!lme4@\texttt{lme4}}The `lme4` package in R contains functions for performing mixed linear regression models and mixed generalized linear regression models. These functions take formulas with additional terms to define the random effects to be estimated. The function for a linear model is `lmer()` and for a generalized linear model is `glmer()`.
 
 In the simple case, let's assume that each individual has a different ingoing base likelihood of making a positive decision on a speed date. We will therefore model a random intercept according to the `iid` of the individual. Here we would use the formula `dec ~ agediff + samerace + attr + intel + prob + (1 | iid)`, where `(1 | iid)` means 'a random effect for `iid` on the intercept of the model'.
 
@@ -228,31 +231,56 @@ If we believe that different individuals are influenced differently by one or mo
 
 ### Mixed effects models using Python
 
-The `pymer4` package provides a simple implementation of linear and generalized linear mixed effects models.  The `glmer()` function is used for generalized linear mixed models, and the specific model is defined by the `family` parameter.  This package is implemented in R under the hood, and also requires Polars rather than Pandas DataFrames.  To avoid issues related to the back-end R code, it is recommended that you explicitly remove all rows containing `NaN` values before fitting a model, or else perform imputation to fill these values.
+\index{mixed models!using Python}\index{Python!packages!pymer4@\texttt{pymer4}}The `pymer4` package provides a simple implementation of linear and generalized linear mixed effects models.  The `glmer()` function is used for generalized linear mixed models, and the specific model is defined by the `family` parameter.  This package is implemented in R under the hood, and also requires Polars rather than Pandas DataFrames.  To avoid issues related to the back-end R code, it is recommended that you explicitly remove all rows containing `NaN` values before fitting a model, or else perform imputation to fill these values.
 
 To recreate our random intercept model from the previous section using `pymer4`, we would use the following code:
 
 ```{python}
+#| results: false
 from pymer4.models import glmer
 import pandas as pd
 import polars as pl
 
-url = "https://peopleanalytics-regression-book.org/data/speed_dating.csv"
+url = """
+https://peopleanalytics-regression-book.org/data/speed_dating.csv
+"""
 
 # load data and drop rows with NaN values, then convert to Polars
 speed_dating = pd.read_csv(url).dropna()
 speed_dating = pl.DataFrame(speed_dating) 
 
 # fit binomial mixed effects model
-model = glmer("dec ~ agediff + samerace + attr + intel + prob + (1 | iid)",
-             data = speed_dating, family = 'binomial')
+model = glmer(
+  "dec ~ agediff + samerace + attr + intel + prob + (1 | iid)",
+  data = speed_dating, 
+  family = 'binomial'
+)
 model.fit()
 
 # view the table of results
-model.summary()._tbl_data
+df = pd.DataFrame(model.summary()._tbl_data)[[0, 1, 2, 6, 8, 9]]
+df.columns = ["Effect", "Parameter", "Estimate", 
+"z value", "Pr(>|z|)", "Signif. Code"]
+print(df)
 ```
 
+\small
+
+```{python}
+#| echo: false
+df = pd.DataFrame(model.summary()._tbl_data)[[0, 1, 2, 6, 8, 9]]
+df.columns = ["Effect", "Parameter", "Estimate", "z value", "Pr(>|z|)", "Signif. Code"]
+print(df)
+```
+
+\normalsize
+
+\index{mixed models|)}
+\index{multilevel models|see {mixed models}}
+
 ## Structural equation models for latent hierarchy in data {#sec-struc-eq-model}
+
+\index{structural equation models|(}
 
 In this section we will focus entirely on survey data use cases, as this is the most common application of structural equation modeling in people analytics. However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications. Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.
 
@@ -264,12 +292,13 @@ It is a common request for an analyst to model a certain outcome using the many 
 
 *Structural equation modeling* is a technique that allows an analyst to hypothesize a smaller set of latent variables or factors that explain the responses to the survey items themselves (the 'measured variables'), and then regresses the outcome of interest against these latent factors. It is a two-part approach, each part being a separate model in and of itself, as follows:
 
-1.  *Measurement model*: This is focused on how well the hypothesized factors explain the responses to the survey items using a technique called factor analysis. In the most common case, where a subject matter expert has pre-organized the items into several groups corresponding to hypothesized latent variables, the process is called *confirmatory factor analysis*, and the objective is to confirm that the groupings represent a high-quality measurement model, adjusting as necessary to refine the model. In the simplest case, items are fitted into separate independent themes with no overlap.
+1.  *Measurement model*: \index{structural equation models!measurement model}This is focused on how well the hypothesized factors explain the responses to the survey items using a technique called \index{structural equation models!factor analysis}factor analysis. In the most common case, where a subject matter expert has pre-organized the items into several groups corresponding to hypothesized latent variables, the process is called *confirmatory factor analysis*, and the objective is to confirm that the groupings represent a high-quality measurement model, adjusting as necessary to refine the model. In the simplest case, items are fitted into separate independent themes with no overlap.
 
-2.  *Structural model*: Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed factors relate to the outcome of interest.
+2.  *Structural model*: \index{structural equation models!structural model}Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed factors relate to the outcome of interest.
 
-As a walkthrough example, we will work with the `politics_survey` data set.
+\index{data sets!politics\_survey@\texttt{politics\_survey}}As a walkthrough example, we will work with the `politics_survey` data set.
 
+\small
 
 ```{r}
 # if needed, get data
@@ -277,6 +306,7 @@ url <- "https://peopleanalytics-regression-book.org/data/politics_survey.csv"
 politics_survey <- read.csv(url)
 ```
 
+\normalsize
 
 This data set represents the results of a survey conducted by a political party on a set of approximately 2100 voters. The results are on a Likert scale of 1 to 4 where 1 indicates strong negative sentiment with a statement and 4 indicates strong positive sentiment. Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:
 
@@ -310,7 +340,7 @@ The outcome of interest here is the `Overall` rating. Our first aim is to confir
 
 ### Running and assessing the measurement model
 
-The proposed measurement model can be seen in @fig-semplot. In this path diagram, we see the eight latent variables or factors (circles) and how they map to the individual measured items (squares) in the survey using single headed arrows. Here we are making a simplifying assumption that each latent variable influences an independent group of survey items. The diagram also notes that the latent variables may be correlated with each other, as indicated by the double-headed arrows at the top. Dashed-line paths indicate that a specific item will be used to scale the variance of the latent factor.
+\index{structural equation models!path diagram}\index{structural equation models!measurement model}The proposed measurement model can be seen in @fig-semplot. In this path diagram, we see the eight latent variables or factors (circles) and how they map to the individual measured items (squares) in the survey using single headed arrows. Here we are making a simplifying assumption that each latent variable influences an independent group of survey items. The diagram also notes that the latent variables may be correlated with each other, as indicated by the double-headed arrows at the top. Dashed-line paths indicate that a specific item will be used to scale the variance of the latent factor.
 
 
 ::: {#fig-semplot}
@@ -339,7 +369,7 @@ semPlot::semPaths(cfa_model, style = "lisrel", residuals = FALSE, nCharNodes = 0
 Simple path diagram showing proposed measurement model for `politics_survey`
 :::
 
-The `lavaan` package in R is a specialized package for running analysis on latent variables. The function `cfa()` can be used to perform a confirmatory factor analysis on a specified measurement model. The measurement model can be specified using an appropriately commented and formatted text string as follows. Note the `=~` notation, and note also that each factor is defined on a new line.
+\index{R!packages!lavaan@\texttt{lavaan}}The `lavaan` package in R is a specialized package for running analysis on latent variables. The function `cfa()` can be used to perform a confirmatory factor analysis on a specified measurement model. The measurement model can be specified using an appropriately commented and formatted text string as follows. Note the `=~` notation, and note also that each factor is defined on a new line.
 
 
 ```{r}
@@ -367,7 +397,7 @@ cfa_meas_mod <- lavaan::cfa(model = meas_mod, data = politics_survey)
 lavaan::summary(cfa_meas_mod, fit.measures = TRUE, standardized = TRUE)
 ```
 
-This is a large set of results, but we can focus in on some important parameters to examine. First, we note that the results did not come attached to a warning. One particular warning to look out for relates to the covariance matrix being non-positive definite. This renders some of the attempted measurement invalid and is usually caused by too small a sample size for the complexity of the measurement model. Since we did not receive this warning, we can proceed safely.
+\index{structural equation models!refining}This is a large set of results, but we can focus in on some important parameters to examine. First, we note that the results did not come attached to a warning. One particular warning to look out for relates to the covariance matrix being non-positive definite. This renders some of the attempted measurement invalid and is usually caused by too small a sample size for the complexity of the measurement model. Since we did not receive this warning, we can proceed safely.
 
 Second, we examine the fit statistics. Numerous statistics are reported[^hierarchical_data-2], but for larger samples such as this data set, the following measures should be examined:
 
@@ -409,7 +439,7 @@ We now see that our measurement model comfortably meets all fit requirements. In
 
 ### Running and interpreting the structural model
 
-With a satisfactory measurement model, the structural model is a simple regression formula. The `sem()` function in `lavaan` can be used to perform a full structural equation model including the measurement model and structural model.  Like for `cfa()`, an extensive output can be expected from this function, but assuming that our measurement model is satisfactory, our key interest is now in the structural model elements of this output.
+\index{structural equation models!structural model}With a satisfactory measurement model, the structural model is a simple regression formula. The `sem()` function in `lavaan` can be used to perform a full structural equation model including the measurement model and structural model.  Like for `cfa()`, an extensive output can be expected from this function, but assuming that our measurement model is satisfactory, our key interest is now in the structural model elements of this output.
 
 ```{r}
 # define full SEM using revised measurement model
@@ -457,7 +487,7 @@ The full structural equation model can be seen in @fig-fullsemplot. This simple 
 
 ### Structural equation models using Python
 
-The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  However, its reporting is not as intuitive compared to `lavaan`.  A full tutorial is available [here](https://semopy.com/tutorial.html).  Here is an example of how to run the same model as that studied in @sec-struc-eq-model using `semopy`.
+\index{structural equation models!using Python}\index{Python!packages!semopy@\texttt{semopy}}The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  However, its reporting is not as intuitive compared to `lavaan`.  A full tutorial is available [here](https://semopy.com/tutorial.html).  Here is an example of how to run the same model as that studied in @sec-struc-eq-model using `semopy`.
 
 
 ```{python}
@@ -467,7 +497,9 @@ from semopy import Model
 
 
 # get data
-url = "https://peopleanalytics-regression-book.org/data/politics_survey.csv"
+url = """
+https://peopleanalytics-regression-book.org/data/politics_survey.csv
+"""
 politics_survey = pd.read_csv(url)
 
 
@@ -501,6 +533,9 @@ Then to inspect the results:
 full_model.inspect().head()
 ```
 
+\index{structural equation models|)}
+\index{latent variable models|see {structural equation models}}
+
 ## Learning exercises
 
 ### Discussion questions
@@ -518,14 +553,14 @@ full_model.inspect().head()
 
 ### Data exercises
 
-For Exercises 1--4, use the `speed_dating` set used earlier in this chapter^[https://peopleanalytics-regression-book.org/data/speed_dating.csv].
+\index{data sets!speed\_dating@\texttt{speed\_dating}}For Exercises 1--4, use the `speed_dating` set used earlier in this chapter^[https://peopleanalytics-regression-book.org/data/speed_dating.csv].
 
 1.  Split the data into two sets according to the gender of the participant. Run standard binomial logistic regression models on each set to determine the relationship between the `dec` decision outcome and the input variables `samerace`, `agediff`, `attr`, `intel` and `prob`.
 2.  Run similar mixed models on these sets with a random intercept for `iid`.
 3.  What different conclusions can you make in comparing the mixed models with the standard models?
 4.  Experiment with some random slope effects to see if they reveal anything new about the input variables.
 
-For exercises 5--10, load the `employee_survey` data set via the `peopleanalyticsdata` package or download it from the internet[^hierarchical_data-3]. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
+\index{data sets!employee\_survey@\texttt{employee\_survey}}For exercises 5--10, load the `employee_survey` data set via the `peopleanalyticsdata` package or download it from the internet[^hierarchical_data-3]. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
 
 [^hierarchical_data-3]: <https://peopleanalytics-regression-book.org/data/employee_survey.csv>
 

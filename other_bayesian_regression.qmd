@@ -467,7 +467,7 @@ loo_compare(loo_poisson, loo_negbin)
 
 Note that zero-inflated versions of both Poisson and negative binomial regression models can also be fit in `brms` by specifying the families as `zero_inflated_poisson()` and `zero_inflated_negbinomial()` respectively.  These models will generate the posterior of an additional zero-inflation parameter `zi`, representing the probability that a zero observation is an "excess zero".
 
-## Bayesian nixed effects models
+## Bayesian mixed effects models
 
 In @sec-hierarchical-data, we learned that mixed effects models (also known as multilevel or hierarchical models) are used when our data has a hierarchical structure, such as students nested within schools or employees nested within departments.  These models allow us to account for the non-independence of observations within groups by including random effects that capture the variability between groups.  In a Bayesian framework, we can fit mixed effects models using the `brms` package by specifying random effects in the model formula using the `(1 | group_variable)` syntax which we learned in @sec-hierarchical-data.  There is no need to specify a different family for mixed effects models in `brms`; we simply include the random effects in the formula and apply the appropriate model family for the outcome variable type. 
 

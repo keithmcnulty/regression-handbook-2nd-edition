@@ -1,5 +1,7 @@
 # Survival Analysis for Modeling Singular Events Over Time {#sec-survival}
 
+\index{survival analysis|(}
+
 In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured.  For example, in @sec-linear-reg-ols input variables were measured in the first three years of an education program and the outcome was measured at the end of the fourth year.  In many situations, the outcome we are interested in is a singular event that can occur at any time following when the input variables were measured, can occur at a different time for different individuals, and once it has occurred it cannot reoccur or repeat.  In medical studies, death can occur or the onset of a disease can be diagnosed at any time during the study period.  In employment contexts, an attrition event can occur at various times throughout the year.  
 
 An obvious and simple way to deal with this would be to simply agree to look at a specific point in time and measure whether or not the event had occurred at that point, for example, 'How many employees had left at the three-year point?'.  Such an approach allows us to use standard generic regression models like those studied in previous chapters.  But this approach has limitations.  
@@ -10,12 +12,16 @@ Secondly, our sample size is constrained by the state of our data at the end of 
 
 *Survival analysis* is a general term for the modeling of a time-associated binary non-repeated outcome, usually involving an understanding of the comparative risk of that outcome between two or more different groups of interest.  There are two common components in an elementary survival analysis, as follows:
 
-* A graphical representation of the future outcome risk of the different groups over time, using *survival curves* based on Kaplan-Meier estimates of survival rate.  This is usually an effective way to establish *prima facie* relevance of a certain input variable to the survival outcome and is a very effective visual way of communicating the relevance of the input variable to non-statisticians.
+* A graphical representation of the future outcome risk of the different groups over time, using *survival curves* based on Kaplan-Meier estimates of survival rate.  This is usually an effective way to establish *prima facie* relevance of a certain input variable to the survival outcome and is a very effective visual way of communicating the relevance of the input variable to non-statisticians. 
 * A *Cox proportional hazard* regression model to establish statistical significance of input variables and to estimate the effect of each input variable on the comparative risk of the outcome throughout the study period.  
+
+\index{Kaplan-Meier estimates}\index{Cox proportional hazard}
 
 Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is @collett. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.  
 
-The `job_retention` data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a one-year period.  At the beginning of the study, the individuals were asked to rate their sentiment towards their job.  These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job.  If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.   
+\index{data sets!job\_retention@\texttt{job\_retention}}The `job_retention` data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a one-year period.  At the beginning of the study, the individuals were asked to rate their sentiment towards their job.  These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job.  If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.   
+
+\small
 
 ```{r}
 # if needed, get job_retention data
@@ -24,6 +30,7 @@ job_retention <- read.csv(url)
 head(job_retention)
 ```
 
+\normalsize
 
 For this walkthrough example, the particular fields we are interested in are:
 
@@ -43,7 +50,7 @@ S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
 $$
 where $l_i$ is the number reported as left in month $i$, and $n_i$ is the number still in substantially the same job after month $i - 1$, with $S_0 = 1$.
 
-The `survival` package in R allows easy construction of survival rates on data in a similar format to that in our `job_retention` data set.  A survival object is created using the `Surv()` function to track the survival rate at each time period.
+\index{R!packages!suvival@\texttt{survival}}The `survival` package in R allows easy construction of survival rates on data in a similar format to that in our `job_retention` data set.  A survival object is created using the `Surv()` function to track the survival rate at each time period.
 
 ```{r}
 library(survival)
@@ -59,7 +66,7 @@ unique(retention)
 
 We can see that our survival object records the month at which the individual had left their job if they are recorded as having done so in the data set.  If not, the object records the last month at which there was a record of the individual, appended with a '+' to indicate that this was the last record available.
 
-The `survfit()` function allows us to calculate *Kaplan-Meier estimates* of survival for different groups in the data so that we can compare them.  We can do this using our usual formula notation but using a survival object as the outcome.  Let's take a look at survival by gender.
+\index{Kaplan-Meier estimates}The `survfit()` function allows us to calculate *Kaplan-Meier estimates* of survival for different groups in the data so that we can compare them.  We can do this using our usual formula notation but using a survival object as the outcome.  Let's take a look at survival by gender.
 
 ```{r}
 # kaplan-meier estimates of survival by gender
@@ -93,7 +100,7 @@ kmestimate_sentimentcat <- survival::survfit(
 summary(kmestimate_sentimentcat)
 ```
 
-We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs.  The `ggsurvplot()` function in the `survminer` package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in @fig-survivalplot.
+\index{R!packages!survminer@\texttt{survminer}}We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs.  The `ggsurvplot()` function in the `survminer` package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in @fig-survivalplot.
 
 ::: {#fig-survivalplot}
 
@@ -122,7 +129,7 @@ This confirms that the survival difference between the two sentiment groups is s
 
 ## Cox proportional hazard regression models  {#sec-coxphmodel}
 
-Let's imagine that we have a survival outcome that we are modeling for a population over a time $t$, and we are interested in how a set of input variables $x_1, x_2, \dots, x_p$ influences that survival outcome.  Given that our survival outcome is a binary variable, we can model survival at any time $t$ as a binary logistic regression.  We define $h(t)$ as the proportion who have not survived at time $t$, called the *hazard function*, and based on our work in @sec-bin-log-reg:
+\index{Cox proportional hazard}Let's imagine that we have a survival outcome that we are modeling for a population over a time $t$, and we are interested in how a set of input variables $x_1, x_2, \dots, x_p$ influences that survival outcome.  Given that our survival outcome is a binary variable, we can model survival at any time $t$ as a binary logistic regression.  We define $h(t)$ as the proportion who have not survived at time $t$, called the *hazard function*, and based on our work in @sec-bin-log-reg:
 
 $$
 h(t) = h_0(t)e^{\beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p}
@@ -169,9 +176,9 @@ Importantly, as well as statistically validating that sentiment has a significan
 
 ### Checking the proportional hazard assumption
 
-Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption.  As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.  
+\index{Cox proportional hazard!proportional hazard assumption}Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption.  As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.  
 
-The most popular test of this assumption uses a residual known as a *Schoenfeld residual*, which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
+\index{Schoenfeld residual}The most popular test of this assumption uses a residual known as a *Schoenfeld residual*, which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
 
 ```{r}
 (ph_check <- survival::cox.zph(cox_model))
@@ -196,14 +203,15 @@ Schoenfeld test on proportional hazard assumption for `cox_model`
 
 ## Frailty models
 
-We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard.  It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition.  This is analogous to a mixed model which we looked at in @sec-mixed.
+\index{frailty models}We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard.  It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition.  This is analogous to a mixed model which we looked at in @sec-mixed.
 
 In this case we would apply a random intercept effect to the base hazard function $h_0(t)$ according to the field of employment of an individual, in order to take this into account in our modeling.  This kind of model is called a *frailty model*, taken from the clinical context, where different groups of patients may have different frailties (background risks of death).
 
-There are many variants of how frailty models are run in the clinical context (see @collett for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data.  This is called a *shared frailty model*.   The `frailtypack` R package allows various frailty models to be run with relative ease.  This is how we would run a shared frailty model on our `job_retention` data to take account of the different background attrition risk for the different fields of employment.
+There are many variants of how frailty models are run in the clinical context (see @collett for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data.  This is called a *shared frailty model*.   \index{R!packages!frailtypack@\texttt{frailtypack}}The `frailtypack` R package allows various frailty models to be run with relative ease.  This is how we would run a shared frailty model on our `job_retention` data to take account of the different background attrition risk for the different fields of employment.
 
 
 ```{r}
+#| eval: false
 library(frailtypack)
 
 (frailty_model <- frailtypack::frailtyPenal(
@@ -214,6 +222,23 @@ library(frailtypack)
   kappa = 10000
 ))
 ```
+
+\footnotesize
+
+```{r}
+#| echo: false
+library(frailtypack)
+
+(frailty_model <- frailtypack::frailtyPenal(
+  formula = Surv(event = left, time = month) ~ gender + 
+    level + sentiment + cluster(field),
+  data = job_retention,
+  n.knots = 12, 
+  kappa = 10000
+))
+```
+
+\normalsize
 
 
 We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect.  We also see that the level of employment now becomes more significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.
@@ -249,13 +274,11 @@ Baseline retention curves for the two sentiment categories in the `job_retention
 
 ## Survival analysis using Python
 
-The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).  
+\index{survival analysis!using Python}\index{Python!packages!lifelines@\texttt{lifelines}}The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).  
 
 Here is an example of how to plot Kaplan-Meier survival curves in Python using this chapter's walkthrough example. The survival curves are displayed in @fig-survival-python.
 
-::: {#fig-survival-python}
 ```{python}
-#| label: surv-py-1
 #| results: false
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -263,7 +286,9 @@ from lifelines import KaplanMeierFitter
 
 
 # get data
-url = "https://peopleanalytics-regression-book.org/data/job_retention.csv"
+url = """
+https://peopleanalytics-regression-book.org/data/job_retention.csv
+"""
 job_retention = pd.read_csv(url)
 
 # fit our data to Kaplan-Meier estimates
@@ -274,7 +299,11 @@ kmf.fit(T, event_observed = E)
 
 # split into high and not high sentiment
 highsent = (job_retention["sentiment"] >= 7)
+```
 
+::: {#fig-survival-python}
+```{python}
+#| results: false
 # set up plot
 survplot = plt.subplot()
 
@@ -282,9 +311,11 @@ survplot = plt.subplot()
 kmf.fit(T[highsent], event_observed = E[highsent],
 label = "High Sentiment")
 kmf.plot_survival_function()
+
 # plot not high sentiment survival function
 kmf.fit(T[~highsent], event_observed = E[~highsent],
 label = "Not High Sentiment")
+
 # render plot
 kmf.plot_survival_function()
 ```
@@ -292,58 +323,6 @@ kmf.plot_survival_function()
 Survival curves by sentiment category in the `job_retention` data
 :::
 
-
-```{python}
-#| eval: false
-#| fig.align: "center"
-#| echo: false
-import pandas as pd
-import matplotlib.pyplot as plt
-from lifelines import KaplanMeierFitter
-# matplotlib.rcParams['pdf.fonttype'] = 42
-# matplotlib.rcParams['ps.fonttype'] = 42
-# matplotlib.rcParams['text.usetex'] = True
-# matplotlib.rcParams.update(matplotlib.rcParamsDefault)
-
-plt.cla()
-
-# get data
-url = "https://peopleanalytics-regression-book.org/data/job_retention.csv"
-job_retention = pd.read_csv(url)
-
-# fit our data to Kaplan-Meier estimates
-T = job_retention["month"]
-E = job_retention["left"]
-kmf = KaplanMeierFitter()
-kmf.fit(T, event_observed = E)
-
-# split into high and not high sentiment
-highsent = (job_retention["sentiment"] >= 7)
-
-# set up plot
-survplot = plt.subplot()
-
-# plot high sentiment survival function
-kmf.fit(T[highsent], event_observed = E[highsent], 
-label = "High Sentiment")
-
-kmf.plot_survival_function(ax = survplot)
-
-# plot not high sentiment survival function
-kmf.fit(T[~highsent], event_observed = E[~highsent], 
-label = "Not High Sentiment")
-
-kmf.plot_survival_function(ax = survplot)
-
-# show survival curves by sentiment category
-plt.savefig("www/10/survival-python-1.png")
-```
-
-```{r}
-#| eval: false
-#| echo: false
-knitr::include_graphics("www/10/survival-python-1.png")
-```
 
 And here is an example of how to fit a Cox Proportional Hazard model similarly to @sec-coxphmodel^[I am not aware of any way of running frailty models currently in Python.].
 
@@ -359,20 +338,23 @@ cph.fit(job_retention, duration_col = 'month', event_col = 'left',
 ```
 
 ```{python}
-#| label: surv-py-3
+#| eval: false
 # view results
-cph.print_summary()
+print(cph.summary)
+```
+\footnotesize
+
+```{python}
+#| echo: false
+# view results
+print(cph.summary)
 ```
 
+\normalsize
 
 Proportional Hazard assumptions can be checked using the `check_assumptions()` method^[Schoenfeld residual plots can be seen by setting `show_plots = True` in the parameters.].
 
-```{python}
-#| label: surv-py-4
-cph.check_assumptions(job_retention, p_value_threshold = 0.05)
-```
-
-
+\index{survival analysis|)}
 
 ## Learning exercises
 
@@ -387,7 +369,7 @@ cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 
 ### Data exercises
 
-For these exercises, use the same `job_retention` data set as in the walkthrough example for this chapter, which can be loaded via the `peopleanalyticsdata` package or downloaded from the internet^[https://peopleanalytics-regression-book.org/data/job_retention.csv].  The `intention` field represents a score of 1 to 10 on the individual's intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention.  This response was recorded at the beginning of the study period.
+\index{data sets!job\_retention@\texttt{job\_retention}}For these exercises, use the same `job_retention` data set as in the walkthrough example for this chapter, which can be loaded via the `peopleanalyticsdata` package or downloaded from the internet^[https://peopleanalytics-regression-book.org/data/job_retention.csv].  The `intention` field represents a score of 1 to 10 on the individual's intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention.  This response was recorded at the beginning of the study period.
 
 1.  Create three categories of `intention` as follows:  High (score of 7 or higher), Moderate (score of 4--6), Low (score of 3 or less)
 2.  Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.
