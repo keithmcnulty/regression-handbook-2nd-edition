@@ -35,5 +35,5 @@ Rplot*
 **/*.quarto_ipynb
 /models/
 Handbook-of-Regression-Modeling-in-People-Analytics.*
-*_files/
+/*_files/
 *-latex.yml
