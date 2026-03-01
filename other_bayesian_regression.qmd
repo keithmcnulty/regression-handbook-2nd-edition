@@ -51,6 +51,8 @@ Before we proceed, let's review a few technical tips to help ensure good perform
 
 * Your choice of backend for `brms` can have a significant impact on model fitting time.  The backend is the R package which 'translates' your specified model into instructions that `stan` will undersand.  The default backend is `rstan`, which is generally reliable for most models but not very fast.  Using the `cmdstanr` backend can lead to faster fitting times.  To use `cmdstanr`, you will need to install the `cmdstanr` package and set it up according to the instructions in the package documentation.  Once set up, you can specify the backend in `brms` using the `backend = "cmdstanr"` argument in the `brm()` function or by setting the option `options(brms.backend = "cmdstanr")` before fitting your model.
 
+\index{R!packages!cmdstanr@\texttt{cmdstanr}}
+
 In preparation for fitting a variety of models in this chapter, we will set some default options for `brms` to save having to specify these in every model run.
 
 ```{r}
@@ -66,6 +68,8 @@ options(
 ```
 
 ## Bayesian binomial logistic regression {#sec-bayes-bin-log-reg}
+
+\index{binomial logistic regression!Bayesian|(}
 
 As we saw in @sec-bin-log-reg, binomial logistic regression is used when each observation of our outcome is a Bernoulli random variable that can take a value of 1 (e.g., 'success') with probability $p_i$ and a value of 0 (e.g., 'failure') with probability $1-p_i$.  That is 
 
@@ -83,7 +87,9 @@ This means that our slope coefficients must be interpreted in terms of changes i
 
 In a Bayesian framework, we can fit a binomial logistic regression model using the `brms` package in a similar way to how we fit a linear regression model. The syntax is similar to that of frequentist logistic regression, but we specify the family as `bernoulli()` to explicitly indicate that each observation of our outcome is a Bernoulli random variable.
 
-To illustrate, let's use a random sample from our `salespeople` dataset from @sec-bin-log-reg. 
+\index{data sets!salespeople@\texttt{salespeople}}To illustrate, let's use a random sample from our `salespeople` dataset from @sec-bin-log-reg. 
+
+\small
 
 ```{r}
 # load the salespeople dataset
@@ -98,7 +104,9 @@ set.seed(123)
 salespeople_bayes <- salespeople[sample(nrow(salespeople), 100), ]
 ```
 
-We are interested in how the sales, customer ratings and performance ratings of our 100 sales people affect their likelihood of promotion.   We will fit a Bayesian binomial logistic regression model to this subset of data using the default flat priors.
+\normalsize
+
+We are interested in how the sales, customer ratings and performance ratings of our 100 salespeople affect their likelihood of promotion.   We will fit a Bayesian binomial logistic regression model to this subset of data using the default flat priors.
 
 ```{r}
 #| label: bayes-binomial-logistic
@@ -109,7 +117,7 @@ library(brms)
 uninf_binomial_model <- brm(
   formula = promoted ~ sales + customer_rate + performance,
   data = salespeople_bayes,
-  family = bernoulli() # for binary outcome variable (logistic function is default link)
+  family = bernoulli() # for binary outcome variable
 )
 ```
 
@@ -153,7 +161,7 @@ mcmc_areas(
 
 ```
 
-Posterior distribution of the odds ratio for the `sales` coefficient in the Bayesian Binomial Logistic Regression model.
+Posterior distribution of the odds ratio for the `sales` coefficient in the Bayesian binomial logistic regression model.
 :::
 
 Posterior predictive checks on a Bernoulli distributed outcome are not particularly intuitive unless converted into a summary statistic, such as the mean value (which is the proportion of successes).  We can do this using the `pp_check()` function, but specifying the `stat` argument to indicate that we want to compare the mean in the observed data to that in the posterior predictive simulations.   As can be seen in @fig-binom-ppc, the model appears to fit the data reasonably well.
@@ -161,11 +169,12 @@ Posterior predictive checks on a Bernoulli distributed outcome are not particula
 :::{#fig-binom-ppc}
 
 ```{r}
-pp_check(uninf_binomial_model, type = "stat", ndraws = 1000, binwidth = 0.01) +
+pp_check(uninf_binomial_model, type = "stat", 
+         ndraws = 1000, binwidth = 0.01) +
   theme_minimal()
 ```
 
-Posterior predictive check comparing the proportion of successes in the observed data (black line) to that in the posterior predictive simulations for the Bayesian Binomial Logistic Regression model (histogram).
+Posterior predictive check comparing the proportion of successes in the observed data (black line) to that in the posterior predictive simulations for the Bayesian binomial logistic regression model (histogram).
 :::
 
 For a new data point, we can obtain the posterior predictive probability of success using the `posterior_predict()` function, which runs draws of our posterior parameters and predicts a success or failure for each draw based on our new data.  For example, for a sales person with $575k in sales, an average customer rating of 3.9 and a performance rating of 3, we can determine the posterior predictive probability of promotion as follows:
@@ -173,19 +182,27 @@ For a new data point, we can obtain the posterior predictive probability of succ
 
 ```{r}
 # determine posterior binary predictions new data point
-new_data <- data.frame(sales = 575, customer_rate = 3.9, performance = 3)
-posterior_preds <- posterior_predict(uninf_binomial_model, newdata = new_data, 
-                                     ndraws = 10000, seed = 123)
+new_data <- data.frame(
+  sales = 575, customer_rate = 3.9, performance = 3
+)
+posterior_preds <- posterior_predict(
+  uninf_binomial_model, newdata = new_data, 
+  ndraws = 10000, seed = 123
+)
 
 # Convert to probability by taking mean
 mean(posterior_preds)
 ```
 
+\index{binomial logistic regression!Bayesian|)}
+
 ## Bayesian multinomial logistic regression
 
-In @sec-multinom, we learned that multinomial logistic regression is used when the outcome variable is categorical with more than two categories that do not have a natural ordering.  In this case, we model the log-odds of each category relative to a reference category as a linear function of our input variables.  In a Bayesian framework, we can fit a multinomial logistic regression model using the `brms` package by specifying the family as `categorical()`. As usual we will take a sample from our `health_insurance` dataset from @sec-multinom to illustrate.
+\index{multinomial logistic regression!Bayesian|(}
 
+\index{data sets!health\_insurance@\texttt{health\_insurance}}In @sec-multinom, we learned that multinomial logistic regression is used when the outcome variable is categorical with more than two categories that do not have a natural ordering.  In this case, we model the log-odds of membership of each category relative to a reference category as a linear function of our input variables.  In a Bayesian framework, we can fit a multinomial logistic regression model using the `brms` package by specifying the family as `categorical()`. As usual, we will take a sample from our `health_insurance` dataset from @sec-multinom to illustrate.
 
+\small
 ```{r}
 #| label: bayes-multinomial-logistic
 #| eval: false
@@ -195,7 +212,9 @@ health_insurance <- read.csv(url)
 
 # take a sample of 100 observations
 set.seed(123)
-health_insurance_bayes <- health_insurance[sample(nrow(health_insurance), 100), ]
+health_insurance_bayes <- health_insurance[
+  sample(nrow(health_insurance), 100), 
+]
 
 # fit Bayesian Multinomial Logistic Regression model with flat priors
 uninf_multinom_model <- brm(
@@ -218,11 +237,22 @@ health_insurance_bayes <- health_insurance[sample(nrow(health_insurance), 100), 
 uninf_multinom_model <- readRDS("models/other/uninf_multinom_model.RDS")
 ```
 
+\normalsize
+
 Now we can view our summary.
 
 ```{r}
+#| eval: false
 summary(uninf_multinom_model)
 ```
+
+\footnotesize
+```{r}
+#| echo: false
+summary(uninf_multinom_model)
+```
+
+\normalsize
 
 Here we can see two sets of posterior coefficient distributions, one giving the log odds of a choice of product B over product A (beginning `muB`), and the other giving the log odds of a choice of product C over product A (beginning `muC`).  As before, we can exponentiate these coefficients to obtain odds ratios.
 
@@ -235,7 +265,8 @@ Our posterior predictions will be in the form of integers representing the three
 y_observed <- as.numeric(as.factor(health_insurance_bayes$product))
 
 # get 1000 posterior predictions
-y_sim <- posterior_predict(uninf_multinom_model, ndraws = 1000, seed = 123)
+y_sim <- posterior_predict(uninf_multinom_model, 
+                           ndraws = 1000, seed = 123)
 
 # posterior predictive check showing proportions for each product
 ppc_bars(y_observed, y_sim) +
@@ -243,7 +274,7 @@ ppc_bars(y_observed, y_sim) +
   theme_minimal()
 ```
 
-Posterior predictive check comparing the proportions of each product choice in the observed data (light blue bars) to those in the posterior predictions (dark lines) for the Bayesian Multinomial Logistic Regression model.
+Posterior predictive check comparing the proportions of each product choice in the observed data (light blue bars) to those in the posterior predictions (dark lines) for the Bayesian multinomial logistic regression model.
 :::
 
 We see that the model fits the data very well, with the median predictions closely matching the observed data.
@@ -261,8 +292,10 @@ new_data <- data.frame(
 )
 
 # posterior predictions for new data point
-posterior_preds <- posterior_predict(uninf_multinom_model, newdata = new_data, 
-                                     ndraws = 10000, seed = 123) |> 
+posterior_preds <- posterior_predict(
+  uninf_multinom_model, newdata = new_data, 
+  ndraws = 10000, seed = 123
+) |> 
   factor(labels = c("A", "B", "C"))
 
 # convert to probabilities of each product choice
@@ -270,29 +303,43 @@ posterior_preds <- posterior_predict(uninf_multinom_model, newdata = new_data,
 
 ```
 
-Since this model sees our first appearance of categorical input variables in the Bayesian modeling framework, it is worth making a note that `brms` will automatically create dummies for these variables, just as we saw in the `lm()` and `glm()` functions for frequentist regression models. If we wish to set an informed prior for the coefficient of a specific categorical input variable, we will need to specify the dummy variable associated with our prior.  To determine the correct way to specify the prior, we can first look at all our priors in the model:
+\index{input variables!categorical!setting priors}Since this model sees our first appearance of categorical input variables in the Bayesian modeling framework, it is worth making a note that `brms` will automatically create dummies for these variables, just as we saw in the `lm()` and `glm()` functions for frequentist regression models. If we wish to set an informed prior for the coefficient of a specific categorical input variable, we will need to specify the dummy variable associated with our prior.  To determine the correct way to specify the prior, we can first look at all our priors in the model:
 
 ```{r}
+#| eval: false
 get_prior(uninf_multinom_model)
+```
+
+```{r}
+#| echo: false
+get_prior(uninf_multinom_model)[c("prior", "class", "coef", "dpar", "source")]
 ```
 
 We can use this syntax to specify our informed prior.  As an example, if we had information that being male is associated with a 20% increase in the odds of choosing product B over product A, we would set a prior for the `b` coefficient of `genderMale` in the `muB` set of parameters.  We would specify the mean on the log-odds scale as `log(1.2)`, and we might set a standard deviation of `log(0.1)` to reflect a strong belief about this effect.  This prior would be specified as follows:
 
 
 ```{r}
-# set a prior for the effect of being male on the log-odds of choosing product B over product A
+# set a prior for the effect of being male on the 
+# log-odds of choosing product B over product A
 priors <- c(
-  prior(normal(log(1.2), log(0.1)), class = "b", coef = "genderMale", dpar = "muB")
+  prior(
+    normal(log(1.2), log(0.1)), class = "b", 
+    coef = "genderMale", dpar = "muB"
+  )
 )
 ```
 
 We could then refit the model with this prior specified using the `prior` argument in the `brm()` function.
 
+\index{multinomial logistic regression!Bayesian|)}
+
 ### Bayesian ordinal logistic regression
+
+\index{ordinal logistic regression!Bayesian|(}
 
 In @sec-ord-reg, we learned that ordinal logistic regression is used when the outcome variable is categorical with more than two categories that have a natural ordering.  In this case, we model the log-odds of being in a category less than or equal to a certain level as a linear function of our input variables.  In particular, we focused on the proportional odds model, which assumes that the effect of each input variable is the same across all thresholds of the outcome variable, allowing us to have a single coefficient for each input variable to indicate the strength of effect on the log-odds of being in a higher category in general.  We also learned that it is essential to check the proportional odds assumption when fitting a proportional odds logistic regression model, as violation of this assumption can lead to false inferences from the model.
 
-In a Bayesian framework, we can fit a proportional odds logistic regression model using the `brms` package by specifying the family as `cumulative()`, representing a cumulative logistic model. As usual we will take a sample from our `soccer` dataset from @sec-ord-reg to illustrate.  We are aiming to estimate the effect of numerous factors on the discliplinary record of a player in a game - a three level ordinal outcome:  "None" for no discipline, "Yellow" for a formal warning and "Red" for a sending-off.  As with the `polr()` function for the frequentist proportional odds logistic regression model, `brms` will expect us to ensure our outcome variable is an ordinal factor.
+\index{data sets!soccer@\texttt{soccer}}In a Bayesian framework, we can fit a proportional odds logistic regression model using the `brms` package by specifying the family as `cumulative()`, representing a cumulative logistic model. As usual we will take a sample from our `soccer` dataset from @sec-ord-reg to illustrate.  We are aiming to estimate the effect of numerous factors on the discliplinary record of a player in a game - a three level ordinal outcome:  "None" for no discipline, "Yellow" for a formal warning and "Red" for a sending-off.  As with the `polr()` function for the frequentist proportional odds logistic regression model, `brms` will expect us to ensure our outcome variable is an ordinal factor.
 
 
 ```{r}
@@ -312,7 +359,7 @@ soccer_bayes$discipline <- ordered(
   levels = c("None", "Yellow", "Red")
 )
 
-# fit Bayesian proportional odds logistic regression model with flat priors
+# fit proportional odds logistic regression model with flat priors
 uninf_polr_model <- brm(
   formula = discipline ~ .,
   data = soccer_bayes,
@@ -340,7 +387,7 @@ In a Bayesian regression framework, an effective way to test the proportional od
 ```{r}
 #| label: bayes-adjacent-category-logistic
 #| eval: false
-# fit Bayesian adjacent category logistic regression model with flat priors
+# fit adjacent category logistic regression model with flat priors
 uninf_acat_model <- brm(
   formula = discipline ~ .,
   data = soccer_bayes,
@@ -365,12 +412,17 @@ loo_compare(loo_polr, loo_acat)
 
 The LOO comparison suggests that there is no meaningful difference between the models, so we can be reasonably confident that the proportional odds assumption holds in this case.
 
+\index{ordinal logistic regression!Bayesian|)}
 
 ## Bayesian Poisson and negative binomial regression
 
+\index{Poisson regression!Bayesian|(}
+
 In @sec-count-reg, we learned that Poisson regression is used when the outcome variable is a count of events that occur in a fixed period of time or space.  We model the log of the expected count as a linear function of our input variables, to ensure that the count outcomes are always non-negative.  This means that when we exponentiate the coefficients of our model, we see that the effects of the input variables are multiplicative on the count outcome.  We also learned that Poisson regression assumes that the mean and variance of the outcome variable are equal, which may not hold in practice.  When the variance exceeds the mean, we have overdispersion, which can lead to underestimated standard errors and misleading inferences from the model.  In such cases, negative binomial regression can be used as an alternative, as it includes an additional shape parameter $\theta$ to account for overdispersion.
 
-In a Bayesian framework, we can fit a Poisson regression model using the `brms` package by specifying the family as `poisson()`. As usual we will take a sample from our `absenteeism` dataset from @sec-count-reg to illustrate.
+\index{data sets!absenteeism@\texttt{absenteeism}}In a Bayesian framework, we can fit a Poisson regression model using the `brms` package by specifying the family as `poisson()`. As usual we will take a sample from our `absenteeism` dataset from @sec-count-reg to illustrate.
+
+\small
 
 ```{r}
 #| label: bayes-poisson
@@ -397,11 +449,21 @@ uninf_poisson_model <- brm(
 uninf_poisson_model <- readRDS("models/other/uninf_poisson_model.RDS")
 ```
 
+\normalsize
+
 We can now inspect the model summary.
 
 ```{r}
+#| eval: false
 summary(uninf_poisson_model)
 ```
+
+\small
+```{r}
+#| echo: false
+summary(uninf_poisson_model)
+```
+\normalsize
 
 Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log of the expected count of days absent.  By exponentiating these coefficient distributions, we can interpret them as multiplicative effects on the expected count.
 
@@ -416,6 +478,10 @@ pp_check(uninf_poisson_model, ndraws = 1000) +
 Posterior predictive check for the Bayesian Poisson regression model.
 :::
 
+\index{Poisson regression!Bayesian|)}
+
+\index{negative binomial regression!Bayesian|(}
+
 We can see some issues with our predictive fit.  This suggests that we may have overdispersion in our data.  We can address this by fitting a negative binomial regression model instead, which we can do in `brms` by specifying the family as `negbinomial()`.
 
 
@@ -426,7 +492,7 @@ We can see some issues with our predictive fit.  This suggests that we may have 
 uninf_negbin_model <- brm(
   formula = days_absent ~ tenure + is_manager + performance_rating,
   data = absenteeism_bayes,
-  family = negbinomial() # for count outcome variable with overdispersion
+  family = negbinomial() # for count outcome with overdispersion
 )
 ```
 
@@ -439,8 +505,17 @@ uninf_negbin_model <- readRDS("models/other/uninf_negbin_model.RDS")
 We can now inspect the model summary.
 
 ```{r}
+#| eval: false
 summary(uninf_negbin_model)
 ```
+
+\small
+```{r}
+#| echo: false
+summary(uninf_negbin_model)
+```
+
+\normalsize
 
 We can see that our estimated errors have increased, leading to more conservative inferences, and we see a posterior distribution for the shape parameter $\theta$, with the low values indicating substantial overdispersion.  We can do another posterior predictive check to verify if the model fits the data better as in @fig-negbin-pp.
 
@@ -465,14 +540,19 @@ loo_negbin <- loo(uninf_negbin_model, seed = 123)
 loo_compare(loo_poisson, loo_negbin)
 ```
 
-Note that zero-inflated versions of both Poisson and negative binomial regression models can also be fit in `brms` by specifying the families as `zero_inflated_poisson()` and `zero_inflated_negbinomial()` respectively.  These models will generate the posterior of an additional zero-inflation parameter `zi`, representing the probability that a zero observation is an "excess zero".
+Note that zero-inflated versions of both Poisson and negative binomial regression models can also be fit in `brms` by specifying the families as `zero_inflated_poisson()` and `zero_inflated_negbinomial()` respectively.  These models will generate the posterior of an additional zero-inflation parameter `zi`, representing the probability that a zero observation is an excess (structural) zero.
+
+\index{negative binomial regression!Bayesian|)}
 
 ## Bayesian mixed effects models
 
+\index{mixed models!Bayesian|(}
+
 In @sec-hierarchical-data, we learned that mixed effects models (also known as multilevel or hierarchical models) are used when our data has a hierarchical structure, such as students nested within schools or employees nested within departments.  These models allow us to account for the non-independence of observations within groups by including random effects that capture the variability between groups.  In a Bayesian framework, we can fit mixed effects models using the `brms` package by specifying random effects in the model formula using the `(1 | group_variable)` syntax which we learned in @sec-hierarchical-data.  There is no need to specify a different family for mixed effects models in `brms`; we simply include the random effects in the formula and apply the appropriate model family for the outcome variable type. 
 
-To illustrate, let's use a random sample from our `speed_dating` dataset from @sec-hierarchical-data and run a Bayesian binomial mixed effects model to understand how the various factors considered by individuals over multiple speed dates relate to the overall binary decision they made about their dates.
+\index{data sets!speed\_dating@\texttt{speed\_dating}}To illustrate, let's use a random sample from our `speed_dating` dataset from @sec-hierarchical-data and run a Bayesian binomial mixed effects model to understand how the various factors considered by individuals over multiple speed dates relate to the overall binary decision they made about their dates.
 
+\small
 
 ```{r}
 #| label: bayes-mixed-binomial
@@ -503,6 +583,8 @@ uninf_mixed_binomial_model <- brm(
 uninf_mixed_binomial_model <- readRDS("models/other/uninf_mixed_binomial_model.RDS")
 ```
 
+\normalsize
+
 Now we can view our summary.
 
 ```{r}
@@ -511,11 +593,17 @@ summary(uninf_mixed_binomial_model)
 
 Here we can see the posterior coefficient distributions for each fixed effect, representing the effect of a unit change in that variable on the log-odds of a positive decision about a date.  We can also see the estimated standard deviation of the random intercepts for each individual under the `Multilevel Hyperparameters`, which captures the variability in baseline log-odds of a positive decision across individuals. A posterior predictive check can be done in the same way as for a standard Bayesian binomial logistic regression model.
 
+\index{mixed models!Bayesian|)}
+
 ## Bayesian Cox proportional hazards models
+
+\index{Cox proportional hazard!Bayesian|(}
 
 In @sec-survival, we learned that Cox proportional hazards models are used in survival analysis to model an event that occurs over time, such as employee turnover or customer churn.  These models estimate the hazard function, which represents the instantaneous risk of the event occurring at a given time, conditional on survival up to that time.  The Cox model assumes that the hazard ratios between individuals are proportional over time, allowing us to estimate the effect of input variables on the hazard function without specifying the baseline hazard function.
 
-In a Bayesian framework, we can fit Cox proportional hazards models using the `brms` package by specifying the family as `cox()`.  If your data contains censored observations, the model formula should take the general form `time | cens(1 - event) ~ x1 + x2 + ...`, where `time` is the variable indicating the time of the observation and `event` is the binary variable indicating if the event had occurred.  As usual we will take a sample from our `job_retention` dataset from @sec-survival to illustrate.  
+\index{data sets!job\_retention@\texttt{job\_retention}}In a Bayesian framework, we can fit Cox proportional hazards models using the `brms` package by specifying the family as `cox()`.  If your data contains censored observations, the model formula should take the general form `time | cens(1 - event) ~ x1 + x2 + ...`, where `time` is the variable indicating the time of the observation and `event` is the binary variable indicating if the event had occurred.  As usual we will take a sample from our `job_retention` dataset from @sec-survival to illustrate.  
+
+\small
 
 ```{r}
 #| label: bayes-cox-ph
@@ -543,15 +631,29 @@ uninf_cox_model <- brm(
 uninf_cox_model <- readRDS("models/other/uninf_cox_model.RDS")
 ```
 
+\normalsize
+
 We can now view the model summary.
 
 ```{r}
+#| eval: false
 summary(uninf_cox_model)
 ```
 
-Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of employee attrition, assuming no change in the other input variables.  By exponentiating these coefficient distributions, we can interpret them as adds ratios describing the multiple on the attrition hazard associated with a unit change in the input variable assuming no change in the other input variables.  
+\footnotesize
+
+```{r}
+#| echo: false
+summary(uninf_cox_model)
+```
+
+\normalsize
+
+Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of instantaneous employee attrition, assuming no change in the other input variables.  By exponentiating these coefficient distributions, we can interpret them as odds ratios describing the multiple on the attrition hazard associated with a unit change in the input variable assuming no change in the other input variables.  
 
 Note that it is not currently possible to do posterior predictive checks for Cox proportional hazards models in `brms`, due to the complexity of the survival outcome and censoring mechanism.  However, we can assess the fit of the model using other methods, such as examining the estimated survival curves for different groups or using LOO-CV to estimate the expected log predictive density (ELPD).
+
+\index{Cox proportional hazard!Bayesian|)}
 
 ## Fitting other regression models using Python
 
@@ -566,7 +668,7 @@ To fit similar models using Python, we can use `bambi` for model specification a
 | Poisson Regression                  | `poisson`                    |
 | Negative Binomial Regression        | `negativebinomial`           |
 
-As an example, to fit our Bayesian binomial logistic regression model from @sec-bayes-bin-log-reg in this chapter using `bambi` in Python, first we specify and build the model.
+\index{binomial logistic regression!Bayesian!using Python}\index{data sets!salespeople@\texttt{salespeople}}As an example, to fit our Bayesian binomial logistic regression model from @sec-bayes-bin-log-reg in this chapter using `bambi` in Python, first we specify and build the model.
 
 ```{python}
 #| label: py-bayes-binomial-logistic
@@ -576,7 +678,9 @@ import bambi as bmb
 import arviz as az
 
 # load the salespeople dataset
-url = "https://peopleanalytics-regression-book.org/data/salespeople.csv"
+url = """
+https://peopleanalytics-regression-book.org/data/salespeople.csv
+"""
 salespeople = pd.read_csv(url)
 
 # remove rows with NAs
@@ -603,7 +707,9 @@ If we are comfortable with our priors, we proceed to fit the model:
 #| label: py-bayes-binomial-logistic-fit
 #| eval: false
 # fit the model
-fitted = uninf_binomial_model.fit(draws=10000, chains=4, random_seed=123)
+fitted = uninf_binomial_model.fit(
+  draws=10000, chains=4, random_seed=123
+)
 ```
 
 ```{python}
@@ -636,11 +742,19 @@ Posterior distributions of the coefficients for the Bayesian binomial logistic r
 
 And the posterior predictive check can be performed as in @fig-py-bayes-bin-ppc.
 
+```{python}
+#| eval: false
+# perform posterior predictive check
+uninf_binomial_model.predict(fitted, kind="response", random_seed=123)
+az.plot_ppc(fitted, num_pp_samples=1000, random_seed=123)
+```
+
 ::: {#fig-py-bayes-bin-ppc}
 
 ```{python}
 #| label: py-bayes-bin-ppc
 #| results: 'hide'
+#| echo: false
 # perform posterior predictive check
 uninf_binomial_model.predict(fitted, kind="response", random_seed=123)
 az.plot_ppc(fitted, num_pp_samples=1000, random_seed=123)
@@ -655,19 +769,12 @@ Posterior predictive check comparing the proportion of successes in the observed
 ### Discussion questions
 
 1. What is the correct family to specify in `brms` for fitting a Bayesian binomial logistic regression model with a binary outcome variable?
-
 2. What statistic is most appropriate for a posterior predictive check for a Bayesian binomial logistic regression model?
-
 3. What is the most appropriate way to do a posterior predictive check for a Bayesian multinomial logistic regression model?
-
 4. What is the correct family to specify for fitting a Bayesian proportional odds logistic regression model in `brms`?
-
 5. How can we test the proportional odds assumption for a Bayesian proportional odds logistic regression model using `brms`?
-
 6. Describe some ways of diagnosing overdispersion when fitting a Bayesian Poisson regression model.
-
 7. Describe how to set informed priors for categorical input variables in a Bayesian regression model in `brms`.
-
 8. If you are modeling a censored survival outcome using a Bayesian Cox proportional hazards model in `brms`, how would you write the outcome variable in your model formula?
 
 ### Data exercises
@@ -675,23 +782,14 @@ Posterior predictive check comparing the proportion of successes in the observed
 For each of the earlier (frequentist) chapters on the methods outlined in this chapter, use the problem and dataset provided in the exercises at the end of each chapter.  
 
 1.  Generate two smaller versions of the dataset by taking random samples of the rows - aim for around 10-20% of the original observations in each dataset. Don't forget to remove your first sample before taking the second sample.
-
-2. Fit a Bayesian version of the appropriate regression model using the first dataset and flat priors.  
-
+2. Fit a Bayesian version of the appropriate regression model using the first dataset and flat priors.
 3. Visualize and examine the posterior distributions of the coefficients and interpret them in the context of the problem.
-
 4. For each model, conduct appropriate posterior predictive checks to assess the fit of the model to the data.  Comment on the results.  Are you comfortable that the model is a good fit?
-
 5.  If you are concerned about the fit, experiment with alternative model specifications to improve the fit.  Justify your choices and comment on the results.
-
 6.  Ensure you check any underlying assumptions of your model type (eg proportional odds for ordinal logistic regression, equidispersion for Poisson regression) and take appropriate action if any assumptions are violated.
-
 7.  Experiment with setting informed priors for one or two coefficients.  Refit the model with these priors and compare the results to the model with flat priors.
-
 8.  Experiment with generating posterior predictions for new data points.  Comment on the results.
-
 9.  Using the approach described in @sec-bayes-reg-updating, update your model with the second dataset.
-
 10.  Examine the updated posteriors and perform an updated posterior predictive check to assess the fit of the updated model to the new data.  Comment on the results.
 
 
