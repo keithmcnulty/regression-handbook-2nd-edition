@@ -599,7 +599,8 @@ Figure&nbsp;15.1: DAG representing the assumed causal relationships between moti
 </section>
 <section id="dag-paths-and-the-three-fundamental-structures" class="level3" data-number="15.3.2">
 <h3 data-number="15.3.2" class="anchored" data-anchor-id="dag-paths-and-the-three-fundamental-structures"><span class="header-section-number">15.3.2</span> DAG paths and the three fundamental structures</h3>
-<p>The reason DAGs are so useful is that they provide rules for how statistical associations flow between variables. An association between two variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> exists if there is an open (or unblocked) path between them in the DAG. A direct causal effect is one source of association, but there are others. By understanding the three fundamental structures that can exist between variables in a DAG, we can create a system through which we can identify open non-causal paths. Each of these structures relate to the “boobytraps” we discussed earlier: mediation, confounding and selection bias. They can be seen in <a href="#fig-dagstructures" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>.</p>
+<p>The reason DAGs are so useful is that they provide rules for how statistical associations flow between variables. An association between two variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> exists if there is an open (or unblocked) path between them in the DAG. A direct causal effect is one source of association, but there are others. By understanding the three fundamental structures that can exist between variables in a DAG, we can create a system through which we can identify open non-causal paths. Each of these structures relate to the “boobytraps” we discussed earlier: mediation, confounding and selection bias. They can be seen in <a href="#fig-dagstructures" class="quarto-xref">Figure&nbsp;<span>15.2</span></a>.</p>
+<div id="fig-dagstructures" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dagstructures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
@@ -616,7 +617,8 @@ Figure&nbsp;15.1: DAG representing the assumed causal relationships between moti
 Figure&nbsp;15.2: The three fundamental structures in DAGs: Chain (Mediation), Fork (Confounding), and Collider (Selection Bias). In the chain, M is the mediator. In the fork, C is the common cause (confounder). In selection bias, D is the collider and E is a descendent collider.
 </figcaption>
 </figure>
-<p>Referring to <a href="#fig-dagstructures" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>:</p>
+</div>
+<p>Referring to <a href="#fig-dagstructures" class="quarto-xref">Figure&nbsp;<span>15.2</span></a>:</p>
 <ul>
 <li><p>Mediation is represented by a ‘chain’ structure. This means A has a direct causal effect on M, and M has a direct causal effect on B. M is a mediator variable. In a chain, there is a clear causal path from A to B. Therefore, A and B will be statistically associated. But if we condition on the mediator M, we <em>block</em> the flow of association between A and B. For example, if we believe <code>Motivation -&gt; Job Satisfaction -&gt; Job Performance</code>, then if we try to estimate the causal effect of <code>Motivation</code> on <code>Job Performance</code> we should not include <code>Job Satisfaction</code> in our statistical model. If we do, we will have a biased estimate.</p></li>
 <li><p>Confounding is represented by a ‘fork’ structure. This means C is a common cause of both A and B. In this fork, there is no causal path from A to B. However, because they share a common cause, information flows from C to A and from C to B, creating a spurious (non-causal) association between A and B. If we were to naively correlate A and B, we would find an association, not because A has a direct causal effect on B, but because C has a direct causal effect on both. The non-causal path from A to B is called a ‘backdoor’ path, because A has an edge going into it rather than coming out of it. To block this backdoor path, we must condition on the common cause, C. For example, if we believe <code>Training &lt;- Motivation -&gt; Sales</code>, then to estimate the causal effect of <code>Training</code> on <code>Sales</code>, we must include <code>Motivation</code> in our model. If we leave it out, we will have a biased estimate.</p></li>
@@ -650,7 +652,7 @@ Figure&nbsp;15.2: The three fundamental structures in DAGs: Chain (Mediation), F
 <li>The academic ability of the graduate has a direct causal effect on their test, interview and presentation.</li>
 <li>There are no other direct causal effects.</li>
 </ul>
-<p>The DAG for this causal model is shown in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.4</span></a>.</p>
+<p>The DAG for this causal model is shown in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>.</p>
 <div id="fig-dagcomplex" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dagcomplex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -665,7 +667,7 @@ Figure&nbsp;15.2: The three fundamental structures in DAGs: Chain (Mediation), F
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagcomplex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.4: DAG representing beliefs about causal relationships between a hiring decision, test, interview, presentation and GPA.
+Figure&nbsp;15.3: DAG representing beliefs about causal relationships between a hiring decision, test, interview, presentation and GPA.
 </figcaption>
 </figure>
 </div>
@@ -739,7 +741,7 @@ Figure&nbsp;15.4: DAG representing beliefs about causal relationships between a 
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>()</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We can now take a look at the posterior estimate of our coefficient for <code>Test</code>, as in <a href="#fig-naiveposterior" class="quarto-xref">Figure&nbsp;<span>15.5</span></a>.</p>
+<p>We can now take a look at the posterior estimate of our coefficient for <code>Test</code>, as in <a href="#fig-naiveposterior" class="quarto-xref">Figure&nbsp;<span>15.4</span></a>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -765,12 +767,12 @@ Figure&nbsp;15.4: DAG representing beliefs about causal relationships between a 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-naiveposterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.5: Posterior distribution of the coefficient for <code>Test</code> from a naive Bayesian logistic regression explaining <code>Hire</code> from <code>Test</code> alone.
+Figure&nbsp;15.4: Posterior distribution of the coefficient for <code>Test</code> from a naive Bayesian logistic regression explaining <code>Hire</code> from <code>Test</code> alone.
 </figcaption>
 </figure>
 </div>
 <p>This naive model suggests a high probability (86.8%) that the test has a positive effect on the log odds of being hired. The median effect of 0.16, when converted to an odds ratio, suggests that each additional point scored on the test increases the odds of being hired by 17%. This gives us a degree of confidence that the test is providing a meaningful contribution to the hiring decision. However, we have no idea how much of this effect is a direct causal effect. There may be confounding variables biasing this estimate. To determine what variables to control for, we need to define our causal model using a DAG.</p>
-<p>We have a hypothesized causal model for how these variables relate to each other, as shown earlier in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.4</span></a>. We want to estimate the causal effect of <code>Test</code> on <code>Hire</code>. According to our earlier manual backdoor analysis, we should find that we are able to do this by controlling for either <code>GPA</code> alone, or for both <code>Int</code> and <code>Pres</code>.</p>
+<p>We have a hypothesized causal model for how these variables relate to each other, as shown earlier in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>. We want to estimate the causal effect of <code>Test</code> on <code>Hire</code>. According to our earlier manual backdoor analysis, we should find that we are able to do this by controlling for either <code>GPA</code> alone, or for both <code>Int</code> and <code>Pres</code>.</p>
 </section>
 <section id="specifying-and-visualizing-the-dag" class="level3" data-number="15.4.2">
 <h3 data-number="15.4.2" class="anchored" data-anchor-id="specifying-and-visualizing-the-dag"><span class="header-section-number">15.4.2</span> Specifying and visualizing the DAG</h3>
@@ -826,7 +828,7 @@ Test -&gt; Hire
 }</code></pre>
 </div>
 </div>
-<p>The <code>ggdag</code> package makes plotting this DAG very easy, as in <a href="#fig-dagplot" class="quarto-xref">Figure&nbsp;<span>15.6</span></a>.</p>
+<p>The <code>ggdag</code> package makes plotting this DAG very easy, as in <a href="#fig-dagplot" class="quarto-xref">Figure&nbsp;<span>15.5</span></a>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the selection DAG</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -847,11 +849,11 @@ Test -&gt; Hire
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.6: DAG representing beliefs about causal relationships between a Hiring Decision, Test Score, Interview Score, Presentation Score, and GPA.
+Figure&nbsp;15.5: DAG representing beliefs about causal relationships between a Hiring Decision, Test Score, Interview Score, Presentation Score, and GPA.
 </figcaption>
 </figure>
 </div>
-<p>To control the positioning of the nodes, we can specify relative coordinates in the DAG string or use the <code>coords</code> argument in <code>dagify</code>. For example, to replicate the positioning as in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.4</span></a>, we can do the following:</p>
+<p>To control the positioning of the nodes, we can specify relative coordinates in the DAG string or use the <code>coords</code> argument in <code>dagify</code>. For example, to replicate the positioning as in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>, we can do the following:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(selection_dag <span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  Hire <span class="sc">~</span> Pres <span class="sc">+</span> Int <span class="sc">+</span> Test,</span>
@@ -906,7 +908,7 @@ Test -&gt; Hire
 8 Test      0     2 -&gt;        Hire      0     0 FALSE    Test </code></pre>
 </div>
 </div>
-<p>This can make it easier to add customizations to our graph visualization using <code>ggplot2</code>. For example we can color code the nodes based on their roles (exposure, outcome, confounder) as in <a href="#fig-dagcustom" class="quarto-xref">Figure&nbsp;<span>15.7</span></a>.</p>
+<p>This can make it easier to add customizations to our graph visualization using <code>ggplot2</code>. For example we can color code the nodes based on their roles (exposure, outcome, confounder) as in <a href="#fig-dagcustom" class="quarto-xref">Figure&nbsp;<span>15.6</span></a>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -941,7 +943,7 @@ Test -&gt; Hire
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagcustom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.7: DAG with custom coloring of nodes based on their roles (exposure, outcome, other).
+Figure&nbsp;15.6: DAG with custom coloring of nodes based on their roles (exposure, outcome, other).
 </figcaption>
 </figure>
 </div>
@@ -957,7 +959,7 @@ Figure&nbsp;15.7: DAG with custom coloring of nodes based on their roles (exposu
 { GPA }</code></pre>
 </div>
 </div>
-<p>This confirms the adjustments sets which we derived manually earlier in <a href="#sec-backdoor" class="quarto-xref"><span>Section 15.3.3</span></a>. We can also view the adjustment sets using <code>ggdag</code>, as in <a href="#fig-dagadjust" class="quarto-xref">Figure&nbsp;<span>15.8</span></a>.</p>
+<p>This confirms the adjustments sets which we derived manually earlier in <a href="#sec-backdoor" class="quarto-xref"><span>Section 15.3.3</span></a>. We can also view the adjustment sets using <code>ggdag</code>, as in <a href="#fig-dagadjust" class="quarto-xref">Figure&nbsp;<span>15.7</span></a>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_adjustment_set</span>(selection_dag) <span class="sc">+</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -976,7 +978,7 @@ Figure&nbsp;15.7: DAG with custom coloring of nodes based on their roles (exposu
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagadjust-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.8: Adjustment sets for estimating the causal effect of <code>Test</code> on <code>Hire</code>.
+Figure&nbsp;15.7: Adjustment sets for estimating the causal effect of <code>Test</code> on <code>Hire</code>.
 </figcaption>
 </figure>
 </div>
@@ -993,7 +995,7 @@ $open
 [1]  TRUE  TRUE FALSE  TRUE  TRUE</code></pre>
 </div>
 </div>
-<p>We can see that 5 paths have been identified, four of which are open paths. One of these is the direct causal path and the other three are backdoor paths. These open paths can be visualized using <code>ggdag</code>, as in <a href="#fig-dagpaths" class="quarto-xref">Figure&nbsp;<span>15.9</span></a>.</p>
+<p>We can see that 5 paths have been identified, four of which are open paths. One of these is the direct causal path and the other three are backdoor paths. These open paths can be visualized using <code>ggdag</code>, as in <a href="#fig-dagpaths" class="quarto-xref">Figure&nbsp;<span>15.8</span></a>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_paths_fan</span>(selection_dag) <span class="sc">+</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1012,7 +1014,7 @@ $open
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dagpaths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.9: Open paths between <code>Test</code> and <code>Hire</code> in the DAG.
+Figure&nbsp;15.8: Open paths between <code>Test</code> and <code>Hire</code> in the DAG.
 </figcaption>
 </figure>
 </div>
@@ -1063,11 +1065,11 @@ Pres _||_ Test | GPA</code></pre>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selection-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.10: Posterior distribution of the GPA coefficient from the Bayesian regression model testing the conditional independence implied by the DAG.
+Figure&nbsp;15.9: Posterior distribution of the GPA coefficient from the Bayesian regression model testing the conditional independence implied by the DAG.
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-selection-ci" class="quarto-xref">Figure&nbsp;<span>15.10</span></a> shows the posterior distribution of the GPA coefficient, with a coefficient of zero comfortably within the range of credible probability. Based on this, we can determine a level of comfort that our DAG is supported by our observed data.</p>
+<p><a href="#fig-selection-ci" class="quarto-xref">Figure&nbsp;<span>15.9</span></a> shows the posterior distribution of the GPA coefficient, with a coefficient of zero comfortably within the range of credible probability. Based on this, we can determine a level of comfort that our DAG is supported by our observed data.</p>
 <p>Assuming our other conditional dependencies are supported by the data (which should be tested), we can now estimate the causal effect of <code>Test</code> on <code>Hire</code> using any of the two adjustment sets we identified earlier. In this case, we will control for <code>GPA</code> alone.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a Bayesian binomial regression model</span></span>
@@ -1077,7 +1079,7 @@ Figure&nbsp;15.10: Posterior distribution of the GPA coefficient from the Bayesi
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>()</span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We can visualize our causal effect estimate for <code>Test</code>, as in <a href="#fig-selection-causal" class="quarto-xref">Figure&nbsp;<span>15.11</span></a>.</p>
+<p>We can visualize our causal effect estimate for <code>Test</code>, as in <a href="#fig-selection-causal" class="quarto-xref">Figure&nbsp;<span>15.10</span></a>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the posterior coefficient for Test</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_areas</span>(</span>
@@ -1101,7 +1103,7 @@ Figure&nbsp;15.10: Posterior distribution of the GPA coefficient from the Bayesi
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selection-causal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.11: Posterior distribution of the causal effect of <code>Test</code> on <code>Hire</code>
+Figure&nbsp;15.10: Posterior distribution of the causal effect of <code>Test</code> on <code>Hire</code>
 </figcaption>
 </figure>
 </div>
@@ -1142,7 +1144,7 @@ Figure&nbsp;15.11: Posterior distribution of the causal effect of <code>Test</co
 <h2 data-number="15.5" class="anchored" data-anchor-id="causal-inference-using-dags-in-python"><span class="header-section-number">15.5</span> Causal inference using DAGs in Python</h2>
 <p></p>
 <p>The <code>DoWhy</code> package in Python provides a comprehensive framework for causal inference. It allows users to define causal models, identify adjustment sets and estimate causal effects using various methods, including linear regression and propensity score matching. <code>DoWhy</code> also integrates with other libraries like <code>NetworkX</code> for graph representation and visualization.</p>
-<p><code>DoWhy</code> can be used to create and analyze DAGs, identify confounders and guide regression analyses to estimate causal effects, similar to <code>dagitty</code> in R. As an example, the following creates our selection process DAG as in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.4</span></a>:</p>
+<p><code>DoWhy</code> can be used to create and analyze DAGs, identify confounders and guide regression analyses to estimate causal effects, similar to <code>dagitty</code> in R. As an example, the following creates our selection process DAG as in <a href="#fig-dagcomplex" class="quarto-xref">Figure&nbsp;<span>15.3</span></a>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dowhy <span class="im">import</span> CausalModel</span>
@@ -1179,7 +1181,7 @@ Figure&nbsp;15.11: Posterior distribution of the causal effect of <code>Test</co
 <span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>    outcome<span class="op">=</span>outcome_name</span>
 <span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We can view the causal graph using the <code>view_graph()</code> method as in <a href="#fig-py-causal-graph" class="quarto-xref">Figure&nbsp;<span>15.12</span></a>:</p>
+<p>We can view the causal graph using the <code>view_graph()</code> method as in <a href="#fig-py-causal-graph" class="quarto-xref">Figure&nbsp;<span>15.11</span></a>:</p>
 <div id="fig-py-causal-graph" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-py-causal-graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1196,7 +1198,7 @@ Figure&nbsp;15.11: Posterior distribution of the causal effect of <code>Test</co
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-py-causal-graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.12: Causal graph representing beliefs about causal relationships between a Hiring Decision, Test Score, Interview Score, Presentation Score, and GPA.
+Figure&nbsp;15.11: Causal graph representing beliefs about causal relationships between a Hiring Decision, Test Score, Interview Score, Presentation Score, and GPA.
 </figcaption>
 </figure>
 </div>

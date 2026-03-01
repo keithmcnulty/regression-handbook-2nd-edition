@@ -261,9 +261,11 @@ This DAG is our causal model. It is not derived from the data; it is imposed upo
 
 The reason DAGs are so useful is that they provide rules for how statistical associations flow between variables. An association between two variables $X$ and $Y$ exists if there is an open (or unblocked) path between them in the DAG. A direct causal effect is one source of association, but there are others. By understanding the three fundamental structures that can exist between variables in a DAG, we can create a system through which we can identify open non-causal paths. Each of these structures relate to the "boobytraps" we discussed earlier: mediation, confounding and selection bias.  They can be seen in @fig-dagstructures.
 
-::: {#fig-dagstructures .content-visible unless-format="pdf"}
+::: {#fig-dagstructures}
+
 ```{r}
 #| echo: false
+#| eval: !expr knitr::is_html_output() 
 set.seed(123)
 library(ggdag)
 # Create three DAGs for the three structures: chain, fork, collider
@@ -335,12 +337,9 @@ collider_plot <- ggdag(collider_dag, node_size = 10, stylized = TRUE) +
 chain_plot + fork_plot + collider_plot
 ```
 
-The three fundamental structures in DAGs: Chain (Mediation), Fork (Confounding), and Collider (Selection Bias).  In the chain, M is the mediator. In the fork, C is the common cause (confounder). In selection bias, D is the collider and E is a descendent collider.
-:::
-
-::: {#fig-dagstructures .content-visible when-format="pdf"}
 ```{r}
 #| echo: false
+#| eval: !expr knitr::is_latex_output()
 #| out-width: "100%"
 
 # show png from file
