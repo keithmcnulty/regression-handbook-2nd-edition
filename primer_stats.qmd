@@ -553,6 +553,7 @@ import numpy as np
 url="https://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople = pd.read_csv(url)
 
+
 # mean sales
 mean_sales = salespeople.sales.mean()
 print(mean_sales)
