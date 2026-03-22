@@ -365,7 +365,7 @@ insurance_model = model.fit()
 print(insurance_model.summary())
 ```
 
-\small
+\footnotesize
 
 ```{python}
 #| echo: false

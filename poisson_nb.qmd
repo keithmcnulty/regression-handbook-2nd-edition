@@ -215,6 +215,15 @@ There are several ways to check for overdispersion.
 1.  **Compare Mean and Variance:** A simple 'rule of thumb' check is to compare the raw mean and variance of our outcome variable.
 
     ```{r}
+    #| eval: false
+    c(mean = mean(absenteeism$days_absent), 
+      variance = var(absenteeism$days_absent))
+    ```
+    
+    \newpage
+    
+    ```{r}
+    #| echo: false
     c(mean = mean(absenteeism$days_absent), 
       variance = var(absenteeism$days_absent))
     ```
@@ -257,6 +266,22 @@ where $\theta$ is a dispersion parameter estimated from the data and $\mu_i$ is 
 Quasi-Poisson regression can be performed in R using the `glm()` function with `family = "quasipoisson"`. 
 
 ```{r}
+#| eval: false
+# run a quasi-poisson model
+absent_quasi_poisson_model <- glm(
+  formula = days_absent ~ tenure + is_manager + performance_rating,
+  data = absenteeism, 
+  family = "quasipoisson"
+)
+
+# view the summary
+summary(absent_quasi_poisson_model)
+```
+
+\newpage
+
+```{r}
+#| echo: false
 # run a quasi-poisson model
 absent_quasi_poisson_model <- glm(
   formula = days_absent ~ tenure + is_manager + performance_rating,
@@ -294,7 +319,6 @@ absent_nb_model <- glm.nb(
   formula = days_absent ~ tenure + is_manager + performance_rating,
   data = absenteeism
 )
-
 # view the summary
 summary(absent_nb_model)
 ```
@@ -318,6 +342,21 @@ cbind(IRR_Poisson = irr, IRR_NB = irr_nb)
 The point estimates for the IRRs are quite similar. This is expected, as the coefficients are generally unbiased even when a Poisson model is used on overdispersed data. The real difference is in the standard errors and p-values.
 
 ```{r}
+#| eval: false
+# Compare standard errors
+poisson_summary <- summary(absent_poisson_model)
+nb_summary <- summary(absent_nb_model)
+
+cbind(
+  SE_Poisson = poisson_summary$coefficients[, "Std. Error"],
+  SE_NB = nb_summary$coefficients[, "Std. Error"]
+)
+```
+
+\newpage
+
+```{r}
+#| echo: false
 # Compare standard errors
 poisson_summary <- summary(absent_poisson_model)
 nb_summary <- summary(absent_nb_model)
@@ -362,11 +401,11 @@ Predicting expected counts from a new set of data works just like in other `glm`
 
 ```{r}
 # define new observations
-(new_employees <- data.frame(
+new_employees <- data.frame(
   tenure = c(2, 25, 15), 
   is_manager = as.factor(c(0, 1, 0)),
   performance_rating = c(4, 3, 3)
-))
+)
 
 # predict expected days absent using our final NB model
 predict(absent_nb_model, new_employees, type = "response")
@@ -453,6 +492,24 @@ It seems unlikely based on this check that zero-inflation is an issue in the neg
 
 
 ```{r}
+#| eval: false
+# fit zero-inflated negative binomial model
+zinb_model <- zeroinfl(
+  # negative binomial input variables first, binomial second
+  # separated by |
+  days_absent ~ tenure + is_manager + performance_rating | 
+    tenure + is_manager + performance_rating,
+  data = absenteeism,
+  dist = "negbin"
+)
+
+summary(zinb_model)
+```
+
+\newpage
+
+```{r}
+#| echo: false
 # fit zero-inflated negative binomial model
 zinb_model <- zeroinfl(
   # negative binomial input variables first, binomial second
@@ -499,7 +556,7 @@ poisson_model = smf.glm(
 print(poisson_model.summary())
 ```
 
-\small
+\scriptsize
 
 ```{python}
 #| echo: false
@@ -530,7 +587,7 @@ nb_model = smf.glm(
 print(nb_model.summary())
 ```
 
-\small
+\scriptsize
 
 ```{python}
 #| echo: false
@@ -564,7 +621,7 @@ If needed, zero-inflated models can be fit using the `statsmodels` library's `Ze
 
 * `n_complaints`: Number of complaints received about the representative in the past year
 * `experience`: Years of experience in customer service
-* `training_hours`: Hours of training received in the past year  
+* `training_hours`: Hours of training received in the past year
 * `workload`: Average number of customer interactions per day
 * `shift`: The primary shift worked (Day, Evening, or Night)
 * `remote`: Whether the representative works remotely (1 = yes, 0 = no)

@@ -393,7 +393,7 @@ red_model <- glm(
 
 We can now display the coefficients of both models and examine the difference between them.
 
-
+\newpage
 ```{r}
 (coefficient_comparison <- data.frame(
   yellowplus = summary(yellowplus_model)$coefficients[ , "Estimate"],
@@ -470,7 +470,7 @@ soccer_model = prop_odds_logit.fit(method='bfgs')
 print(soccer_model.summary())
 ```
 
-\small
+\footnotesize
 
 ```{python}
 #| echo: false

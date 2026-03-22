@@ -419,7 +419,7 @@ window.Quarto = {
 <li><p><strong>The Rubin causal model (RCM or Potential Outcomes framework):</strong> Popularized by Donald Rubin<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, this model is rooted in the language of experiments. It forces us to think about the “potential” state of the world under different scenarios. For each individual, we imagine two potential outcomes: the outcome if they receive a “treatment” (e.g., attending a training program) and the outcome if they receive the “control” (e.g., not attending). The causal effect is the difference between these two potential outcomes. The core difficulty, which we will explore, is that we can only ever observe <em>one</em> of these outcomes for any given individual. This is what is called the <em>Fundamental Problem of Causal Inference</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. This framework is incredibly useful for defining what a causal effect <em>is</em> with mathematical precision.</p></li>
 <li><p><strong>The structural causal model (SCM):</strong> Championed by Judea Pearl<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, this framework uses the intuitive language of graphs to represent our causal assumptions and hypotheses. Through using <em>Directed Acyclic Graphs (DAGs)</em>, we can visualize the assumed data-generating process. By drawing nodes (variables) and arrows (causal effects), we create a causal map of the system we are studying. This map then provides us with a clear, visual guide for how to analyze our data. It tells us which variables we must control for, which we must <em>not</em> control for, and whether our causal question is even answerable with the data we have.</p></li>
 </ol>
-<p>While historically there has been some friction between these two philosophies, they are now largely seen as two sides of the same coin. The RCM provides the rigorous definition of a causal effect, while the SCM give us the tools to think about the complex system of variables in which that effect is embedded. In this chapter, we will use the RCM to understand <em>what</em> we’re trying to estimate and we will use the SCM to figure out <em>how</em> to estimate it from observational data. For a more in-depth treatment of the Rubin causal model, see <span class="citation" data-cites="imbens2015">Imbens and Rubin (<a href="bibliography.html#ref-imbens2015" role="doc-biblioref">2015</a>)</span>. For a more in-depth treatment of the Structural causal model, see <span class="citation" data-cites="pearl2016">Pearl, Glymour, and Jewell (<a href="bibliography.html#ref-pearl2016" role="doc-biblioref">2016</a>)</span> or <span class="citation" data-cites="pearl2019">Pearl and Mackenzie (<a href="bibliography.html#ref-pearl2019" role="doc-biblioref">2019</a>)</span>. <span class="citation" data-cites="brumback2022">Brumback (<a href="bibliography.html#ref-brumback2022" role="doc-biblioref">2022</a>)</span> and <span class="citation" data-cites="mcelreath">McElreath (<a href="bibliography.html#ref-mcelreath" role="doc-biblioref">2020</a>)</span> are also excellent resources for learning about how to apply causal inference techniques in settings involving observational data.</p>
+<p>While historically there has been some friction between these two philosophies, they are now largely seen as two sides of the same coin. The RCM provides the rigorous definition of a causal effect, while the SCM give us the tools to think about the complex system of variables in which that effect is embedded. In this chapter, we will use the RCM to understand <em>what</em> we’re trying to estimate and we will use the SCM to figure out <em>how</em> to estimate it from observational data. For a more in-depth treatment of the Rubin causal model, see <span class="citation" data-cites="imbens2015">Imbens &amp; Rubin (<a href="bibliography.html#ref-imbens2015" role="doc-biblioref">2015</a>)</span>. For a more in-depth treatment of the Structural causal model, see <span class="citation" data-cites="pearl2016">Pearl et al. (<a href="bibliography.html#ref-pearl2016" role="doc-biblioref">2016</a>)</span> or <span class="citation" data-cites="pearl2019">Pearl &amp; Mackenzie (<a href="bibliography.html#ref-pearl2019" role="doc-biblioref">2019</a>)</span>. <span class="citation" data-cites="brumback2022">Brumback (<a href="bibliography.html#ref-brumback2022" role="doc-biblioref">2022</a>)</span> and <span class="citation" data-cites="mcelreath">McElreath (<a href="bibliography.html#ref-mcelreath" role="doc-biblioref">2020</a>)</span> are also excellent resources for learning about how to apply causal inference techniques in settings involving observational data.</p>
 </section>
 <section id="the-rubin-causal-model-rcm" class="level2" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="the-rubin-causal-model-rcm"><span class="header-section-number">15.2</span> The Rubin causal model (RCM)</h2>
@@ -1281,30 +1281,30 @@ Estimand assumption 1, Unconfoundedness: If U→{Test} and U→Hire then P(Hire|
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-brumback2022" class="csl-entry" role="listitem">
-Brumback, Babette A. 2022. <em>Fundamentals of Causal Inference: With r</em>.
+Brumback, B. A. (2022). <em>Fundamentals of causal inference: With <span>R</span></em>. Chapman <span>and</span> Hall/<span>CRC</span>.
 </div>
 <div id="ref-holland1986" class="csl-entry" role="listitem">
-Holland, Paul W. 1986. <span>“Statistics and Causal Inference.”</span> <em>Journal of the American Statistical Association</em>.
+Holland, P. W. (1986). Statistics and causal inference. In <em>Journal of the American Statistical Association</em>.
 </div>
 <div id="ref-imbens2015" class="csl-entry" role="listitem">
-Imbens, Guido W., and Donald B. Rubin. 2015. <em>Causal Inference for Statistics, Social, and Biomedical Sciences: An Introduction</em>.
+Imbens, G. W., &amp; Rubin, D. B. (2015). <em>Causal inference for statistics, social, and biomedical sciences: An introduction</em>. Cambridge University Press.
 </div>
 <div id="ref-mcelreath" class="csl-entry" role="listitem">
-McElreath, Richard. 2020. <em>Statistical Rethinking: A Bayesian Course with Examples in <span>R</span> and <span>Stan</span></em>.
+McElreath, R. (2020). <em>Statistical rethinking: A <span>Bayesian</span> course with examples in <span>R</span> and <span>Stan</span></em>. Chapman <span>and</span> Hall/<span>CRC</span>.
 </div>
 <div id="ref-pearl2000" class="csl-entry" role="listitem">
-Pearl, Judea. 2000. <em>Causality: Models, Reasoning, and Inference</em>.
+Pearl, J. (2000). <em>Causality: Models, reasoning, and inference</em>. Cambridge University Press.
 </div>
 <div id="ref-pearl2016" class="csl-entry" role="listitem">
-Pearl, Judea, Madelyn Glymour, and Nicholas P. Jewell. 2016. <em>Causal Inference in Statistics: A Primer</em>.
+Pearl, J., Glymour, M., &amp; Jewell, N. P. (2016). <em>Causal inference in statistics: A primer</em>. Wiley.
 </div>
 <div id="ref-pearl2019" class="csl-entry" role="listitem">
-Pearl, Judea, and Dana Mackenzie. 2019. <em>The Book of Why: The New Science of Cause and Effect</em>.
+Pearl, J., &amp; Mackenzie, D. (2019). <em>The book of why: The new science of cause and effect</em>. Penguin.
 </div>
 <div id="ref-rubin1974" class="csl-entry" role="listitem">
-Rubin, Donald B. 1974. <span>“Estimating Causal Effects of Treatments in Randomized and Nonrandomized Studies.”</span> <em>Journal of Educational Psychology</em>.
+Rubin, D. B. (1974). Estimating causal effects of treatments in randomized and nonrandomized studies. In <em>Journal of Educational Psychology</em>.
 </div>
 </div>
 </section>

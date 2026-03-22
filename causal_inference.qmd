@@ -944,6 +944,7 @@ adjustments = selection_dag.identify_effect()
 print(adjustments)
 ```
 
+\newpage
 \footnotesize
 
 ```{python}

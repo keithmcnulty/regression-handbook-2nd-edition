@@ -402,7 +402,7 @@ window.Quarto = {
 <li>A <em>Cox proportional hazard</em> regression model to establish statistical significance of input variables and to estimate the effect of each input variable on the comparative risk of the outcome throughout the study period.</li>
 </ul>
 <p></p>
-<p>Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is <span class="citation" data-cites="collett">Collett (<a href="bibliography.html#ref-collett" role="doc-biblioref">2015</a>)</span>. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.</p>
+<p>Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is <span class="citation" data-cites="collett">Collett (<a href="bibliography.html#ref-collett" role="doc-biblioref">2023</a>)</span>. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.</p>
 <p>The <code>job_retention</code> data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a one-year period. At the beginning of the study, the individuals were asked to rate their sentiment towards their job. These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job. If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get job_retention data</span></span>
@@ -694,7 +694,7 @@ Figure&nbsp;10.2: Schoenfeld test on proportional hazard assumption for <code>co
 <h2 data-number="10.3" class="anchored" data-anchor-id="frailty-models"><span class="header-section-number">10.3</span> Frailty models</h2>
 <p>We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard. It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition. This is analogous to a mixed model which we looked at in <a href="hierarchical_data.html#sec-mixed" class="quarto-xref"><span>Section 9.1</span></a>.</p>
 <p>In this case we would apply a random intercept effect to the base hazard function <span class="math inline">\(h_0(t)\)</span> according to the field of employment of an individual, in order to take this into account in our modeling. This kind of model is called a <em>frailty model</em>, taken from the clinical context, where different groups of patients may have different frailties (background risks of death).</p>
-<p>There are many variants of how frailty models are run in the clinical context (see <span class="citation" data-cites="collett">Collett (<a href="bibliography.html#ref-collett" role="doc-biblioref">2015</a>)</span> for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data. This is called a <em>shared frailty model</em>. The <code>frailtypack</code> R package allows various frailty models to be run with relative ease. This is how we would run a shared frailty model on our <code>job_retention</code> data to take account of the different background attrition risk for the different fields of employment.</p>
+<p>There are many variants of how frailty models are run in the clinical context (see <span class="citation" data-cites="collett">Collett (<a href="bibliography.html#ref-collett" role="doc-biblioref">2023</a>)</span> for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data. This is called a <em>shared frailty model</em>. The <code>frailtypack</code> R package allows various frailty models to be run with relative ease. This is how we would run a shared frailty model on our <code>job_retention</code> data to take account of the different background attrition risk for the different fields of employment.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(frailtypack)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -710,7 +710,7 @@ Figure&nbsp;10.2: Schoenfeld test on proportional hazard assumption for <code>co
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Be patient. The program is computing ... 
-The program took 0.81 seconds </code></pre>
+The program took 0.79 seconds </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
@@ -899,9 +899,9 @@ sentiment                  -0.117562   0.889085  ...  3.940873e-17  54.494262
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-collett" class="csl-entry" role="listitem">
-Collett, David. 2015. <em>Modelling Survival Data in Medical Research</em>.
+Collett, D. (2023). <em>Modelling survival data in medical research</em>. Chapman <span>and</span> Hall/<span>CRC</span>.
 </div>
 </div>
 </section>

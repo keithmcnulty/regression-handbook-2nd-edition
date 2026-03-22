@@ -847,23 +847,14 @@ print(ugtests_model.summary())
 ### Discussion questions
 
 1.  What is the approximate meaning of the term 'regression'&zwj;?  Why is the term particularly suited to the methodology described in this chapter?
-
 2.  What basic condition must the outcome variable satisfy for linear regression to be a potential modeling approach?  Describe some ideas for problems that might be modeled using linear regression.
-
 3.  What is the difference between simple linear regression and multiple linear regression?
-
-4.  What is a residual, and how does it relate to the term 'Ordinary Least Squares'&zwj;?  
-
+4.  What is a residual, and how does it relate to the term 'Ordinary Least Squares'&zwj;?
 5.  How are the coefficients of a linear regression model interpreted?  Explain why higher coefficients do not necessarily imply greater importance.
-
 6.  How is the $R^2$ of a linear regression model interpreted?  What are the minimum and maximum possible values for $R^2$, and what does each mean?
-
-7.  What are the key considerations when preparing input data for a linear regression model?  
-
+7.  What are the key considerations when preparing input data for a linear regression model?
 8.  Describe your understanding of the term 'dummy variable'&zwj;.  Why are dummy variable coefficients often larger than other coefficients in linear regression models?
-
 9.  Describe the term 'collinearity' and why it is an important consideration in regression models. 
-
 10. Describe some ways that linear regression models can be extended into non-linear models.
 
 ### Data exercises

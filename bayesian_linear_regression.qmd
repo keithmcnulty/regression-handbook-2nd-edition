@@ -240,6 +240,15 @@ inf_model <- readRDS("models/linear/inf_model.RDS")
 Let's view our informed model summary:
 
 ```{r}
+#| eval: false
+# view summary of the informed prior model
+summary(inf_model)
+```
+
+\newpage
+
+```{r}
+#| echo: false
 # view summary of the informed prior model
 summary(inf_model)
 ```
@@ -332,6 +341,16 @@ Distribution of predicted Final year score for a new student
 Note that we can easily obtain posterior prediction intervals using the `posterior_interval()` function in `brms`.  Let's compute the 95% posterior prediction interval for this student's final year score.
 
 ```{r}
+#| eval: false
+# compute 95% posterior prediction interval for new data point
+posterior_interval(post_pred, prob = 0.95) |> 
+  round()
+```
+
+\newpage
+
+```{r}
+#| echo: false
 # compute 95% posterior prediction interval for new data point
 posterior_interval(post_pred, prob = 0.95) |> 
   round()
@@ -531,6 +550,14 @@ inf_model_std <- readRDS("models/linear/inf_model_std.RDS")
 ```
 
 ```{r}
+#| eval: false
+summary(inf_model_std)
+```
+
+\newpage
+
+```{r}
+#| echo: false
 summary(inf_model_std)
 ```
 
@@ -775,7 +802,32 @@ To fit our uninformed Bayesian linear regression model from earlier in this chap
 
 
 ```{python}
-#| label: py-bayes-model
+#| eval: false
+import pandas as pd
+import bambi as bmb
+import arviz as az
+
+# load the data
+url = "https://peopleanalytics-regression-book.org/data/ugtests.csv"
+ugtests = pd.read_csv(url)
+
+# take a random sample of 100 rows for faster computation
+ugtests_bayes = ugtests.sample(n=100, random_state=123)
+
+# specify a Bayesian linear regression model with default priors
+model = bmb.Model(
+  "Final ~ Yr1 + Yr2 + Yr3", 
+  data=ugtests_bayes, 
+  family = "gaussian"
+)
+model.build()
+print(model)
+```
+
+\newpage
+
+```{python}
+#| echo: false
 import pandas as pd
 import bambi as bmb
 import arviz as az

@@ -574,7 +574,7 @@ r_{x, y} = \frac{\mathrm{cov}(x, y)}{\sigma(x)\sigma(y)}
 <pre><code>[1] 0.8511283</code></pre>
 </div>
 </div>
-<p>Correlating ranked variables involves an adjusted approach leading to <strong>Spearman’s rho</strong> (<span class="math inline">\(\rho\)</span>) or <strong>Kendall’s tau</strong> (<span class="math inline">\(\tau\)</span>), among others. We will not dive into the mathematics of this here, but a good source is <span class="citation" data-cites="bhattacharya">Bhattacharya and Burman (<a href="bibliography.html#ref-bhattacharya" role="doc-biblioref">2016</a>)</span>. Spearman’s or Kendall’s variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.</p>
+<p>Correlating ranked variables involves an adjusted approach leading to <strong>Spearman’s rho</strong> (<span class="math inline">\(\rho\)</span>) or <strong>Kendall’s tau</strong> (<span class="math inline">\(\tau\)</span>), among others. We will not dive into the mathematics of this here, but a good source is <span class="citation" data-cites="bhattacharya">Bhattacharya &amp; Burman (<a href="bibliography.html#ref-bhattacharya" role="doc-biblioref">2016</a>)</span>. Spearman’s or Kendall’s variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># spearman's rho correlation</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>performance, </span>
@@ -1100,9 +1100,9 @@ SE = \frac{\sigma(x)}{\sqrt{n}}
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-bhattacharya" class="csl-entry" role="listitem">
-Bhattacharya, P. K., and Prabir Burman. 2016. <em>Theory and Methods of Statistics</em>.
+Bhattacharya, P. K., &amp; Burman, P. (2016). <em>Theory and methods of statistics</em>. Academic Press.
 </div>
 </div>
 </section>

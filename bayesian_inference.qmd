@@ -559,6 +559,14 @@ posterior_samples <- posterior(bf_result, iterations = 10000)
 We can view the first few rows of the posterior samples to see the estimated difference in sales between low and high performing salespeople.
 
 ```{r}
+#| eval: false
+head(posterior_samples)
+```
+
+\newpage
+
+```{r}
+#| echo: false
 head(posterior_samples)
 ```
 
@@ -611,7 +619,7 @@ library(bayestestR)
 (posterior_summary <- describe_posterior(-posterior_samples))
 ```
 
-\tiny
+\scriptsize
 
 ```{r}
 #| echo: false
@@ -1002,8 +1010,8 @@ For questions 1 to 5, focus on the Year 1 examination scores.  Take a random sam
 
 For questions 6 to 10, take a random sample of 50 rows from the full `ugtests` data set and treat this as your observed data.  
 
-6.  Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers.  Use a Bayesian $t$-test to perform this test.  Report and interpret the Bayes Factor.  
-7.  Visualize the posterior distribution of the difference in Year 2 score means between the two groups using a halfeye plot.  
+6.  Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers.  Use a Bayesian $t$-test to perform this test.  Report and interpret the Bayes Factor.
+7.  Visualize the posterior distribution of the difference in Year 2 score means between the two groups using a halfeye plot.
 8.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in Year 2 scores between the two groups. 
 9.  Test the hypothesis that there is a correlation between Year 2 and Final Year examination scores using a Bayesian correlation test.  Report and interpret the Bayes Factor.
 10.  Visualize the posterior distribution of the correlation coefficient using a halfeye plot.  Calculate summary statistics and a 95% credible interval for the posterior distribution of the correlation coefficient.  Write a summary of your findings from questions 6 to 10.

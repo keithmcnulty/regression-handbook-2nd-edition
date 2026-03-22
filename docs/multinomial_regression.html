@@ -736,7 +736,7 @@ absent           -0.008412403</code></pre>
 <p>Simplifying a multinomial regression model needs to be done with care. In a binomial model, there is one set of coefficients and their p-values can be a strong guide to which variables can be removed safely. However, in multinomial models there are several sets of coefficients to consider.</p>
 <section id="sec-elim" class="level3" data-number="6.4.1">
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="sec-elim"><span class="header-section-number">6.4.1</span> Gradual safe elimination of variables</h3>
-<p>In <span class="citation" data-cites="hosmer-logistic">Hosmer, Lemeshow, and Sturdivant (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:</p>
+<p>In <span class="citation" data-cites="hosmer-logistic">Hosmer et al. (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:</p>
 <ul>
 <li>Start with the variable with the least significant p-values in all sets of coefficients—in our case <code>absent</code> would be the obvious first candidate.</li>
 <li>Run the multinomial model without this variable.</li>
@@ -794,7 +794,7 @@ position_level   -0.3912014  -0.20908835</code></pre>
  0.5329175  0.6896945  0.7760413 </code></pre>
 </div>
 </div>
-<p>Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research. The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in <span class="citation" data-cites="fagerland">Fagerland, Hosmer, and Bofin (<a href="bibliography.html#ref-fagerland" role="doc-biblioref">2008</a>)</span> for multinomial models. An implementation is available in the <code>generalhoslem</code> package in R. However, this version of the Hosmer-Lemeshow test is problematic for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here. For further exploration of this topic, Chapter 8 of <span class="citation" data-cites="hosmer-logistic">Hosmer, Lemeshow, and Sturdivant (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span> is recommended, and for a more thorough treatment of the entire topic of categorical analytics, <span class="citation" data-cites="agresti">Agresti (<a href="bibliography.html#ref-agresti" role="doc-biblioref">2007</a>)</span> is an excellent companion.</p>
+<p>Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research. The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in <span class="citation" data-cites="fagerland">Fagerland et al. (<a href="bibliography.html#ref-fagerland" role="doc-biblioref">2008</a>)</span> for multinomial models. An implementation is available in the <code>generalhoslem</code> package in R. However, this version of the Hosmer-Lemeshow test is problematic for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here. For further exploration of this topic, Chapter 8 of <span class="citation" data-cites="hosmer-logistic">Hosmer et al. (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span> is recommended, and for a more thorough treatment of the entire topic of categorical analytics, <span class="citation" data-cites="agresti">Agresti (<a href="bibliography.html#ref-agresti" role="doc-biblioref">2018</a>)</span> is an excellent companion.</p>
 </section>
 </section>
 <section id="multinomial-logistic-regression-using-python" class="level2" data-number="6.5">
@@ -840,7 +840,7 @@ Dep. Variable:                      y   No. Observations:                 1453
 Model:                        MNLogit   Df Residuals:                     1439
 Method:                           MLE   Df Model:                           12
 Date:                Sun, 22 Mar 2026   Pseudo R-squ.:                  0.5332
-Time:                        09:46:27   Log-Likelihood:                -744.68
+Time:                        20:46:35   Log-Likelihood:                -744.68
 converged:                       True   LL-Null:                       -1595.3
 Covariance Type:            nonrobust   LLR p-value:                     0.000
 ==================================================================================
@@ -895,15 +895,15 @@ absent             0.0033      0.012      0.263      0.793      -0.021       0.0
 <p></p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-agresti" class="csl-entry" role="listitem">
-Agresti, Alan. 2007. <em>An Introduction to Categorical Data Analysis</em>.
+Agresti, A. (2018). <em>An introduction to categorical data analysis</em>. Wiley.
 </div>
 <div id="ref-fagerland" class="csl-entry" role="listitem">
-Fagerland, Morten W., David W. Hosmer, and Anna M. Bofin. 2008. <span>“Multinomial Goodness‐of‐fit Tests for Logistic Regression Models.”</span> <em>Statistics in Medicine</em>.
+Fagerland, M. W., Hosmer, D. W., &amp; Bofin, A. M. (2008). Multinomial goodness‐of‐fit tests for logistic regression models. In <em>Statistics in Medicine</em>.
 </div>
 <div id="ref-hosmer-logistic" class="csl-entry" role="listitem">
-Hosmer, David W., Stanley Lemeshow, and Rodney X. Sturdivant. 2013. <em>Applied Logistic Regression</em>.
+Hosmer, D. W., Lemeshow, S., &amp; Sturdivant, R. X. (2013). <em>Applied logistic regression</em>. Wiley.
 </div>
 </div>
 </section>
@@ -911,7 +911,7 @@ Hosmer, David W., Stanley Lemeshow, and Rodney X. Sturdivant. 2013. <em>Applied 
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>In <span class="citation" data-cites="hosmer-logistic">Hosmer, Lemeshow, and Sturdivant (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>In <span class="citation" data-cites="hosmer-logistic">Hosmer et al. (<a href="bibliography.html#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network. Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done. In the case of these observations of <code>genderNon-binary</code>, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

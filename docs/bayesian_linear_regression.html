@@ -169,13 +169,13 @@ window.Quarto = {
 
 <meta property="og:title" content="13&nbsp; Linear Regression Using Bayesian Inference – Handbook of Regression Modeling in People Analytics">
 <meta property="og:description" content="">
-<meta property="og:image" content="https://peopleanalytics-regression-book.org/bayesian_linear_regression_files/figure-html/unnamed-chunk-10-1.png">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/bayesian_linear_regression_files/figure-html/unnamed-chunk-11-1.png">
 <meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics">
 <meta property="og:image:height" content="960">
 <meta property="og:image:width" content="1344">
 <meta name="twitter:title" content="13&nbsp; Linear Regression Using Bayesian Inference – Handbook of Regression Modeling in People Analytics">
 <meta name="twitter:description" content="">
-<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/bayesian_linear_regression_files/figure-html/unnamed-chunk-10-1.png">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/bayesian_linear_regression_files/figure-html/unnamed-chunk-11-1.png">
 <meta name="twitter:image-height" content="960">
 <meta name="twitter:image-width" content="1344">
 <meta name="twitter:card" content="summary_large_image">
@@ -600,6 +600,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view summary of the informed prior model</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(inf_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: gaussian 
   Links: mu = identity 
@@ -649,7 +652,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -677,7 +680,7 @@ Figure&nbsp;13.1: Posterior distributions for the coefficients of our informed B
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -724,7 +727,7 @@ Figure&nbsp;13.2: 66% (dark lines) and 95% (light lines) credible intervals for 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -740,6 +743,9 @@ Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute 95% posterior prediction interval for new data point</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_interval</span>(post_pred, <span class="at">prob =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>     2.5% 97.5%
 [1,]  135   236</code></pre>
@@ -806,7 +812,7 @@ Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -891,6 +897,9 @@ simple_model -33.6       7.8  </code></pre>
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(inf_model_std)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: gaussian 
   Links: mu = identity 
@@ -1102,7 +1111,7 @@ Yr3              0.83658769           0.851905429</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1133,7 +1142,7 @@ Figure&nbsp;13.5: Bayesian R-squared distributions for the original informed mod
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1161,7 +1170,7 @@ Figure&nbsp;13.6: Posterior Predictive Check. The dark line (<span class="math i
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1205,6 +1214,9 @@ Figure&nbsp;13.7: Trace plots of the MCMC simulation. The four colors represent 
 <span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>model.build()</span>
 <span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>       Formula: Final ~ Yr1 + Yr2 + Yr3
         Family: gaussian
@@ -1387,9 +1399,9 @@ Figure&nbsp;13.10: Posterior predictive check for our informed Bayesian linear r
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-kruschke" class="csl-entry" role="listitem">
-Kruschke, John K. 2018. <span>“Rejecting or Accepting Parameter Values in Bayesian Estimation.”</span> <em>Advances in Methods and Practices in Psychological Science</em>.
+Kruschke, J. K. (2018). Rejecting or accepting parameter values in bayesian estimation. In <em>Advances in Methods and Practices in Psychological Science</em>.
 </div>
 </div>
 </section>

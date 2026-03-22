@@ -670,6 +670,7 @@ import statsmodels.formula.api as smf
 url="https://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople = pd.read_csv(url)
 
+
 # define model
 model = smf.glm(formula = "promoted ~ sales + customer_rate", 
                 data = salespeople, 
@@ -696,6 +697,7 @@ import statsmodels.formula.api as smf
 url="https://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople = pd.read_csv(url)
 
+
 # define model
 model = smf.glm(formula = "promoted ~ sales + customer_rate", 
                 data = salespeople, 
@@ -719,25 +721,16 @@ print(promotion_model.summary())
 ### Discussion questions
 
 1. Draw the shape of a logistic function. Describe the three population growth phases it was originally intended to model.
-
-2. Explain why the logistic function is useful to statisticians in modeling.  
-
+2. Explain why the logistic function is useful to statisticians in modeling.
 3. In the formula for the logistic function in @sec-logistic-origins, what might be a common value for $L$ in probabilistic applications?  Why?
-
-4. What types of problems are suitable for logistic regression modeling?  
-
+4. What types of problems are suitable for logistic regression modeling?
 5. Can you think of some modeling scenarios in your work or studies that could use a logistic regression approach?
-
 6. Explain the concept of odds.  How do odds differ from probability?  How do odds change as probability increases?
-
 7. Complete the following:
- a. If an event has a 1% probability of occurring, a 10% increase in odds results in an almost __% increase in probability.
- b. If an event has a 99% probability of occurring, a 10% increase in odds results in an almost __% increase in probability.
-
+a. If an event has a 1% probability of occurring, a 10% increase in odds results in an almost __% increase in probability.
+b. If an event has a 99% probability of occurring, a 10% increase in odds results in an almost __% increase in probability.
 8. Describe how the coefficients of a logistic regression model affect the fitted outcome.  If $\beta$ is a coefficient estimate, how is the odds ratio associated with $\beta$ calculated and what does it mean?
-
-9. What are some of the options for determining the fit of a binomial logistic regression model? 
-
+9. What are some of the options for determining the fit of a binomial logistic regression model?
 10. Describe the concept of model parsimony.  What measure is commonly used to determine the most parsimonious logistic regression model?
 
 ### Data exercises

@@ -839,6 +839,9 @@ Bayes factor type: BFindepSample, JZS</code></pre>
 <p>We can view the first few rows of the posterior samples to see the estimated difference in sales between low and high performing salespeople.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(posterior_samples)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Markov Chain Monte Carlo (MCMC) output:
 Start = 1 
@@ -876,7 +879,7 @@ Thinning interval = 1
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -928,7 +931,7 @@ g            |     -0.94 | [   -26.60,     -0.12] |   100% | [-0.10, 0.10] |    
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1025,7 +1028,7 @@ Bayes factor type: BFcorrelation, Jeffreys-beta*</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1155,7 +1158,7 @@ Bayes factor type: BFcontingencyTable, joint multinomial</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_inference_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1253,28 +1256,26 @@ Figure&nbsp;12.10: Posterior distributions of promotion rates for each performan
 </ol>
 <p>For questions 6 to 10, take a random sample of 50 rows from the full <code>ugtests</code> data set and treat this as your observed data.</p>
 <ol start="6" type="1">
-<li>Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers. Use a Bayesian <span class="math inline">\(t\)</span>-test to perform this test. Report and interpret the Bayes Factor.<br>
-</li>
-<li>Visualize the posterior distribution of the difference in Year 2 score means between the two groups using a halfeye plot.<br>
-</li>
+<li>Test the hypothesis that top quartile students from Year 1 score higher in Year 2 than their bottom quartile peers. Use a Bayesian <span class="math inline">\(t\)</span>-test to perform this test. Report and interpret the Bayes Factor.</li>
+<li>Visualize the posterior distribution of the difference in Year 2 score means between the two groups using a halfeye plot.</li>
 <li>Calculate summary statistics and a 95% credible interval for the posterior distribution of the difference in Year 2 scores between the two groups.</li>
 <li>Test the hypothesis that there is a correlation between Year 2 and Final Year examination scores using a Bayesian correlation test. Report and interpret the Bayes Factor.</li>
 <li>Visualize the posterior distribution of the correlation coefficient using a halfeye plot. Calculate summary statistics and a 95% credible interval for the posterior distribution of the correlation coefficient. Write a summary of your findings from questions 6 to 10.</li>
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-gelman" class="csl-entry" role="listitem">
-Gelman, Andrew, John B. Carlin, Hal S. Stern, David B. Dunson, Aki Vehtari, and Donald B. Rubin. 2013. <em>Bayesian Data Analysis</em>.
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., &amp; Rubin, D. B. (2013). <em>Bayesian data analysis</em>. Chapman <span>and</span> Hall/<span>CRC</span>.
 </div>
 <div id="ref-jeffreys" class="csl-entry" role="listitem">
-Jeffreys, Harold. 1961. <em>The Theory of Probability (3rd Edition)</em>.
+Jeffreys, H. (1961). <em>The theory of probability (3rd edition)</em>. Oxford University Press.
 </div>
 <div id="ref-lindley" class="csl-entry" role="listitem">
-Lindley, Dennis V. 1972. <em>Bayesian Statistics: A Review</em>.
+Lindley, D. V. (1972). <em>Bayesian statistics: A review</em>. Society for Industrial <span>and</span> Applied Mathematics.
 </div>
 <div id="ref-mcelreath" class="csl-entry" role="listitem">
-McElreath, Richard. 2020. <em>Statistical Rethinking: A Bayesian Course with Examples in <span>R</span> and <span>Stan</span></em>.
+McElreath, R. (2020). <em>Statistical rethinking: A <span>Bayesian</span> course with examples in <span>R</span> and <span>Stan</span></em>. Chapman <span>and</span> Hall/<span>CRC</span>.
 </div>
 </div>
 </section>

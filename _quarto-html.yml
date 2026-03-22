@@ -5,6 +5,7 @@ project:
   - .nojekyll
   - data/*
   - www/*
+  - apa.csl
 
 book:
   title: "Handbook of Regression Modeling in People Analytics"
@@ -55,5 +56,6 @@ format:
     author-meta: "Keith McNulty"
     callout-appearance: simple
     bibliography: book.bib
+    csl: apa.csl
     engine: knitr
 
