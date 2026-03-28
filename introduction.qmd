@@ -31,6 +31,6 @@ Secondly, an entirely new set of chapters has been added introducing Bayesian me
 Finally, I have added a chapter on causal inference methods, which are garnering increasing interest not just in people analytics but in most fields of applied statistics.  Causal inference is essentially a more disciplined approach to regression modeling which encourages the analyst to construct their model with extra care on the basis of a belief about the causal relationships between variables.  It is a nice way to wrap up the extensive range of methods covered in the book, adding a framework and set of tools which can be applied to everything learned in previous chapters. 
 
 Keith McNulty \
-January 2025
+January 2026
 
 \mainmatter
