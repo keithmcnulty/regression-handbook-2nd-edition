@@ -626,6 +626,8 @@ position_level                    1.3692971</code></pre>
 <p>Now we will look at a summary of the results.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multi_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 multinom(formula = product ~ age + gender + household + position_level + 
@@ -660,9 +662,11 @@ AIC: 1517.365 </code></pre>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to p-values</span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>p_values <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(z_stats)))<span class="sc">*</span><span class="dv">2</span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># display p-values in transposed data frame</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(p_values))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># display p-values in transposed data frame</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(p_values))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>                            B            C
 (Intercept)      0.000000e+00 0.000000e+00
@@ -757,6 +761,9 @@ absent           -0.008412403</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients with absent</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>                           B             C
 (Intercept)      -4.60099991 -10.226169428
@@ -839,8 +846,8 @@ position_level   -0.3912014  -0.20908835</code></pre>
 Dep. Variable:                      y   No. Observations:                 1453
 Model:                        MNLogit   Df Residuals:                     1439
 Method:                           MLE   Df Model:                           12
-Date:                Sat, 28 Mar 2026   Pseudo R-squ.:                  0.5332
-Time:                        18:43:34   Log-Likelihood:                -744.68
+Date:                Fri, 10 Apr 2026   Pseudo R-squ.:                  0.5332
+Time:                        19:48:57   Log-Likelihood:                -744.68
 converged:                       True   LL-Null:                       -1595.3
 Covariance Type:            nonrobust   LLR p-value:                     0.000
 ==================================================================================

@@ -709,9 +709,6 @@ Figure&nbsp;13.2: 66% (dark lines) and 95% (light lines) credible intervals for 
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>pred_values <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Final =</span> <span class="fu">as.vector</span>(post_pred))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can now plot exactly what we expect this student’s final year score to look like, including our uncertainty about the model parameters <em>and</em> the natural noise in the data, using the halfeye plot in <a href="#fig-post-predict" class="quarto-xref">Figure&nbsp;<span>13.3</span></a>.</p>
-<div id="fig-post-predict" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-post-predict-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -724,10 +721,15 @@ Figure&nbsp;13.2: 66% (dark lines) and 95% (light lines) credible intervals for 
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Probability"</span>) <span class="sc">+</span></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fig-post-predict" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-post-predict-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -743,9 +745,6 @@ Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute 95% posterior prediction interval for new data point</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_interval</span>(post_pred, <span class="at">prob =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div style="page-break-after: always;"></div>
-<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>     2.5% 97.5%
 [1,]  135   236</code></pre>
@@ -897,9 +896,6 @@ simple_model -33.6       7.8  </code></pre>
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(inf_model_std)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div style="page-break-after: always;"></div>
-<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: gaussian 
   Links: mu = identity 
@@ -982,6 +978,8 @@ Yr3       |  Rejected |      0.00 % |  [0.56, 0.84]</code></pre>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">hypothesis =</span> <span class="fu">c</span>(<span class="st">"Yr1 &gt; 0"</span>, <span class="st">"Yr2 &gt; 0"</span>, <span class="st">"Yr3 &gt; 0"</span>), </span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">class =</span> <span class="st">"b"</span></span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Hypothesis Tests for class b:
   Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob Star
@@ -1085,9 +1083,6 @@ Yr3              0.83658769           0.851905429</code></pre>
 </div>
 </div>
 <p>We can see that our new data suggests new mean estimates for our coefficent posteriors. We can also compare our fits using one of our model comparison methods. Let’s use Bayesian <span class="math inline">\(R^2\)</span> to compare the original informed model and the updated model.</p>
-<div id="fig-bayes-r2-update" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-bayes-r2-update-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare original and updated models using bayes R2</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>r2_updated <span class="ot">&lt;-</span> <span class="fu">bayes_R2</span>(updated_model, <span class="at">summary =</span> <span class="cn">FALSE</span>, </span>
@@ -1108,10 +1103,15 @@ Yr3              0.83658769           0.851905429</code></pre>
 <span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Probability"</span>) <span class="sc">+</span></span>
 <span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fig-bayes-r2-update" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes-r2-update-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1142,7 +1142,7 @@ Figure&nbsp;13.5: Bayesian R-squared distributions for the original informed mod
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1170,7 +1170,7 @@ Figure&nbsp;13.6: Posterior Predictive Check. The dark line (<span class="math i
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1214,9 +1214,6 @@ Figure&nbsp;13.7: Trace plots of the MCMC simulation. The four colors represent 
 <span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>model.build()</span>
 <span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div style="page-break-after: always;"></div>
-<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>       Formula: Final ~ Yr1 + Yr2 + Yr3
         Family: gaussian

@@ -925,6 +925,12 @@ selection_dag = CausalModel(
 
 We can view the causal graph using the `view_graph()` method as in @fig-py-causal-graph:
 
+```{python}
+#| echo: false
+import random
+random.seed(12345)
+```
+
 ::: {#fig-py-causal-graph}
 
 ```{python}
@@ -934,27 +940,14 @@ selection_dag.view_model()
 Causal graph representing beliefs about causal relationships between a Hiring Decision, Test Score, Interview Score, Presentation Score, and GPA.
 :::
 
-We can then identify the minimal adjustment set using the `identify_effect()` method, which confirms that `GPA` needs to be added to our model to estimate the causal effect of `Test` on `Hire`.
+For this causal model, we can identify the minimal adjustment set using the `get_common_causes()` method, which confirms that `GPA` needs to be added to our model to estimate the causal effect of `Test` on `Hire`.
 
 
 ```{python}
-#| eval: false
-# identify minimal adjustment set
-adjustments = selection_dag.identify_effect()
+# identify common cause of treatment and outcome
+adjustments = selection_dag.get_common_causes()
 print(adjustments)
 ```
-
-\newpage
-\footnotesize
-
-```{python}
-#| echo: false
-# identify minimal adjustment set
-adjustments = selection_dag.identify_effect()
-print(adjustments)
-```
-
-\normalsize
 
 The `DoWhy` package contains a very wide range of methods for estimating causal effects, including linear regression, propensity score matching, inverse probability weighting, and more.  Its estimation capabilities do not currently extend to generalized linear models or Bayesian regression.  In the context of explanatory modeling, it can be used to construct causal models which can then inform the structure of regression models to be implemented in `statsmodels` or `bambi`.
 

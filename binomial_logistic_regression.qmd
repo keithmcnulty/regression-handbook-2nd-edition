@@ -682,10 +682,10 @@ promotion_model = model.fit()
 
 
 # see results summary
-print(promotion_model.summary())
+print(promotion_model.summary2())
 ```
 
-\small
+\footnotesize
 
 ```{python}
 #| echo: false
@@ -709,7 +709,7 @@ promotion_model = model.fit()
 
 
 # see results summary
-print(promotion_model.summary())
+print(promotion_model.summary2())
 ```
 
 \normalsize

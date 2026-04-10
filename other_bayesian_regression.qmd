@@ -130,10 +130,19 @@ uninf_binomial_model <- readRDS("models/other/uninf_binomial_model.RDS")
 
 After fitting the model, we can examine the summary of the posterior distributions of the coefficients, which will represent log-odds coefficients.
 
-
 ```{r}
+#| eval: false
 summary(uninf_binomial_model)
 ```
+
+\small
+
+```{r}
+#| echo: false
+summary(uninf_binomial_model)
+```
+
+\normalsize
 
 And we can transform these to posterior distributions of the odds ratios.
 
@@ -376,8 +385,18 @@ uninf_polr_model <- readRDS("models/other/uninf_polr_model.RDS")
 Now we can view our summary.
 
 ```{r}
+#| eval: false
 summary(uninf_polr_model)
 ```
+
+\footnotesize
+
+```{r}
+#| echo: false
+summary(uninf_polr_model)
+```
+
+\normalsize
 
 Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of being in a higher discipline category.  
 
@@ -458,7 +477,8 @@ We can now inspect the model summary.
 summary(uninf_poisson_model)
 ```
 
-\small
+\footnotesize
+
 ```{r}
 #| echo: false
 summary(uninf_poisson_model)
@@ -509,7 +529,8 @@ We can now inspect the model summary.
 summary(uninf_negbin_model)
 ```
 
-\small
+\footnotesize
+
 ```{r}
 #| echo: false
 summary(uninf_negbin_model)
@@ -519,9 +540,17 @@ summary(uninf_negbin_model)
 
 We can see that our estimated errors have increased, leading to more conservative inferences, and we see a posterior distribution for the shape parameter $\theta$, with the low values indicating substantial overdispersion.  We can do another posterior predictive check to verify if the model fits the data better as in @fig-negbin-pp.
 
+```{r}
+#| eval: false
+pp_check(uninf_negbin_model, ndraws = 1000) +
+  xlim(0, 50) +
+  theme_minimal()
+```
+
 :::{#fig-negbin-pp}
 
 ```{r}
+#| echo: false
 pp_check(uninf_negbin_model, ndraws = 1000) +
   xlim(0, 50) +
   theme_minimal()
@@ -588,8 +617,18 @@ uninf_mixed_binomial_model <- readRDS("models/other/uninf_mixed_binomial_model.R
 Now we can view our summary.
 
 ```{r}
+#| eval: false
 summary(uninf_mixed_binomial_model)
 ```
+
+\small
+
+```{r}
+#| echo: false
+summary(uninf_mixed_binomial_model)
+```
+
+\normalsize
 
 Here we can see the posterior coefficient distributions for each fixed effect, representing the effect of a unit change in that variable on the log-odds of a positive decision about a date.  We can also see the estimated standard deviation of the random intercepts for each individual under the `Multilevel Hyperparameters`, which captures the variability in baseline log-odds of a positive decision across individuals. A posterior predictive check can be done in the same way as for a standard Bayesian binomial logistic regression model.
 

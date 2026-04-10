@@ -391,11 +391,24 @@ Eco =~ Eco1 + Eco2
 With the measurement model defined, the confirmatory factor analysis can be run and a summary viewed.  The `lavaan` summary functions used in this section produce quite large outputs.  We will proceed to highlight which parts of this output are important in interpreting and refining the model.    
 
 ```{r}
+#| eval: false
 library(lavaan)
 
 cfa_meas_mod <- lavaan::cfa(model = meas_mod, data = politics_survey)
 lavaan::summary(cfa_meas_mod, fit.measures = TRUE, standardized = TRUE)
 ```
+
+\small
+
+```{r}
+#| echo: false
+library(lavaan)
+
+cfa_meas_mod <- lavaan::cfa(model = meas_mod, data = politics_survey)
+lavaan::summary(cfa_meas_mod, fit.measures = TRUE, standardized = TRUE)
+```
+
+\normalsize
 
 \index{structural equation models!refining}This is a large set of results, but we can focus in on some important parameters to examine. First, we note that the results did not come attached to a warning. One particular warning to look out for relates to the covariance matrix being non-positive definite. This renders some of the attempted measurement invalid and is usually caused by too small a sample size for the complexity of the measurement model. Since we did not receive this warning, we can proceed safely.
 
@@ -442,6 +455,7 @@ We now see that our measurement model comfortably meets all fit requirements. In
 \index{structural equation models!structural model}With a satisfactory measurement model, the structural model is a simple regression formula. The `sem()` function in `lavaan` can be used to perform a full structural equation model including the measurement model and structural model.  Like for `cfa()`, an extensive output can be expected from this function, but assuming that our measurement model is satisfactory, our key interest is now in the structural model elements of this output.
 
 ```{r}
+#| eval: false
 # define full SEM using revised measurement model
 full_sem <- "
 # measurement model
@@ -462,6 +476,33 @@ Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco
 full_model <- lavaan::sem(model = full_sem, data = politics_survey)
 lavaan::summary(full_model, standardized = TRUE)
 ```
+
+\small
+
+```{r}
+#| echo: false
+# define full SEM using revised measurement model
+full_sem <- "
+# measurement model
+Pol =~ Pol1 + Pol2
+Hab =~ Hab1 + Hab2 + Hab3
+Loc =~ Loc2 + Loc3
+Env =~ Env1 + Env2
+Int =~ Int1 + Int2
+Pers =~ Pers2 + Pers3
+Nat =~ Nat1 + Nat2
+Eco =~ Eco1 + Eco2
+
+# structural model
+Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco
+"
+
+# run full SEM 
+full_model <- lavaan::sem(model = full_sem, data = politics_survey)
+lavaan::summary(full_model, standardized = TRUE)
+```
+
+\normalsize
 
 The `Std.all` column of the `Regressions` section of the output provides the fundamentals of the structural model---these are standardized estimates which can be approximately interpreted as the proportion of the variance of the outcome that is explained by each factor. Here we can make the following interpretations:
 

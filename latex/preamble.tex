@@ -4,6 +4,7 @@
 \usepackage{hyperref}
 \usepackage[bf,singlelinecheck=off]{caption}
 \usepackage[scale=.8]{sourcecodepro}
+\usepackage[bottom]{footmisc}
 
 \usepackage{framed,color}
 \definecolor{shadecolor}{RGB}{248,248,248}
@@ -52,6 +53,7 @@
 }
 \makeatother
 
+\usepackage{listings}
 \usepackage[nonumberlist]{glossaries}
 \makenoidxglossaries
 
@@ -452,12 +454,11 @@
     description={A visual framework for describing beliefs about the causal effects of variables on other veriables within a system.  A key tool in causal inference}
 }
 
-
-
-
-
-
 \glsaddall
+
+\lstset{
+  breaklines=true
+}
 
 \frontmatter
 

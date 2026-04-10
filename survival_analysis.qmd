@@ -53,6 +53,7 @@ where $l_i$ is the number reported as left in month $i$, and $n_i$ is the number
 \index{R!packages!suvival@\texttt{survival}}The `survival` package in R allows easy construction of survival rates on data in a similar format to that in our `job_retention` data set.  A survival object is created using the `Surv()` function to track the survival rate at each time period.
 
 ```{r}
+#| eval: false
 library(survival)
 
 # create survival object with event as 'left' and time as 'month'
@@ -62,6 +63,22 @@ retention <- Surv(event = job_retention$left,
 # view unique values of retention
 unique(retention)
 ```
+
+\footnotesize
+
+```{r}
+#| echo: false
+library(survival)
+
+# create survival object with event as 'left' and time as 'month'
+retention <- Surv(event = job_retention$left, 
+                  time = job_retention$month)
+
+# view unique values of retention
+unique(retention)
+```
+
+\normalsize
 
 
 We can see that our survival object records the month at which the individual had left their job if they are recorded as having done so in the data set.  If not, the object records the last month at which there was a record of the individual, appended with a '+' to indicate that this was the last record available.
@@ -84,6 +101,7 @@ We can see that the `n.risk`, `n.event` and `survival` columns for each group co
 Let's imagine that we wish to determine if the sentiment of the individual had an impact on survival likelihood.  We can divide our population into two (or more) groups based on their sentiment and compare their survival rates.  
 
 ```{r}
+#| eval: false
 # create a new field to define high sentiment (>= 7)
 job_retention$sentiment_category <- ifelse(
   job_retention$sentiment >= 7, 
@@ -100,11 +118,32 @@ kmestimate_sentimentcat <- survival::survfit(
 summary(kmestimate_sentimentcat)
 ```
 
-\index{R!packages!survminer@\texttt{survminer}}We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs.  The `ggsurvplot()` function in the `survminer` package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in @fig-survivalplot.
-
-::: {#fig-survivalplot}
+\small
 
 ```{r}
+#| echo: false
+# create a new field to define high sentiment (>= 7)
+job_retention$sentiment_category <- ifelse(
+  job_retention$sentiment >= 7, 
+  "High", 
+  "Not High"
+)
+
+# generate survival rates by sentiment category
+kmestimate_sentimentcat <- survival::survfit(
+  formula = Surv(event = left, time = month) ~ sentiment_category,
+  data = job_retention
+)
+
+summary(kmestimate_sentimentcat)
+```
+
+\normalsize
+
+\index{R!packages!survminer@\texttt{survminer}}We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs.  The `ggsurvplot()` function in the `survminer` package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in @fig-survivalplot.
+
+```{r}
+#| eval: false
 #| fig.align: "center"
 library(survminer)
 
@@ -118,7 +157,25 @@ survminer::ggsurvplot(
   xlab = "Month",
   ylab = "Retention Rate"
 )
+```
 
+::: {#fig-survivalplot}
+
+```{r}
+#| echo: false
+#| fig.align: "center"
+library(survminer)
+
+# show survival curves with p-value estimate and confidence intervals
+survminer::ggsurvplot(
+  kmestimate_sentimentcat,
+  pval = TRUE,
+  conf.int = TRUE,
+  palette = c("blue", "red"),
+  linetype = c("solid", "dashed"),
+  xlab = "Month",
+  ylab = "Retention Rate"
+)
 ```
 
 Survival curves by sentiment category in the `job_retention` data
@@ -301,8 +358,28 @@ kmf.fit(T, event_observed = E)
 highsent = (job_retention["sentiment"] >= 7)
 ```
 
+```{python}
+#| eval: false
+#| results: false
+# set up plot
+survplot = plt.subplot()
+
+# plot high sentiment survival function
+kmf.fit(T[highsent], event_observed = E[highsent],
+label = "High Sentiment")
+kmf.plot_survival_function()
+
+# plot not high sentiment survival function
+kmf.fit(T[~highsent], event_observed = E[~highsent],
+label = "Not High Sentiment")
+
+# render plot
+kmf.plot_survival_function()
+```
+
 ::: {#fig-survival-python}
 ```{python}
+#| echo: false
 #| results: false
 # set up plot
 survplot = plt.subplot()

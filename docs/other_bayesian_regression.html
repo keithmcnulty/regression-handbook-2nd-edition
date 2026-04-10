@@ -149,13 +149,13 @@ window.Quarto = {
 
 <meta property="og:title" content="14&nbsp; Fitting Other Regression Models Using Bayesian Inference – Handbook of Regression Modeling in People Analytics">
 <meta property="og:description" content="">
-<meta property="og:image" content="https://peopleanalytics-regression-book.org/other_bayesian_regression_files/figure-html/unnamed-chunk-8-1.png">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/other_bayesian_regression_files/figure-html/unnamed-chunk-9-1.png">
 <meta property="og:site_name" content="Handbook of Regression Modeling in People Analytics">
 <meta property="og:image:height" content="960">
 <meta property="og:image:width" content="1344">
 <meta name="twitter:title" content="14&nbsp; Fitting Other Regression Models Using Bayesian Inference – Handbook of Regression Modeling in People Analytics">
 <meta name="twitter:description" content="">
-<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/other_bayesian_regression_files/figure-html/unnamed-chunk-8-1.png">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/other_bayesian_regression_files/figure-html/unnamed-chunk-9-1.png">
 <meta name="twitter:image-height" content="960">
 <meta name="twitter:image-width" content="1344">
 <meta name="twitter:card" content="summary_large_image">
@@ -434,6 +434,8 @@ y_i \sim \text{Bernoulli}(p_i)
 <p>After fitting the model, we can examine the summary of the posterior distributions of the coefficients, which will represent log-odds coefficients.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_binomial_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: bernoulli 
   Links: mu = logit 
@@ -484,7 +486,7 @@ performance   4.060503e+00    2.203647 9.924827e-01 2.185864e+01</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -506,7 +508,7 @@ Figure&nbsp;14.1: Posterior distribution of the odds ratio for the <code>sales</
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -611,7 +613,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -715,6 +717,8 @@ Figure&nbsp;14.3: Posterior predictive check comparing the proportions of each p
 <p>Now we can view our summary.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_polr_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: cumulative 
   Links: mu = logit 
@@ -828,7 +832,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -880,17 +884,19 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 </div>
 <p>We can see that our estimated errors have increased, leading to more conservative inferences, and we see a posterior distribution for the shape parameter <span class="math inline">\(\theta\)</span>, with the low values indicating substantial overdispersion. We can do another posterior predictive check to verify if the model fits the data better as in <a href="#fig-negbin-pp" class="quarto-xref">Figure&nbsp;<span>14.5</span></a>.</p>
-<div id="fig-negbin-pp" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-negbin-pp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(uninf_negbin_model, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">+</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">50</span>) <span class="sc">+</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fig-negbin-pp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-negbin-pp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="other_bayesian_regression_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -944,6 +950,8 @@ uninf_poisson_model -211.6      41.7 </code></pre>
 <p>Now we can view our summary.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uninf_mixed_binomial_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: bernoulli 
   Links: mu = logit 

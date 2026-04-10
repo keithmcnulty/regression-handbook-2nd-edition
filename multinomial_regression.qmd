@@ -213,13 +213,39 @@ multi_model <- multinom(
 Now we will look at a summary of the results.
 
 ```{r}
+#| eval: false
 summary(multi_model)
 ```
+
+\footnotesize
+
+```{r}
+#| echo: false
+summary(multi_model)
+```
+
+\normalsize
 
 
 \index{multinomial logistic regression!coefficients}Notice that the output of `summary(multi_model)` is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the z-statistics and converting (we covered this hypothesis testing methodology in @sec-means-sig).
 
 ```{r}
+#| eval: false
+# calculate z-statistics of coefficients
+z_stats <- summary(multi_model)$coefficients/
+  summary(multi_model)$standard.errors
+
+# convert to p-values
+p_values <- (1 - pnorm(abs(z_stats)))*2
+
+# display p-values in transposed data frame
+data.frame(t(p_values))
+```
+
+\newpage
+
+```{r}
+#| echo: false
 # calculate z-statistics of coefficients
 z_stats <- summary(multi_model)$coefficients/
   summary(multi_model)$standard.errors
@@ -230,7 +256,6 @@ p_values <- (1 - pnorm(abs(z_stats)))*2
 
 # display p-values in transposed data frame
 data.frame(t(p_values))
-
 ```
 
 ### Interpreting the model
@@ -303,6 +328,15 @@ simpler_multi_model <- multinom(
 ```
 
 ```{r}
+#| eval: false
+# view coefficients with absent
+data.frame(t(summary(multi_model)$coefficients))
+```
+
+\newpage
+
+```{r}
+#| echo: false
 # view coefficients with absent
 data.frame(t(summary(multi_model)$coefficients))
 ```

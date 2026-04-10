@@ -1073,10 +1073,7 @@ Figure&nbsp;2.3: Simple scatterplot of <code>customer_rate</code> against <code>
 </figure>
 </div>
 <p>Histograms of data can be generated using the <code>hist()</code> function. This command will generate a histogram of <code>performance</code> as displayed in <a href="#fig-basichist" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>. Note the use of <code>breaks</code> to customize how the bars appear.</p>
-<div id="fig-basichist" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-basichist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell" data-layout-align="center">
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert performance ratings back to numeric data type for histogram</span></span>
 <span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>salespeople<span class="sc">$</span>performance <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(salespeople<span class="sc">$</span>performance)</span>
 <span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1084,10 +1081,15 @@ Figure&nbsp;2.3: Simple scatterplot of <code>customer_rate</code> against <code>
 <span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(salespeople<span class="sc">$</span>performance, <span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>,</span>
 <span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Performance Rating"</span>, </span>
 <span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Histogram of Performance Ratings"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fig-basichist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-basichist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="basic_r_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="basic_r_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1099,18 +1101,20 @@ Figure&nbsp;2.4: Simple histogram of <code>performance</code> in the <code>sales
 </figure>
 </div>
 <p>Box and whisker plots are excellent ways to see the distribution of a variable, and can be grouped against another variable to see bivariate patterns. For example, this command will show a box and whisker plot of <code>sales</code> grouped against <code>performance</code>, with the output shown in <a href="#fig-basicbox" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>. Note the use of the <code>formula</code> and <code>data</code> notation here to define the variable we are interested in and how we want it grouped. We will study this formula notation in greater depth later in this book.</p>
-<div id="fig-basicbox" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-basicbox-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># box plot of sales by performance rating</span></span>
 <span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> salespeople,</span>
 <span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Performance Rating"</span>, <span class="at">ylab =</span> <span class="st">"Sales ($m)"</span>,</span>
 <span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Boxplot of Sales by Performance Rating"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fig-basicbox" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-basicbox-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="basic_r_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="basic_r_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1138,7 +1142,6 @@ Figure&nbsp;2.5: Simple box plot of <code>sales</code> grouped against <code>per
 <span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a><span class="co"># pairplot of salespeople</span></span>
 <span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(salespeople)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div style="page-break-after: always;"></div>
 <div id="fig-basicpair" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-basicpair-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1146,7 +1149,7 @@ Figure&nbsp;2.5: Simple box plot of <code>sales</code> grouped against <code>per
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="basic_r_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="basic_r_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

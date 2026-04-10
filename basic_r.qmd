@@ -313,10 +313,14 @@ unique(salespeople$performance)
 
 If we need to change the type of a column in a dataframe, we can use the `as.numeric()`, `as.character()`, `as.logical()` or `as.factor()` functions.  For example, given that there are only four unique values for the `performance` column, we may want to convert it to a factor.
 
+\footnotesize
+
 ```{r}
 salespeople$performance <- as.factor(salespeople$performance)
 str(salespeople)
 ```
+
+\normalsize
 
 ### Manipulating dataframes
 
@@ -555,8 +559,20 @@ Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data 
 
 \index{R!histograms}Histograms of data can be generated using the `hist()` function.  This command will generate a histogram of `performance` as displayed in @fig-basichist.  Note the use of `breaks` to customize how the bars appear.
 
+```{r}
+#| eval: false
+# convert performance ratings back to numeric data type for histogram
+salespeople$performance <- as.numeric(salespeople$performance)
+
+# histogram of performance ratings
+hist(salespeople$performance, breaks = 0:4,
+     xlab = "Performance Rating", 
+     main = "Histogram of Performance Ratings")
+```
+
 ::: {#fig-basichist}
 ```{r}
+#| echo: false
 #| fig.align: "center"
 # convert performance ratings back to numeric data type for histogram
 salespeople$performance <- as.numeric(salespeople$performance)
@@ -572,8 +588,18 @@ Simple histogram of `performance` in the `salespeople` data set
 
 \index{R!box and whisker plots}Box and whisker plots are excellent ways to see the distribution of a variable, and can be grouped against another variable to see bivariate patterns.  For example, this command will show a box and whisker plot of `sales` grouped against `performance`, with the output shown in @fig-basicbox.  Note the use of the `formula` and `data` notation here to define the variable we are interested in and how we want it grouped.  We will study this formula notation in greater depth later in this book. 
 
+```{r}
+#| eval: false
+#| fig.align: "center"
+# box plot of sales by performance rating
+boxplot(formula = sales ~ performance, data = salespeople,
+        xlab = "Performance Rating", ylab = "Sales ($m)",
+        main = "Boxplot of Sales by Performance Rating")
+```
+
 ::: {#fig-basicbox}
 ```{r}
+#| echo: false
 #| fig.align: "center"
 # box plot of sales by performance rating
 boxplot(formula = sales ~ performance, data = salespeople,
@@ -606,9 +632,8 @@ salespeople$performance <- as.factor(salespeople$performance)
 GGally::ggpairs(salespeople)
 ```
 
-\newpage
-
 ::: {#fig-basicpair}
+
 ```{r}
 #| echo: false
 library(GGally)

@@ -1191,7 +1191,7 @@ Figure&nbsp;15.10: Posterior distribution of the causal effect of <code>Test</co
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="causal_inference_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="causal_inference_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1202,39 +1202,13 @@ Figure&nbsp;15.11: Causal graph representing beliefs about causal relationships 
 </figcaption>
 </figure>
 </div>
-<p>We can then identify the minimal adjustment set using the <code>identify_effect()</code> method, which confirms that <code>GPA</code> needs to be added to our model to estimate the causal effect of <code>Test</code> on <code>Hire</code>.</p>
+<p>For this causal model, we can identify the minimal adjustment set using the <code>get_common_causes()</code> method, which confirms that <code>GPA</code> needs to be added to our model to estimate the causal effect of <code>Test</code> on <code>Hire</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># identify minimal adjustment set</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>adjustments <span class="op">=</span> selection_dag.identify_effect()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># identify common cause of treatment and outcome</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>adjustments <span class="op">=</span> selection_dag.get_common_causes()</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(adjustments)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Estimand type: EstimandType.NONPARAMETRIC_ATE
-
-### Estimand : 1
-Estimand name: backdoor
-Estimand expression:
-   d                
-───────(E[Hire|GPA])
-d[Test]             
-Estimand assumption 1, Unconfoundedness: If U→{Test} and U→Hire then P(Hire|Test,GPA,U) = P(Hire|Test,GPA)
-
-### Estimand : 2
-Estimand name: iv
-No such variable(s) found!
-
-### Estimand : 3
-Estimand name: frontdoor
-No such variable(s) found!
-
-### Estimand : 4
-Estimand name: general_adjustment
-Estimand expression:
-   d                
-───────(E[Hire|GPA])
-d[Test]             
-Estimand assumption 1, Unconfoundedness: If U→{Test} and U→Hire then P(Hire|Test,GPA,U) = P(Hire|Test,GPA)</code></pre>
+<pre><code>['GPA']</code></pre>
 </div>
 </div>
 <p>The <code>DoWhy</code> package contains a very wide range of methods for estimating causal effects, including linear regression, propensity score matching, inverse probability weighting, and more. Its estimation capabilities do not currently extend to generalized linear models or Bayesian regression. In the context of explanatory modeling, it can be used to construct causal models which can then inform the structure of regression models to be implemented in <code>statsmodels</code> or <code>bambi</code>.</p>

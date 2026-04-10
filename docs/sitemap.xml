@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/basic_r.html</loc>
-    <lastmod>2026-02-15T14:55:31.444Z</lastmod>
+    <lastmod>2026-04-06T16:45:13.295Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/primer_stats.html</loc>
@@ -26,31 +26,31 @@
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/linear_regression.html</loc>
-    <lastmod>2026-03-22T13:55:39.216Z</lastmod>
+    <lastmod>2026-04-06T17:11:31.192Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/binomial_logistic_regression.html</loc>
-    <lastmod>2026-03-22T14:12:53.083Z</lastmod>
+    <lastmod>2026-04-06T17:26:02.733Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/multinomial_regression.html</loc>
-    <lastmod>2026-03-22T14:27:50.374Z</lastmod>
+    <lastmod>2026-04-09T09:53:34.371Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/ordinal_regression.html</loc>
-    <lastmod>2026-03-22T14:42:13.217Z</lastmod>
+    <lastmod>2026-04-09T10:59:27.116Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/poisson_nb.html</loc>
-    <lastmod>2026-03-22T15:50:05.546Z</lastmod>
+    <lastmod>2026-04-09T11:46:19.945Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/hierarchical_data.html</loc>
-    <lastmod>2026-02-23T12:17:09.135Z</lastmod>
+    <lastmod>2026-04-09T11:06:28.954Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/survival_analysis.html</loc>
-    <lastmod>2026-02-23T13:35:30.255Z</lastmod>
+    <lastmod>2026-04-09T11:26:12.716Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/power_tests.html</loc>
@@ -62,15 +62,15 @@
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/bayesian_linear_regression.html</loc>
-    <lastmod>2026-03-22T16:37:22.276Z</lastmod>
+    <lastmod>2026-04-09T12:21:21.452Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/other_bayesian_regression.html</loc>
-    <lastmod>2026-03-01T10:59:01.704Z</lastmod>
+    <lastmod>2026-04-09T13:38:09.542Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/causal_inference.html</loc>
-    <lastmod>2026-03-22T16:56:13.711Z</lastmod>
+    <lastmod>2026-04-09T13:48:45.302Z</lastmod>
   </url>
   <url>
     <loc>https://peopleanalytics-regression-book.org/further.html</loc>

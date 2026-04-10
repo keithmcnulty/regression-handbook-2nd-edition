@@ -320,8 +320,24 @@ pred_values <- data.frame(Final = as.vector(post_pred))
 
 We can now plot exactly what we expect this student's final year score to look like, including our uncertainty about the model parameters *and* the natural noise in the data, using the halfeye plot in @fig-post-predict.
 
+```{r}
+#| eval: false
+library(ggdist)
+
+# plot the predictive distribution in a halfeye plot
+ggplot(pred_values, aes(x = Final)) +
+  stat_halfeye(
+    .width = c(0.66, 0.95),
+    fill = "lightblue",
+    color = "blue"
+  ) +
+  labs(y = "Probability") +
+  theme_minimal()
+```
+
 ::: {#fig-post-predict}
 ```{r}
+#| echo: false
 library(ggdist)
 
 # plot the predictive distribution in a halfeye plot
@@ -341,16 +357,6 @@ Distribution of predicted Final year score for a new student
 Note that we can easily obtain posterior prediction intervals using the `posterior_interval()` function in `brms`.  Let's compute the 95% posterior prediction interval for this student's final year score.
 
 ```{r}
-#| eval: false
-# compute 95% posterior prediction interval for new data point
-posterior_interval(post_pred, prob = 0.95) |> 
-  round()
-```
-
-\newpage
-
-```{r}
-#| echo: false
 # compute 95% posterior prediction interval for new data point
 posterior_interval(post_pred, prob = 0.95) |> 
   round()
@@ -550,14 +556,6 @@ inf_model_std <- readRDS("models/linear/inf_model_std.RDS")
 ```
 
 ```{r}
-#| eval: false
-summary(inf_model_std)
-```
-
-\newpage
-
-```{r}
-#| echo: false
 summary(inf_model_std)
 ```
 
@@ -599,6 +597,7 @@ The `hypothesis()` function can provide statistics related to a directional alte
 
 
 ```{r}
+#| eval: false
 # test that slope coefficients are greater than zero
 hypothesis(
   inf_model_std, 
@@ -606,6 +605,20 @@ hypothesis(
   class = "b"
 )
 ```
+
+\small
+
+```{r}
+#| echo: false
+# test that slope coefficients are greater than zero
+hypothesis(
+  inf_model_std, 
+  hypothesis = c("Yr1 > 0", "Yr2 > 0", "Yr3 > 0"), 
+  class = "b"
+)
+```
+
+\normalsize
 
 The evidence ratio  (`Evid.Ratio`) is the Bayes Factor in favor of the alternative hypothesis, while the posterior probability (`Post.Prob`) is the probability that the alternative hypothesis is true given the data and priors.  We see that two of our coefficients are virtually certain to be positive given our priors and data.  However, as in @sec-bayes-model-hyp-test, the Bayes Factor will be unreliable if not enough MCMC iterations have been generated.
 
@@ -705,9 +718,34 @@ cbind(inf_model_effects, updated_model_effects)
 
 We can see that our new data suggests new mean estimates for our coefficent posteriors.  We can also compare our fits using one of our model comparison methods.  Let's use Bayesian $R^2$ to compare the original informed model and the updated model.
 
+```{r}
+#| eval: false
+# compare original and updated models using bayes R2
+r2_updated <- bayes_R2(updated_model, summary = FALSE, 
+                       ndraws = 1000, seed = 123)
+
+# create data frame for visualization
+r2_update_df <- data.frame(
+  R2 = c(r2_inf_full[,1], r2_updated[,1]),
+  Model = rep(c("Informed Original", "Informed Updated"), 
+              each = nrow(r2_inf_full))
+)
+
+# plot posterior r-squared for both models
+ggplot(r2_update_df, aes(x = R2, fill = Model)) +
+  stat_halfeye(
+    .width = c(0.66, 0.95),
+    alpha = 0.6
+  ) +
+  labs(y = "Probability") +
+  theme_minimal()
+```
+
+
 :::{#fig-bayes-r2-update}
 
 ```{r}
+#| echo: false
 # compare original and updated models using bayes R2
 r2_updated <- bayes_R2(updated_model, summary = FALSE, 
                        ndraws = 1000, seed = 123)
@@ -802,32 +840,6 @@ To fit our uninformed Bayesian linear regression model from earlier in this chap
 
 
 ```{python}
-#| eval: false
-import pandas as pd
-import bambi as bmb
-import arviz as az
-
-# load the data
-url = "https://peopleanalytics-regression-book.org/data/ugtests.csv"
-ugtests = pd.read_csv(url)
-
-# take a random sample of 100 rows for faster computation
-ugtests_bayes = ugtests.sample(n=100, random_state=123)
-
-# specify a Bayesian linear regression model with default priors
-model = bmb.Model(
-  "Final ~ Yr1 + Yr2 + Yr3", 
-  data=ugtests_bayes, 
-  family = "gaussian"
-)
-model.build()
-print(model)
-```
-
-\newpage
-
-```{python}
-#| echo: false
 import pandas as pd
 import bambi as bmb
 import arviz as az

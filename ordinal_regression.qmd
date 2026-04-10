@@ -112,19 +112,34 @@ soccer$discipline <- ordered(soccer$discipline,
                              levels = c("None", "Yellow", "Red"))
 
 # check conversion
-str(soccer)
+str(soccer$discipline)
 ```
 
 We also know that `position`, `country`, `result` and `level` are categorical, so we convert them to factors.  We could in fact choose to convert `result` and `level` into ordered factors if we so wish, but this is not necessary for input variables, and the results are usually a little bit easier to read as nominal factors.
 
 ```{r}
+#| eval: false
 # apply as.factor to four columns
 cats <- c("position", "country", "result", "level")
 soccer[ ,cats] <- lapply(soccer[ ,cats], as.factor)
 
 # check again
-str(soccer)
+str(soccer[ ,cats])
 ```
+
+\small
+
+```{r}
+#| echo: false
+# apply as.factor to four columns
+cats <- c("position", "country", "result", "level")
+soccer[ ,cats] <- lapply(soccer[ ,cats], as.factor)
+
+# check again
+str(soccer[ ,cats])
+```
+
+\normalsize
 
 Now our data is in a position to run a model.  You may wish to conduct some exploratory data analysis at this stage similar to previous chapters, but from this chapter onward we will skip this and focus on the modeling methodology.
 
@@ -234,9 +249,19 @@ odds_ratio <- exp(coefficients[ ,"Value"])
 
 We can display all our critical statistics by combining them into a dataframe.
 
+```{r}
+#| eval: false
+# combine with coefficient and p_value
+(coefficients <- cbind(
+  coefficients[ ,c("Value", "p_value")],
+  odds_ratio
+))
+```
+
 \newpage
 
 ```{r}
+#| echo: false
 # combine with coefficient and p_value
 (coefficients <- cbind(
   coefficients[ ,c("Value", "p_value")],
@@ -470,7 +495,7 @@ soccer_model = prop_odds_logit.fit(method='bfgs')
 print(soccer_model.summary())
 ```
 
-\footnotesize
+\scriptsize
 
 ```{python}
 #| echo: false

@@ -176,9 +176,20 @@ The summary output is similar to what we've seen before. We have coefficient est
 Let's calculate the IRRs for our model.
 
 ```{r}
+#| eval: false
 # Exponentiate coefficients to get Incidence Rate Ratios (IRRs)
 (irr <- exp(coef(absent_poisson_model)))
 ```
+
+\small
+
+```{r}
+#| echo: false
+# Exponentiate coefficients to get Incidence Rate Ratios (IRRs)
+(irr <- exp(coef(absent_poisson_model)))
+```
+
+\normalsize
 
 Now we can interpret these more easily:
 
@@ -328,9 +339,20 @@ The output looks very similar to the Poisson and Quasi-Poisson summaries, but wi
 The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get Incidence Rate Ratios (IRRs).
 
 ```{r}
+#| eval: false
 # IRRs for the negative binomial model
 (irr_nb <- exp(coef(absent_nb_model)))
 ```
+
+\small
+
+```{r}
+#| echo: false
+# IRRs for the negative binomial model
+(irr_nb <- exp(coef(absent_nb_model)))
+```
+
+\normalsize
 
 Let's compare these with the IRRs from our original Poisson model.
 
@@ -462,6 +484,7 @@ The output indicates that our Poisson model may have too many zeros compared to 
 Here we fit a zero-inflated Poisson model to our absenteeism data.
 
 ```{r}
+#| eval: false
 library(pscl)
 
 # fit zero-inflated Poisson model using all variables 
@@ -479,11 +502,43 @@ zip_model <- zeroinfl(
 summary(zip_model)
 ```
 
+\footnotesize
+
+```{r}
+#| echo: false
+library(pscl)
+
+# fit zero-inflated Poisson model using all variables 
+# for both the zero-inflated and poisson parts
+
+zip_model <- zeroinfl(
+  # poisson input variables first, binomial second
+  # separated by |
+  days_absent ~ tenure + is_manager + performance_rating | 
+    tenure + is_manager + performance_rating,
+  data = absenteeism,
+  dist = "poisson"
+)
+
+summary(zip_model)
+```
+
+\normalsize
+
 The first set of coefficients are the regression coefficients for a Poisson model fitted to the non-zero outcome values, confirming as per our previous Poisson model that higher tenure is significantly positively associated with increased absence, and that being a manager is significantly negatively associated.  The second set of coefficients are from a binomial logistic regression model on an outcome of whether an observation is a structural zero.  Here we see that higher tenure is significantly negatively associated with being a structural zero, meaning that employees with longer tenure are less likely to be in the always-zero group.
 
 However, we know that overdispersion is present in our data, which could be a better explanation for the excess zeros, especially if we have no basis to support a structural reason.    So let's check whether there is zero-inflation in our negative binomial model.
 
 ```{r}
+#| eval: false
+# check for zero-inflation in negative binomial model
+check_zeroinflation(absent_nb_model)
+```
+
+\newpage
+
+```{r}
+#| echo: false
 # check for zero-inflation in negative binomial model
 check_zeroinflation(absent_nb_model)
 ```
@@ -506,7 +561,7 @@ zinb_model <- zeroinfl(
 summary(zinb_model)
 ```
 
-\newpage
+\footnotesize
 
 ```{r}
 #| echo: false
@@ -522,6 +577,8 @@ zinb_model <- zeroinfl(
 
 summary(zinb_model)
 ```
+
+\normalsize
 
 The more conservative negative binomial model suggests that there are no variables significantly associated with being a member of the structural zero group, and confirms the findings from our previous negative binomial model that only tenure is significantly positively associated with increased absence.  This suggests that zero-inflation is not a concern in this case.
 
@@ -556,6 +613,7 @@ poisson_model = smf.glm(
 print(poisson_model.summary())
 ```
 
+\newpage
 \scriptsize
 
 ```{python}
@@ -587,6 +645,7 @@ nb_model = smf.glm(
 print(nb_model.summary())
 ```
 
+\newpage
 \scriptsize
 
 ```{python}

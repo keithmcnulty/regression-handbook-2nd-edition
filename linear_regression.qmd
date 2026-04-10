@@ -814,10 +814,10 @@ model = smf.ols(formula = "Final ~ Yr3 + Yr2 + Yr1", data = ugtests)
 ugtests_model = model.fit()
 
 # see results summary
-print(ugtests_model.summary())
+print(ugtests_model.summary2())
 ```
 
-\small
+\footnotesize
 
 ```{python}
 #| echo: false
@@ -835,7 +835,7 @@ model = smf.ols(formula = "Final ~ Yr3 + Yr2 + Yr1", data = ugtests)
 ugtests_model = model.fit()
 
 # see results summary
-print(ugtests_model.summary())
+print(ugtests_model.summary2())
 ```
 
 \normalsize
