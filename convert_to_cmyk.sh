@@ -2,7 +2,7 @@
 
 # Define input and output filenames
 INPUT_PDF="Handbook-of-Regression-Modeling-in-People-Analytics_embedded.pdf"
-OUTPUT_PDF="Handbook-of-Regression-Modeling-in-People-Analytics_embedded_CMYK.pdf"
+OUTPUT_PDF="Handbook-of-Regression-Modeling-in-People-Analytics.pdf"
 
 # Check if Ghostscript is installed
 if ! command -v gs &> /dev/null; then
