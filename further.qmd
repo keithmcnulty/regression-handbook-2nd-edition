@@ -4,7 +4,7 @@ This final chapter contains a set of scenarios and exercises that will allow you
 
 As you work through these scenarios, I encourage you to document your work using either an R Markdown document or a Jupyter Notebook if you prefer.  This will help you keep a record of your method, approach and code in case you need to put it into practice again in the future.  It will also make it easy for you to share your work with others (for example by putting it in a Github repository), which will allow you to collaborate, discuss and open your work to critique.  If you are starting out on your analytics journey, exposing your work to others is one of the best ways to learn.  If you are more experienced, then there are others that will undoubtedly benefit from seeing how you went about solving these problems.
 
-If you have studied the later chapters of this book, I also encourage you to consider using some of the more advanced modeling techniques you have learned in those chapters to solve these problems.  For example, experiment with taking smaller samples from the datasets and using Bayesian methods to express the uncertainty that comes with these smaller samples.  Consider proposing a causal model for the data if you think one may be appropriate.  Test whether the data supports your causal model, and estimate any notable causal effects you may be interested in.  
+If you have studied the later chapters of this book, I also encourage you to consider using some of the more advanced modeling techniques you have learned in those chapters to solve these problems.  For example, experiment with taking smaller samples from the data sets and using Bayesian methods to express the uncertainty that comes with these smaller samples.  Consider proposing a causal model for the data if you think one may be appropriate.  Test whether the data supports your causal model, and estimate any notable causal effects you may be interested in.  
 
 ## Analyzing graduate salaries
 
@@ -113,11 +113,11 @@ The `employee_performance` data set contains data on the most recent performance
 
 Load the `employee_performance` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/employee_performance.csv].  The fields in the `employee_performance` data set are as follows:
 
-* `sales`:  The sales in millions of dollars made by the salesperson during the evaluation period
-* `new_customers`:  The number of new customers acquired by the salesperson during the evaluation period
-* `region`:  The region that the salesperson operates in:  North, South, East or West
-* `gender`:  The gender of the salesperson
-* `rating`:  The performance rating awarded by the manager
+* `sales`:  The sales in millions of dollars made by the salesperson during the evaluation period.
+* `new_customers`:  The number of new customers acquired by the salesperson during the evaluation period.
+* `region`:  The region that the salesperson operates in:  North, South, East or West.
+* `gender`:  The gender of the salesperson.
+* `rating`:  The performance rating awarded by the manager.
 
 ### Discussion questions
 
@@ -196,7 +196,7 @@ Load the `learning` data set via the `peopleanalyticsdata` package or download i
 * `idcode` is the unique ID of the participant.
 * `rec` is a binary value indicating whether the participant would recommend the program to others.
 * `rel` is a rating from the participant on the relevance of the program to their work, where 1 is Very Low and 5 is Very High.
-* `fun` is a rating on how enjoyable and fun the participant found the program, where 1 is Very Low and 5 is Very High
+* `fun` is a rating on how enjoyable and fun the participant found the program, where 1 is Very Low and 5 is Very High.
 * `clar` is a rating from the participant on the clarity of the content and teaching in the program, where 1 is Very Low and 5 is Very High.
 * `home` is a rating from the participant on the quality of the homework or project work in the program, where 1 is Very Low and 5 is Very High.
 * `class` is a rating from the participant on the quality of the overall class who attended the program, where 1 is Very Low and 5 is Very High.

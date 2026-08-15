@@ -201,7 +201,7 @@ In this case, both indicate a low to moderate correlation.  Spearman's rho or Ke
 When we describe variables as random, we are assuming that they take a form which is *independent and identically distributed*.  Using our `salespeople` data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set.  In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book.  However, it is good to recognize that there are scenarios where this assumption cannot be made.  For example, if the salespeople worked together in serving the same customers on the same products, and each individual's sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed.  In this case, we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.      
 
 
-\index{random variables!central limit theorem}Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  @fig-sales-sample shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` data set and creating a histogram of the resulting mean sales values.  \index{random variables!sampling}We can see how greater numbers of samples (down the rows) lead to a more normal frequency distribution curve and larger sample sizes (across the columns) lead to a 'spikier' frequency distribution with a smaller standard deviation.
+\index{random variables!Central Limit Theorem}Under the Central Limit Theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  @fig-sales-sample shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` data set and creating a histogram of the resulting mean sales values.  \index{random variables!sampling}We can see how greater numbers of samples (down the rows) lead to a more normal frequency distribution curve and larger sample sizes (across the columns) lead to a 'spikier' frequency distribution with a smaller standard deviation.
 
 ::: {#fig-sales-sample}
 ```{r}
@@ -262,7 +262,7 @@ gridExtra::grid.arrange(plotdist(50, 10), plotdist(100, 10), plotdist(150, 10),
                         nrow = 3, ncol = 3)
 ```
 
-Histogram and density of mean `sales` from the `salespeople` data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)
+Histogram and density of mean `sales` from the `salespeople` data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows).
 :::
 
 ### Standard errors, the $t$-distribution and confidence intervals
@@ -332,9 +332,9 @@ cat(paste0('[', lower_bound, ', ', upper_bound, ']'))
 
 Three of the most common types of hypothesis tests are^[We go through these three examples both because they are relatively common and to illustrate the details of the logic behind hypothesis testing.  By understanding how hypothesis tests work, this will allow the reader to grasp the meaning of other such tests like the F-test or the Wald test, which we will refer to in later chapters of this book]:
 
-1. Testing for a difference in the means of two groups
-2. Testing for a non-zero correlation between two variables
-3. Testing for a difference in frequency distributions between different categories  
+1. Testing for a difference in the means of two groups. 
+2. Testing for a non-zero correlation between two variables. 
+3. Testing for a difference in frequency distributions between different categories.   
 
 We will go through an example of each of these.  In each case, you will see a three-step process.  First, we calculate a test statistic.  Second, we determine an expected frequency distribution for that test statistic.  Finally, we determine where our calculated statistic falls in that distribution in order to assess the frequency of our sample occurring if the null hypothesis is true.  During these examples, we will go through all the logic and calculation steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R.  Readers don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
 
@@ -417,7 +417,7 @@ ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
   theme_minimal()
 ```
 
-$t$-distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red dashed lines) and a zero difference (blue dot-dash line)
+$t$-distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red dashed lines) and a zero difference (blue dot-dash line).
 :::
 
 The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 frequency for the true population value under repeated random sampling.  So we can see that the position of the blue dot-dashed line can correspond to a *maximum frequency* that the population mean difference is zero.  \index{hypothesis testing!p-value}This is the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two-tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  \index{hypothesis testing!one and two tailed tests}*One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically 'less than zero' or 'greater than zero'&zwj;.  In the `t.test()` function in R, you can specify this in the arguments.].

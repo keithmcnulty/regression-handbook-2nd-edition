@@ -2,7 +2,7 @@
 
 \index{power analysis|(}
 
-In the vast majority of situations in People Analytics, researchers and analysts have limited control over the size of their samples.  The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available.  At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference.  Whether that difference is visible depends on the statistical properties of the samples used.  Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.
+In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples.  The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available.  At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference.  Whether that difference is visible depends on the statistical properties of the samples used.  Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.
 
 This suggests that a conscientious analyst using classical statistical methods would be well advised to do some up-front work to determine if their samples have a chance of yielding results that are of some inferential value.  In a practical context, however, this is only partly true.  Estimating required sample sizes is an imprecise science.  Although the mathematical theory suggests that it should be precise, in reality we are guessing most of the inputs to the mathematics.  In many cases we are so clueless about those inputs that we move into the realms of pure speculation and then produce ranges of required sample sizes that are so wide as to be fairly meaningless in practice.
 
@@ -53,7 +53,7 @@ The reader may immediately observe that many of these measures are not known at 
 
 Usually we will run power analyses to get a sense of required sample sizes.  Given the observations on unknowns in the previous section, we will have to assert certain possible statistical results in order to estimate required sample sizes.  Most often, we will need to suggest the observed effect size in order to obtain the minimum sample size for that effect size to return a statistically significant result at a desired level of statistical power.  
 
-index{R!packages!WebPower@\texttt{WebPower}}Using our example from the previous section, let's assume that we would see a 'medium' effect size on our samples.  *Cohen's Rule of Thumb* for $d$ states that $d = 0.2$ is a small effect size, $d = 0.5$ a medium effect size and $d = 0.8$ a large effect size.  We can use the `wp.t()` function from the `WebPower` package in R to do a power analysis on a paired two-sample $t$-test and return a minimum required sample size.  We can assume $d = 0.5$ and that we require a power of 0.8---that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.  
+\index{R!packages!WebPower@\texttt{WebPower}}Using our example from the previous section, let's assume that we would see a 'medium' effect size on our samples.  *Cohen's Rule of Thumb* for $d$ states that $d = 0.2$ is a small effect size, $d = 0.5$ a medium effect size and $d = 0.8$ a large effect size.  We can use the `wp.t()` function from the `WebPower` package in R to do a power analysis on a paired two-sample $t$-test and return a minimum required sample size.  We can assume $d = 0.5$ and that we require a power of 0.8---that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.  
 
 \newpage
 
@@ -95,7 +95,7 @@ power <- WebPower::wp.t(n1 = sample_sizes, d = 0.5, type = "paired")
 plot(power)
 ```
 
-Plot of power against sample size for a paired t-test
+Plot of power against sample size for a paired t-test.
 :::
 
 We can see a 'sweet spot' of approximately 40--60 minimum required participants, and a diminishing return on statistical power over and above this. Similarly we can plot a proposed minimum sample size against a range of effect sizes as in @fig-powerdplot.
@@ -124,7 +124,7 @@ plot(samples$d, samples$power, type = "b",
      xlab = "Effect size", ylab = "Power")
 ```
 
-Plot of power against effect size for a paired t-test
+Plot of power against effect size for a paired t-test.
 :::
 
 Similar power test variants exist for other common simple hypothesis tests.  Let's assume that we want to institute a screening test in a recruiting process, and we want to validate this test by running it on a random set of employees with the aim of proving that the test score has a significant non-zero correlation with job performance.  If we assume that we will see a moderate correlation of $r = 0.3$ in our sample^[Cohen's rule of thumb for correlation coefficients is Weak: 0.1, Moderate: 0.3 and Strong: 0.5.], we can use the `wp.correlation()` function in `WebPower` to do a power analysis, resulting in @fig-correlpower.
@@ -144,7 +144,7 @@ correl_powers <- WebPower::wp.correlation(n = sample_sizes, r = 0.3)
 plot(correl_powers)
 ```
 
-Plot of power against sample size for a correlation test
+Plot of power against sample size for a correlation test.
 :::
 
 @fig-correlpower informs us that we will likely want to be hitting at least 100 employees in our study to have any reasonable chance of establishing possible validity for our screening test.  
@@ -179,7 +179,7 @@ f_sq_power <- WebPower::wp.regression(n = sample_sizes,
 plot(f_sq_power)
 ```
 
-Plot of power against sample size for a small effect of a second input variable in a linear regression model
+Plot of power against sample size for a small effect of a second input variable in a linear regression model.
 :::
 
 ## Power analysis for log-likelihood regression models
@@ -219,7 +219,7 @@ logistic_power <- WebPower::wp.logistic(n = sample_sizes,
 plot(logistic_power)
 ```
 
-Plot of power against sample size for a single input variable in logistic regression
+Plot of power against sample size for a single input variable in logistic regression.
 :::
 
 This test suggests that we would need over 1000 individuals in our experiment in order to have at least an 80% chance of establishing the statistical significance of a true relationship between screening test score and promotion likelihood.
@@ -228,7 +228,7 @@ This test suggests that we would need over 1000 individuals in our experiment in
 
 Power tests for explicit hierarchical models usually originate from the context of the design of clinical trials, which not only concern themselves with the entire sample size of a study but also need to determine the split of that sample between treatment and control.  It is rare that power analysis would need to be conducted for hierarchical models in people analytics but the technology is available in the `WebPower` package to explore this.
 
-*Cluster randomized trials* are trials where it is not possible to allocate individuals randomly to treatment or control groups and where entire clusters have been allocated at random instead.  This creates substantial additional complexity in understanding statistical power and required sample sizes.  The `wp.crt2arm()` function in `WebPower` supports power analysis on 2-arm trials (treatment and control), and the `wp.crt3arm()` function supports power analysis on 3-arm trials (Two different treatments and a control).
+*Cluster randomized trials* are trials where it is not possible to allocate individuals randomly to treatment or control groups and where entire clusters have been allocated at random instead.  This creates substantial additional complexity in understanding statistical power and required sample sizes.  The `wp.crt2arm()` function in `WebPower` supports power analysis on 2-arm trials (treatment and control), and the `wp.crt3arm()` function supports power analysis on 3-arm trials (two different treatments and a control).
 
 *Multisite randomized trials* are trials where individuals are assigned to treatment or control groups at random, but where these individuals also belong to different clusters which are important in modeling---for example, they may be members of clinical groups based on pre-existing conditions, or they may be being treated in different hospitals or outpatient facilities. Again, this makes for a substantially more complex calculation of statistical power.  The `wp.mrt2arm()` and `wp.mrt3arm()` functions offer support for this.
 
@@ -277,10 +277,12 @@ TTestPower().plot_power(dep_var = 'nobs',
                               nobs = np.arange(20, 100),
                               effect_size = np.array([0.5]),
                               alpha = 0.05)
+                              
+plt.tight_layout()
 plt.show()
 ```
 
-Plot of power against sample size for a paired t-test
+Plot of power against sample size for a paired t-test.
 :::
 
 

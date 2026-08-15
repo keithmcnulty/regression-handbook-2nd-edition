@@ -39,7 +39,7 @@ ggplot(data, aes(x = midHeight, y = Height)) +
   theme_minimal()
 ```
 
-Galton's study of the height of children introduced the term 'regression'
+Galton's study of the height of children introduced the term 'regression'.
 :::
 
 ### Use cases for linear regression {#sec-use-cases-ols}
@@ -97,7 +97,7 @@ library(GGally)
 GGally::ggpairs(ugtests)
 
 ```
-Pairplot of the `ugtests` data set
+Pairplot of the `ugtests` data set.
 :::
 
 In the diagonal, we can see the distributions of the data in each column.  We observe relatively normal-looking distributions in each year.  We can see scatter plots and pairwise correlation statistics off the diagonal.  For example, we see a particularly strong correlation between `Yr3` and `Final` test scores, a moderate correlation between `Yr2` and `Final` and relative independence elsewhere.
@@ -149,7 +149,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point() +
   theme_minimal()
 ```
-Basic scatter plot of 10 observations
+Basic scatter plot of 10 observations.
 :::
 
 
@@ -164,7 +164,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   theme_minimal()
 
 ```
-Fitting $y=1.2x + 5$ to our 10 observations
+Fitting $y=1.2x + 5$ to our 10 observations.
 :::
 
 This looks like an approximation of the relationship, but how do we know that it is the best approximation?  
@@ -195,14 +195,14 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   theme_minimal()
 ```
 
-Residuals of $y=1.2x + 5$ for our 10 observations
+Residuals of $y=1.2x + 5$ for our 10 observations.
 :::
 
 The error of our model---which we want to minimize---could be defined in a number of ways:
 
-1.  The average of our residuals $\epsilon_i$
-2.  The average of the *absolute values* of our residuals $\epsilon_i$ (so that negative values are converted to positive values)
-3.  The average of the squares of our residuals $\epsilon_i$ (note that all squares are positive)
+1.  The average of our residuals $\epsilon_i$.
+2.  The average of the *absolute values* of our residuals $\epsilon_i$ (so that negative values are converted to positive values).
+3.  The average of the squares of our residuals $\epsilon_i$ (note that all squares are positive).
 
 For a number of reasons (not least the fact that at the time this method was developed it was one of the easiest to derive), the most common approach is number 3, which is why we call our regression model *Ordinary Least Squares* regression.  Some algebra and calculus can help us determine the equation of the line that generates the least-squared residual error.  For more of the theory behind this, consult @linear, but let's look at how this works in practice.  
 
@@ -262,7 +262,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
 
 ```
 
-Residuals of our 10 observations around their mean value
+Residuals of our 10 observations around their mean value.
 :::
 
 Recall from  @sec-mean-var-sd the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the average squared residual error of a null or random model.  This calculates in this case to `{r} round((9/10)*var(d$Final), 2)`.  Let's overlay our fitted model onto this random model in @fig-model-overlay.
@@ -303,7 +303,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
 
 ```
 
-Comparison of residuals of fitted model (red) against random variable (blue)
+Comparison of residuals of fitted model (red) against random variable (blue).
 :::
 
 So for most of our observations (though not all) we seem to have reduced the 'distance' from the random model by fitting our new model.  If we average the square of our residuals for the fitted model, we obtain the average squared residual error of our fitted model, which calculates to `{r} round(sum(model$residuals^2)/10, 2)`.
@@ -409,7 +409,7 @@ plot_ly(data = ugtests) |>
 knitr::include_graphics("www/04/newmodel-3d.png")
 ```
 
-3D visualization of the fitted `newmodel` against the `ugtests` data
+3D visualization of the fitted `newmodel` against the `ugtests` data.
 :::
 
 
@@ -517,9 +517,9 @@ There are three main options for how missing data is handled:
 
 \index{dummy variables!in linear regression}\index{input variables!categorical}Many models will have categorical inputs rather than numerical inputs.  Categorical inputs usually take forms such as:
 
-* Binary values---for example, Yes/No, True/False
-* Unordered categories---for example Car, Train, Bicycle
-* Ordered categories---for example Low, Medium, High
+* Binary values---for example, Yes/No, True/False.
+* Unordered categories---for example Car, Train, Bicycle.
+* Ordered categories---for example Low, Medium, High.
 
 Categorical variables do not behave like numerical variables.  There is no sense of quantity in a categorical variable.  We do not know how a Car relates to a Train quantitatively, we only know that they are different. Even for an ordered category, although we know that 'Medium' is higher than 'Low'&zwj;, we do not know how much higher or indeed whether the difference is the same as that between 'High' and 'Medium'&zwj;.  
 
@@ -581,7 +581,7 @@ true_values <- ugtests$Final
 plot(predicted_values, true_values)
 ```
 
-Plot of true versus fitted/predicted student scores
+Plot of true versus fitted/predicted student scores.
 :::
 
 Alternatively, you can plot the residuals of your model against the predicted values and look for the pattern of a random distribution (that is, no major discernible pattern) such as in @fig-resplot.
@@ -603,7 +603,7 @@ residuals <- newmodel$residuals
 plot(predicted_values, residuals)
 ```
 
-Plot of residuals against fitted/predicted scores
+Plot of residuals against fitted/predicted scores.
 :::
 
 You can also plot the residuals against each input variable as an extra check of independent randomness, looking for a reasonably random distribution in all cases.  If you find that your residuals are following a clear pattern and are not random in nature, this is an indication that a linear model is not a good choice for your data.
@@ -623,7 +623,7 @@ Yr2 <- ugtests$Yr2
 plot(Yr2, residuals)
 ```
 
-Plot of residuals against `Yr2` values
+Plot of residuals against `Yr2` values.
 :::
 
 We see a pretty consistent range of values for the residuals in @fig-resyr2.  Similarly we can plot the residuals against the values of `Yr3`, as in @fig-resyr3.
@@ -645,7 +645,7 @@ Yr3 <- ugtests$Yr3
 plot(Yr3, residuals)
 ```
 
-Plot of residuals against `Yr3` values
+Plot of residuals against `Yr3` values.
 :::
 
 @fig-resyr3 also shows a consistent range of values for the residuals, which reassures us that we have homoscedacity.
@@ -665,7 +665,7 @@ The quickest way to determine if residuals in your sample are consistent with a 
 qqnorm(newmodel$residuals)
 ```
 
-Quantile-quantile plot of residuals
+Quantile-quantile plot of residuals.
 :::
 
 ### Avoiding high collinearity and multicollinearity between input variables {#sec-collinearity}
@@ -676,7 +676,7 @@ While some correlation between input variables can be expected and tolerated in 
 
 *Collinearity* means that two input variables are highly correlated.  The definition of 'high correlation' is a matter of judgment, but as a rule of thumb correlations greater than 0.5 might be considered high and greater than 0.7 might be considered extreme.  Creating a simple correlation matrix or a pairplot (such as @fig-pairplot-ugtests) can immediately surface high or extreme collinearity.
 
-\index{multicollinearity}*Multicollinearity* means that there is a linear relationship between more than two of the input variables.  \index{VIF (variance inflation factor)}This may not always present itself in the form of high correlations between pairs of input variables, but may be seen by identifying 'clusters' of moderately correlated variables, or by calculating a Variance Inflation Factor (VIF) for each input variable---where VIFs greater than 5 indicate high multicollinearity.  Easy-to-use tests also exist in statistical software for identifying multicollinearity (for example the `mctest` package in R).  index{R!packages!mctest@\texttt{mctest}}Here is how we would test for multicollinearity in our student examination model.\index{variance inflation factor|see {VIF}} 
+\index{multicollinearity}*Multicollinearity* means that there is a linear relationship between more than two of the input variables.  \index{VIF (variance inflation factor)}This may not always present itself in the form of high correlations between pairs of input variables, but may be seen by identifying 'clusters' of moderately correlated variables, or by calculating a Variance Inflation Factor (VIF) for each input variable---where VIFs greater than 5 indicate high multicollinearity.  Easy-to-use tests also exist in statistical software for identifying multicollinearity (for example the `mctest` package in R).  \index{R!packages!mctest@\texttt{mctest}}Here is how we would test for multicollinearity in our student examination model.\index{variance inflation factor|see {VIF}} 
 
 ```{r}
 library(mctest)
@@ -755,7 +755,7 @@ plot_ly(data = ugtests) |>
 knitr::include_graphics("www/04/interactionmodel.png")
 ```
 
-3D visualization of the fitted `interaction_model` against the `ugtests` data
+3D visualization of the fitted `interaction_model` against the `ugtests` data.
 :::
 
 By examining the shape of this curved plane, we can observe that the model considers *trajectories* in the Year 2 and Year 3 examination scores.  Those individuals who have improved from one year to the next will perform better in this model than those who declined.  To demonstrate, let's look at the predicted scores from our `interaction_model` for someone who declined and for someone who improved from Year 2 to Year 3.
@@ -861,15 +861,15 @@ print(ugtests_model.summary2())
 
 \index{data sets!sociological\_data@\texttt{sociological\_data}}Load the `sociological_data` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/sociological_data.csv].  This data represents a sample of information obtained from individuals who participated in a global research study and contains the following fields:
 
-* `annual_income_ppp`:  The annual income of the individual in PPP adjusted US dollars
-* `average_wk_hrs`:  The average number of hours per week worked by the individual
-* `education_months`: The total number of months spent by the individual in formal primary, secondary and tertiary education
-* `region`:  The region of the world where the individual lives
-* `job_type`: Whether the individual works in a skilled or unskilled profession
-* `gender`: The gender of the individual
-* `family_size`:  The size of the individual's family of dependents
-* `work_distance`:  The distance between the individual's residence and workplace in kilometers
-* `languages`:  The number of languages spoken fluently by the individual
+* `annual_income_ppp`:  The annual income of the individual in PPP adjusted US dollars.
+* `average_wk_hrs`:  The average number of hours per week worked by the individual.
+* `education_months`: The total number of months spent by the individual in formal primary, secondary and tertiary education.
+* `region`:  The region of the world where the individual lives.
+* `job_type`: Whether the individual works in a skilled or unskilled profession.
+* `gender`: The gender of the individual.
+* `family_size`:  The size of the individual's family of dependents.
+* `work_distance`:  The distance between the individual's residence and workplace in kilometers.
+* `languages`:  The number of languages spoken fluently by the individual.
 
 Conduct some exploratory data analysis on this data set.  Including:
 

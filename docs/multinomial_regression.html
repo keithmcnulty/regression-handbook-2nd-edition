@@ -422,9 +422,9 @@ window.Quarto = {
 <p>Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order. An underlying assumption is the independence of irrelevant alternatives (IIA). Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.</p>
 <p>Examples of typical situations that might be modeled by multinomial logistic regression include:</p>
 <ol type="1">
-<li>Modeling voting choice in elections with multiple candidates</li>
-<li>Modeling choice of career options by students</li>
-<li>Modeling choice of benefit options by employees</li>
+<li>Modeling voting choice in elections with multiple candidates.</li>
+<li>Modeling choice of career options by students.</li>
+<li>Modeling choice of benefit options by employees.</li>
 </ol>
 </section>
 <section id="walkthrough-example" class="level3" data-number="6.1.3">
@@ -432,12 +432,12 @@ window.Quarto = {
 <p>You are an analyst at a large technology company. The company recently introduced a new health insurance provider for its employees. At the beginning of the year the employees had to choose one of three different health plan products from this provider to best suit their needs. You have been asked to determine which factors influenced the choice in product.</p>
 <p>The <code>health_insurance</code> data set consists of the following fields:</p>
 <ul>
-<li><code>product</code>: The choice of product of the individual—A, B or C</li>
-<li><code>age</code>: The age of the individual when they made the choice</li>
-<li><code>gender</code>: The gender of the individual as stated when they made the choice</li>
-<li><code>household</code>: The number of people living with the individual in the same household at the time of the choice</li>
-<li><code>position_level</code>: Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest</li>
-<li><code>absent</code>: The number of days the individual was absent from work in the year prior to the choice</li>
+<li><code>product</code>: The choice of product of the individual—A, B or C.</li>
+<li><code>age</code>: The age of the individual when they made the choice.</li>
+<li><code>gender</code>: The gender of the individual as stated when they made the choice.</li>
+<li><code>household</code>: The number of people living with the individual in the same household at the time of the choice.</li>
+<li><code>position_level</code>: Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest.</li>
+<li><code>absent</code>: The number of days the individual was absent from work in the year prior to the choice.</li>
 </ul>
 <p>First we load the data and take a look at it briefly.</p>
 <div class="cell">
@@ -493,7 +493,7 @@ window.Quarto = {
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-insurance-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.1: Pairplot of the <code>health_insurance</code> data set
+Figure&nbsp;6.1: Pairplot of the <code>health_insurance</code> data set.
 </figcaption>
 </figure>
 </div>
@@ -699,7 +699,7 @@ absent           1.01174446 1.003269e+00</code></pre>
 </div>
 <p>Here are some examples of how these odds ratios can be interpreted in the multinomial context (used in combination with the p-values above):</p>
 <ul>
-<li>All else being equal, every additional year of age increases the relative odds of selecting Product B versus Product A by approximately 28%, and increases the relative odds of selecting Product C versus Product A by approximately 31%</li>
+<li>All else being equal, every additional year of age increases the relative odds of selecting Product B versus Product A by approximately 28%, and increases the relative odds of selecting Product C versus Product A by approximately 31%.</li>
 <li>All else being equal, being Male reduces the relative odds of selecting Product B relative to Product A by 91%.</li>
 <li>All else being equal, each additional household member deceases the odds of selecting Product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.</li>
 </ul>
@@ -846,8 +846,8 @@ position_level   -0.3912014  -0.20908835</code></pre>
 Dep. Variable:                      y   No. Observations:                 1453
 Model:                        MNLogit   Df Residuals:                     1439
 Method:                           MLE   Df Model:                           12
-Date:                Thu, 02 Jul 2026   Pseudo R-squ.:                  0.5332
-Time:                        09:01:37   Log-Likelihood:                -744.68
+Date:                Sat, 15 Aug 2026   Pseudo R-squ.:                  0.5332
+Time:                        15:53:19   Log-Likelihood:                -744.68
 converged:                       True   LL-Null:                       -1595.3
 Covariance Type:            nonrobust   LLR p-value:                     0.000
 ==================================================================================

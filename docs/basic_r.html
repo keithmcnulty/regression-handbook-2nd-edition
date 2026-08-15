@@ -445,7 +445,7 @@ window.Quarto = {
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rstudio-ide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.1: The RStudio IDE
+Figure&nbsp;2.1: The RStudio IDE.
 </figcaption>
 </figure>
 </div>
@@ -724,7 +724,7 @@ Figure&nbsp;2.1: The RStudio IDE
 6        1   918          4.54           2</code></pre>
 </div>
 </div>
-<p>We can view a specific column by using <code>$</code>, and we can use square brackets to view a specific entry. For example if we wanted to see the 6th entry of the <code>sales</code> column:</p>
+<p>We can view a specific column by using <code>$</code>, and we can use square brackets to view a specific entry. For example if we wanted to see the sixth entry of the <code>sales</code> column:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>salespeople<span class="sc">$</span>sales[<span class="dv">6</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -938,18 +938,18 @@ Figure&nbsp;2.1: The RStudio IDE
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-help-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.2: Results of a search for the <code>head()</code> function in the RStudio Help browser
+Figure&nbsp;2.2: Results of a search for the <code>head()</code> function in the RStudio Help browser.
 </figcaption>
 </figure>
 </div>
 <p>The help page normally shows the following:</p>
 <ul>
-<li>Description of the purpose of the function</li>
-<li>Usage examples, so you can quickly see how it is used</li>
-<li>Arguments list so you can see the names and order of arguments</li>
-<li>Details or notes on further considerations on use</li>
-<li>Expected value of the output (for example <code>head()</code> is expected to return a similar object to its first input <code>x</code>)</li>
-<li>Examples to help orient you further (sometimes examples can be very abstract in nature and not so helpful to users)</li>
+<li>Description of the purpose of the function.</li>
+<li>Usage examples, so you can quickly see how it is used.</li>
+<li>Arguments list so you can see the names and order of arguments.</li>
+<li>Details or notes on further considerations on use.</li>
+<li>Expected value of the output (for example <code>head()</code> is expected to return a similar object to its first input <code>x</code>).</li>
+<li>Examples to help orient you further (sometimes examples can be very abstract in nature and not so helpful to users).</li>
 </ul>
 </section>
 <section id="writing-your-own-functions" class="level3" data-number="2.5.3">
@@ -994,8 +994,8 @@ Figure&nbsp;2.2: Results of a search for the <code>head()</code> function in the
 <p>Even in the most elementary briefing about R, it is very difficult to ignore the pipe operator. The pipe operator makes code more natural to read and write and reduces the typical computing problem of many nested operations inside parentheses.</p>
 <p>As an example, imagine we wanted to do the following two operations in one command:</p>
 <ol type="1">
-<li>Subset <code>salespeople</code> to only the <code>sales</code> values of those with <code>sales</code> less than 500</li>
-<li>Take the mean of those values</li>
+<li>Subset <code>salespeople</code> to only the <code>sales</code> values of those with <code>sales</code> less than 500.</li>
+<li>Take the mean of those values.</li>
 </ol>
 <p>In base R, one way to do this is:</p>
 <div class="cell">
@@ -1040,7 +1040,7 @@ Figure&nbsp;2.2: Results of a search for the <code>head()</code> function in the
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>head[salespeople]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <pre><code>Error in head[salespeople] : object of type 'closure' is not subsettable</code></pre>
-<p>When first faced with an error that you can’t understand, try not to get frustrated and proceed in the knowledge that it usually can be fixed easily and quickly. Often the problem is much more obvious than you think, and if not, there is still a 99% likelihood that others have made this error and you can read about it online. The first step is to take a look at your code to see if you can spot what you did wrong. In this case, you may see that you have used square brackets <code>[]</code> instead of parentheses <code>()</code> when calling your <code>head()</code> function. If you cannot see what is wrong, the next steps are to ask a colleague, do an internet search with the text of the error message you receive, ask a Generative AI coding assistant or consult online forums like https://stackoverflow.com. The more experienced you become, the easier it is to interpret error messages.</p>
+<p>When first faced with an error that you can’t understand, try not to get frustrated and proceed in the knowledge that it usually can be fixed easily and quickly. Often the problem is much more obvious than you think, and if not, there is still a 99% likelihood that others have made this error and you can read about it online. The first step is to take a look at your code to see if you can spot what you did wrong. In this case, you may see that you have used square brackets <code>[]</code> instead of parentheses <code>()</code> when calling your <code>head()</code> function. If you cannot see what is wrong, the next steps are to ask a colleague, do an internet search with the text of the error message you receive, ask a generative AI coding assistant or consult online forums like https://stackoverflow.com. The more experienced you become, the easier it is to interpret error messages.</p>
 <p><em>Warnings</em> are less serious and usually alert you to something that you might be overlooking and which could indicate a problem with the output. In many cases you can ignore warnings, but sometimes they are an important reminder to go back and edit your code. For example, you may run a model which doesn’t converge, and while this does not stop R from returning results, it is also very useful for you to know that it didn’t converge.</p>
 <p><em>Messages</em> are pieces of information that may or may not be useful to you at a particular point in time. Sometimes you will receive messages when you load a package from your library. Sometimes messages will keep you up to date on the progress of a process that is taking a long time to execute.</p>
 </section>
@@ -1068,7 +1068,7 @@ Figure&nbsp;2.2: Results of a search for the <code>head()</code> function in the
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-basicscatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.3: Simple scatterplot of <code>customer_rate</code> against <code>sales</code> in the <code>salespeople</code> data set
+Figure&nbsp;2.3: Simple scatterplot of <code>customer_rate</code> against <code>sales</code> in the <code>salespeople</code> data set.
 </figcaption>
 </figure>
 </div>
@@ -1096,7 +1096,7 @@ Figure&nbsp;2.3: Simple scatterplot of <code>customer_rate</code> against <code>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-basichist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.4: Simple histogram of <code>performance</code> in the <code>salespeople</code> data set
+Figure&nbsp;2.4: Simple histogram of <code>performance</code> in the <code>salespeople</code> data set.
 </figcaption>
 </figure>
 </div>
@@ -1121,7 +1121,7 @@ Figure&nbsp;2.4: Simple histogram of <code>performance</code> in the <code>sales
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-basicbox-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.5: Simple box plot of <code>sales</code> grouped against <code>performance</code> in the <code>salespeople</code> data set
+Figure&nbsp;2.5: Simple box plot of <code>sales</code> grouped against <code>performance</code> in the <code>salespeople</code> data set.
 </figcaption>
 </figure>
 </div>
@@ -1156,7 +1156,7 @@ Figure&nbsp;2.5: Simple box plot of <code>sales</code> grouped against <code>per
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-basicpair-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.6: Pairplot of the <code>salespeople</code> data set
+Figure&nbsp;2.6: Pairplot of the <code>salespeople</code> data set.
 </figcaption>
 </figure>
 </div>

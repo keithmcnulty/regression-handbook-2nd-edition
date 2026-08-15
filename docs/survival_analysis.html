@@ -394,7 +394,7 @@ window.Quarto = {
 <p></p>
 <p>In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured. For example, in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a> input variables were measured in the first three years of an education program and the outcome was measured at the end of the fourth year. In many situations, the outcome we are interested in is a singular event that can occur at any time following when the input variables were measured, can occur at a different time for different individuals, and once it has occurred it cannot reoccur or repeat. In medical studies, death can occur or the onset of a disease can be diagnosed at any time during the study period. In employment contexts, an attrition event can occur at various times throughout the year.</p>
 <p>An obvious and simple way to deal with this would be to simply agree to look at a specific point in time and measure whether or not the event had occurred at that point, for example, ‘How many employees had left at the three-year point?’. Such an approach allows us to use standard generic regression models like those studied in previous chapters. But this approach has limitations.</p>
-<p>Firstly, we are only able to infer conclusions about the likelihood of the event having occurred as at the end of the period of study. We cannot make inferences about the likelihood of the event throughout the period of study. Being able to say that attrition is twice as likely for certain types of individuals <em>at any time throughout the three years</em> is more powerful than merely saying that attrition is twice as likely at the three-year point.</p>
+<p>Firstly, we are only able to infer conclusions about the likelihood of the event having occurred at the end of the period of study. We cannot make inferences about the likelihood of the event throughout the period of study. Being able to say that attrition is twice as likely for certain types of individuals <em>at any time throughout the three years</em> is more powerful than merely saying that attrition is twice as likely at the three-year point.</p>
 <p>Secondly, our sample size is constrained by the state of our data at the end of the period of study. Therefore if we lose track of an individual after two years and six months, that observation needs to be dropped from our data set if we are focused only on the three-year point. Wherever possible, loss of data is something a statistician will want to avoid as it affects the accuracy and statistical power of inferences, and also means research effort was wasted.</p>
 <p><em>Survival analysis</em> is a general term for the modeling of a time-associated binary non-repeated outcome, usually involving an understanding of the comparative risk of that outcome between two or more different groups of interest. There are two common components in an elementary survival analysis, as follows:</p>
 <ul>
@@ -403,7 +403,7 @@ window.Quarto = {
 </ul>
 <p></p>
 <p>Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is <span class="citation" data-cites="collett">Collett (<a href="bibliography.html#ref-collett" role="doc-biblioref">2023</a>)</span>. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.</p>
-<p>The <code>job_retention</code> data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a one-year period. At the beginning of the study, the individuals were asked to rate their sentiment towards their job. These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job. If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.</p>
+<p>The <code>job_retention</code> data set shows the results of a study of around 3800 individuals employed in various fields of employment over a one-year period. At the beginning of the study, the individuals were asked to rate their sentiment towards their job. These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job. If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get job_retention data</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://peopleanalytics-regression-book.org/data/job_retention.csv"</span></span>
@@ -421,12 +421,12 @@ window.Quarto = {
 </div>
 <p>For this walkthrough example, the particular fields we are interested in are:</p>
 <ul>
-<li><code>gender</code>: The gender of the individual studied</li>
-<li><code>field</code>: The field of employment that they worked in at the beginning of the study</li>
-<li><code>level</code>: The level of the position in their organization at the beginning of the study—<code>Low</code>, <code>Medium</code> or <code>High</code></li>
-<li><code>sentiment</code>: The sentiment score reported on a scale of 1 to 10 at the beginning of the study, with 1 indicating extremely negative sentiment and 10 indicating extremely positive sentiment</li>
-<li><code>left</code>: A binary variable indicating whether or not the individual had left their job as at the last follow-up</li>
-<li><code>month</code>: The month of the last follow-up</li>
+<li><code>gender</code>: The gender of the individual studied.</li>
+<li><code>field</code>: The field of employment that they worked in at the beginning of the study.</li>
+<li><code>level</code>: The level of the position in their organization at the beginning of the study—<code>Low</code>, <code>Medium</code> or <code>High</code>.</li>
+<li><code>sentiment</code>: The sentiment score reported on a scale of 1 to 10 at the beginning of the study, with 1 indicating extremely negative sentiment and 10 indicating extremely positive sentiment.</li>
+<li><code>left</code>: A binary variable indicating whether or not the individual had left their job as at the last follow-up.</li>
+<li><code>month</code>: The month of the last follow-up.</li>
 </ul>
 <section id="tracking-and-illustrating-survival-rates-over-the-study-period" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="tracking-and-illustrating-survival-rates-over-the-study-period"><span class="header-section-number">10.1</span> Tracking and illustrating survival rates over the study period</h2>
@@ -579,7 +579,7 @@ S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-survivalplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.1: Survival curves by sentiment category in the <code>job_retention</code> data
+Figure&nbsp;10.1: Survival curves by sentiment category in the <code>job_retention</code> data.
 </figcaption>
 </figure>
 </div>
@@ -590,7 +590,7 @@ Figure&nbsp;10.1: Survival curves by sentiment category in the <code>job_retenti
 <p>Let’s imagine that we have a survival outcome that we are modeling for a population over a time <span class="math inline">\(t\)</span>, and we are interested in how a set of input variables <span class="math inline">\(x_1, x_2, \dots, x_p\)</span> influences that survival outcome. Given that our survival outcome is a binary variable, we can model survival at any time <span class="math inline">\(t\)</span> as a binary logistic regression. We define <span class="math inline">\(h(t)\)</span> as the proportion who have not survived at time <span class="math inline">\(t\)</span>, called the <em>hazard function</em>, and based on our work in <a href="binomial_logistic_regression.html" class="quarto-xref"><span>Chapter 5</span></a>:</p>
 <p><span class="math display">\[
 h(t) = h_0(t)e^{\beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p}
-\]</span> where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(\beta_i\)</span> is the coefficient associated with <span class="math inline">\(x_i\)</span> .</p>
+\]</span> where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(\beta_i\)</span> is the coefficient associated with <span class="math inline">\(x_i\)</span>.</p>
 <p>Now let’s imagine we are comparing the hazard for two different individuals <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> from our population. We make an assumption that our hazard curves <span class="math inline">\(h^A(t)\)</span> for individual <span class="math inline">\(A\)</span> and <span class="math inline">\(h^B(t)\)</span> for individual <span class="math inline">\(B\)</span> are always proportional to each other and never cross—this is called the <em>proportional hazard assumption</em>. Under this assumption, we can conclude that</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -650,7 +650,7 @@ Score (logrank) test = 95.31  on 9 df,   p=&lt;2e-16</code></pre>
 </div>
 <p>The model returns the following<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <ul>
-<li><p>Coefficients for each input variable and their p-values. Here we can conclude that working in Finance or Health is associated with a significantly greater likelihood of leaving over the period studied, and that higher sentiment is associated with a significantly lower likelihood of leaving.</p></li>
+<li><p>Coefficients for each input variable and their p-values. Here we can conclude that working in finance or health is associated with a significantly greater likelihood of leaving over the period studied, and that higher sentiment is associated with a significantly lower likelihood of leaving.</p></li>
 <li><p>Relative odds ratios associated with each input variable. For example, a single extra point in sentiment reduces the odds of leaving by ~11%. A single less point increases the odds of leaving by ~12%. Confidence intervals for the coefficients are also provided.</p></li>
 <li><p>Three statistical tests on the null hypothesis that the coefficients are zero. This null hypothesis is rejected by all three tests which can be interpreted as meaning that the model is significant.</p></li>
 </ul>
@@ -690,7 +690,7 @@ GLOBAL    11.156  9 0.27</code></pre>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schoenfeld-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.2: Schoenfeld test on proportional hazard assumption for <code>cox_model</code>
+Figure&nbsp;10.2: Schoenfeld test on proportional hazard assumption for <code>cox_model</code>.
 </figcaption>
 </figure>
 </div>
@@ -716,7 +716,7 @@ Figure&nbsp;10.2: Schoenfeld test on proportional hazard assumption for <code>co
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Be patient. The program is computing ... 
-The program took 0.79 seconds </code></pre>
+The program took 0.57 seconds </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
@@ -784,7 +784,7 @@ level 5.17425  2   0.0752
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stratified-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.3: Baseline retention curves for the two sentiment categories in the <code>job_retention</code> data set
+Figure&nbsp;10.3: Baseline retention curves for the two sentiment categories in the <code>job_retention</code> data set.
 </figcaption>
 </figure>
 </div>
@@ -844,7 +844,7 @@ Figure&nbsp;10.3: Baseline retention curves for the two sentiment categories in 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-survival-python-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.4: Survival curves by sentiment category in the <code>job_retention</code> data
+Figure&nbsp;10.4: Survival curves by sentiment category in the <code>job_retention</code> data.
 </figcaption>
 </figure>
 </div>
@@ -898,7 +898,7 @@ sentiment                  -0.117562   0.889085  ...  3.940873e-17  54.494262
 <h3 data-number="10.5.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">10.5.2</span> Data exercises</h3>
 <p>For these exercises, use the same <code>job_retention</code> data set as in the walkthrough example for this chapter, which can be loaded via the <code>peopleanalyticsdata</code> package or downloaded from the internet<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. The <code>intention</code> field represents a score of 1 to 10 on the individual’s intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention. This response was recorded at the beginning of the study period.</p>
 <ol type="1">
-<li>Create three categories of <code>intention</code> as follows: High (score of 7 or higher), Moderate (score of 4–6), Low (score of 3 or less)</li>
+<li>Create three categories of <code>intention</code> as follows: High (score of 7 or higher), Moderate (score of 4–6), Low (score of 3 or less).</li>
 <li>Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.</li>
 <li>Determine the effect of <code>intention</code> on retention using a Cox proportional hazard model, controlling for <code>gender</code>, <code>field</code> and <code>level</code>.</li>
 <li>Perform an appropriate check that the proportional hazard assumption holds for your model.</li>

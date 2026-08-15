@@ -33,7 +33,7 @@ This chapter is for those who wish to learn the methods in this book but do not 
 
 knitr::include_graphics("www/R/rstudio_ide_screenshot.png")
 ```
-The RStudio IDE
+The RStudio IDE.
 :::
 
 
@@ -265,7 +265,7 @@ head(salespeople)
 ```
 
 
-We can view a specific column by using `$`, and we can use square brackets to view a specific entry.   For example if we wanted to see the 6th entry of the `sales` column:
+We can view a specific column by using `$`, and we can use square brackets to view a specific entry.   For example if we wanted to see the sixth entry of the `sales` column:
 
 ```{r}
 salespeople$sales[6]
@@ -409,19 +409,19 @@ Most functions in R have excellent help documentation.  To get help on the `head
 knitr::include_graphics("www/R/head-help-small.png")
 
 ```
-Results of a search for the `head()` function in the RStudio Help browser
+Results of a search for the `head()` function in the RStudio Help browser.
 
 :::
 
 
 The help page normally shows the following:
 
-* Description of the purpose of the function
-* Usage examples, so you can quickly see how it is used
-* Arguments list so you can see the names and order of arguments
-* Details or notes on further considerations on use
-* Expected value of the output (for example `head()` is expected to return a similar object to its first input `x`)
-* Examples to help orient you further (sometimes examples can be very abstract in nature and not so helpful to users)
+* Description of the purpose of the function.
+* Usage examples, so you can quickly see how it is used.
+* Arguments list so you can see the names and order of arguments.
+* Details or notes on further considerations on use.
+* Expected value of the output (for example `head()` is expected to return a similar object to its first input `x`).
+* Examples to help orient you further (sometimes examples can be very abstract in nature and not so helpful to users).
 
 ### Writing your own functions
 
@@ -475,8 +475,8 @@ One way to completely avoid this issue is to get in the habit of *namespacing* y
 
 As an example, imagine we wanted to do the following two operations in one command:
 
-1. Subset `salespeople` to only the `sales` values of those with `sales` less than 500
-2. Take the mean of those values
+1. Subset `salespeople` to only the `sales` values of those with `sales` less than 500.
+2. Take the mean of those values.
 
 In base R, one way to do this is:
 
@@ -532,7 +532,7 @@ head[salespeople]
 Error in head[salespeople] : object of type 'closure' is not subsettable
 ```
 
-When first faced with an error that you can't understand, try not to get frustrated and proceed in the knowledge that it usually can be fixed easily and quickly.  Often the problem is much more obvious than you think, and if not, there is still a 99% likelihood that others have made this error and you can read about it online.  The first step is to take a look at your code to see if you can spot what you did wrong.  In this case, you may see that you have used square brackets `[]` instead of parentheses `()` when calling your `head()` function.  If you cannot see what is wrong, the next steps are to ask a colleague, do an internet search with the text of the error message you receive, ask a Generative AI coding assistant or consult online forums like https://stackoverflow.com.  The more experienced you become, the easier it is to interpret error messages.
+When first faced with an error that you can't understand, try not to get frustrated and proceed in the knowledge that it usually can be fixed easily and quickly.  Often the problem is much more obvious than you think, and if not, there is still a 99% likelihood that others have made this error and you can read about it online.  The first step is to take a look at your code to see if you can spot what you did wrong.  In this case, you may see that you have used square brackets `[]` instead of parentheses `()` when calling your `head()` function.  If you cannot see what is wrong, the next steps are to ask a colleague, do an internet search with the text of the error message you receive, ask a generative AI coding assistant or consult online forums like https://stackoverflow.com.  The more experienced you become, the easier it is to interpret error messages.
 
 \index{R!warnings}*Warnings* are less serious and usually alert you to something that you might be overlooking and which could indicate a problem with the output.  In many cases you can ignore warnings, but sometimes they are an important reminder to go back and edit your code.  For example, you may run a model which doesn't converge, and while this does not stop R from returning results, it is also very useful for you to know that it didn't converge.  
 
@@ -554,7 +554,7 @@ plot(x = salespeople$sales, y = salespeople$customer_rate,
      xlab = "Sales ($m)", ylab = "Average customer rating",
      main = "Scatterplot of Sales vs Customer Rating")
 ```
-Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data set
+Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data set.
 :::
 
 \index{R!histograms}Histograms of data can be generated using the `hist()` function.  This command will generate a histogram of `performance` as displayed in @fig-basichist.  Note the use of `breaks` to customize how the bars appear.
@@ -583,7 +583,7 @@ hist(salespeople$performance, breaks = 0:4,
      main = "Histogram of Performance Ratings")
 ```
 
-Simple histogram of `performance` in the `salespeople` data set
+Simple histogram of `performance` in the `salespeople` data set.
 :::
 
 \index{R!box and whisker plots}Box and whisker plots are excellent ways to see the distribution of a variable, and can be grouped against another variable to see bivariate patterns.  For example, this command will show a box and whisker plot of `sales` grouped against `performance`, with the output shown in @fig-basicbox.  Note the use of the `formula` and `data` notation here to define the variable we are interested in and how we want it grouped.  We will study this formula notation in greater depth later in this book. 
@@ -607,7 +607,7 @@ boxplot(formula = sales ~ performance, data = salespeople,
         main = "Boxplot of Sales by Performance Rating")
 ```
 
-Simple box plot of `sales` grouped against `performance` in the `salespeople` data set
+Simple box plot of `sales` grouped against `performance` in the `salespeople` data set.
 :::
 
 These are among the most common plots used for data exploration purposes.  They are examples of a wider range of plotting and graphing functions available in base R, such as line plots, bar plots and other varieties which you may see later in this book.
@@ -646,7 +646,7 @@ salespeople$performance <- as.factor(salespeople$performance)
 GGally::ggpairs(salespeople)
 ```
 
-Pairplot of the `salespeople` data set
+Pairplot of the `salespeople` data set.
 :::
 
 ## Documenting your work using Quarto

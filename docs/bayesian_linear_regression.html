@@ -353,11 +353,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#applying-bayes-theorem-to-linear-regression" id="toc-applying-bayes-theorem-to-linear-regression" class="nav-link active" data-scroll-target="#applying-bayes-theorem-to-linear-regression"><span class="header-section-number">13.1</span> Applying Bayes’ Theorem to Linear Regression</a></li>
+  <li><a href="#applying-bayes-theorem-to-linear-regression" id="toc-applying-bayes-theorem-to-linear-regression" class="nav-link active" data-scroll-target="#applying-bayes-theorem-to-linear-regression"><span class="header-section-number">13.1</span> Applying Bayes’ Theorem to linear regression</a></li>
   <li><a href="#running-a-bayesian-linear-regression-model" id="toc-running-a-bayesian-linear-regression-model" class="nav-link" data-scroll-target="#running-a-bayesian-linear-regression-model"><span class="header-section-number">13.2</span> Running a Bayesian linear regression model</a>
   <ul class="collapse">
   <li><a href="#specifying-the-model" id="toc-specifying-the-model" class="nav-link" data-scroll-target="#specifying-the-model"><span class="header-section-number">13.2.1</span> Specifying the model</a></li>
-  <li><a href="#sec-bayes-reg-interpret" id="toc-sec-bayes-reg-interpret" class="nav-link" data-scroll-target="#sec-bayes-reg-interpret"><span class="header-section-number">13.2.2</span> Interpreting the Results</a></li>
+  <li><a href="#sec-bayes-reg-interpret" id="toc-sec-bayes-reg-interpret" class="nav-link" data-scroll-target="#sec-bayes-reg-interpret"><span class="header-section-number">13.2.2</span> Interpreting the results</a></li>
   <li><a href="#specifying-informative-priors" id="toc-specifying-informative-priors" class="nav-link" data-scroll-target="#specifying-informative-priors"><span class="header-section-number">13.2.3</span> Specifying informative priors</a></li>
   </ul></li>
   <li><a href="#examining-posteriors" id="toc-examining-posteriors" class="nav-link" data-scroll-target="#examining-posteriors"><span class="header-section-number">13.3</span> Examining posteriors</a>
@@ -365,7 +365,7 @@ window.Quarto = {
   <li><a href="#visualizing-posterior-parameter-distributions" id="toc-visualizing-posterior-parameter-distributions" class="nav-link" data-scroll-target="#visualizing-posterior-parameter-distributions"><span class="header-section-number">13.3.1</span> Visualizing posterior parameter distributions</a></li>
   <li><a href="#posterior-predictive-distribution" id="toc-posterior-predictive-distribution" class="nav-link" data-scroll-target="#posterior-predictive-distribution"><span class="header-section-number">13.3.2</span> Posterior predictive distribution</a></li>
   </ul></li>
-  <li><a href="#model-comparisons" id="toc-model-comparisons" class="nav-link" data-scroll-target="#model-comparisons"><span class="header-section-number">13.4</span> Model Comparisons</a>
+  <li><a href="#model-comparisons" id="toc-model-comparisons" class="nav-link" data-scroll-target="#model-comparisons"><span class="header-section-number">13.4</span> Model comparisons</a>
   <ul class="collapse">
   <li><a href="#bayesian-r2" id="toc-bayesian-r2" class="nav-link" data-scroll-target="#bayesian-r2"><span class="header-section-number">13.4.1</span> Bayesian <span class="math inline">\(R^2\)</span></a></li>
   <li><a href="#loo-cross-validation" id="toc-loo-cross-validation" class="nav-link" data-scroll-target="#loo-cross-validation"><span class="header-section-number">13.4.2</span> LOO Cross-Validation</a></li>
@@ -422,7 +422,7 @@ window.Quarto = {
 <p>While classical Ordinary Least Squares (OLS) regression—which we covered extensively in <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a>—remains a powerful tool, Bayesian linear regression offers distinct advantages which are precisely the advantages offered by Bayesian inference more generally. It allows us to incorporate prior knowledge, it functions well even with smaller sample sizes, and perhaps most importantly, it provides a rich, probabilistic interpretation of our model coefficients and predictions. On the other hand, Bayesian regression models can be computationally intensive and require careful consideration of priors and convergence diagnostics.</p>
 <p>To implement Bayesian regression models in R, we will use the <code>brms</code> package. This package serves as an accessible interface to <code>stan</code>, a state-of-the-art platform for statistical modeling and high-performance statistical computation based on Markov Chain Monte Carlo (MCMC) methods. The beauty of <code>brms</code> is that it allows us to fit Bayesian models using syntax that is almost identical to the classic <code>lm()</code> and <code>glm()</code> functions we already know.</p>
 <section id="applying-bayes-theorem-to-linear-regression" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="applying-bayes-theorem-to-linear-regression"><span class="header-section-number">13.1</span> Applying Bayes’ Theorem to Linear Regression</h2>
+<h2 data-number="13.1" class="anchored" data-anchor-id="applying-bayes-theorem-to-linear-regression"><span class="header-section-number">13.1</span> Applying Bayes’ Theorem to linear regression</h2>
 <p>Recall from <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a> that the purpose of linear regression is to explain or predict an outcome measured on a continuous scale using one or more input variables. The assumption is that each observation <span class="math inline">\(y_i\)</span> of the outcome variable is generated by a linear combination of the corresponding observations of the input variables <span class="math inline">\(x_{i1}, x_{i2}, \cdots, x_{ip}\)</span> plus some normally distributed error term. That is,</p>
 <p><span class="math display">\[y_i = \mu_i + \epsilon_i\]</span></p>
 <p>where</p>
@@ -431,8 +431,8 @@ window.Quarto = {
 \]</span></p>
 <p>and</p>
 <ul>
-<li><span class="math inline">\(\beta_0\)</span> is the intercept coefficient</li>
-<li><span class="math inline">\(\beta_1, \beta_2, \cdots, \beta_p\)</span> are the ‘slope’ coefficients for each input variable</li>
+<li><span class="math inline">\(\beta_0\)</span> is the intercept coefficient.</li>
+<li><span class="math inline">\(\beta_1, \beta_2, \cdots, \beta_p\)</span> are the ‘slope’ coefficients for each input variable.</li>
 <li><span class="math inline">\(\epsilon_i\)</span> is the error term or residual, with our residuals assumed to be normally distributed with mean 0 and variance <span class="math inline">\(\sigma^2\)</span>, that is <span class="math inline">\(\epsilon_i \sim \mathcal{N}(0, \sigma^2)\)</span>.</li>
 </ul>
 <p>In the classical (frequentist) framework, our goal is to find the point estimates for the <span class="math inline">\(\beta\)</span> coefficients that minimize the sum of squared errors. We assume there is one true line that best fits the data, and we calculate standard errors to construct confidence intervals around that line.</p>
@@ -449,7 +449,7 @@ P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 </section>
 <section id="running-a-bayesian-linear-regression-model" class="level2" data-number="13.2">
 <h2 data-number="13.2" class="anchored" data-anchor-id="running-a-bayesian-linear-regression-model"><span class="header-section-number">13.2</span> Running a Bayesian linear regression model</h2>
-<p>We will use a random subset of the <code>ugtests</code> dataset from <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a>, which contains information about undergraduate students’ scores over four years of their Biology degree program. Our goal is to explain the <code>Final</code> year score based on the <code>Yr1</code>, <code>Yr2</code> and <code>Yr3</code> scores using Bayesian linear regression. Initially, we will assume that this subset is the only data we have available for our model. As we will be running a lot of random sampling and simulations in this chapter, we will be setting random seeds throughout to ensure the calculations are reproducible.</p>
+<p>We will use a random subset of the <code>ugtests</code> data set from <a href="linear_regression.html" class="quarto-xref"><span>Chapter 4</span></a>, which contains information about undergraduate students’ scores over four years of their biology degree program. Our goal is to explain the <code>Final</code> year score based on the <code>Yr1</code>, <code>Yr2</code> and <code>Yr3</code> scores using Bayesian linear regression. Initially, we will assume that this subset is the only data we have available for our model. As we will be running a lot of random sampling and simulations in this chapter, we will be setting random seeds throughout to ensure the calculations are reproducible.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)  </span>
@@ -487,7 +487,7 @@ P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 <ul>
 <li><code>formula</code> &amp; <code>data</code>: This is the same as we use in <code>lm()</code>.</li>
 <li><code>family = gaussian()</code>: This tells <code>stan</code> that we are doing linear regression (assuming errors are normally distributed).</li>
-<li><code>chains</code>: We run 4 independent MCMC simulations to ensure they all converge to the same answer.</li>
+<li><code>chains</code>: We run four independent MCMC simulations to ensure they all converge to the same answer.</li>
 <li><code>iter</code>: How many steps the simulation takes. The first 50% or so are usually discarded as “warm-up” iterations to learn the shape of the posterior, and the second half are kept for analysis. The more complex the model, the more iterations are usually needed to ensure convergence.</li>
 <li><code>refresh</code>: Controls how often the MCMC simulation progress is printed to the console. Setting to 0 suppresses this output.</li>
 <li><code>silent</code>: Reduces status output so that only the most critical messages appear.</li>
@@ -518,7 +518,7 @@ P(\beta, \sigma \mid y, X) \propto P(y \mid X, \beta, \sigma)P(\beta, \sigma)
 </ul>
 </section>
 <section id="sec-bayes-reg-interpret" class="level3" data-number="13.2.2">
-<h3 data-number="13.2.2" class="anchored" data-anchor-id="sec-bayes-reg-interpret"><span class="header-section-number">13.2.2</span> Interpreting the Results</h3>
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="sec-bayes-reg-interpret"><span class="header-section-number">13.2.2</span> Interpreting the results</h3>
 <p>Once the model is fit, we can examine the results. Unlike <code>lm()</code>, which gives us t-statistics and p-values, <code>brm()</code> gives us summaries of the posterior distribution.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view summary of the model</span></span>
@@ -568,11 +568,11 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="specifying-informative-priors" class="level3" data-number="13.2.3">
 <h3 data-number="13.2.3" class="anchored" data-anchor-id="specifying-informative-priors"><span class="header-section-number">13.2.3</span> Specifying informative priors</h3>
-<p>Although the default priors are generally fit for purpose in the <code>brm()</code> function, there are times when we may have strong prior knowledge that may cause us to adjust one or more of our priors. Imagine you are given the following information by expert faculty in the Biology department.</p>
+<p>Although the default priors are generally fit for purpose in the <code>brm()</code> function, there are times when we may have strong prior knowledge that may cause us to adjust one or more of our priors. Imagine you are given the following information by expert faculty in the biology department.</p>
 <ol type="1">
 <li>No scores are known to be negatively associated with final year scores.</li>
 <li>Year 1 scores are typically very weakly associated with final year scores or sometimes not at all associated.</li>
-<li>Year 2 and Year 3 scores are typically progressively more positively associated with final year scores.</li>
+<li>Year 2 and Year 3 scores are typically progressively more positively associated with Final year scores.</li>
 </ol>
 <p>This suggests that we could propose an informative prior for our Year 1 coefficient in our model. We can do this using the <code>prior()</code> function in <code>brms</code>. Let’s specify a normal prior for the <code>Yr1</code> coefficient centered around 0 to reflect our belief that it has a weak or null effect on Final year scores. Let’s also specify a very narrow standard deviation to indicate a strong belief.</p>
 <p>To assign a prior to a specific parameter in the <code>prior()</code> function, we use the <code>class</code> and <code>coef</code> arguments. The <code>class</code> argument indicates the type of parameter (<code>b</code> for slope coefficients, <code>Intercept</code> for the intercept, <code>sigma</code> for the residual standard deviation), while the <code>coef</code> argument specifies which <code>b</code> variable the prior applies to. If needed, upper and lower bounds can be set on classes of parameters using the <code>ub</code> and <code>lb</code> arguments respectively. For any parameters not explicitly assigned a prior, <code>brms</code> will use the default priors.</p>
@@ -736,7 +736,7 @@ Figure&nbsp;13.2: 66% (dark lines) and 95% (light lines) credible intervals for 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post-predict-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
+Figure&nbsp;13.3: Distribution of predicted Final year score for a new student.
 </figcaption>
 </figure>
 </div>
@@ -754,7 +754,7 @@ Figure&nbsp;13.3: Distribution of predicted Final year score for a new student
 </section>
 </section>
 <section id="model-comparisons" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="model-comparisons"><span class="header-section-number">13.4</span> Model Comparisons</h2>
+<h2 data-number="13.4" class="anchored" data-anchor-id="model-comparisons"><span class="header-section-number">13.4</span> Model comparisons</h2>
 <p>Let’s create a simple uninformed Bayesian linear regression model using just <code>Yr2</code> as an input variable, so we can compare it to our full uninformed and informed models.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a simpler Bayesian Linear Regression Model</span></span>
@@ -950,7 +950,7 @@ Yr2         | 1.000 | 22462
 Yr3         | 1.000 | 25014</code></pre>
 </div>
 </div>
-<p>The ROPE (Region of Practical Equivalence) is typically determined to be between -0.1 and 0.1 standard deviations of the output variable<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. If the input variables are on a different scale to the output variable (as they were in our earlier modeling), the ROPE may not make sense. Because we have standardized the variables, we can be more confident that the ROPE is meaningful. This summary suggests that <code>Yr2</code> and <code>Yr3</code> are extremely likely to be positive predictors of <code>Final</code>, while <code>Yr1</code> is not likely to have any predictive value. A more terse summary can be obtained by using the <code>equivalence_test()</code> function, which will explicitly reject coefficients that are practically different from zero:</p>
+<p>The ROPE is typically determined to be between -0.1 and 0.1 standard deviations of the output variable<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. If the input variables are on a different scale to the output variable (as they were in our earlier modeling), the ROPE may not make sense. Because we have standardized the variables, we can be more confident that the ROPE is meaningful. This summary suggests that <code>Yr2</code> and <code>Yr3</code> are extremely likely to be positive predictors of <code>Final</code>, while <code>Yr1</code> is not likely to have any predictive value. A more terse summary can be obtained by using the <code>equivalence_test()</code> function, which will explicitly reject coefficients that are practically different from zero:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test for equivalence of coefficients to zero</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">equivalence_test</span>(inf_model_std)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1149,7 +1149,7 @@ Figure&nbsp;13.5: Bayesian R-squared distributions for the original informed mod
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pp-check-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13.6: Posterior Predictive Check. The dark line (<span class="math inline">\(y\)</span>) is the distribution of our actual final year data. The light blue lines (<span class="math inline">\(y_{\mathrm{rep}}\)</span>) are 1000 draws of final year distributions predicted from our model posteriors.
+Figure&nbsp;13.6: Posterior predictive check. The dark line (<span class="math inline">\(y\)</span>) is the distribution of our actual final year data. The light blue lines (<span class="math inline">\(y_{\mathrm{rep}}\)</span>) are 1000 draws of final year distributions predicted from our model posteriors.
 </figcaption>
 </figure>
 </div>
@@ -1184,7 +1184,7 @@ Figure&nbsp;13.7: Trace plots of the MCMC simulation. The four colors represent 
 </section>
 <section id="sensitivity-to-priors-and-other-considerations" class="level3" data-number="13.7.3">
 <h3 data-number="13.7.3" class="anchored" data-anchor-id="sensitivity-to-priors-and-other-considerations"><span class="header-section-number">13.7.3</span> Sensitivity to priors and other considerations</h3>
-<p>It is good practice to check how sensitive your results are to the choice of priors. You can do this by fitting the model with different priors (e.g., weakly informative vs.&nbsp;strongly informative) and comparing the posterior distributions of the coefficients. If the posteriors change significantly with different priors, it suggests that your data may not be strong enough to overcome the influence of the priors. If this is the case, it would be important to acknowledge this in your analysis and consider collecting more data if possible.</p>
+<p>It is good practice to check how sensitive your results are to the choice of priors. You can do this by fitting the model with different priors (e.g., weakly informative vs strongly informative) and comparing the posterior distributions of the coefficients. If the posteriors change significantly with different priors, it suggests that your data may not be strong enough to overcome the influence of the priors. If this is the case, it would be important to acknowledge this in your analysis and consider collecting more data if possible.</p>
 <p>On the other hand, large samples can result in priors being ‘swamped’ or ‘overwhelmed’ by the data, leading to similar posterior distributions regardless of the priors used. This is not necessarily a problem, but it is important to be aware of this phenomenon when interpreting your results. In cases where priors are swamped, one of the values of Bayesian inference is reduced (namely the ability to incorporate prior knowledge). However, the other advantages of Bayesian inference (such as the rich probabilistic interpretation of coefficients and predictions) still hold. It is the choice of the analyst to decide whether Bayesian inference is appropriate in such cases.</p>
 <p>Many of the other model diagnostics we used in OLS regression (e.g., residual plots, tests for homoscedasticity, etc.) are still applicable in Bayesian regression. The mean of the posterior predictive distribution can be used to compute residuals, and these can be analyzed in the same way as in OLS regression to check residual distribution and homoscedasticity. As with classical models, the <code>fitted()</code> function can be used to extract the mean fitted values from the model.</p>
 </section>
@@ -1340,7 +1340,7 @@ Figure&nbsp;13.9: Trace plots of the MCMC simulation for our informed Bayesian l
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bayesian_linear_regression_files/figure-html/py-bayes-ppc-5.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bayesian_linear_regression_files/figure-html/py-bayes-ppc-5.png" class="img-fluid figure-img" width="540"></p>
 </figure>
 </div>
 </div>
@@ -1358,7 +1358,7 @@ Figure&nbsp;13.10: Posterior predictive check for our informed Bayesian linear r
 <section id="discussion-questions" class="level3" data-number="13.9.1">
 <h3 data-number="13.9.1" class="anchored" data-anchor-id="discussion-questions"><span class="header-section-number">13.9.1</span> Discussion questions</h3>
 <ol type="1">
-<li>What are “weakly informative priors”? Why might an analyst prefer these over “flat” (uninformative) priors or informative priors?</li>
+<li>What are ‘weakly informative priors’? Why might an analyst prefer these over “flat” (uninformative) priors or informative priors?</li>
 <li>Briefly explain the purpose of Markov Chain Monte Carlo (MCMC) simulation in Bayesian regression.</li>
 <li>How does the interpretation of a regression coefficient (<span class="math inline">\(\beta\)</span>) differ between the classical regression framework and the Bayesian framework?</li>
 <li>What is a posterior predictive distribution (PPD), and how does it differ from a fitted point prediction in OLS regression?</li>
@@ -1372,11 +1372,11 @@ Figure&nbsp;13.10: Posterior predictive check for our informed Bayesian linear r
 </section>
 <section id="data-exercises" class="level3" data-number="13.9.2">
 <h3 data-number="13.9.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">13.9.2</span> Data exercises</h3>
-<p>Use the <code>sociological_data</code> set from the exercises in <a href="linear_regression.html#sec-lin-reg-ols-exercises" class="quarto-xref"><span>Section 4.8</span></a>. Ensure that categorical variables are coerced to factors and missing data is removed. Reduce the size of the dataset by taking a random sample of 500 rows. Ensure you set a seed to ensure you can replicate your work.</p>
+<p>Use the <code>sociological_data</code> set from the exercises in <a href="linear_regression.html#sec-lin-reg-ols-exercises" class="quarto-xref"><span>Section 4.8</span></a>. Ensure that categorical variables are coerced to factors and missing data is removed. Reduce the size of the data set by taking a random sample of 500 rows. Ensure you set a seed to ensure you can replicate your work.</p>
 <ol type="1">
-<li>Fit a Bayesian linear regression model explaining <code>annual_income_ppp</code> using all other variables in the dataset. Use <code>brm</code> with <code>chains = 4</code>, <code>iter = 10000</code>, and the default priors.</li>
+<li>Fit a Bayesian linear regression model explaining <code>annual_income_ppp</code> using all other variables in the data set. Use <code>brm</code> with <code>chains = 4</code>, <code>iter = 10000</code>, and the default priors.</li>
 <li>Run a summary of the model. Examine the <code>Rhat</code> and <code>Bulk_ESS</code>/<code>Tail_ESS</code> columns. Did the chains converge successfully?</li>
-<li>Generate trace plots for the coefficients of <code>education_months</code> and <code>family_size</code>. Do they resemble “fuzzy caterpillars”?</li>
+<li>Generate trace plots for the coefficients of <code>education_months</code> and <code>family_size</code>. Do they resemble ‘fuzzy caterpillars’?</li>
 <li>Visualize the posterior distributions of the coefficients using <code>mcmc_areas()</code>. Is this helpful? What adjustments might you consider to make it more interpretable?</li>
 <li>Interpret the posterior mean and the 95% credible interval for the <code>education_months</code> coefficient. Can you state with at least 95% probability that education has a positive effect on income?</li>
 <li>Imagine you possess expert knowledge from a previous study suggesting that <code>family_size</code> usually has a slightly negative effect on income, and <code>work_distance</code> generally has no effect. Construct and examine a new model using informative priors as follows:
@@ -1386,11 +1386,11 @@ Figure&nbsp;13.10: Posterior predictive check for our informed Bayesian linear r
 <li>Run an informed model using these priors.</li>
 </ul></li>
 <li>Compare your uninformed model (from Question 1) and your informed model (from Question 6) using <code>bayes_R2()</code>. Does the incorporation of prior beliefs significantly change the explained variance?</li>
-<li>Use leave-one-out cross-validation to compare the predictive performance of the two models. Is there a preferred model?</li>
+<li>Use LOO-CV to compare the predictive performance of the two models. Is there a preferred model?</li>
 <li>Using your choice of model, perform a posterior predictive check. Does the simulated data resemble the observed distribution of <code>annual_income_ppp</code>?</li>
 <li>Run your choice of model on a scaled version of your data. Determine which coefficients are practically different from zero based on the ROPE. Remember that you can only scale numeric columns in your data<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</li>
 <li>Using your scaled model, calculate the specific probability that the effect of a standard deviation increase in <code>education_months</code> is larger than the the effect of living in Northern America (assuming no change in other variables).</li>
-<li>Take a further sample of 500 rows from the remaining rows of the <code>sociological_data</code> dataset. Fit an updated model using the posterior distributions from your (unstandardized) model of choice as priors. Compare the mean coefficient estimates of the updated model to your preferred model. How have the coefficients changed with the new data?</li>
+<li>Take a further sample of 500 rows from the remaining rows of the <code>sociological_data</code> data set. Fit an updated model using the posterior distributions from your (unstandardized) model of choice as priors. Compare the mean coefficient estimates of the updated model to your preferred model. How have the coefficients changed with the new data?</li>
 <li>Create a hypothetical individual profile (a new dataframe) representing a male skilled worker with high education and no family living in Northern America. Use the means from your new data sample for the other variables. Using your updated model, generate the posterior predictive distribution for this individual’s income. Plot the distribution.</li>
 <li>Report the 90% prediction interval for this individual. Explain, in plain language, what this interval represents regarding the uncertainty of your prediction.</li>
 </ol>
@@ -1398,7 +1398,7 @@ Figure&nbsp;13.10: Posterior predictive check for our informed Bayesian linear r
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-kruschke" class="csl-entry" role="listitem">
-Kruschke, J. K. (2018). Rejecting or accepting parameter values in bayesian estimation. In <em>Advances in Methods and Practices in Psychological Science</em>.
+Kruschke, J. K. (2018). Rejecting or accepting parameter values in <span>Bayesian</span> estimation. In <em>Advances in Methods and Practices in Psychological Science</em>.
 </div>
 </div>
 </section>

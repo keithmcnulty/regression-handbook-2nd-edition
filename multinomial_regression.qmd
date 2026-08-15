@@ -22,9 +22,9 @@ In this chapter we will briefly look at the stratified approach (which is effect
 
 Examples of typical situations that might be modeled by multinomial logistic regression include:
 
-1.  Modeling voting choice in elections with multiple candidates
-2.  Modeling choice of career options by students
-3.  Modeling choice of benefit options by employees
+1.  Modeling voting choice in elections with multiple candidates.
+2.  Modeling choice of career options by students.
+3.  Modeling choice of benefit options by employees.
 
 ### Walkthrough example
 
@@ -32,12 +32,12 @@ You are an analyst at a large technology company.  The company recently introduc
 
 \index{data sets!health\_insurance@\texttt{health\_insurance}}The `health_insurance` data set consists of the following fields:
 
-* `product`: The choice of product of the individual---A, B or C
-* `age`: The age of the individual when they made the choice
-* `gender`:  The gender of the individual as stated when they made the choice
-* `household`:  The number of people living with the individual in the same household at the time of the choice
-* `position_level`:  Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest
-* `absent`: The number of days the individual was absent from work in the year prior to the choice
+* `product`: The choice of product of the individual---A, B or C.
+* `age`: The age of the individual when they made the choice.
+* `gender`:  The gender of the individual as stated when they made the choice.
+* `household`:  The number of people living with the individual in the same household at the time of the choice.
+* `position_level`:  Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest.
+* `absent`: The number of days the individual was absent from work in the year prior to the choice.
 
 First we load the data and take a look at it briefly.
 
@@ -76,7 +76,7 @@ health_insurance$gender <- as.factor(health_insurance$gender)
 GGally::ggpairs(health_insurance)
 ```
 
-Pairplot of the `health_insurance` data set
+Pairplot of the `health_insurance` data set.
 :::
 
 The data appears somewhat chaotic here.  However, there are a few things to note.  Firstly, we notice that there is a relatively even spread in choice between the products.  We also notice that `age` seems to be playing a role in product choice.  There are also some mild-to-moderate correlations in the data---in particular between `age` and `position_level`, and between `absent` and `position_level`.  However, this problem is clearly more complex than we can determine from a bivariate perspective.
@@ -270,7 +270,7 @@ data.frame(t(odds_ratios))
 
 Here are some examples of how these odds ratios can be interpreted in the multinomial context (used in combination with the p-values above):
 
-* All else being equal, every additional year of age increases the relative odds of selecting Product B versus Product A by approximately 28%, and increases the relative odds of selecting Product C versus Product A by approximately 31%
+* All else being equal, every additional year of age increases the relative odds of selecting Product B versus Product A by approximately 28%, and increases the relative odds of selecting Product C versus Product A by approximately 31%.
 * All else being equal, being Male reduces the relative odds of selecting Product B relative to Product A by 91%.
 * All else being equal, each additional household member deceases the odds of selecting Product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.
 
@@ -350,7 +350,7 @@ We can see that only `genderNon-binary` changed substantially, but we note that 
 
 ### Model fit and goodness-of-fit
 
-\index{Pseudo-R-squared!in multinomial logistic regression}As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.
+\index{pseudo-R-squared!in multinomial logistic regression}As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.
 
 ```{r}
 DescTools::PseudoR2(simpler_multi_model, 

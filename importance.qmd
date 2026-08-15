@@ -39,10 +39,10 @@ By convention, we denote the set of data that measure $\mathscr{C}$ on our sampl
 
 *Inferential modeling* is the process of learning about a relationship (or lack of relationship) between the data in $X$ and $y$ and using that to *describe* a relationship (or lack of relationship) between our constructs $\mathscr{C}$ and our outcome $\mathscr{O}$ that is valid to a high degree of statistical certainty on the population $\mathscr{P}$.  This process may include:
 
-* Testing a proposed mathematical relationship in the form of a function, structure or iterative method
-* Comparing that relationship against other proposed relationships
-* Describing the relationship statistically
-* Determining whether the relationship (or certain elements of it) can be generalized from the sample set $S$ to the population $\mathscr{P}$
+* Testing a proposed mathematical relationship in the form of a function, structure or iterative method.
+* Comparing that relationship against other proposed relationships.
+* Describing the relationship statistically.
+* Determining whether the relationship (or certain elements of it) can be generalized from the sample set $S$ to the population $\mathscr{P}$.
 
 When we test a relationship between $X$ and $y$, we acknowledge that data and measurements are imperfect and so each observation in our sample $S$ may contain random error that we cannot control.  Therefore we define our relationship as:
 
@@ -65,18 +65,18 @@ Almost all our work in this book will refer to the variables $X$ as *input varia
 
 \index{inferential model}Inferential modeling---regression or otherwise---is a process of numerous steps.  Typically the main steps are^[Additional critical steps are required if the goal is causal inference, but these are covered in @sec-causal-inference.]:
 
-1.  Defining the outcome of interest $\mathscr{O}$ and the input constructs $\mathscr{C}$ based on a broader evidence-based objective
-2.  Confirming that $\mathscr{O}$ has reliable measurement data
-3.  Determining which data can be used to measure $\mathscr{C}$
+1.  Defining the outcome of interest $\mathscr{O}$ and the input constructs $\mathscr{C}$ based on a broader evidence-based objective.
+2.  Confirming that $\mathscr{O}$ has reliable measurement data.
+3.  Determining which data can be used to measure $\mathscr{C}$.
 4.  Determining a sample $S$ and collecting, refining and cleaning data.
-5.  Performing exploratory data analysis (EDA) and proposing a set of models to test for $f$
-6.  Putting the data in an appropriate format for each model
-7.  Running the models to estimate their parameters
-8.  Interpreting the parameter estimates and performing model diagnostics
-9.  Selecting an optimal model or models
-10. Articulating the uncertainty around the parameter estimates and inferring which input variables have a meaningful effect on the outcome for the entire population $\mathscr{P}$
+5.  Performing exploratory data analysis (EDA) and proposing a set of models to test for $f$.
+6.  Putting the data in an appropriate format for each model.
+7.  Running the models to estimate their parameters.
+8.  Interpreting the parameter estimates and performing model diagnostics.
+9.  Selecting an optimal model or models.
+10. Articulating the uncertainty around the parameter estimates and inferring which input variables have a meaningful effect on the outcome for the entire population $\mathscr{P}$.
 
-This book is primarily focused on steps 7--10 of this process^[The book also addresses Steps 5 and 6 in some chapters.].  That is not to say that steps 1--6 are not important.  Indeed these steps are critical and often loaded with analytic traps.  Defining the problem, collecting reliable measures and cleaning and organizing data are still the source of much pain and angst for analysts, but these topics are for another day.
+This book is primarily focused on steps 7--10 of this process^[The book also addresses steps 5 and 6 in some chapters.].  That is not to say that steps 1--6 are not important.  Indeed these steps are critical and often loaded with analytic traps.  Defining the problem, collecting reliable measures and cleaning and organizing data are still the source of much pain and angst for analysts, but these topics are for another day.
 
 ## The structure, system and organization of this book
 
@@ -84,9 +84,9 @@ The purpose of this book is to put inexperienced practitioners firmly on a path 
 
 In most chapters, time is spent on the underlying mathematics.  Not to the degree of an academic theorist, but enough to ensure that the reader can associate some mathematical meaning to the outputs of models.  While it may be tempting to skip the math, I strongly recommend against it if you intend to be a high performer in your field.  The best analysts are those who can genuinely understand what the numbers are telling them.
 
-The statistical programming language R is used for most of the practical demonstration in each chapter.  Because R is open source and particularly well geared to statistics, it is an excellent choice for those whose work involves a lot of inferential analysis.  Though R will be the primary mode of technical instruction, we will additionally show implementations of all of the available methodologies in Python, which is also a powerful open source tool for this sort of work, and is much more popular and in the broader field of data science. These can usually be found at the end of chapters.
+The statistical programming language R is used for most of the practical demonstration in each chapter.  Because R is open source and particularly well geared to statistics, it is an excellent choice for those whose work involves a lot of inferential analysis.  Though R will be the primary mode of technical instruction, we will additionally show implementations of all of the available methodologies in Python, which is also a powerful open source tool for this sort of work, and is much more popular in the broader field of data science. These can usually be found at the end of chapters.
 
-Most chapters involve a walkthrough example to illustrate the specific method and to allow the reader to replicate the analysis for themselves.  The exercises at the end of each chapter are designed so that the reader can try the same method on a different data set, or a different problem on the same data set, to test their learning and understanding. In the final chapter, a series of data sets and exercises are provided with limited instruction in order to give the reader an opportunity to test their overall knowledge in selecting and applying regression methods to a variety of people analytics data sets and problems.  All in all, nineteen different data sets are used as walkthrough or exercise examples, and all of these data sets are fictitious constructions unless otherwise indicated.  Despite the fiction, they are deliberately designed to present the reader with something resembling how the data might look in practice, albeit cleaner and more organized.
+Most chapters involve a walkthrough example to illustrate the specific method and to allow the reader to replicate the analysis for themselves.  The exercises at the end of each chapter are designed so that the reader can try the same method on a different data set, or a different problem on the same data set, to test their learning and understanding. In the final chapter, a series of data sets and exercises are provided with limited instruction in order to give the reader an opportunity to test their overall knowledge in selecting and applying regression methods to a variety of people analytics data sets and problems.  All in all, 19 different data sets are used as walkthrough or exercise examples, and all of these data sets are fictitious constructions unless otherwise indicated.  Despite the fiction, they are deliberately designed to present the reader with something resembling how the data might look in practice, albeit cleaner and more organized.
 
 In anticipation that there will be readers who have little or no experience in using programming languages to perform analytics, @sec-basic-r covers the basics of the R programming language.  Experienced R programmers can skip this chapter. The next nine chapters cover a range of classical statistical modeling methods, starting with foundational statistical concepts and moving through a variety of regression models for different types of outcome variables.  The methods in these chapters will align closely with the statistical approaches most commonly taught as part of  undergraduate statistical methods programs in psychology, sociology, econometrics and other disciplines.  They are suitable for most situations where a reasonable amount of data is available for analysis.  
 
@@ -102,13 +102,13 @@ In anticipation that there will be readers who have little or no experience in u
 
 The next three chapters cover Bayesian statistical modeling methods, introducing the reader to a different paradigm for statistical inference.  While the models covered in these chapters are similar to those covered in the previous chapters, the Bayesian approach to inference is substantially different from the classical approach, and this has important implications for how models are implemented and interpreted.   The methods in these chapters would most commonly be found in postgraduate methods programs, and are most suitable for situations where analysts have a high degree of prior knowledge about the processes they are modeling, or where modeling is being conducted on limited data and sample sizes, requiring the analyst to be more explicit about the underlying uncertainty of their estimates:
 
-* @sec-bayes-intro introduces the Bayesian approach to statistical inference, contrasting it with the classical approach.  It covers foundational concepts such as prior, likelihood and posterior distributions, and illustrates these with simple examples.  The chapter also covers hypothesis testing using the Bayes Factor.  The walkthrough example involves estimating the success of a learning program based on expert beliefs and a small number of learners who took a pilot program.  The exercises go back to our academic results dataset in @sec-linear-reg-ols to provide practice in estimating posteriors and performing Bayesian hypothesis testing.
+* @sec-bayes-intro introduces the Bayesian approach to statistical inference, contrasting it with the classical approach.  It covers foundational concepts such as prior, likelihood and posterior distributions, and illustrates these with simple examples.  The chapter also covers hypothesis testing using the Bayes Factor.  The walkthrough example involves estimating the success of a learning program based on expert beliefs and a small number of learners who took a pilot program.  The exercises go back to our academic results data set in @sec-linear-reg-ols to provide practice in estimating posteriors and performing Bayesian hypothesis testing.
 
 * @sec-linear-reg-bayes covers Bayesian linear regression, introducing models that use Markov-Chain Monte Carlo (MCMC) methods to simulate posterior distributions of model parameters. This chapter covers all the practical aspects of implementing and interpreting Bayesian regression models which will be carried over to the next chapter.   The walkthrough example and exercises are similar to @sec-linear-reg-ols.
 
 * @sec-other-bayes goes through Bayesian implementations of the other regression models covered in the earlier chapters of the book, including binomial logistic regression, multinomial regression, ordinal regression, count data regression, mixed models and survival models.  The walkthrough examples and exercises are similar to those in the corresponding classical chapters.
 
-We complete the instructional material in @sec-causal-inference with an overview of causal inference theory and methods.  In this chapter we introduce the potential outcomes framework, concepts such as confounding, mediation and moderation, and how to use directed acyclic graphs (DAGs) to state causal hypotheses and construct causal models.  The walkthrough example involves estimating the causal effect of the score in a selection test on the decision to hire a candidate in a recruiting process.  The exercises return to those in @sec-linear-reg-ols, encouraging the reader to estimate possible causal effects in the data.
+We complete the instructional material in @sec-causal-inference with an overview of causal inference theory and methods.  In this chapter we introduce the potential outcomes framework, concepts such as confounding, mediation and moderation, and how to use Directed Acyclic Graphs (DAGs) to state causal hypotheses and construct causal models.  The walkthrough example involves estimating the causal effect of the score in a selection test on the decision to hire a candidate in a recruiting process.  The exercises return to those in @sec-linear-reg-ols, encouraging the reader to estimate possible causal effects in the data.
 
 The final chapter is a set of problems and data sets which will allow the reader to practice the skills they have learned in this book and apply them to a variety of people analytics domains such as recruiting, performance, promotion, compensation and learning.  Sets of discussion questions and data exercises will guide the reader through each problem, but these are designed in a way that encourages the independent selection and application of the methods covered in this book.  These data sets, problems and exercises would suit as homework material for classes in statistical modeling or people analytics.
 

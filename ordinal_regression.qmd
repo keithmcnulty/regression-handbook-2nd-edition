@@ -69,9 +69,9 @@ This approach leads to a highly interpretable model that provides a single set o
 
 Examples of problems that can utilize a proportional odds logistic regression approach include:
 
-1.  Understanding the factors associated with higher ratings in an employee survey on a Likert scale
-2.  Understanding the factors associated with higher job performance ratings on an ordinal performance scale
-3.  Understanding the factors associated with voting preference in a ranked preference voting system (for example, proportional representation systems)
+1.  Understanding the factors associated with higher ratings in an employee survey on a Likert scale.
+2.  Understanding the factors associated with higher job performance ratings on an ordinal performance scale.
+3.  Understanding the factors associated with voting preference in a ranked preference voting system (for example, proportional representation systems).
 
 ### Walkthrough example {#sec-ord-walkthrough}
 
@@ -347,7 +347,7 @@ knitr::include_graphics("www/07/ordinalsoccer.png")
 
 ### Model diagnostics
 
-\index{Pseudo-R-squared!in ordinal logistic regression}Similar to binomial and multinomial models, pseudo-$R^2$ methods are available for assessing model fit, and AIC can be used to assess model parsimony.  Note that `DescTools::PseudoR2()` also offers AIC.
+\index{pseudo-R-squared!in ordinal logistic regression}Similar to binomial and multinomial models, pseudo-$R^2$ methods are available for assessing model fit, and AIC can be used to assess model parsimony.  Note that `DescTools::PseudoR2()` also offers AIC.
 
 ```{r}
 # diagnostics of simpler model
@@ -523,18 +523,18 @@ print(soccer_model.summary())
 
 Load the `managers` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/managers.csv].  It is a set of information of 571 managers in a sales organization and consists of the following fields:
 
-* `employee_id` for each manager
-* `performance_group` of each manager in a recent performance review: Bottom performer, Middle performer, Top performer
-* `yrs_employed`: total length of time employed in years
-* `manager_hire`: whether or not the individual was hired directly to be a manager (Y) or promoted to manager (N)
-* `test_score`: score on a test given to all managers
-* `group_size`: the number of employees in the group they are responsible for
-* `concern_flag`: whether or not the individual has been the subject of a complaint by a member of their group
-* `mobile_flag`: whether or not the individual works mobile (Y) or in the office (N)
-* `customers`:  the number of customer accounts the manager is responsible for
-* `high_hours_flag`: whether or not the manager has entered unusually high hours into their timesheet in the past year
-* `transfers`: the number of transfer requests coming from the manager's group while they have been a manager
-* `reduced_schedule`:  whether the manager works part time (Y) or full time (N)
+* `employee_id` for each manager.
+* `performance_group` of each manager in a recent performance review: Bottom performer, Middle performer, Top performer.
+* `yrs_employed`: total length of time employed in years.
+* `manager_hire`: whether or not the individual was hired directly to be a manager (Y) or promoted to manager (N).
+* `test_score`: score on a test given to all managers.
+* `group_size`: the number of employees in the group they are responsible for.
+* `concern_flag`: whether or not the individual has been the subject of a complaint by a member of their group.
+* `mobile_flag`: whether or not the individual works mobile (Y) or in the office (N).
+* `customers`:  the number of customer accounts the manager is responsible for.
+* `high_hours_flag`: whether or not the manager has entered unusually high hours into their timesheet in the past year.
+* `transfers`: the number of transfer requests coming from the manager's group while they have been a manager.
+* `reduced_schedule`:  whether the manager works part time (Y) or full time (N).
 * `city`:  the current office of the manager.
 
 Construct a model to determine how the data provided may help explain the `performance_group` of a manager by following these steps:

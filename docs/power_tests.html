@@ -385,7 +385,7 @@ window.Quarto = {
 
 
 <p></p>
-<p>In the vast majority of situations in People Analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available. At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference. Whether that difference is visible depends on the statistical properties of the samples used. Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.</p>
+<p>In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available. At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference. Whether that difference is visible depends on the statistical properties of the samples used. Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.</p>
 <p>This suggests that a conscientious analyst using classical statistical methods would be well advised to do some up-front work to determine if their samples have a chance of yielding results that are of some inferential value. In a practical context, however, this is only partly true. Estimating required sample sizes is an imprecise science. Although the mathematical theory suggests that it should be precise, in reality we are guessing most of the inputs to the mathematics. In many cases we are so clueless about those inputs that we move into the realms of pure speculation and then produce ranges of required sample sizes that are so wide as to be fairly meaningless in practice.</p>
 <p>That said, there are situations where conducting <em>power analysis</em>—that is, analysis of the required statistical properties of samples in order to have a certain minimum probability of observing a true difference—makes sense. Power analysis is an important element of experimental design. Experiments in people analytics usually take one of two forms: </p>
 <ol type="1">
@@ -426,7 +426,7 @@ window.Quarto = {
 <section id="sec-simple-stats" class="level2" data-number="11.2">
 <h2 data-number="11.2" class="anchored" data-anchor-id="sec-simple-stats"><span class="header-section-number">11.2</span> Power analysis for simple hypothesis tests</h2>
 <p>Usually we will run power analyses to get a sense of required sample sizes. Given the observations on unknowns in the previous section, we will have to assert certain possible statistical results in order to estimate required sample sizes. Most often, we will need to suggest the observed effect size in order to obtain the minimum sample size for that effect size to return a statistically significant result at a desired level of statistical power.</p>
-<p>index{R!packages!WebPower@}Using our example from the previous section, let’s assume that we would see a ‘medium’ effect size on our samples. <em>Cohen’s Rule of Thumb</em> for <span class="math inline">\(d\)</span> states that <span class="math inline">\(d = 0.2\)</span> is a small effect size, <span class="math inline">\(d = 0.5\)</span> a medium effect size and <span class="math inline">\(d = 0.8\)</span> a large effect size. We can use the <code>wp.t()</code> function from the <code>WebPower</code> package in R to do a power analysis on a paired two-sample <span class="math inline">\(t\)</span>-test and return a minimum required sample size. We can assume <span class="math inline">\(d = 0.5\)</span> and that we require a power of 0.8—that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.</p>
+<p>Using our example from the previous section, let’s assume that we would see a ‘medium’ effect size on our samples. <em>Cohen’s Rule of Thumb</em> for <span class="math inline">\(d\)</span> states that <span class="math inline">\(d = 0.2\)</span> is a small effect size, <span class="math inline">\(d = 0.5\)</span> a medium effect size and <span class="math inline">\(d = 0.8\)</span> a large effect size. We can use the <code>wp.t()</code> function from the <code>WebPower</code> package in R to do a power analysis on a paired two-sample <span class="math inline">\(t\)</span>-test and return a minimum required sample size. We can assume <span class="math inline">\(d = 0.5\)</span> and that we require a power of 0.8—that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.</p>
 <div style="page-break-after: always;"></div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(WebPower)</span>
@@ -479,7 +479,7 @@ URL: http://psychstat.org/ttest</code></pre>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powersampleplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.1: Plot of power against sample size for a paired t-test
+Figure&nbsp;11.1: Plot of power against sample size for a paired t-test.
 </figcaption>
 </figure>
 </div>
@@ -507,7 +507,7 @@ Figure&nbsp;11.1: Plot of power against sample size for a paired t-test
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerdplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.2: Plot of power against effect size for a paired t-test
+Figure&nbsp;11.2: Plot of power against effect size for a paired t-test.
 </figcaption>
 </figure>
 </div>
@@ -531,7 +531,7 @@ Figure&nbsp;11.2: Plot of power against effect size for a paired t-test
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-correlpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.3: Plot of power against sample size for a correlation test
+Figure&nbsp;11.3: Plot of power against sample size for a correlation test.
 </figcaption>
 </figure>
 </div>
@@ -565,7 +565,7 @@ f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-regressionpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.4: Plot of power against sample size for a small effect of a second input variable in a linear regression model
+Figure&nbsp;11.4: Plot of power against sample size for a small effect of a second input variable in a linear regression model.
 </figcaption>
 </figure>
 </div>
@@ -604,7 +604,7 @@ Figure&nbsp;11.4: Plot of power against sample size for a small effect of a seco
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logisticpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.5: Plot of power against sample size for a single input variable in logistic regression
+Figure&nbsp;11.5: Plot of power against sample size for a single input variable in logistic regression.
 </figcaption>
 </figure>
 </div>
@@ -613,7 +613,7 @@ Figure&nbsp;11.5: Plot of power against sample size for a single input variable 
 <section id="power-analysis-for-hierarchical-regression-models" class="level2" data-number="11.5">
 <h2 data-number="11.5" class="anchored" data-anchor-id="power-analysis-for-hierarchical-regression-models"><span class="header-section-number">11.5</span> Power analysis for hierarchical regression models</h2>
 <p>Power tests for explicit hierarchical models usually originate from the context of the design of clinical trials, which not only concern themselves with the entire sample size of a study but also need to determine the split of that sample between treatment and control. It is rare that power analysis would need to be conducted for hierarchical models in people analytics but the technology is available in the <code>WebPower</code> package to explore this.</p>
-<p><em>Cluster randomized trials</em> are trials where it is not possible to allocate individuals randomly to treatment or control groups and where entire clusters have been allocated at random instead. This creates substantial additional complexity in understanding statistical power and required sample sizes. The <code>wp.crt2arm()</code> function in <code>WebPower</code> supports power analysis on 2-arm trials (treatment and control), and the <code>wp.crt3arm()</code> function supports power analysis on 3-arm trials (Two different treatments and a control).</p>
+<p><em>Cluster randomized trials</em> are trials where it is not possible to allocate individuals randomly to treatment or control groups and where entire clusters have been allocated at random instead. This creates substantial additional complexity in understanding statistical power and required sample sizes. The <code>wp.crt2arm()</code> function in <code>WebPower</code> supports power analysis on 2-arm trials (treatment and control), and the <code>wp.crt3arm()</code> function supports power analysis on 3-arm trials (two different treatments and a control).</p>
 <p><em>Multisite randomized trials</em> are trials where individuals are assigned to treatment or control groups at random, but where these individuals also belong to different clusters which are important in modeling—for example, they may be members of clinical groups based on pre-existing conditions, or they may be being treated in different hospitals or outpatient facilities. Again, this makes for a substantially more complex calculation of statistical power. The <code>wp.mrt2arm()</code> and <code>wp.mrt3arm()</code> functions offer support for this.</p>
 <p>Power tests are also available for structural equation models. This involves comparing a more ‘complete’ structural model to a ‘subset’ model where some of the coefficients from the more ‘complete’ model are set to zero. Such power tests can be valuable when structural models have been applied previously on responses to survey instruments and there is an intention to test alternative models in the future. They can provide information on required future survey participation and response rates in order to establish whether the improved fit can be established for the alternative models.</p>
 <p>There are two approaches to power tests for structural equation models, using a chi square test and a root mean squared error (RMSEA) approach. Both of these methods take a substantial number of input parameters, consistent with the complexity of structural equation model parameters and the various alternatives for measuring fit of these models. The chi square test approach is implemented by the <code>wp.sem.chisq()</code> function, and the RMSEA approach is implemented by the <code>wp.sem.rmsea()</code> function in <code>WebPower</code>.</p>
@@ -659,7 +659,7 @@ Figure&nbsp;11.5: Plot of power against sample size for a single input variable 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pythonpowerplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.6: Plot of power against sample size for a paired t-test
+Figure&nbsp;11.6: Plot of power against sample size for a paired t-test.
 </figcaption>
 </figure>
 </div>

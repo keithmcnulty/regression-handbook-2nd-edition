@@ -4,7 +4,7 @@
 
 In the previous chapters, we have explored how to model outcomes that are continuous, binary or multinomial in nature. We now turn our attention to another common type of data in people analytics: count data. Count data consists of non-negative integers (0, 1, 2, 3, ...) that represent the number of times an event has occurred within a specific period of time, location, or group. Examples in the workplace are numerous: the number of safety incidents in a factory per month, the number of days an employee was absent in a year, or the number of customer complaints received by a service agent in a week.
 
-\index{outcome variable!count}Because count data is not continuous and is bounded below at zero, linear regression is not appropriate. The assumptions of normality and constant variance of residuals are typically violated. A linear model could also illogically predict negative counts. While we could model a binary outcome (e.g., 'had at least one absence' vs. 'had zero absences') using logistic regression, this approach throws away a lot of valuable information about the magnitude of the count.
+\index{outcome variable!count}Because count data is not continuous and is bounded below at zero, linear regression is not appropriate. The assumptions of normality and constant variance of residuals are typically violated. A linear model could also illogically predict negative counts. While we could model a binary outcome (e.g., 'had at least one absence' vs 'had zero absences') using logistic regression, this approach throws away a lot of valuable information about the magnitude of the count.
 
 To properly model count outcomes, we turn to other members of the generalized linear model (GLM) family.  First we will look at Poisson regression. Poisson regression is specifically designed for count data and, like logistic regression, uses a transformation--—in this case, the natural logarithm—--to establish a linear relationship between the input variables and the (transformed) outcome. However, Poisson regression rests on a very strong assumption that the mean and variance of the count variable are equal. \index{overdispersion (in count data)}\index{underdispersion (in count data)}When this assumption is violated, a condition known as *overdispersion* (or more rarely *underdispersion*) occurs, and the Poisson model's estimates can become unreliable. In this case, we will see that related models, namely Quasi-Poisson or negative binomial regression models, provide more flexible alternatives. Mastering these techniques is essential for any analyst who wants to understand the drivers of event-based phenomena in the workplace.
 
@@ -12,9 +12,9 @@ To properly model count outcomes, we turn to other members of the generalized li
 
 ### Origins and intuition of the Poisson distribution {#sec-poisson-origins}
 
-\index{Poisson distribution (statistics)}The Poisson distribution is named after the French mathematician Siméon Denis Poisson, who introduced it in 1837 in a work that focused on the probability of wrongful convictions in court cases^[In fact, the distribution had already been discovered by the famous French mathematician Abraham De Moivre in the early 18th century.]. However, the distribution's most famous early application came sixty years later from the Polish-Russian economist and statistician Ladislaus von Bortkiewicz.
+\index{Poisson distribution (statistics)}The Poisson distribution is named after the French mathematician Siméon Denis Poisson, who introduced it in 1837 in a work that focused on the probability of wrongful convictions in court cases^[In fact, the distribution had already been discovered by the famous French mathematician Abraham De Moivre in the early 18th century.]. However, the distribution's most famous early application came 60 years later from the Polish-Russian economist and statistician Ladislaus von Bortkiewicz.
 
-Bortkiewicz analyzed data on the number of Prussian cavalry soldiers who were fatally kicked by their horses each year across 14 different army corps over a 20-year period.  He observed that this was a "rare event." In any given corps in any given year, the number of deaths was very low, but often not zero. He found that the observed frequency of 0, 1, 2, or more deaths per corps-year closely matched the predictions of the Poisson distribution. The key insight is that the Poisson distribution effectively models the number of times an event occurs in a fixed interval of time or space, given that these events happen with a known constant mean rate (denoted by $\lambda$) and are independent of the time since the last event. The shape of the distribution for different mean rates is shown in @fig-poisson-dist. For a low mean, the distribution is highly skewed with most observations at or near zero. As the mean increases, the distribution becomes more symmetric and starts to resemble a normal distribution.
+Bortkiewicz analyzed data on the number of Prussian cavalry soldiers who were fatally kicked by their horses each year across 14 different army corps over a 20-year period.  He observed that this was a 'rare event'. In any given corps in any given year, the number of deaths was very low, but often not zero. He found that the observed frequency of 0, 1, 2, or more deaths per corps-year closely matched the predictions of the Poisson distribution. The key insight is that the Poisson distribution effectively models the number of times an event occurs in a fixed interval of time or space, given that these events happen with a known constant mean rate (denoted by $\lambda$) and are independent of the time since the last event. The shape of the distribution for different mean rates is shown in @fig-poisson-dist. For a low mean, the distribution is highly skewed with most observations at or near zero. As the mean increases, the distribution becomes more symmetric and starts to resemble a normal distribution.
 
 The core idea of modeling rates is central to Poisson regression. We are not just modeling a count; we are modeling the *expected rate* at which events occur, and then examining how different factors or characteristics influence that rate.
 
@@ -47,7 +47,7 @@ ggplot(plot_data, aes(x = x, y = probability, fill = lambda)) +
   theme_minimal()
 ```
 
-Poisson distributions showing how the shape changes with different mean event rates $\lambda$
+Poisson distributions showing how the shape changes with different mean event rates $\lambda$.
 :::
 
 
@@ -118,11 +118,11 @@ ggplot(absenteeism, aes(x = days_absent)) +
 
 ```
 
-Distribution of `days_absent` with histogram and density plot
+Distribution of `days_absent` with histogram and density plot.
 :::
 
 
-This is a highly right-skewed distribution, with most employees having a low number of absences and a "long tail" of employees with a high number of absences. This is a classic shape for count data, and suggests that Poisson regression is a good initial approach for this problem.
+This is a highly right-skewed distribution, with most employees having a low number of absences and a 'long tail' of employees with a high number of absences. This is a classic shape for count data, and suggests that Poisson regression is a good initial approach for this problem.
 
 ## Modeling count outcomes with Poisson regression {#sec-mod-poisson}
 
@@ -157,7 +157,7 @@ This shows that the effects of the input variables are multiplicative on the exp
 
 ### Fitting and interpreting a Poisson regression model
 
-Let's fit a Poisson model to our `absenteeism` data to understand which inout variables are associated with absent days. We use the `glm()` function, specifying `family = "poisson"` which automatically uses the log transformation.
+Let's fit a Poisson model to our `absenteeism` data to understand which input variables are associated with absent days. We use the `glm()` function, specifying `family = "poisson"` which automatically uses the log transformation.
 
 ```{r}
 # run a poisson model
@@ -334,9 +334,9 @@ absent_nb_model <- glm.nb(
 summary(absent_nb_model)
 ```
 
-The output looks very similar to the Poisson and Quasi-Poisson summaries, but with one key addition: at the bottom, we see "Theta: `{r} round(absent_nb_model$theta, 4)`". This is the estimated dispersion parameter $\theta$. The `summary()` also provides a standard error for $\theta$ and tests whether it is significantly different from infinity (i.e., whether the negative binomial model is a significant improvement over the Poisson model).
+The output looks very similar to the Poisson and Quasi-Poisson summaries, but with one key addition: at the bottom, we see 'Theta: `{r} round(absent_nb_model$theta, 4)`'. This is the estimated dispersion parameter $\theta$. The `summary()` also provides a standard error for $\theta$ and tests whether it is significantly different from infinity (i.e., whether the negative binomial model is a significant improvement over the Poisson model).
 
-The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get Incidence Rate Ratios (IRRs).
+The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get IRRs.
 
 ```{r}
 #| eval: false
@@ -411,7 +411,7 @@ AIC(absent_poisson_model, absent_nb_model)
 
 The AIC for the negative binomial model is substantially lower than for the Poisson model, again confirming that it is the superior and more parsimonious model for our overdispersed data.
 
-Note that it is not advisable to use Pseudo R-squared metrics to compare Poisson and negative binomial models, as these metrics can be misleading in the presence of overdispersion.  These metrics are more appropriate for comparing models of the same family (e.g., two Poisson models with different input variables).
+Note that it is not advisable to use pseudo-$R^2$ metrics to compare Poisson and negative binomial models, as these metrics can be misleading in the presence of overdispersion.  These metrics are more appropriate for comparing models of the same family (e.g., two Poisson models with different input variables).
 
 ## Other considerations in count regression
 
@@ -435,7 +435,7 @@ predict(absent_nb_model, new_employees, type = "response")
 
 ### Exposure and offsets
 
-\index{offsets (in count regression)}Sometimes we are not just modeling a raw count, but a rate relative to some measure of "exposure". For example, we might want to model the number of safety incidents, but we know that a large factory with 1,000 employees is naturally going to have more incidents than a small one with 100 employees, even if the small factory is less safe. We need to control for this exposure.
+\index{offsets (in count regression)}Sometimes we are not just modeling a raw count, but a rate relative to some measure of 'exposure'. For example, we might want to model the number of safety incidents, but we know that a large factory with 1000 employees is naturally going to have more incidents than a small one with 100 employees, even if the small factory is less safe. We need to control for this exposure.
 
 In this case, our outcome of interest is really the *rate* of incidents per employee. Let's say we model 
 
@@ -623,7 +623,7 @@ print(poisson_model.summary())
 
 \normalsize
 
-We exponentiate the coefficients to get Incidence Rate Ratios (IRRs):
+We exponentiate the coefficients to get IRRs:
 
 ```{python}
 import numpy as np
@@ -678,18 +678,18 @@ If needed, zero-inflated models can be fit using the `statsmodels` library's `Ze
 
 \index{data sets!complaints@\texttt{complaints}}A retail company wants to understand factors affecting the number of customer complaints received about their telephone customer service representatives. Load the `complaints` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/complaints.csv]. It contains the following data for 376 representatives:
 
-* `n_complaints`: Number of complaints received about the representative in the past year
-* `experience`: Years of experience in customer service
-* `training_hours`: Hours of training received in the past year
-* `workload`: Average number of customer interactions per day
-* `shift`: The primary shift worked (Day, Evening, or Night)
-* `remote`: Whether the representative works remotely (1 = yes, 0 = no)
-* `satisfaction_score`: The representative's job satisfaction score (1-10 scale of increasing satisfaction)
+* `n_complaints`: Number of complaints received about the representative in the past year.
+* `experience`: Years of experience in customer service.
+* `training_hours`: Hours of training received in the past year.
+* `workload`: Average number of customer interactions per day.
+* `shift`: The primary shift worked (Day, Evening, or Night).
+* `remote`: Whether the representative works remotely (1 = yes, 0 = no).
+* `satisfaction_score`: The representative's job satisfaction score (1-10 scale of increasing satisfaction).
 
 1. Load the data and obtain statistical summaries. Check data types and create an appropriate visualization to understand the distribution of `n_complaints`.  How would you describe the distribution of `n_complaints`?
 2. Check whether the mean and variance of `n_complaints` are similar. What does this tell you about potential overdispersion?
 3. Fit a Poisson regression model using all input variables. Which variables have significant effects on the number of complaints?
-4. Calculate and interpret the incidence rate ratios for the significant input variables.
+4. Calculate and interpret the IRRs for the significant input variables.
 5. Perform diagnostic checks for overdispersion in your Poisson model.
 6. Fit a Quasi-Poisson regression model. How do the standard errors and significance of input variables change compared to the Poisson model?
 7. Fit a negative binomial regression model with the same input variables. How do the results compare to the Poisson model?

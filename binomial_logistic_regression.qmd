@@ -41,7 +41,7 @@ ggplot2::ggplot(binom_data, aes(x = k, y = prob)) +
   theme_minimal() 
 ```
 
-Binomial distribution showing the probability of $k$ successes in 100 observations with a success probability of 0.3 
+Binomial distribution showing the probability of $k$ successes in 100 observations with a success probability of 0.3. 
 :::
 
 \index{binomial distribution (statistics)!normal approximation}Now, although the variable $Y$ here is discrete (can only take non-negative integer values), we can see that the shape of $Y$ resembles a normal distribution.  In fact, as long as $n$ is not very small and $p$ is not very biased^[I usually find that $n > 50$ and $0.2 < p < 0.8$ are decent rules of thumb for my needs.], the binomial distribution can be well approximated by a normal distribution with mean $np$ and variance $np(1 - p)$ (standard deviation $\sqrt{np(1-p)}$) as shown in @fig-binomial-normal-approx for $n = 100$ and $p = 0.3$.  
@@ -67,7 +67,7 @@ ggplot2::ggplot(binom_data, aes(x = k, y = prob)) +
   theme_minimal()
 ```
 
-Binomial distribution with $n = 100$, $p = 0.3$ (blue bars) and normal approximation with $\mu = 30$, $\sigma = \sqrt{21}$ (red line)
+Binomial distribution with $n = 100$, $p = 0.3$ (blue bars) and normal approximation with $\mu = 30$, $\sigma = \sqrt{21}$ (red line).
 :::
 
 Now if we consider tha *cumulative* probability of $Y$, that is, the probability of observing *up to and including $k$ successes*, we can see that this cumulative probability takes on an S-shape, which is also well approximated by the cumulative normal distribution, as shown in @fig-binomial-cum-prob for $n = 100$ and $p = 0.3$.
@@ -96,7 +96,7 @@ ggplot2::ggplot(binom_data, aes(x = k, y = cum_prob)) +
 
 ```
 
-Cumulative binomial distribution with $n = 100$, $p = 0.3$ (blue bars) and normal approximation with $\mu = 30$, $\sigma = \sqrt{21}$ (red line)
+Cumulative binomial distribution with $n = 100$, $p = 0.3$ (blue bars) and normal approximation with $\mu = 30$, $\sigma = \sqrt{21}$ (red line).
 :::
 
 
@@ -119,7 +119,7 @@ The logistic function, as shown in @fig-logistic-function-verhulst, was felt to 
 knitr::include_graphics("www/05/logistic-curve.png")
 ```
 
-Verhulst's logistic function modeled both the exponential nature and the natural limit of population growth
+Verhulst's logistic function modeled both the exponential nature and the natural limit of population growth.
 :::
 
 In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was observed that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in @fig-norm-log-curves^[The logistic function plotted in @fig-norm-log-curves takes the simple form $y = \frac{1}{1 + e^{-\frac{x}{0.61}}}$.], where the $x$ scale for the normal distribution represents standard deviations around the mean.  As we will learn, the logistic function gives rise to a mathematical model where the coefficients are easily interpreted in terms of likelihood of the outcome.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
@@ -140,7 +140,7 @@ ggplot2::ggplot() +
 
 ```
 
-The logistic function (blue dashed line) is very similar to a cumulative normal distribution (red solid line) but easier to interpret
+The logistic function (blue dashed line) is very similar to a cumulative normal distribution (red solid line) but easier to interpret.
 :::
 
 ### Use cases for binomial logistic regression
@@ -157,12 +157,12 @@ Here are some example questions that could be approached using binomial logistic
 
 You are an analyst for a large company consisting of regional sales teams across the country.  Twice every year, this company promotes some of its salespeople.  Promotion is at the discretion of the head of each regional sales team, taking into consideration financial performance, customer satisfaction ratings, recent performance ratings and personal judgment.  
 
-You are asked by the management of the company to conduct an analysis to determine how the factors of financial performance, customer ratings and performance ratings influence the likelihood of a given salesperson being promoted.  You are provided with a data set containing data for the last three years of salespeople considered for promotion.  \index{data sets!salespeople@\texttt{salespeople}The `salespeople` data set contains the following fields:
+You are asked by the management of the company to conduct an analysis to determine how the factors of financial performance, customer ratings and performance ratings influence the likelihood of a given salesperson being promoted.  You are provided with a data set containing data for the last three years of salespeople considered for promotion.  \index{data sets!salespeople@\texttt{salespeople}}The `salespeople` data set contains the following fields:
 
-* `promoted`:  A binary value indicating 1 if the individual was promoted and 0 if not
-* `sales`: the sales (in thousands of dollars) attributed to the individual in the period of the promotion
-* `customer_rate`:  the average satisfaction rating from a survey of the individual's customers during the promotion period
-* `performance`: the most recent performance rating prior to promotion, from 1 (lowest) to 4 (highest) 
+* `promoted`:  A binary value indicating 1 if the individual was promoted and 0 if not.
+* `sales`: The sales (in thousands of dollars) attributed to the individual in the period of the promotion.
+* `customer_rate`:  The average satisfaction rating from a survey of the individual's customers during the promotion period.
+* `performance`: The most recent performance rating prior to promotion, from 1 (lowest) to 4 (highest).  
 
 Let's take a quick look at the data.
 
@@ -221,7 +221,7 @@ salespeople$promoted <- as.factor(salespeople$promoted)
 GGally::ggpairs(salespeople)
 ```
 
-Pairplot for the `salespeople` data set
+Pairplot for the `salespeople` data set.
 :::
 
 We can see from this pairplot that there are clearly higher sales for those who are promoted versus those who are not.  We also see a moderate relationship between customer rating and sales, which is intuitive (if the customer doesn't think much of you, sales wouldn't likely be very high).
@@ -249,7 +249,7 @@ ggplot2::ggplot(data = salespeople, aes(x = sales, y = as.numeric(as.character(p
 
 ```
 
-Plot of promotion against sales in the `salespeople` data set
+Plot of promotion against sales in the `salespeople` data set.
 :::
 
 It's clear that promotion is more likely with higher sales levels.  As we move along the $x$ axis from left to right and gradually include more and more individuals with higher sales, we know that the probability of promotion is gradually increasing overall.  
@@ -280,7 +280,7 @@ ggplot2::ggplot(data = salespeople, aes(x = sales, y = as.numeric(as.character(p
 
 ```
 
-Overlaying logistic functions with various gradients onto previous plot
+Overlaying logistic functions with various gradients onto previous plot.
 :::
 
 ### Deriving the concept of log odds
@@ -387,7 +387,7 @@ ggplot2::ggplot() +
 
 ```
 
-Odds plotted against probability
+Odds plotted against probability.
 :::
 
 The consequence of this is that a given increase in odds can have a different effect on probability depending on what the original probability was in the first place.  If the probability was already quite low, for example 0.1, then a 4% increase in odds translates to odds of `{r} round((1/9)*1.04, 3)`, which translates to a new probability of `{r} round((0.1*1.04)/(1 + 0.1*0.04), 6)`, representing an increase in probability of `{r} round((0.1*1.04)/(1 + 0.1*0.04)*100/0.1, 2) - 100`%, which is very close to the increase in odds.  If the probability was already high, say 0.9, then a 4% increase in odds translates to odds of `{r} round((9/1)*1.04, 3)`, which translates to a new probability of `{r} round((0.9*1.04)/(1 + 0.9*0.04), 6)` representing an increase in probability of `{r} round((0.9*1.04)/(1 + 0.9*0.04)*100/0.9, 2) - 100`%, which is very different from the increase in odds.  @fig-pcoddsplot shows the impact of a 4% increase in odds according to the original probability of the event.
@@ -410,11 +410,11 @@ ggplot2::ggplot() +
 
 ```
 
-Effect of 4% increase in odds plotted against original probability
+Effect of 4% increase in odds plotted against original probability.
 :::
 
 
-We can see that the closer the base probability is to zero, the similar the effect of the increase on both odds and on probability.  However, the higher the probability of the event, the less impact the increase in odds has.  In any case, it's useful to remember the formulas for converting odds to probability and vice versa.  If $O$ represents odds and $P$ represents probability then we have:
+We can see that the closer the base probability is to zero, the more similar the effect of the increase on both odds and on probability.  However, the higher the probability of the event, the less impact the increase in odds has.  In any case, it's useful to remember the formulas for converting odds to probability and vice versa.  If $O$ represents odds and $P$ represents probability then we have:
 
 $$
 \begin{aligned}
@@ -432,7 +432,7 @@ $$
 $$
 for coefficients $\beta_0, \beta_1,\dots, \beta_p$.  As before:
 
-* $\beta_0$ represents the log odds of our outcome when all inputs are zero
+* $\beta_0$ represents the log odds of our outcome when all inputs are zero.
 * For $r = 1, 2, \cdots, p$, each $\beta_r$ represents the change in the log odds of our outcome associated with a unit change in the input variable $x_r$, assuming no change in other inputs.
 
 Applying an exponent as before, we have
@@ -492,9 +492,9 @@ We can already see from the last column of our coefficient summary---the coeffic
 
 Now we can interpret our model as follows:
 
-* All else being equal, sales have a significant positive effect on the likelihood of promotion, with each additional thousand dollars of sales increasing the odds of promotion by 4%
-* All else being equal, customer ratings have a significant negative effect on the likelihood of promotion, with one full rating higher associated with 67% lower odds of promotion
-* All else being equal, performance ratings have no significant effect on the likelihood of promotion
+* All else being equal, sales have a significant positive effect on the likelihood of promotion, with each additional thousand dollars of sales increasing the odds of promotion by 4%.
+* All else being equal, customer ratings have a significant negative effect on the likelihood of promotion, with one full rating higher associated with 67% lower odds of promotion.
+* All else being equal, performance ratings have no significant effect on the likelihood of promotion.
 
 The second conclusion may appear counter-intuitive, but remember from our pairplot in @sec-walkthrough-logit that there is already moderate correlation between sales and customer ratings, and this model will be controlling for that relationship. Recall that our odds ratios act *assuming all other variables are the same*.  Therefore, if two individuals have the same sales and performance ratings, the one with the lower customer rating is more likely to have been promoted.  Similarly, if two individuals have the same level of sales and the same customer rating, their performance rating will have no significant bearing on the likelihood of promotion.
 
@@ -553,7 +553,7 @@ plot_ly(data = salespeople) |>
 knitr::include_graphics("www/05/binomial.png")
 ```
 
-3D visualization of the fitted `simpler_model` against the `salespeople` data
+3D visualization of the fitted `simpler_model` against the `salespeople` data.
 :::
 
 
@@ -566,7 +566,7 @@ summary(simpler_model)
 
 Note that, unlike what we saw for linear regression in @sec-lin-good-fit, our summary does not provide a statistic on overall model fit or goodness-of-fit.  The main reason for this is that there is no clear unified point of view in the statistics community on a single appropriate measure for model fit in the case of logistic regression.  Nevertheless, a number of options are available to analysts for estimating fit and goodness-of-fit for these models.
 
-\index{Pseudo-R-squared!in binomial logistic regression}*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here:
+\index{pseudo-R-squared!in binomial logistic regression}*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here:
 
 * McFadden's $R^2$ works by comparing the likelihood function of the fitted model with that of a random model and using this to estimate the explained variance in the outcome.
 * Cox and Snell's $R^2$ works by applying a 'sum of squares' analogy to the likelihood functions to align more closely with the precise methodology for calculating $R^2$ in linear regression.  However, this usually means that the maximum value is less than 1 and in certain circumstances substantially less than 1, which can be problematic and unintuitive for an $R^2$.
@@ -653,7 +653,7 @@ d <- density(residuals(simpler_model, "pearson"))
 plot(d, main= "")
 ```
 
-Distribution of Pearson residuals in `simpler_model`
+Distribution of Pearson residuals in `simpler_model`.
 :::
 
 ## Binomial logistic regression using Python
@@ -738,13 +738,13 @@ b. If an event has a 99% probability of occurring, a 10% increase in odds result
 \index{data sets!charity\_donation@\texttt{charity\_donation}}A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  Load the `charity_donation` data set via the `peopleanalyticsdata` package or download it from the internet^[https://peopleanalytics-regression-book.org/data/charity_donation.csv].  It contains the following data:
 
 * `n_donations`:  The total number of times the individual donated previous to the month being studied.
-* `total_donations`: The total amount of money donated by the individual previous to the month being studied
-* `time_donating`: The number of months between the first donation and the month being studied
-* `recent_donation`: Whether or not the individual donated in the month being studied
-* `last_donation`: The number of months between the most recent previous donation and the month being studied
-* `gender`: The gender of the individual
-* `reside`:  Whether the person resides in an Urban or Rural Domestic location or Overseas
-* `age`:  The age of the individual
+* `total_donations`: The total amount of money donated by the individual previous to the month being studied.
+* `time_donating`: The number of months between the first donation and the month being studied.
+* `recent_donation`: Whether or not the individual donated in the month being studied.
+* `last_donation`: The number of months between the most recent previous donation and the month being studied.
+* `gender`: The gender of the individual.
+* `reside`:  Whether the person resides in an Urban or Rural Domestic location or Overseas.
+* `age`:  The age of the individual.
 
 1.  View the data and obtain statistical summaries.  Ensure data types are appropriate and there is no missing data.  Determine the outcome and input variables.
 2. Using a pairplot or by plotting or correlating selected fields, try to hypothesize which variables may be significant in explaining who recently donated.
@@ -752,7 +752,7 @@ b. If an event has a 99% probability of occurring, a 10% increase in odds result
 4. Calculate the odds ratios for the significant variables and explain their impact on the outcome.
 5. Check for collinearity or multicollinearity in your model using methods from previous chapters.
 6. Experiment with model parsimony by reducing input variables that do not have a significant impact on the outcome.  Decide on the most parsimonious model.
-7. Calculate a variety of Pseudo-$R^2$ variants for your model.  How would you explain these to someone with no statistics expertise?
+7. Calculate a variety of pseudo-$R^2$ variants for your model.  How would you explain these to someone with no statistics expertise?
 8. Report the conclusions of your modeling exercise to the charity by writing a simple explanation that assumes no knowledge of statistics.
 9. **Extension:**  Using a variety of methods of your choice, test the hypothesis that your model fits the data.  How conclusive are your tests?
 

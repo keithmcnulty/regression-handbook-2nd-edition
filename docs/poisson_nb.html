@@ -410,14 +410,14 @@ window.Quarto = {
 
 <p></p>
 <p>In the previous chapters, we have explored how to model outcomes that are continuous, binary or multinomial in nature. We now turn our attention to another common type of data in people analytics: count data. Count data consists of non-negative integers (0, 1, 2, 3, …) that represent the number of times an event has occurred within a specific period of time, location, or group. Examples in the workplace are numerous: the number of safety incidents in a factory per month, the number of days an employee was absent in a year, or the number of customer complaints received by a service agent in a week.</p>
-<p>Because count data is not continuous and is bounded below at zero, linear regression is not appropriate. The assumptions of normality and constant variance of residuals are typically violated. A linear model could also illogically predict negative counts. While we could model a binary outcome (e.g., ‘had at least one absence’ vs.&nbsp;‘had zero absences’) using logistic regression, this approach throws away a lot of valuable information about the magnitude of the count.</p>
+<p>Because count data is not continuous and is bounded below at zero, linear regression is not appropriate. The assumptions of normality and constant variance of residuals are typically violated. A linear model could also illogically predict negative counts. While we could model a binary outcome (e.g., ‘had at least one absence’ vs ‘had zero absences’) using logistic regression, this approach throws away a lot of valuable information about the magnitude of the count.</p>
 <p>To properly model count outcomes, we turn to other members of the generalized linear model (GLM) family. First we will look at Poisson regression. Poisson regression is specifically designed for count data and, like logistic regression, uses a transformation–—in this case, the natural logarithm—–to establish a linear relationship between the input variables and the (transformed) outcome. However, Poisson regression rests on a very strong assumption that the mean and variance of the count variable are equal. When this assumption is violated, a condition known as <em>overdispersion</em> (or more rarely <em>underdispersion</em>) occurs, and the Poisson model’s estimates can become unreliable. In this case, we will see that related models, namely Quasi-Poisson or negative binomial regression models, provide more flexible alternatives. Mastering these techniques is essential for any analyst who wants to understand the drivers of event-based phenomena in the workplace.</p>
 <section id="when-to-use-it" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="when-to-use-it"><span class="header-section-number">8.1</span> When to use it</h2>
 <section id="sec-poisson-origins" class="level3" data-number="8.1.1">
 <h3 data-number="8.1.1" class="anchored" data-anchor-id="sec-poisson-origins"><span class="header-section-number">8.1.1</span> Origins and intuition of the Poisson distribution</h3>
-<p>The Poisson distribution is named after the French mathematician Siméon Denis Poisson, who introduced it in 1837 in a work that focused on the probability of wrongful convictions in court cases<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. However, the distribution’s most famous early application came sixty years later from the Polish-Russian economist and statistician Ladislaus von Bortkiewicz.</p>
-<p>Bortkiewicz analyzed data on the number of Prussian cavalry soldiers who were fatally kicked by their horses each year across 14 different army corps over a 20-year period. He observed that this was a “rare event.” In any given corps in any given year, the number of deaths was very low, but often not zero. He found that the observed frequency of 0, 1, 2, or more deaths per corps-year closely matched the predictions of the Poisson distribution. The key insight is that the Poisson distribution effectively models the number of times an event occurs in a fixed interval of time or space, given that these events happen with a known constant mean rate (denoted by <span class="math inline">\(\lambda\)</span>) and are independent of the time since the last event. The shape of the distribution for different mean rates is shown in <a href="#fig-poisson-dist" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>. For a low mean, the distribution is highly skewed with most observations at or near zero. As the mean increases, the distribution becomes more symmetric and starts to resemble a normal distribution.</p>
+<p>The Poisson distribution is named after the French mathematician Siméon Denis Poisson, who introduced it in 1837 in a work that focused on the probability of wrongful convictions in court cases<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. However, the distribution’s most famous early application came 60 years later from the Polish-Russian economist and statistician Ladislaus von Bortkiewicz.</p>
+<p>Bortkiewicz analyzed data on the number of Prussian cavalry soldiers who were fatally kicked by their horses each year across 14 different army corps over a 20-year period. He observed that this was a ‘rare event’. In any given corps in any given year, the number of deaths was very low, but often not zero. He found that the observed frequency of 0, 1, 2, or more deaths per corps-year closely matched the predictions of the Poisson distribution. The key insight is that the Poisson distribution effectively models the number of times an event occurs in a fixed interval of time or space, given that these events happen with a known constant mean rate (denoted by <span class="math inline">\(\lambda\)</span>) and are independent of the time since the last event. The shape of the distribution for different mean rates is shown in <a href="#fig-poisson-dist" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>. For a low mean, the distribution is highly skewed with most observations at or near zero. As the mean increases, the distribution becomes more symmetric and starts to resemble a normal distribution.</p>
 <p>The core idea of modeling rates is central to Poisson regression. We are not just modeling a count; we are modeling the <em>expected rate</em> at which events occur, and then examining how different factors or characteristics influence that rate.</p>
 <div id="fig-poisson-dist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -433,7 +433,7 @@ window.Quarto = {
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-poisson-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.1: Poisson distributions showing how the shape changes with different mean event rates <span class="math inline">\(\lambda\)</span>
+Figure&nbsp;8.1: Poisson distributions showing how the shape changes with different mean event rates <span class="math inline">\(\lambda\)</span>.
 </figcaption>
 </figure>
 </div>
@@ -509,11 +509,11 @@ Figure&nbsp;8.1: Poisson distributions showing how the shape changes with differ
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-daysabsent-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.2: Distribution of <code>days_absent</code> with histogram and density plot
+Figure&nbsp;8.2: Distribution of <code>days_absent</code> with histogram and density plot.
 </figcaption>
 </figure>
 </div>
-<p>This is a highly right-skewed distribution, with most employees having a low number of absences and a “long tail” of employees with a high number of absences. This is a classic shape for count data, and suggests that Poisson regression is a good initial approach for this problem.</p>
+<p>This is a highly right-skewed distribution, with most employees having a low number of absences and a ‘long tail’ of employees with a high number of absences. This is a classic shape for count data, and suggests that Poisson regression is a good initial approach for this problem.</p>
 </section>
 </section>
 <section id="sec-mod-poisson" class="level2" data-number="8.2">
@@ -541,7 +541,7 @@ P(Y=k) = \frac{\lambda^k e^{-\lambda}}{k!}
 </section>
 <section id="fitting-and-interpreting-a-poisson-regression-model" class="level3" data-number="8.2.2">
 <h3 data-number="8.2.2" class="anchored" data-anchor-id="fitting-and-interpreting-a-poisson-regression-model"><span class="header-section-number">8.2.2</span> Fitting and interpreting a Poisson regression model</h3>
-<p>Let’s fit a Poisson model to our <code>absenteeism</code> data to understand which inout variables are associated with absent days. We use the <code>glm()</code> function, specifying <code>family = "poisson"</code> which automatically uses the log transformation.</p>
+<p>Let’s fit a Poisson model to our <code>absenteeism</code> data to understand which input variables are associated with absent days. We use the <code>glm()</code> function, specifying <code>family = "poisson"</code> which automatically uses the log transformation.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run a poisson model</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>absent_poisson_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
@@ -761,8 +761,8 @@ Number of Fisher Scoring iterations: 1
  2 x log-likelihood:  -5627.0750 </code></pre>
 </div>
 </div>
-<p>The output looks very similar to the Poisson and Quasi-Poisson summaries, but with one key addition: at the bottom, we see “Theta: 1.5536”. This is the estimated dispersion parameter <span class="math inline">\(\theta\)</span>. The <code>summary()</code> also provides a standard error for <span class="math inline">\(\theta\)</span> and tests whether it is significantly different from infinity (i.e., whether the negative binomial model is a significant improvement over the Poisson model).</p>
-<p>The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get Incidence Rate Ratios (IRRs).</p>
+<p>The output looks very similar to the Poisson and Quasi-Poisson summaries, but with one key addition: at the bottom, we see ‘Theta: 1.5536’. This is the estimated dispersion parameter <span class="math inline">\(\theta\)</span>. The <code>summary()</code> also provides a standard error for <span class="math inline">\(\theta\)</span> and tests whether it is significantly different from infinity (i.e., whether the negative binomial model is a significant improvement over the Poisson model).</p>
+<p>The interpretation of the coefficients is exactly the same as in the Poisson model. They are on the log-count scale, and we exponentiate them to get IRRs.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># IRRs for the negative binomial model</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>(irr_nb <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(absent_nb_model)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -837,7 +837,7 @@ absent_nb_model       5 5637.075</code></pre>
 </div>
 </div>
 <p>The AIC for the negative binomial model is substantially lower than for the Poisson model, again confirming that it is the superior and more parsimonious model for our overdispersed data.</p>
-<p>Note that it is not advisable to use Pseudo R-squared metrics to compare Poisson and negative binomial models, as these metrics can be misleading in the presence of overdispersion. These metrics are more appropriate for comparing models of the same family (e.g., two Poisson models with different input variables).</p>
+<p>Note that it is not advisable to use pseudo-<span class="math inline">\(R^2\)</span> metrics to compare Poisson and negative binomial models, as these metrics can be misleading in the presence of overdispersion. These metrics are more appropriate for comparing models of the same family (e.g., two Poisson models with different input variables).</p>
 </section>
 </section>
 <section id="other-considerations-in-count-regression" class="level2" data-number="8.4">
@@ -864,7 +864,7 @@ absent_nb_model       5 5637.075</code></pre>
 </section>
 <section id="exposure-and-offsets" class="level3" data-number="8.4.2">
 <h3 data-number="8.4.2" class="anchored" data-anchor-id="exposure-and-offsets"><span class="header-section-number">8.4.2</span> Exposure and offsets</h3>
-<p>Sometimes we are not just modeling a raw count, but a rate relative to some measure of “exposure”. For example, we might want to model the number of safety incidents, but we know that a large factory with 1,000 employees is naturally going to have more incidents than a small one with 100 employees, even if the small factory is less safe. We need to control for this exposure.</p>
+<p>Sometimes we are not just modeling a raw count, but a rate relative to some measure of ‘exposure’. For example, we might want to model the number of safety incidents, but we know that a large factory with 1000 employees is naturally going to have more incidents than a small one with 100 employees, even if the small factory is less safe. We need to control for this exposure.</p>
 <p>In this case, our outcome of interest is really the <em>rate</em> of incidents per employee. Let’s say we model</p>
 <p><span class="math display">\[
 E[\mathrm{incidents}_i] = \mathrm{rate}_i \times \mathrm{employees}_i
@@ -1048,8 +1048,8 @@ Model:                            GLM   Df Residuals:                      861
 Model Family:                 Poisson   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -4459.5
-Date:                Thu, 02 Jul 2026   Deviance:                       5799.6
-Time:                        09:02:12   Pearson chi2:                 5.99e+03
+Date:                Sat, 15 Aug 2026   Deviance:                       5799.6
+Time:                        15:53:46   Pearson chi2:                 5.99e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.8669
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -1062,7 +1062,7 @@ performance_rating    -0.0099      0.014     -0.716      0.474      -0.037      
 ======================================================================================</code></pre>
 </div>
 </div>
-<p>We exponentiate the coefficients to get Incidence Rate Ratios (IRRs):</p>
+<p>We exponentiate the coefficients to get IRRs:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.exp(poisson_model.params))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1094,8 +1094,8 @@ Model:                            GLM   Df Residuals:                      861
 Model Family:        NegativeBinomial   Df Model:                            3
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -2842.3
-Date:                Thu, 02 Jul 2026   Deviance:                       702.79
-Time:                        09:02:13   Pearson chi2:                     548.
+Date:                Sat, 15 Aug 2026   Deviance:                       702.79
+Time:                        15:53:46   Pearson chi2:                     548.
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.1645
 Covariance Type:            nonrobust                                         
 ======================================================================================
@@ -1132,19 +1132,19 @@ performance_rating    -0.0228      0.048     -0.479      0.632      -0.116      
 <h3 data-number="8.6.2" class="anchored" data-anchor-id="data-exercises"><span class="header-section-number">8.6.2</span> Data exercises</h3>
 <p>A retail company wants to understand factors affecting the number of customer complaints received about their telephone customer service representatives. Load the <code>complaints</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. It contains the following data for 376 representatives:</p>
 <ul>
-<li><code>n_complaints</code>: Number of complaints received about the representative in the past year</li>
-<li><code>experience</code>: Years of experience in customer service</li>
-<li><code>training_hours</code>: Hours of training received in the past year</li>
-<li><code>workload</code>: Average number of customer interactions per day</li>
-<li><code>shift</code>: The primary shift worked (Day, Evening, or Night)</li>
-<li><code>remote</code>: Whether the representative works remotely (1 = yes, 0 = no)</li>
-<li><code>satisfaction_score</code>: The representative’s job satisfaction score (1-10 scale of increasing satisfaction)</li>
+<li><code>n_complaints</code>: Number of complaints received about the representative in the past year.</li>
+<li><code>experience</code>: Years of experience in customer service.</li>
+<li><code>training_hours</code>: Hours of training received in the past year.</li>
+<li><code>workload</code>: Average number of customer interactions per day.</li>
+<li><code>shift</code>: The primary shift worked (Day, Evening, or Night).</li>
+<li><code>remote</code>: Whether the representative works remotely (1 = yes, 0 = no).</li>
+<li><code>satisfaction_score</code>: The representative’s job satisfaction score (1-10 scale of increasing satisfaction).</li>
 </ul>
 <ol type="1">
 <li>Load the data and obtain statistical summaries. Check data types and create an appropriate visualization to understand the distribution of <code>n_complaints</code>. How would you describe the distribution of <code>n_complaints</code>?</li>
 <li>Check whether the mean and variance of <code>n_complaints</code> are similar. What does this tell you about potential overdispersion?</li>
 <li>Fit a Poisson regression model using all input variables. Which variables have significant effects on the number of complaints?</li>
-<li>Calculate and interpret the incidence rate ratios for the significant input variables.</li>
+<li>Calculate and interpret the IRRs for the significant input variables.</li>
 <li>Perform diagnostic checks for overdispersion in your Poisson model.</li>
 <li>Fit a Quasi-Poisson regression model. How do the standard errors and significance of input variables change compared to the Poisson model?</li>
 <li>Fit a negative binomial regression model with the same input variables. How do the results compare to the Poisson model?</li>

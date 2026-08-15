@@ -87,7 +87,7 @@ This means that our slope coefficients must be interpreted in terms of changes i
 
 In a Bayesian framework, we can fit a binomial logistic regression model using the `brms` package in a similar way to how we fit a linear regression model. The syntax is similar to that of frequentist logistic regression, but we specify the family as `bernoulli()` to explicitly indicate that each observation of our outcome is a Bernoulli random variable.
 
-\index{data sets!salespeople@\texttt{salespeople}}To illustrate, let's use a random sample from our `salespeople` dataset from @sec-bin-log-reg. 
+\index{data sets!salespeople@\texttt{salespeople}}To illustrate, let's use a random sample from our `salespeople` data set from @sec-bin-log-reg. 
 
 \small
 
@@ -209,7 +209,7 @@ mean(posterior_preds)
 
 \index{multinomial logistic regression!Bayesian|(}
 
-\index{data sets!health\_insurance@\texttt{health\_insurance}}In @sec-multinom, we learned that multinomial logistic regression is used when the outcome variable is categorical with more than two categories that do not have a natural ordering.  In this case, we model the log-odds of membership of each category relative to a reference category as a linear function of our input variables.  In a Bayesian framework, we can fit a multinomial logistic regression model using the `brms` package by specifying the family as `categorical()`. As usual, we will take a sample from our `health_insurance` dataset from @sec-multinom to illustrate.
+\index{data sets!health\_insurance@\texttt{health\_insurance}}In @sec-multinom, we learned that multinomial logistic regression is used when the outcome variable is categorical with more than two categories that do not have a natural ordering.  In this case, we model the log-odds of membership of each category relative to a reference category as a linear function of our input variables.  In a Bayesian framework, we can fit a multinomial logistic regression model using the `brms` package by specifying the family as `categorical()`. As usual, we will take a sample from our `health_insurance` data set from @sec-multinom to illustrate.
 
 \small
 ```{r}
@@ -348,7 +348,7 @@ We could then refit the model with this prior specified using the `prior` argume
 
 In @sec-ord-reg, we learned that ordinal logistic regression is used when the outcome variable is categorical with more than two categories that have a natural ordering.  In this case, we model the log-odds of being in a category less than or equal to a certain level as a linear function of our input variables.  In particular, we focused on the proportional odds model, which assumes that the effect of each input variable is the same across all thresholds of the outcome variable, allowing us to have a single coefficient for each input variable to indicate the strength of effect on the log-odds of being in a higher category in general.  We also learned that it is essential to check the proportional odds assumption when fitting a proportional odds logistic regression model, as violation of this assumption can lead to false inferences from the model.
 
-\index{data sets!soccer@\texttt{soccer}}In a Bayesian framework, we can fit a proportional odds logistic regression model using the `brms` package by specifying the family as `cumulative()`, representing a cumulative logistic model. As usual we will take a sample from our `soccer` dataset from @sec-ord-reg to illustrate.  We are aiming to estimate the effect of numerous factors on the discliplinary record of a player in a game - a three level ordinal outcome:  "None" for no discipline, "Yellow" for a formal warning and "Red" for a sending-off.  As with the `polr()` function for the frequentist proportional odds logistic regression model, `brms` will expect us to ensure our outcome variable is an ordinal factor.
+\index{data sets!soccer@\texttt{soccer}}In a Bayesian framework, we can fit a proportional odds logistic regression model using the `brms` package by specifying the family as `cumulative()`, representing a cumulative logistic model. As usual we will take a sample from our `soccer` data set from @sec-ord-reg to illustrate.  We are aiming to estimate the effect of numerous factors on the discliplinary record of a player in a game - a three level ordinal outcome:  'None' for no discipline, 'Yellow' for a formal warning and 'Red' for a sending-off.  As with the `polr()` function for the frequentist proportional odds logistic regression model, `brms` will expect us to ensure our outcome variable is an ordinal factor.
 
 
 ```{r}
@@ -400,7 +400,7 @@ summary(uninf_polr_model)
 
 Here we can see the posterior coefficient distributions for each input variable, representing the effect of a unit change in that variable on the log-odds of being in a higher discipline category.  
 
-In a Bayesian regression framework, an effective way to test the proportional odds assumption is to run an alternative model that does not assume proportional odds, and then compare the two models using information criteria such as from leave-one-out cross-validation (LOO-CV) .  If the non-proportional odds model has a significantly better fit according to these criteria, it suggests that the proportional odds assumption may be violated.  A common alternative model for ordinal regression is an adjacent category model.   Here is how we can fit an adjacent category ordinal model in `brms`.
+In a Bayesian regression framework, an effective way to test the proportional odds assumption is to run an alternative model that does not assume proportional odds, and then compare the two models using information criteria such as from Leave-One-Out Cross-Validation (LOO-CV).  If the non-proportional odds model has a significantly better fit according to these criteria, it suggests that the proportional odds assumption may be violated.  A common alternative model for ordinal regression is an adjacent category model.   Here is how we can fit an adjacent category ordinal model in `brms`.
 
 
 ```{r}
@@ -439,7 +439,7 @@ The LOO comparison suggests that there is no meaningful difference between the m
 
 In @sec-count-reg, we learned that Poisson regression is used when the outcome variable is a count of events that occur in a fixed period of time or space.  We model the log of the expected count as a linear function of our input variables, to ensure that the count outcomes are always non-negative.  This means that when we exponentiate the coefficients of our model, we see that the effects of the input variables are multiplicative on the count outcome.  We also learned that Poisson regression assumes that the mean and variance of the outcome variable are equal, which may not hold in practice.  When the variance exceeds the mean, we have overdispersion, which can lead to underestimated standard errors and misleading inferences from the model.  In such cases, negative binomial regression can be used as an alternative, as it includes an additional shape parameter $\theta$ to account for overdispersion.
 
-\index{data sets!absenteeism@\texttt{absenteeism}}In a Bayesian framework, we can fit a Poisson regression model using the `brms` package by specifying the family as `poisson()`. As usual we will take a sample from our `absenteeism` dataset from @sec-count-reg to illustrate.
+\index{data sets!absenteeism@\texttt{absenteeism}}In a Bayesian framework, we can fit a Poisson regression model using the `brms` package by specifying the family as `poisson()`. As usual we will take a sample from our `absenteeism` data set from @sec-count-reg to illustrate.
 
 \small
 
@@ -579,7 +579,7 @@ Note that zero-inflated versions of both Poisson and negative binomial regressio
 
 In @sec-hierarchical-data, we learned that mixed effects models (also known as multilevel or hierarchical models) are used when our data has a hierarchical structure, such as students nested within schools or employees nested within departments.  These models allow us to account for the non-independence of observations within groups by including random effects that capture the variability between groups.  In a Bayesian framework, we can fit mixed effects models using the `brms` package by specifying random effects in the model formula using the `(1 | group_variable)` syntax which we learned in @sec-hierarchical-data.  There is no need to specify a different family for mixed effects models in `brms`; we simply include the random effects in the formula and apply the appropriate model family for the outcome variable type. 
 
-\index{data sets!speed\_dating@\texttt{speed\_dating}}To illustrate, let's use a random sample from our `speed_dating` dataset from @sec-hierarchical-data and run a Bayesian binomial mixed effects model to understand how the various factors considered by individuals over multiple speed dates relate to the overall binary decision they made about their dates.
+\index{data sets!speed\_dating@\texttt{speed\_dating}}To illustrate, let's use a random sample from our `speed_dating` data set from @sec-hierarchical-data and run a Bayesian binomial mixed effects model to understand how the various factors considered by individuals over multiple speed dates relate to the overall binary decision they made about their dates.
 
 \small
 
@@ -640,7 +640,7 @@ Here we can see the posterior coefficient distributions for each fixed effect, r
 
 In @sec-survival, we learned that Cox proportional hazards models are used in survival analysis to model an event that occurs over time, such as employee turnover or customer churn.  These models estimate the hazard function, which represents the instantaneous risk of the event occurring at a given time, conditional on survival up to that time.  The Cox model assumes that the hazard ratios between individuals are proportional over time, allowing us to estimate the effect of input variables on the hazard function without specifying the baseline hazard function.
 
-\index{data sets!job\_retention@\texttt{job\_retention}}In a Bayesian framework, we can fit Cox proportional hazards models using the `brms` package by specifying the family as `cox()`.  If your data contains censored observations, the model formula should take the general form `time | cens(1 - event) ~ x1 + x2 + ...`, where `time` is the variable indicating the time of the observation and `event` is the binary variable indicating if the event had occurred.  As usual we will take a sample from our `job_retention` dataset from @sec-survival to illustrate.  
+\index{data sets!job\_retention@\texttt{job\_retention}}In a Bayesian framework, we can fit Cox proportional hazards models using the `brms` package by specifying the family as `cox()`.  If your data contains censored observations, the model formula should take the general form `time | cens(1 - event) ~ x1 + x2 + ...`, where `time` is the variable indicating the time of the observation and `event` is the binary variable indicating if the event had occurred.  As usual we will take a sample from our `job_retention` data set from @sec-survival to illustrate.  
 
 \small
 
@@ -794,6 +794,10 @@ az.plot_ppc(fitted, num_pp_samples=1000, random_seed=123)
 #| label: py-bayes-bin-ppc
 #| results: 'hide'
 #| echo: false
+import matplotlib.pyplot as plt
+
+plt.rcParams['savefig.bbox'] = 'tight'
+
 # perform posterior predictive check
 uninf_binomial_model.predict(fitted, kind="response", random_seed=123)
 az.plot_ppc(fitted, num_pp_samples=1000, random_seed=123)
@@ -818,17 +822,17 @@ Posterior predictive check comparing the proportion of successes in the observed
 
 ### Data exercises
 
-For each of the earlier (frequentist) chapters on the methods outlined in this chapter, use the problem and dataset provided in the exercises at the end of each chapter.  
+For each of the earlier (frequentist) chapters on the methods outlined in this chapter, use the problem and data set provided in the exercises at the end of each chapter.  
 
-1.  Generate two smaller versions of the dataset by taking random samples of the rows - aim for around 10-20% of the original observations in each dataset. Don't forget to remove your first sample before taking the second sample.
-2. Fit a Bayesian version of the appropriate regression model using the first dataset and flat priors.
+1.  Generate two smaller versions of the data set by taking random samples of the rows - aim for around 10-20% of the original observations in each dataset. Don't forget to remove your first sample before taking the second sample.
+2. Fit a Bayesian version of the appropriate regression model using the first data set and flat priors.
 3. Visualize and examine the posterior distributions of the coefficients and interpret them in the context of the problem.
 4. For each model, conduct appropriate posterior predictive checks to assess the fit of the model to the data.  Comment on the results.  Are you comfortable that the model is a good fit?
 5.  If you are concerned about the fit, experiment with alternative model specifications to improve the fit.  Justify your choices and comment on the results.
-6.  Ensure you check any underlying assumptions of your model type (eg proportional odds for ordinal logistic regression, equidispersion for Poisson regression) and take appropriate action if any assumptions are violated.
+6.  Ensure you check any underlying assumptions of your model type (eg, proportional odds for ordinal logistic regression, equidispersion for Poisson regression) and take appropriate action if any assumptions are violated.
 7.  Experiment with setting informed priors for one or two coefficients.  Refit the model with these priors and compare the results to the model with flat priors.
 8.  Experiment with generating posterior predictions for new data points.  Comment on the results.
-9.  Using the approach described in @sec-bayes-reg-updating, update your model with the second dataset.
+9.  Using the approach described in @sec-bayes-reg-updating, update your model with the second data set.
 10.  Examine the updated posteriors and perform an updated posterior predictive check to assess the fit of the updated model to the new data.  Comment on the results.
 
 
