@@ -49,6 +49,8 @@ pad.managers().info()
 
 ::: {.content-visible unless-format="pdf"}
 
+Special thanks to [Akshay Kotha](https://www.linkedin.com/in/akshaykotha/) for his work in creating and maintaining the `peopleanalyticsdata` Python package.
+
 Happy modeling!
 
 *Last update:  `{r} format(Sys.Date(), "%d %B %Y")`*
